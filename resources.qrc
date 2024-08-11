@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/images/trash.svg</file>
+        <file>resources/images/check.svg</file>
+        <file>resources/images/arrows-rotate.svg</file>
+        <file>resources/images/arrow-rotate-left.svg</file>
+        <file>resources/images/logo_mini.svg</file>
+    </qresource>
+</RCC>
