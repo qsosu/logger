@@ -34,7 +34,7 @@ void HttpApi::SendQso(QVariantList data) {
     body["call"] = data.value(3).toString();
     body["band"] = data.value(4).toString();
     body["mode"] = data.value(5).toString();
-    body["freq"] = data.value(6).toInt();
+    body["freq"] = data.value(6).toLongLong();
     body["datetime"] = data.value(7).toString();
     body["name"] = data.value(8).toString();
     body["rsts"] = data.value(9).toString();

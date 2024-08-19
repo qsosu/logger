@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
   QFontDatabase::addApplicationFont("://resources/fonts/Roboto-Regular.ttf");
 
   ui->callInput->setStyleSheet("color: black; font-weight: bold");
-  ui->qthlocEdit->setReadOnly(true);
-  ui->rdaEdit->setReadOnly(true);
+  //ui->qthlocEdit->setReadOnly(true);
+  //ui->rdaEdit->setReadOnly(true);
   ui->actionSync->setEnabled(false);
 
   EverySecondTimer = new QTimer(this);
@@ -177,8 +177,8 @@ MainWindow::~MainWindow() {
 void MainWindow::InitDatabase(QString dbFile) {
     database_file = qApp->applicationDirPath() + "/" + dbFile;
     if (!CheckDatabase()) {
+        qWarning() << "Database file does not exist. Creating new.";
         CreateDatabase();
-        qWarning() << "Database file does not exist. Creating new (in future...)";
     }
     if (ConnectDatabase()) {
         ui->statusbar->showMessage("Файл БД открыт", 3000);
@@ -196,10 +196,44 @@ bool MainWindow::CheckDatabase() {
 }
 
 void MainWindow::CreateDatabase() {
-    //QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "LogMainDatabase");
-    //db.setDatabaseName(database_file);
-    //db.open();
-    // Create database here
+  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "CreateConnection");
+  qInfo() << "Database path:" << database_file;
+  db.setDatabaseName(database_file);
+  if (!db.open()) {
+    qWarning() << "Can't open new database file";
+    return;
+  }
+  QSqlQuery query(db);
+  qInfo() << "Creating CALLSIGNS table";
+  query.exec("CREATE TABLE \"callsigns\" (\"id\" INTEGER NOT NULL, \"qsosu_id\" INTEGER NOT NULL DEFAULT 0, \"type\" INTEGER NOT NULL DEFAULT 10, \"name\" TEXT NOT NULL, \"validity_start\" INTEGER NOT NULL DEFAULT 0, \"validity_stop\" INTEGER NOT NULL DEFAULT 0, \"gridsquare\" TEXT NOT NULL, \"cnty\" TEXT, \"ituz\" INTEGER NOT NULL DEFAULT 0, \"cqz\" INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(\"id\" AUTOINCREMENT))");
+  qInfo() << "Creating RECORDS table";
+  query.exec("CREATE TABLE \"records\" ("
+             "\"id\" INTEGER NOT NULL,"
+             "\"callsign_id\" INTEGER NOT NULL,"
+             "\"qsosu_callsign_id\" INTEGER NOT NULL DEFAULT 0,"
+             "\"qsosu_operator_id\" INTEGER NOT NULL DEFAULT 0,"
+             "\"STATION_CALLSIGN\" TEXT NOT NULL,"
+             "\"OPERATOR\" TEXT NOT NULL,"
+             "\"MY_GRIDSQUARE\" TEXT NOT NULL,"
+             "\"MY_CNTY\" TEXT,"
+             "\"CALL\" TEXT NOT NULL,"
+             "\"QSO_DATE\" TEXT NOT NULL,"
+             "\"TIME_ON\" TEXT NOT NULL,"
+             "\"TIME_OFF\" TEXT NOT NULL,"
+             "\"BAND\" TEXT NOT NULL,"
+             "\"FREQ\" INTEGER NOT NULL,"
+             "\"MODE\" TEXT NOT NULL,"
+             "\"RST_SENT\" TEXT NOT NULL,"
+             "\"RST_RCVD\" TEXT NOT NULL,"
+             "\"NAME\" TEXT,"
+             "\"QTH\" TEXT,"
+             "\"GRIDSQUARE\" TEXT,"
+             "\"CNTY\" TEXT,"
+             "\"COMMENT\" TEXT,"
+             "\"sync_state\" INTEGER NOT NULL DEFAULT 0,"
+             "PRIMARY KEY(\"id\" AUTOINCREMENT))");
+  query.finish();
+  db.close();
 }
 
 bool MainWindow::ConnectDatabase() {
@@ -264,7 +298,7 @@ void MainWindow::InitRecordsTable() {
   RecordsModel->setHeaderData(22, Qt::Horizontal, tr("Синхр."));
 
   ui->tableView->setModel(RecordsModel);
-  //ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
   ui->tableView->setColumnHidden(0, true);
   ui->tableView->setColumnHidden(1, true);
   ui->tableView->setColumnHidden(2, true);
@@ -366,8 +400,8 @@ void MainWindow::SaveQso() {
   newRecord.setValue("qsosu_operator_id", userData.qsosu_operator_id);
   newRecord.setValue("STATION_CALLSIGN", userData.callsign);
   newRecord.setValue("OPERATOR", userData.oper);
-  newRecord.setValue("MY_GRIDSQUARE", userData.gridsquare);
-  newRecord.setValue("MY_CNTY", userData.cnty);
+  newRecord.setValue("MY_GRIDSQUARE", ui->qthlocEdit->text().toUpper());
+  newRecord.setValue("MY_CNTY", ui->rdaEdit->text().toUpper());
   QString call = ui->callInput->text();
   newRecord.setValue("CALL", call);
 
@@ -382,7 +416,7 @@ void MainWindow::SaveQso() {
 
   QString band = ui->bandCombo->currentText();
   newRecord.setValue("BAND", band);
-  int freqHz = ui->freqInput->text().toDouble() * 1000000;
+  unsigned long long freqHz = static_cast<unsigned long long>(ui->freqInput->text().toDouble() * 1000000);
   newRecord.setValue("FREQ", freqHz);
   QString mode = ui->modeCombo->currentText();
   newRecord.setValue("MODE", mode);
@@ -559,8 +593,7 @@ void MainWindow::onUdpLogged() {
         QString datetime = udpReceiver->time_on.date().toString("yyyy-MM-dd") + "T" + udpReceiver->time_on.time().toString("hh:mm:00");
         data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
         data << QString::fromUtf8(udpReceiver->dx_call) << Helpers::GetBandByFreqHz(udpReceiver->tx_frequency_hz) << QString::fromUtf8(udpReceiver->mode);
-        data << udpReceiver->tx_frequency_hz << datetime << QString::fromUtf8(udpReceiver->name) << QString::fromUtf8(udpReceiver->report_sent) << QString::fromUtf8(udpReceiver->report_received);
-        data << QString::fromUtf8(udpReceiver->dx_grid);
+        data << udpReceiver->tx_frequency_hz << datetime << QString::fromUtf8(udpReceiver->name) << QString::fromUtf8(udpReceiver->report_sent) << QString::fromUtf8(udpReceiver->report_received) << "" << "" << QString::fromUtf8(udpReceiver->dx_grid);
         api->SendQso(data);
 
         RefreshRecords();

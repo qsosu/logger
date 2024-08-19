@@ -43,7 +43,7 @@ public:
     FormatFreq(QObject* parent = 0) : QStyledItemDelegate(parent) { }
 
     QString displayText(const QVariant& value, const QLocale&) const {
-      return QString::number((double) value.toInt() / 1000000, 'f', 6);
+      return QString::number((double) value.toLongLong() / 1000000, 'f', 6);
     }
 };
 
