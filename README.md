@@ -21,7 +21,7 @@ git clone https://github.com/qsosu/logger.git
 cd logger/ && mkdir build/ && cd build/ && qmake ../QSOSU-desktop-app.pro
 ```
 
-4) Запустите компилятор (Дле `<кол-во ядер CPU>` укажите количество ядер.):
+4) Запустите компилятор (Где `<кол-во ядер CPU>` укажите количество ядер.):
 
 ```console
 make -j <кол-во ядер CPU>
