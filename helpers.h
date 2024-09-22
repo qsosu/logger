@@ -31,25 +31,26 @@ public:
     return Band;
   }
 
-  static double BandToDefaultFreqMHz(QString band) {
-    if (band == "160M") return 1.8;
-    if (band == "80M") return 3.5;
-    if (band == "40M") return 7.0;
-    if (band == "30M") return 10.1;
-    if (band == "20M") return 14.0;
-    if (band == "17M") return 18.068;
-    if (band == "15M") return 21.0;
-    if (band == "12M") return 24.89;
-    if (band == "10M") return 28.0;
-    if (band == "6M") return 50.0;
-    if (band == "2M") return 144.0;
-    if (band == "70CM") return 432.0;
-    if (band == "23CM") return 1296.0;
-    if (band == "13CM") return 2300.0;
-    if (band == "6CM") return 5700.0;
-    if (band == "3CM") return 10000.0;
-    return 0.0;
-}
+//   static double BandToDefaultFreqMHz(QString band) {
+//     if (band == "160M") return 1.8;
+//     if (band == "80M") return 3.5;
+//     if (band == "40M") return 7.0;
+//     if (band == "30M") return 10.1;
+//     if (band == "20M") return 14.0;
+//     if (band == "17M") return 18.068;
+//     if (band == "15M") return 21.0;
+//     if (band == "12M") return 24.89;
+//     if (band == "10M") return 28.0;
+//     if (band == "6M") return 50.0;
+//     if (band == "2M") return 144.0;
+//     if (band == "70CM") return 432.0;
+//     if (band == "23CM") return 1296.0;
+//     if (band == "13CM") return 2300.0;
+//     if (band == "6CM") return 5700.0;
+//     if (band == "3CM") return 10000.0;
+//     return 0.0;
+// }
+
 
 };
 

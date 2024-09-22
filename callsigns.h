@@ -39,7 +39,7 @@ private slots:
   void onCancelPressed();
   void requestQsosu();
 
-signals:
+  signals:
   void updated();
 
 };

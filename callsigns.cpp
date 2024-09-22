@@ -218,3 +218,5 @@ void Callsigns::onCallsignsUpdated() {
 //	"cqz"	INTEGER NOT NULL DEFAULT 0,
 //	PRIMARY KEY("id" AUTOICREMENT)
 //)
+
+

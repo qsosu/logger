@@ -13,6 +13,9 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QUrlQuery>
+#include <QtNetwork>
+
+QT_REQUIRE_CONFIG(ssl);
 
 #define KEEPALIVE_INTERVAL 5000
 #define HTTP_TIMEOUT 3000

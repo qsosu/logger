@@ -35,6 +35,22 @@ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
+  struct bandData {
+      int band_id;
+      QString band_name;
+      QString band_value;
+      QString band_freq;
+  };
+  QList<bandData> bandList;
+
+  struct modeData {
+      int mode_id;
+      QString mode_name;
+      QString mode_value;
+      QString mode_report;
+  };
+  QList<modeData> modeList;
+
 private:
   Ui::MainWindow *ui;
   Settings *settings;
@@ -61,6 +77,7 @@ private:
   } baseData_t;
   baseData_t userData;
 
+
   void InitDatabase(QString dbFile);
   bool CheckDatabase();
   bool ConnectDatabase();
@@ -73,6 +90,12 @@ private:
   void RemoveQSOs(QModelIndexList indexes);
   void SetRecordsFilter(int log_id);
   void SyncQSOs(QModelIndexList indexes);
+
+  bool LoadHamDefs();
+  void readXmlfile();
+  double BandToDefaultFreq(QString band);
+  QString getBandValue(int index);
+  QString getModeValue(int index);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
@@ -91,6 +114,7 @@ private slots:
   void fillDefaultFreq();
   void customMenuRequested(QPoint pos);
   void onQsoSynced(int dbid);
-
+  void on_modeCombo_currentIndexChanged(int index);
+  //void on_callInput_selectionChanged();
 };
 #endif // MAINWINDOW_H
