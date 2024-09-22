@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "delegations.h"
+#include "QRegularExpressionValidator"
+#include "qlistview.h"
+#include <QCompleter>
 
 #define SET_ROBOT_FONT
 
@@ -14,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
   QFontDatabase::addApplicationFont("://resources/fonts/Roboto-Regular.ttf");
 
   ui->callInput->setStyleSheet("color: black; font-weight: bold");
+  //BugFix Только латинские символы и цифры
+  ui->callInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^[a-zA-Z0-9_]*$"), this));
+
   //ui->qthlocEdit->setReadOnly(true);
   //ui->rdaEdit->setReadOnly(true);
   ui->actionSync->setEnabled(false);
@@ -32,9 +38,22 @@ MainWindow::MainWindow(QWidget *parent)
           EverySecondTimer->start();
       } else {
           EverySecondTimer->stop();
-          ui->timeInput->clear();
+          //BugFix ui->timeInput->clear();
       }
   });
+
+
+  //ui->modeCombo->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+  //ui->modeCombo->setMaxVisibleItems(130);
+
+  ui->modeCombo->setEditable(true); // включаем встроенный QLineEdit
+  ui->modeCombo->setInsertPolicy(QComboBox::NoInsert); // отключаем вставку новых элементов из QLineEdit
+  ui->modeCombo->completer()->setCompletionMode(QCompleter::CompletionMode::PopupCompletion); // устанавливаем модель автодополнения (по умолчанию стоит InlineCompletition)
+
+  LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
+
+  //Проверка использования и версий SSL
+  qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
 
   settings = new Settings();
   settings->setAttribute(Qt::WA_QuitOnClose, false);
@@ -150,7 +169,9 @@ MainWindow::MainWindow(QWidget *parent)
                          tr("О программе"),
                          tr("Desktop API клиент сервиса QSO.SU\n\n"
                             "Версия ПО: 1.0, версия API: 1\n"
-                            "Автор: Alexey.K (R2SI)")
+                            "Авторы: Alexey.K (R2SI)\n"
+                            "Ильдар М (R9JAU)\n"
+                            "Артём С (R4CAT)")
                          );
       return;
   });
@@ -405,7 +426,8 @@ void MainWindow::SaveQso() {
   QString call = ui->callInput->text();
   newRecord.setValue("CALL", call);
 
-  QDate qsoDate = QDate::fromString(ui->dateInput->text(), "yyyy-MM-dd");
+  //QDate qsoDate = QDate::fromString(ui->dateInput->text(), "yyyy-MM-dd");
+  QDate qsoDate = ui->dateInput->date();
   newRecord.setValue("QSO_DATE", qsoDate.toString("yyyyMMdd"));
 
   QTime qsoTime = QTime::fromString(ui->timeInput->text(), "hh:mm:ss");
@@ -414,12 +436,17 @@ void MainWindow::SaveQso() {
   newRecord.setValue("TIME_ON", qsoTimeFormated);
   newRecord.setValue("TIME_OFF", qsoTimeFormated);
 
-  QString band = ui->bandCombo->currentText();
+  //QString band = ui->bandCombo->currentText();
+  QString band = getBandValue(ui->bandCombo->currentIndex());
   newRecord.setValue("BAND", band);
+
   unsigned long long freqHz = static_cast<unsigned long long>(ui->freqInput->text().toDouble() * 1000000);
   newRecord.setValue("FREQ", freqHz);
-  QString mode = ui->modeCombo->currentText();
+
+  //QString mode = ui->modeCombo->currentText();
+  QString mode = getModeValue(ui->modeCombo->currentIndex());
   newRecord.setValue("MODE", mode);
+
   QString rsts = ui->rstsInput->text();
   newRecord.setValue("RST_SENT", rsts);
   QString rstr = ui->rstrInput->text();
@@ -510,7 +537,8 @@ void MainWindow::CallsignToUppercase(const QString &arg) {
 
 void MainWindow::UpdateFormDateTime() {
     QDateTime DateTimeNow = QDateTime::currentDateTimeUtc().toUTC();
-    ui->dateInput->setText(DateTimeNow.toString("yyyy-MM-dd"));
+    QDate DateNow = QDate::currentDate();
+    ui->dateInput->setDate(DateNow);
     ui->timeInput->setText(DateTimeNow.toString("hh:mm:ss"));
 }
 
@@ -626,7 +654,8 @@ void MainWindow::ClearCallbookFields() {
 }
 
 void MainWindow::fillDefaultFreq() {
-  double freqMhz = Helpers::BandToDefaultFreqMHz(ui->bandCombo->currentText());
+  //double freqMhz = Helpers::BandToDefaultFreqMHz(ui->bandCombo->currentText());
+  double freqMhz = BandToDefaultFreq(ui->bandCombo->currentText());
   ui->freqInput->setText(QString::number(freqMhz, 'f', 6));
 }
 
@@ -667,3 +696,115 @@ void MainWindow::onQsoSynced(int dbid) {
         RefreshRecords();
     }
 }
+
+void MainWindow::on_modeCombo_currentIndexChanged(int index)
+{
+    ui->rstrInput->setText(modeList[index].mode_report);
+    ui->rstsInput->setText(modeList[index].mode_report);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::readXmlfile()
+{
+    QDomDocument HamDefs;
+    QFile xmlFile("HamDefs.xml");
+
+    if(!xmlFile.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error open HamDefs.xml";
+        return;
+    }
+    qInfo() << "Succesful loaded HamDefs.xml";
+
+    if(!HamDefs.setContent(&xmlFile))
+    {
+        qDebug() << "Error read HamDefs.xml";
+        return;
+    }
+
+    QDomElement root = HamDefs.firstChildElement();
+
+    QDomNodeList BandNames = HamDefs.elementsByTagName("band");
+    qInfo() << "Loaded bands: " << BandNames.count();
+
+    for(int i = 0; i < BandNames.count(); i++)
+    {
+        QDomNode bandNode = BandNames.at(i);
+        if(bandNode.isElement())
+        {
+            QDomElement Band = bandNode.toElement();
+            bandData bData;
+            bData.band_id = Band.attribute("id").toInt();
+            bData.band_name = Band.attribute("band_name");
+            bData.band_value = Band.attribute("band_value");
+            bData.band_freq = Band.attribute("band_freq");
+            bandList.append(bData);
+            ui->bandCombo->addItem(Band.attribute("band_name"));
+        }
+    }
+
+    QDomNodeList ModeNames = HamDefs.elementsByTagName("mode");
+    qInfo() << "Loaded modes: " << ModeNames.count();
+
+    for(int j = 0; j < ModeNames.count(); j++)
+    {
+        QDomNode modeNode = ModeNames.at(j);
+        if(modeNode.isElement())
+        {
+            QDomElement Mode = modeNode.toElement();
+            modeData mData;
+            mData.mode_id = Mode.attribute("id").toInt();
+            mData.mode_name = Mode.attribute("mode_name");
+            mData.mode_value = Mode.attribute("mode_value");
+            mData.mode_report = Mode.attribute("report");
+            modeList.append(mData);
+            ui->modeCombo->addItem(Mode.attribute("mode_name"));
+        }
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+bool MainWindow::LoadHamDefs()
+{
+    ui->bandCombo->clear();
+    ui->modeCombo->clear();
+    readXmlfile();
+    ui->bandCombo->setCurrentIndex(7);
+    ui->modeCombo->setCurrentIndex(1);
+    return true;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+double MainWindow::BandToDefaultFreq(QString band)
+{
+    for(int j = 0; j < bandList.count(); j++)
+    {
+        if(bandList[j].band_name == band)
+            return bandList[j].band_freq.toDouble();
+    }
+    return 0.0;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+QString MainWindow::getBandValue(int index)
+{
+    for(int j = 0; j < bandList.count(); j++)
+    {
+        if(index == bandList[j].band_id)
+            return bandList[j].band_value;
+    }
+    return "";
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+QString MainWindow::getModeValue(int index)
+{
+    for(int j = 0; j < modeList.count(); j++)
+    {
+        if(index == modeList[j].mode_id)
+            return modeList[j].mode_value;
+    }
+    return "";
+}
+//------------------------------------------------------------------------------------------------------------------------------------------

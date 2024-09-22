@@ -20,7 +20,7 @@
       <item>
        <spacer name="horizontalSpacer_5">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -60,14 +60,14 @@
          <bool>true</bool>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
       </item>
       <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -164,7 +164,7 @@
          <item>
           <spacer name="horizontalSpacer_6">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -220,6 +220,15 @@
              <height>0</height>
             </size>
            </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="cursorPosition">
+            <number>0</number>
+           </property>
           </widget>
          </item>
          <item>
@@ -230,18 +239,22 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="dateInput">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+          <widget class="QDateEdit" name="dateInput">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>130</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+           <property name="date">
+            <date>
+             <year>2024</year>
+             <month>9</month>
+             <day>17</day>
+            </date>
            </property>
           </widget>
          </item>
@@ -266,6 +279,15 @@
              <height>0</height>
             </size>
            </property>
+           <property name="accessibleDescription">
+            <string>99:99:99</string>
+           </property>
+           <property name="text">
+            <string>00:00:00</string>
+           </property>
+           <property name="maxLength">
+            <number>8</number>
+           </property>
           </widget>
          </item>
          <item>
@@ -278,7 +300,7 @@
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -313,6 +335,19 @@
              <height>0</height>
             </size>
            </property>
+           <property name="currentText">
+            <string>2190M</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>2190M</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>630M</string>
+            </property>
+           </item>
            <item>
             <property name="text">
              <string>160M</string>
@@ -321,6 +356,11 @@
            <item>
             <property name="text">
              <string>80M</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>60M</string>
             </property>
            </item>
            <item>
@@ -365,12 +405,32 @@
            </item>
            <item>
             <property name="text">
+             <string>4M</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>2M</string>
             </property>
            </item>
            <item>
             <property name="text">
+             <string>1.25M</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>70CM</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>33CM</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>21CM</string>
             </property>
            </item>
            <item>
@@ -385,12 +445,22 @@
            </item>
            <item>
             <property name="text">
+             <string>9CM</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>6CM</string>
             </property>
            </item>
            <item>
             <property name="text">
              <string>3CM</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.25CM</string>
             </property>
            </item>
           </widget>
@@ -436,49 +506,45 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>0</height>
+             <height>22</height>
             </size>
            </property>
-           <item>
-            <property name="text">
-             <string>SSB</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>FM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>CW</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>FT8</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>MFSK</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>JT65</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>BPSK</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>RTTY</string>
-            </property>
-           </item>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="inputMethodHints">
+            <set>Qt::InputMethodHint::ImhNone</set>
+           </property>
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
+           <property name="maxVisibleItems">
+            <number>50</number>
+           </property>
+           <property name="maxCount">
+            <number>210</number>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+           </property>
+           <property name="minimumContentsLength">
+            <number>10</number>
+           </property>
+           <property name="frame">
+            <bool>true</bool>
+           </property>
+           <property name="modelColumn">
+            <number>0</number>
+           </property>
           </widget>
          </item>
          <item>
@@ -542,7 +608,7 @@
          <item>
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -665,7 +731,7 @@
          <item>
           <spacer name="horizontalSpacer_8">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -741,7 +807,7 @@
          <item>
           <spacer name="horizontalSpacer_9">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -764,7 +830,7 @@
       <item>
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -832,7 +898,7 @@
      <x>0</x>
      <y>0</y>
      <width>996</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
