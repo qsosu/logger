@@ -1,0 +1,322 @@
+2024-09-22 01:34:10.657 [DEBUG] Error open HamDefs.xml
+2024-09-22 01:34:27.762 [INFO] Succesful loaded HamDefs.xml
+2024-09-22 01:34:27.764 [INFO] Loaded bands:  25
+2024-09-22 01:34:27.764 [INFO] Loaded modes:  209
+2024-09-22 01:34:56.935 [INFO] Succesful loaded HamDefs.xml
+2024-09-22 01:34:56.937 [INFO] Loaded bands:  25
+2024-09-22 01:34:56.938 [INFO] Loaded modes:  209
+2024-09-22 01:35:30.370 [INFO] Succesful loaded HamDefs.xml
+2024-09-22 01:35:30.372 [INFO] Loaded bands:  25
+2024-09-22 01:35:30.373 [INFO] Loaded modes:  209
+2024-09-22 01:44:51.844 [INFO] Succesful loaded HamDefs.xml
+2024-09-22 01:44:51.846 [INFO] Loaded bands:  25
+2024-09-22 01:44:51.847 [INFO] Loaded modes:  209
+2024-09-22 19:08:32.204 [INFO] Succesful loaded HamDefs.xml
+2024-09-22 19:08:32.209 [INFO] Loaded bands:  25
+2024-09-22 19:08:32.210 [INFO] Loaded modes:  209
+2024-09-22 19:08:48.760 [INFO] Succesful loaded HamDefs.xml
+2024-09-22 19:08:48.768 [INFO] Loaded bands:  25
+2024-09-22 19:08:48.768 [INFO] Loaded modes:  209
+2024-09-22 19:09:54.473 [WARNING] No functional TLS backend was found
+2024-09-22 19:09:54.473 [WARNING] No functional TLS backend was found
+2024-09-22 19:09:54.473 [WARNING] No functional TLS backend was found
+2024-09-22 19:09:54.473 [DEBUG] false "" ""
+2024-09-22 19:09:55.674 [INFO] Application started
+2024-09-22 19:12:03.829 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:03.829 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:03.838 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:03.838 [DEBUG] false "" ""
+2024-09-22 19:12:04.801 [INFO] Application started
+2024-09-22 19:12:18.820 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.820 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.820 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.820 [WARNING] No TLS backend is available
+2024-09-22 19:12:18.821 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.821 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.821 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.821 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.821 [WARNING] No TLS backend is available
+2024-09-22 19:12:18.821 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.821 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.860 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.860 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.860 [WARNING] No TLS backend is available
+2024-09-22 19:12:18.860 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.860 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.870 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.870 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.870 [WARNING] No TLS backend is available
+2024-09-22 19:12:18.871 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:18.871 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 19:12:24.724 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:24.732 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:24.732 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 19:12:28.165 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:28.172 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:28.172 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 19:12:40.601 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:40.601 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:40.601 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:40.601 [DEBUG] false "" ""
+2024-09-22 19:12:40.963 [INFO] Application started
+2024-09-22 19:12:44.924 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.924 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.924 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.924 [WARNING] No TLS backend is available
+2024-09-22 19:12:44.940 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.940 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.940 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.940 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.940 [WARNING] No TLS backend is available
+2024-09-22 19:12:44.940 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.940 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.951 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.951 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.951 [WARNING] No TLS backend is available
+2024-09-22 19:12:44.951 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.951 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.951 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.951 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.951 [WARNING] No TLS backend is available
+2024-09-22 19:12:44.951 [WARNING] No functional TLS backend was found
+2024-09-22 19:12:44.951 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 19:13:55.662 [WARNING] No functional TLS backend was found
+2024-09-22 19:13:55.662 [WARNING] No functional TLS backend was found
+2024-09-22 19:13:55.662 [WARNING] No functional TLS backend was found
+2024-09-22 19:13:55.663 [DEBUG] false "" ""
+2024-09-22 19:13:56.526 [INFO] Application started
+2024-09-22 19:14:08.611 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.611 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.611 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.611 [WARNING] No TLS backend is available
+2024-09-22 19:14:08.611 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.611 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.621 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.621 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.621 [WARNING] No TLS backend is available
+2024-09-22 19:14:08.621 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.621 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.653 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.653 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.653 [WARNING] No TLS backend is available
+2024-09-22 19:14:08.653 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.653 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.653 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.667 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.667 [WARNING] No TLS backend is available
+2024-09-22 19:14:08.667 [WARNING] No functional TLS backend was found
+2024-09-22 19:14:08.667 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 19:15:52.117 [WARNING] No functional TLS backend was found
+2024-09-22 19:15:52.117 [WARNING] No functional TLS backend was found
+2024-09-22 19:15:52.117 [WARNING] No functional TLS backend was found
+2024-09-22 19:15:52.117 [DEBUG] false "" ""
+2024-09-22 19:15:52.601 [INFO] Application started
+2024-09-22 19:16:05.297 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.297 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.297 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.297 [WARNING] No TLS backend is available
+2024-09-22 19:16:05.297 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.297 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.298 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.298 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.298 [WARNING] No TLS backend is available
+2024-09-22 19:16:05.298 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.298 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.308 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.308 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.308 [WARNING] No TLS backend is available
+2024-09-22 19:16:05.308 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.308 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.308 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.315 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.315 [WARNING] No TLS backend is available
+2024-09-22 19:16:05.315 [WARNING] No functional TLS backend was found
+2024-09-22 19:16:05.315 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 19:20:45.543 [WARNING] No functional TLS backend was found
+2024-09-22 19:20:45.549 [WARNING] No functional TLS backend was found
+2024-09-22 19:20:45.550 [WARNING] No functional TLS backend was found
+2024-09-22 19:20:45.550 [DEBUG] false "" ""
+2024-09-22 19:20:46.392 [INFO] Application started
+2024-09-22 19:23:43.005 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:43.005 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:43.005 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:43.005 [DEBUG] false "" ""
+2024-09-22 19:23:43.772 [INFO] Application started
+2024-09-22 19:23:48.675 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.675 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.675 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.675 [WARNING] No TLS backend is available
+2024-09-22 19:23:48.675 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.683 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.683 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.683 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.683 [WARNING] No TLS backend is available
+2024-09-22 19:23:48.683 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.683 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.686 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.686 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.686 [WARNING] No TLS backend is available
+2024-09-22 19:23:48.686 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.686 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.697 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.697 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.697 [WARNING] No TLS backend is available
+2024-09-22 19:23:48.697 [WARNING] No functional TLS backend was found
+2024-09-22 19:23:48.697 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 19:39:06.315 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:06.315 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:06.315 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:06.315 [DEBUG] false "" ""
+2024-09-22 19:39:06.678 [INFO] Application started
+2024-09-22 19:39:11.006 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.022 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.023 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.023 [WARNING] No TLS backend is available
+2024-09-22 19:39:11.023 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.024 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.024 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.024 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.024 [WARNING] No TLS backend is available
+2024-09-22 19:39:11.024 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.024 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.079 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.079 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.079 [WARNING] No TLS backend is available
+2024-09-22 19:39:11.079 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.085 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.085 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.085 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.085 [WARNING] No TLS backend is available
+2024-09-22 19:39:11.089 [WARNING] No functional TLS backend was found
+2024-09-22 19:39:11.089 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 20:06:25.552 [WARNING] No functional TLS backend was found
+2024-09-22 20:06:25.553 [WARNING] No functional TLS backend was found
+2024-09-22 20:06:25.553 [WARNING] No functional TLS backend was found
+2024-09-22 20:06:25.553 [DEBUG] false "" ""
+2024-09-22 20:06:25.914 [INFO] Application started
+2024-09-22 20:33:30.338 [WARNING] No functional TLS backend was found
+2024-09-22 20:33:30.338 [WARNING] No functional TLS backend was found
+2024-09-22 20:33:30.338 [WARNING] No functional TLS backend was found
+2024-09-22 20:33:30.338 [DEBUG] false "" ""
+2024-09-22 20:33:31.189 [INFO] Application started
+2024-09-22 20:35:23.025 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.032 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.033 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.033 [WARNING] No TLS backend is available
+2024-09-22 20:35:23.033 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.034 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.034 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.035 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.035 [WARNING] No TLS backend is available
+2024-09-22 20:35:23.035 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.035 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.124 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.124 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.124 [WARNING] No TLS backend is available
+2024-09-22 20:35:23.124 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.124 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.124 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.124 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.124 [WARNING] No TLS backend is available
+2024-09-22 20:35:23.137 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:23.137 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 20:35:24.932 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:24.938 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:24.938 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 20:35:28.466 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:28.466 [WARNING] No functional TLS backend was found
+2024-09-22 20:35:28.466 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 20:43:00.417 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:00.417 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:00.417 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:00.417 [DEBUG] false "" ""
+2024-09-22 20:43:00.772 [INFO] Application started
+2024-09-22 20:43:05.386 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.386 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.386 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.386 [WARNING] No TLS backend is available
+2024-09-22 20:43:05.386 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.397 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.397 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.397 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.397 [WARNING] No TLS backend is available
+2024-09-22 20:43:05.397 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.397 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.408 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.408 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.408 [WARNING] No TLS backend is available
+2024-09-22 20:43:05.408 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.408 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.408 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.408 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.412 [WARNING] No TLS backend is available
+2024-09-22 20:43:05.412 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:05.412 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 20:43:12.292 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:12.292 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:12.292 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:12.292 [DEBUG] false "" ""
+2024-09-22 20:43:12.705 [INFO] Application started
+2024-09-22 20:43:19.505 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.505 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.505 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.505 [WARNING] No TLS backend is available
+2024-09-22 20:43:19.505 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.517 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.517 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.517 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.517 [WARNING] No TLS backend is available
+2024-09-22 20:43:19.517 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.517 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.553 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.553 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.553 [WARNING] No TLS backend is available
+2024-09-22 20:43:19.553 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.555 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.555 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.555 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.555 [WARNING] No TLS backend is available
+2024-09-22 20:43:19.555 [WARNING] No functional TLS backend was found
+2024-09-22 20:43:19.555 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 21:11:09.072 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:09.072 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:09.072 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:09.072 [DEBUG] false "" ""
+2024-09-22 21:11:09.884 [INFO] Application started
+2024-09-22 21:11:24.451 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.451 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.451 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.451 [WARNING] No TLS backend is available
+2024-09-22 21:11:24.451 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.460 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.460 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.460 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.460 [WARNING] No TLS backend is available
+2024-09-22 21:11:24.460 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.460 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.496 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.496 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.496 [WARNING] No TLS backend is available
+2024-09-22 21:11:24.496 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.496 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.506 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.506 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.506 [WARNING] No TLS backend is available
+2024-09-22 21:11:24.506 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:24.506 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 21:11:37.728 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:37.756 [WARNING] No functional TLS backend was found
+2024-09-22 21:11:37.756 [WARNING] QSslSocket::connectToHostEncrypted: TLS initialization failed
+2024-09-22 21:12:18.199 [WARNING] No functional TLS backend was found
+2024-09-22 21:12:18.199 [WARNING] No functional TLS backend was found
+2024-09-22 21:12:18.199 [WARNING] No functional TLS backend was found
+2024-09-22 21:12:18.199 [DEBUG] false "" ""
+2024-09-22 21:12:18.623 [INFO] Application started
+2024-09-22 23:03:35.498 [INFO] Succesful loaded HamDefs.xml
+2024-09-22 23:03:35.503 [INFO] Loaded bands:  25
+2024-09-22 23:03:35.503 [INFO] Loaded modes:  209
+2024-09-22 23:03:35.535 [WARNING] No functional TLS backend was found
+2024-09-22 23:03:35.536 [WARNING] No functional TLS backend was found
+2024-09-22 23:03:35.536 [WARNING] No functional TLS backend was found
+2024-09-22 23:03:35.536 [DEBUG] Support SSL:  false  SSL Build Library:  ""  SSL Library Version:  ""
+2024-09-22 23:03:36.484 [INFO] Application started
