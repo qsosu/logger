@@ -6,6 +6,7 @@
 #include <QSqlTableModel>
 #include <QSqlRecord>
 #include <QMessageBox>
+#include <QComboBox>
 #include "httpapi.h"
 
 namespace Ui {
@@ -25,6 +26,8 @@ private:
   QSqlTableModel *CallsignsModel;
   QSqlDatabase db;
   HttpApi *api;
+  QComboBox* itemcombobox;
+  QStringList lst;
 
   void init();
   void updateTable();
@@ -38,6 +41,7 @@ private slots:
   void onSavePressed();
   void onCancelPressed();
   void requestQsosu();
+  void CallsignsEdit(int indx);
 
   signals:
   void updated();

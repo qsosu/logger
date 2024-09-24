@@ -1,6 +1,7 @@
 #include "callsigns.h"
 #include "ui_callsigns.h"
 
+
 Callsigns::Callsigns(QSqlDatabase db, HttpApi *api, QWidget *parent) :
   QDialog(parent),
   ui(new Ui::Callsigns),
@@ -28,10 +29,12 @@ Callsigns::~Callsigns()
 }
 
 void Callsigns::init() {
+
   CallsignsModel = new QSqlTableModel(this);
   CallsignsModel->setTable("callsigns");
   CallsignsModel->setEditStrategy(QSqlTableModel::OnFieldChange);
 
+  CallsignsModel->setHeaderData(2, Qt::Horizontal, tr("Тип")); //BugFix Add
   CallsignsModel->setHeaderData(3, Qt::Horizontal, tr("Позывной"));
   CallsignsModel->setHeaderData(6, Qt::Horizontal, tr("QTH локатор"));
   CallsignsModel->setHeaderData(7, Qt::Horizontal, tr("RDA"));
@@ -41,7 +44,7 @@ void Callsigns::init() {
   ui->callTable->setModel(CallsignsModel);
   ui->callTable->setColumnHidden(0, true);
   ui->callTable->setColumnHidden(1, true);
-  ui->callTable->setColumnHidden(2, true);
+  //ui->callTable->setColumnHidden(2, true); //BugFix for visible column Type
   ui->callTable->setColumnHidden(4, true);
   ui->callTable->setColumnHidden(5, true);
 
@@ -60,10 +63,21 @@ void Callsigns::updateTable() {
 void Callsigns::onAddPressed() {
   int rowCount = CallsignsModel->rowCount(QModelIndex());
   CallsignsModel->insertRow(rowCount);
-  QModelIndex index = CallsignsModel->index(rowCount, 3);
+  QModelIndex index = CallsignsModel->index(rowCount, 2);
   ui->callTable->setCurrentIndex(index);
   ui->callTable->edit(index);
-
+//---------------------------------------------------------------------------------------
+  //Добавим QComboBox в поле Type
+  // itemcombobox = qobject_cast<QComboBox*>(ui->callTable->indexWidget(index));
+  // if (!itemcombobox) {
+  //     itemcombobox = new QComboBox();
+  //     ui->callTable->setIndexWidget(index, itemcombobox);
+  // }
+  // lst.clear();
+  // lst<< "Основной" << "Дополнительный" << "Специальный";
+  // itemcombobox->addItems(lst);
+  // connect(itemcombobox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Callsigns::CallsignsEdit);
+//---------------------------------------------------------------------------------------
   ui->addButton->setEnabled(false);
   ui->saveButton->setEnabled(true);
   ui->cancelButton->setEnabled(true);
@@ -204,6 +218,18 @@ void Callsigns::onCallsignsUpdated() {
   QMessageBox::information(0, "Обновление данных", "Позывные обновлены с сервиса QSO.SU", QMessageBox::Ok);
   emit updated();
 }
+
+
+void Callsigns::CallsignsEdit(int indx) {
+    if (indx == 1) { //when user select testdata
+        itemcombobox->setEditable(true);
+    }
+    else{
+      itemcombobox->setEditable(false);
+    }
+}
+
+
 
 //CREATE TABLE "callsigns" (
 //	"id"	INTEGER NOT NULL,

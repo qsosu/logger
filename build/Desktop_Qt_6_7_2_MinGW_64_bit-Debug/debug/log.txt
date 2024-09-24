@@ -3,3 +3,126 @@
 2024-09-23 02:09:36.548 [INFO] Loaded modes:  209
 2024-09-23 02:09:36.972 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
 2024-09-23 02:09:37.738 [INFO] Application started
+2024-09-23 20:55:20.862 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 20:55:20.865 [INFO] Loaded bands:  25
+2024-09-23 20:55:20.866 [INFO] Loaded modes:  209
+2024-09-23 20:55:21.061 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 20:55:22.109 [INFO] Application started
+2024-09-23 20:58:33.060 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 20:58:33.063 [INFO] Loaded bands:  25
+2024-09-23 20:58:33.064 [INFO] Loaded modes:  209
+2024-09-23 20:58:33.081 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 20:58:33.987 [INFO] Application started
+2024-09-23 20:59:41.425 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 20:59:41.427 [INFO] Loaded bands:  25
+2024-09-23 20:59:41.428 [INFO] Loaded modes:  209
+2024-09-23 20:59:41.443 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 20:59:41.866 [INFO] Application started
+2024-09-23 21:03:11.283 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 21:03:11.286 [INFO] Loaded bands:  25
+2024-09-23 21:03:11.286 [INFO] Loaded modes:  209
+2024-09-23 21:03:11.301 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 21:03:12.107 [INFO] Application started
+2024-09-23 21:09:40.880 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 21:09:40.882 [INFO] Loaded bands:  25
+2024-09-23 21:09:40.883 [INFO] Loaded modes:  209
+2024-09-23 21:09:40.903 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 21:09:41.320 [INFO] Application started
+2024-09-23 21:21:26.973 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 21:21:26.976 [INFO] Loaded bands:  25
+2024-09-23 21:21:26.976 [INFO] Loaded modes:  209
+2024-09-23 21:21:26.991 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 21:21:27.676 [INFO] Application started
+2024-09-23 21:27:29.863 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 21:27:29.866 [INFO] Loaded bands:  25
+2024-09-23 21:27:29.866 [INFO] Loaded modes:  209
+2024-09-23 21:27:29.882 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 21:27:30.267 [INFO] Application started
+2024-09-23 21:53:50.635 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 21:53:50.637 [INFO] Loaded bands:  25
+2024-09-23 21:53:50.638 [INFO] Loaded modes:  209
+2024-09-23 21:53:50.654 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 21:53:51.487 [INFO] Application started
+2024-09-23 21:57:41.460 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 21:57:41.462 [INFO] Loaded bands:  25
+2024-09-23 21:57:41.462 [INFO] Loaded modes:  209
+2024-09-23 21:57:41.479 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 21:57:42.336 [INFO] Application started
+2024-09-23 22:00:32.577 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 22:00:32.581 [INFO] Loaded bands:  25
+2024-09-23 22:00:32.581 [INFO] Loaded modes:  209
+2024-09-23 22:00:32.604 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 22:00:33.790 [INFO] Application started
+2024-09-23 22:03:06.247 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 22:03:06.249 [INFO] Loaded bands:  25
+2024-09-23 22:03:06.250 [INFO] Loaded modes:  209
+2024-09-23 22:03:06.270 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 22:03:07.703 [INFO] Application started
+2024-09-23 22:04:02.234 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-23 22:04:02.234 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-23 22:05:11.828 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-23 22:05:11.828 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-23 22:05:26.225 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-23 22:05:26.225 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-23 22:08:08.223 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 22:08:08.225 [INFO] Loaded bands:  25
+2024-09-23 22:08:08.225 [INFO] Loaded modes:  209
+2024-09-23 22:08:08.240 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 22:08:09.022 [INFO] Application started
+2024-09-23 22:08:22.194 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-23 22:08:22.194 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-23 22:08:45.220 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-23 22:08:45.220 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-23 22:10:07.632 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 22:10:07.635 [INFO] Loaded bands:  25
+2024-09-23 22:10:07.635 [INFO] Loaded modes:  209
+2024-09-23 22:10:07.650 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 22:10:08.078 [INFO] Application started
+2024-09-23 22:10:11.524 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-23 22:10:11.524 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-23 22:10:50.134 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 22:10:50.136 [INFO] Loaded bands:  25
+2024-09-23 22:10:50.136 [INFO] Loaded modes:  209
+2024-09-23 22:10:50.151 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 22:10:50.518 [INFO] Application started
+2024-09-23 22:14:27.681 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-23 22:14:27.681 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-23 22:35:09.278 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 22:35:09.280 [INFO] Loaded bands:  25
+2024-09-23 22:35:09.280 [INFO] Loaded modes:  209
+2024-09-23 22:35:09.295 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 22:35:09.667 [INFO] Application started
+2024-09-23 22:40:32.921 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 22:40:32.923 [INFO] Loaded bands:  25
+2024-09-23 22:40:32.923 [INFO] Loaded modes:  209
+2024-09-23 22:40:32.939 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 22:40:33.316 [INFO] Application started
+2024-09-23 22:47:16.285 [INFO] Succesful loaded HamDefs.xml
+2024-09-23 22:47:16.289 [INFO] Loaded bands:  25
+2024-09-23 22:47:16.289 [INFO] Loaded modes:  209
+2024-09-23 22:47:16.312 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-23 22:47:17.394 [INFO] Application started
+2024-09-24 21:58:33.224 [INFO] Succesful loaded HamDefs.xml
+2024-09-24 21:58:33.226 [INFO] Loaded bands:  25
+2024-09-24 21:58:33.226 [INFO] Loaded modes:  209
+2024-09-24 21:58:33.579 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-24 21:58:34.761 [INFO] Application started
+2024-09-24 22:46:18.397 [INFO] Succesful loaded HamDefs.xml
+2024-09-24 22:46:18.399 [INFO] Loaded bands:  25
+2024-09-24 22:46:18.400 [INFO] Loaded modes:  209
+2024-09-24 22:46:18.416 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-24 22:46:19.412 [INFO] Application started
+2024-09-24 22:50:03.823 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-24 22:50:03.823 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-24 23:03:09.263 [INFO] Succesful loaded HamDefs.xml
+2024-09-24 23:03:09.266 [INFO] Loaded bands:  25
+2024-09-24 23:03:09.267 [INFO] Loaded modes:  209
+2024-09-24 23:03:09.283 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-24 23:03:10.048 [INFO] Application started
+2024-09-24 23:04:37.051 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
+2024-09-24 23:04:37.051 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
+2024-09-24 23:06:37.241 [INFO] Succesful loaded HamDefs.xml
+2024-09-24 23:06:37.243 [INFO] Loaded bands:  25
+2024-09-24 23:06:37.243 [INFO] Loaded modes:  209
+2024-09-24 23:06:37.259 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-24 23:06:38.117 [INFO] Application started

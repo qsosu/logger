@@ -278,9 +278,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
 void MainWindow::getCallsigns() {
   ui->stationCallsignCombo->clear();
-  ui->stationCallsignCombo->addItem("- Не выбран -", 0);
+  ui->stationCallsignCombo->setCurrentIndex(0); //Bug Fix Change
+  //ui->stationCallsignCombo->addItem("- Не выбран -", 0); //Bug Fix Change
   ui->operatorCombo->clear();
-  ui->operatorCombo->addItem("- Не выбран -", 0);
+  ui->operatorCombo->setCurrentIndex(0); //Bug Fix Change
+  //ui->operatorCombo->addItem("- Не выбран -", 0); //Bug Fix Change
 
   QSqlQuery query(db);
   query.exec("SELECT id, qsosu_id, type, name, gridsquare, cnty FROM callsigns");
@@ -292,7 +294,7 @@ void MainWindow::getCallsigns() {
       QString gridsquare = query.value(4).toString();
       QString cnty = query.value(5).toString();
       ui->stationCallsignCombo->addItem(name, QList<QVariant>() << id << qsosu_id << type << gridsquare << cnty);
-      ui->operatorCombo->addItem(name, QList<QVariant>() << id << qsosu_id);
+      if(type == 0) ui->operatorCombo->addItem(name, QList<QVariant>() << id << qsosu_id); //Bug Fix Change
   }
 }
 
