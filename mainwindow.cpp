@@ -168,7 +168,7 @@ MainWindow::MainWindow(QWidget *parent)
       QMessageBox::about(0,
                          tr("О программе"),
                          tr("Desktop API клиент сервиса QSO.SU\n\n"
-                            "Версия ПО: 1.2.362, версия API: 1.0\n"
+                          "Версия ПО: 1.2.362, версия API: 1.0\n"
                             "Авторы: Alexey.K (R2SI)\n"
                             "Ильдар.М (R9JAU)\n"
                             "Артём.С (R4CAT)")

@@ -126,3 +126,8 @@
 2024-09-24 23:06:37.243 [INFO] Loaded modes:  209
 2024-09-24 23:06:37.259 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
 2024-09-24 23:06:38.117 [INFO] Application started
+2024-09-24 23:51:54.517 [INFO] Succesful loaded HamDefs.xml
+2024-09-24 23:51:54.519 [INFO] Loaded bands:  25
+2024-09-24 23:51:54.520 [INFO] Loaded modes:  209
+2024-09-24 23:51:54.757 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-24 23:51:55.914 [INFO] Application started
