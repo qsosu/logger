@@ -2080,3 +2080,50 @@
 }
 
 2024-10-03 01:07:41.329 [DEBUG] Network reply finished. Code: 201
+2024-10-04 19:06:01.735 [INFO] Succesful loaded HamDefs.xml
+2024-10-04 19:06:01.772 [INFO] Loaded bands:  25
+2024-10-04 19:06:01.772 [INFO] Loaded modes:  209
+2024-10-04 19:06:02.595 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-04 19:06:09.424 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-04 19:06:09.824 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-04 19:06:11.498 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-04 19:06:11.570 [WARNING] stream 3 finished with error: "Host requires authentication"
+2024-10-04 19:06:14.346 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-04 19:06:14.419 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-04 19:06:16.705 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-04 19:06:16.762 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-04 19:07:05.747 [INFO] Succesful loaded HamDefs.xml
+2024-10-04 19:07:05.750 [INFO] Loaded bands:  25
+2024-10-04 19:07:05.750 [INFO] Loaded modes:  209
+2024-10-04 19:07:06.120 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-04 19:07:13.802 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-04 19:07:16.312 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-04 19:07:16.401 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-04 19:07:18.995 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-04 19:07:19.096 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-04 19:07:24.190 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-04 19:07:24.279 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
