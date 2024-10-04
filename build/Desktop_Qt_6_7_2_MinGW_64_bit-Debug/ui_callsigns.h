@@ -32,6 +32,7 @@ public:
     QPushButton *saveButton;
     QPushButton *cancelButton;
     QSpacerItem *horizontalSpacer;
+    QPushButton *checkCallsignBtn;
     QPushButton *updateFromQsosu;
 
     void setupUi(QDialog *Callsigns)
@@ -72,6 +73,11 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer);
 
+        checkCallsignBtn = new QPushButton(Callsigns);
+        checkCallsignBtn->setObjectName("checkCallsignBtn");
+
+        horizontalLayout->addWidget(checkCallsignBtn);
+
         updateFromQsosu = new QPushButton(Callsigns);
         updateFromQsosu->setObjectName("updateFromQsosu");
 
@@ -93,6 +99,7 @@ public:
         removeButton->setText(QCoreApplication::translate("Callsigns", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", nullptr));
         saveButton->setText(QCoreApplication::translate("Callsigns", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));
         cancelButton->setText(QCoreApplication::translate("Callsigns", "\320\236\321\202\320\274\320\265\320\275\320\270\321\202\321\214", nullptr));
+        checkCallsignBtn->setText(QCoreApplication::translate("Callsigns", "\320\237\321\200\320\276\320\262\320\265\321\200\320\270\321\202\321\214 \321\201\321\202\320\260\321\202\321\203\321\201", nullptr));
         updateFromQsosu->setText(QCoreApplication::translate("Callsigns", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201 QSO.SU", nullptr));
     } // retranslateUi
 

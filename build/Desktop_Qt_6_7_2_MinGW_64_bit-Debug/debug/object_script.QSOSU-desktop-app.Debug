@@ -1,3 +1,5 @@
+debug/about.o
+debug/addcallsign.o
 debug/adif.o
 debug/callsigns.o
 debug/flrig.o
@@ -13,6 +15,8 @@ debug/maiaXmlRpcServer.o
 debug/maiaXmlRpcServerConnection.o
 debug/udpreceiver.o
 debug/qrc_resources.o
+debug/moc_about.o
+debug/moc_addcallsign.o
 debug/moc_adif.o
 debug/moc_callsigns.o
 debug/moc_flrig.o

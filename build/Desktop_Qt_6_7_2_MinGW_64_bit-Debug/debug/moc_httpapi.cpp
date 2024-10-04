@@ -44,6 +44,7 @@ constexpr auto qt_meta_stringdata_CLASSHttpApiENDCLASS = QtMocHelpers::stringDat
     "unavailable",
     "accountDataUpdated",
     "callsignsUpdated",
+    "callsignStatus",
     "synced",
     "syncerror",
     "error",
@@ -60,22 +61,23 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSHttpApiENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       8,       // signalCount
+       9,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   62,    2, 0x06,    1 /* Public */,
-       3,    0,   63,    2, 0x06,    2 /* Public */,
-       4,    0,   64,    2, 0x06,    3 /* Public */,
-       5,    0,   65,    2, 0x06,    4 /* Public */,
-       6,    0,   66,    2, 0x06,    5 /* Public */,
-       7,    1,   67,    2, 0x06,    6 /* Public */,
-       8,    1,   70,    2, 0x06,    8 /* Public */,
-       9,    1,   73,    2, 0x06,   10 /* Public */,
+       1,    0,   68,    2, 0x06,    1 /* Public */,
+       3,    0,   69,    2, 0x06,    2 /* Public */,
+       4,    0,   70,    2, 0x06,    3 /* Public */,
+       5,    0,   71,    2, 0x06,    4 /* Public */,
+       6,    0,   72,    2, 0x06,    5 /* Public */,
+       7,    1,   73,    2, 0x06,    6 /* Public */,
+       8,    1,   76,    2, 0x06,    8 /* Public */,
+       9,    1,   79,    2, 0x06,   10 /* Public */,
+      10,    1,   82,    2, 0x06,   12 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -85,7 +87,8 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSHttpApiENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    2,
     QMetaType::Void, QMetaType::Int,    2,
-    QMetaType::Void, 0x80000000 | 10,    2,
+    QMetaType::Void, QMetaType::Int,    2,
+    QMetaType::Void, 0x80000000 | 11,    2,
 
        0        // eod
 };
@@ -109,6 +112,9 @@ Q_CONSTINIT const QMetaObject HttpApi::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'callsignsUpdated'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'callsignStatus'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
         // method 'synced'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
@@ -133,15 +139,16 @@ void HttpApi::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 2: _t->unavailable(); break;
         case 3: _t->accountDataUpdated(); break;
         case 4: _t->callsignsUpdated(); break;
-        case 5: _t->synced((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 6: _t->syncerror((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 7: _t->error((*reinterpret_cast< std::add_pointer_t<QNetworkReply::NetworkError>>(_a[1]))); break;
+        case 5: _t->callsignStatus((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 6: _t->synced((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 7: _t->syncerror((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 8: _t->error((*reinterpret_cast< std::add_pointer_t<QNetworkReply::NetworkError>>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
-        case 7:
+        case 8:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
             case 0:
@@ -188,22 +195,29 @@ void HttpApi::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         }
         {
             using _t = void (HttpApi::*)(int );
-            if (_t _q_method = &HttpApi::synced; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+            if (_t _q_method = &HttpApi::callsignStatus; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 5;
                 return;
             }
         }
         {
             using _t = void (HttpApi::*)(int );
-            if (_t _q_method = &HttpApi::syncerror; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+            if (_t _q_method = &HttpApi::synced; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 6;
+                return;
+            }
+        }
+        {
+            using _t = void (HttpApi::*)(int );
+            if (_t _q_method = &HttpApi::syncerror; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+                *result = 7;
                 return;
             }
         }
         {
             using _t = void (HttpApi::*)(QNetworkReply::NetworkError );
             if (_t _q_method = &HttpApi::error; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
-                *result = 7;
+                *result = 8;
                 return;
             }
         }
@@ -229,13 +243,13 @@ int HttpApi::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }
@@ -271,23 +285,30 @@ void HttpApi::callsignsUpdated()
 }
 
 // SIGNAL 5
-void HttpApi::synced(int _t1)
+void HttpApi::callsignStatus(int _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);
 }
 
 // SIGNAL 6
-void HttpApi::syncerror(int _t1)
+void HttpApi::synced(int _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 6, _a);
 }
 
 // SIGNAL 7
-void HttpApi::error(QNetworkReply::NetworkError _t1)
+void HttpApi::syncerror(int _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 7, _a);
+}
+
+// SIGNAL 8
+void HttpApi::error(QNetworkReply::NetworkError _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 8, _a);
 }
 QT_WARNING_POP

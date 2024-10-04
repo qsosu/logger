@@ -42,6 +42,8 @@ void HttpApi::SendQso(QVariantList data) {
     body["qth"] = data.value(11).toString();
     body["cnty"] = data.value(12).toString();
     body["gridsquare"] = data.value(13).toString();
+    body["my_cnty"] = data.value(14).toString();       //Add bugFix
+    body["my_gridsquare"] = data.value(15).toString(); //Add bugFix
 
     QJsonDocument doc(body);
 
@@ -109,3 +111,93 @@ void HttpApi::getCallsign() {
     reply->deleteLater();
   });
 }
+
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::addCallsign(QVariantList data) {
+    if (accessToken.length() == 0) {
+        emit emptyToken();
+        return;
+    }
+    if (m_reply) {
+        m_reply->abort();
+        m_reply->deleteLater();
+        m_reply = nullptr;
+    }
+    QNetworkRequest request((QUrl("https://api.qso.su/method/v1/addCallsign")));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QJsonObject body;
+    body["callsign"] = data.value(0).toString();
+    body["type"] = data.value(1).toInt();
+    body["location"] = data.value(2).toString();
+    body["rda"] = data.value(3).toString();
+    body["ituz"] = data.value(4).toInt();
+    body["cqz"] = data.value(5).toInt();
+
+    QDateTime dt;
+    body["start_data"] = dt.fromSecsSinceEpoch(data.value(6).toInt()).toString("yyyy-MM-dd hh:mm:ss.zzz");
+    body["stop_data"]  = dt.fromSecsSinceEpoch(data.value(7).toInt()).toString("yyyy-MM-dd hh:mm:ss.zzz");
+
+    QJsonDocument doc(body);
+
+    QByteArray jsonBA = doc.toJson();
+    qDebug().noquote() << "Sending Callsign for validate to service." << jsonBA;
+
+    QNetworkReply *reply = m_manager.post(request, jsonBA);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qDebug() << "Network reply finished. Code:" << status_code.toInt();
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::checkStatusCallsign(QString callsign)
+{
+    if (accessToken.length() == 0) {
+        emit emptyToken();
+        return;
+    }
+    if (m_reply) {
+        m_reply->abort();
+        m_reply->deleteLater();
+        m_reply = nullptr;
+    }
+
+    QNetworkRequest request((QUrl("https://api.qso.su/method/v1/checkStatusCallsign")));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QJsonObject body;
+    body["callsign"] = callsign;
+
+    QJsonDocument doc(body);
+    QByteArray jsonBA = doc.toJson();
+    qDebug().noquote() << "Checking Callsign from service." << jsonBA;
+
+    QNetworkReply *reply = m_manager.get(request, jsonBA);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            qDebug() << data;
+
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+            if (jsonDocument.object().contains("error")) {
+                QJsonObject errorObject = jsonDocument["error"].toObject();
+                qDebug() << "ERROR:" << errorObject["name"].toString() << errorObject["message"].toString();
+                return;
+            }
+            QJsonObject response = jsonDocument["response"].toObject();
+            QJsonValue callsign_status = response["status"].toInt();
+            emit callsignStatus(callsign_status.toInt());
+        }
+        reply->deleteLater();
+    });
+}
+
+//--------------------------------------------------------------------------------------------------------------------

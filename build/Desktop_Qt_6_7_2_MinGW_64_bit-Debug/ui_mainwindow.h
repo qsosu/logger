@@ -48,11 +48,9 @@ public:
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_6;
-    QSpacerItem *horizontalSpacer_5;
-    QLabel *label_19;
-    QSpacerItem *horizontalSpacer_2;
     QGroupBox *groupBox_2;
     QHBoxLayout *horizontalLayout_4;
+    QSpacerItem *horizontalSpacer_5;
     QLabel *label_12;
     QComboBox *stationCallsignCombo;
     QLabel *label_13;
@@ -121,7 +119,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(996, 600);
+        MainWindow->resize(955, 595);
         actionSettings = new QAction(MainWindow);
         actionSettings->setObjectName("actionSettings");
         actionCallsigns = new QAction(MainWindow);
@@ -145,39 +143,20 @@ public:
         verticalLayout_2->setObjectName("verticalLayout_2");
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName("horizontalLayout_6");
-        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-
-        horizontalLayout_6->addItem(horizontalSpacer_5);
-
-        label_19 = new QLabel(centralwidget);
-        label_19->setObjectName("label_19");
-        QSizePolicy sizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
-        sizePolicy.setHorizontalStretch(1);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(label_19->sizePolicy().hasHeightForWidth());
-        label_19->setSizePolicy(sizePolicy);
-        label_19->setMinimumSize(QSize(100, 40));
-        label_19->setMaximumSize(QSize(100, 40));
-        label_19->setPixmap(QPixmap(QString::fromUtf8(":/resources/images/logo_mini.svg")));
-        label_19->setScaledContents(true);
-        label_19->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        horizontalLayout_6->addWidget(label_19);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-
-        horizontalLayout_6->addItem(horizontalSpacer_2);
-
         groupBox_2 = new QGroupBox(centralwidget);
         groupBox_2->setObjectName("groupBox_2");
-        QSizePolicy sizePolicy1(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
-        sizePolicy1.setHorizontalStretch(3);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
-        groupBox_2->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
+        sizePolicy.setHorizontalStretch(3);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
+        groupBox_2->setSizePolicy(sizePolicy);
         horizontalLayout_4 = new QHBoxLayout(groupBox_2);
         horizontalLayout_4->setObjectName("horizontalLayout_4");
         horizontalLayout_4->setContentsMargins(3, 3, 3, 3);
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer_5);
+
         label_12 = new QLabel(groupBox_2);
         label_12->setObjectName("label_12");
 
@@ -206,11 +185,11 @@ public:
         qthlocEdit = new QLineEdit(groupBox_2);
         qthlocEdit->setObjectName("qthlocEdit");
         qthlocEdit->setEnabled(true);
-        QSizePolicy sizePolicy2(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(qthlocEdit->sizePolicy().hasHeightForWidth());
-        qthlocEdit->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy1(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(qthlocEdit->sizePolicy().hasHeightForWidth());
+        qthlocEdit->setSizePolicy(sizePolicy1);
 
         horizontalLayout_4->addWidget(qthlocEdit);
 
@@ -222,8 +201,8 @@ public:
         rdaEdit = new QLineEdit(groupBox_2);
         rdaEdit->setObjectName("rdaEdit");
         rdaEdit->setEnabled(true);
-        sizePolicy2.setHeightForWidth(rdaEdit->sizePolicy().hasHeightForWidth());
-        rdaEdit->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(rdaEdit->sizePolicy().hasHeightForWidth());
+        rdaEdit->setSizePolicy(sizePolicy1);
 
         horizontalLayout_4->addWidget(rdaEdit);
 
@@ -251,11 +230,11 @@ public:
 
         callInput = new QLineEdit(groupBox);
         callInput->setObjectName("callInput");
-        QSizePolicy sizePolicy3(QSizePolicy::Policy::Maximum, QSizePolicy::Policy::Fixed);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(callInput->sizePolicy().hasHeightForWidth());
-        callInput->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy2(QSizePolicy::Policy::Maximum, QSizePolicy::Policy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(callInput->sizePolicy().hasHeightForWidth());
+        callInput->setSizePolicy(sizePolicy2);
         callInput->setMinimumSize(QSize(0, 0));
         callInput->setCursorPosition(0);
 
@@ -281,8 +260,8 @@ public:
 
         timeInput = new QLineEdit(groupBox);
         timeInput->setObjectName("timeInput");
-        sizePolicy3.setHeightForWidth(timeInput->sizePolicy().hasHeightForWidth());
-        timeInput->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(timeInput->sizePolicy().hasHeightForWidth());
+        timeInput->setSizePolicy(sizePolicy2);
         timeInput->setMinimumSize(QSize(0, 0));
         timeInput->setMaxLength(8);
 
@@ -334,8 +313,8 @@ public:
         bandCombo->addItem(QString());
         bandCombo->addItem(QString());
         bandCombo->setObjectName("bandCombo");
-        sizePolicy3.setHeightForWidth(bandCombo->sizePolicy().hasHeightForWidth());
-        bandCombo->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(bandCombo->sizePolicy().hasHeightForWidth());
+        bandCombo->setSizePolicy(sizePolicy2);
         bandCombo->setMinimumSize(QSize(0, 0));
 
         horizontalLayout_2->addWidget(bandCombo);
@@ -347,8 +326,8 @@ public:
 
         freqInput = new QLineEdit(groupBox);
         freqInput->setObjectName("freqInput");
-        sizePolicy3.setHeightForWidth(freqInput->sizePolicy().hasHeightForWidth());
-        freqInput->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(freqInput->sizePolicy().hasHeightForWidth());
+        freqInput->setSizePolicy(sizePolicy2);
         freqInput->setMinimumSize(QSize(0, 0));
 
         horizontalLayout_2->addWidget(freqInput);
@@ -360,8 +339,8 @@ public:
 
         modeCombo = new QComboBox(groupBox);
         modeCombo->setObjectName("modeCombo");
-        sizePolicy3.setHeightForWidth(modeCombo->sizePolicy().hasHeightForWidth());
-        modeCombo->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(modeCombo->sizePolicy().hasHeightForWidth());
+        modeCombo->setSizePolicy(sizePolicy2);
         modeCombo->setMinimumSize(QSize(0, 22));
         modeCombo->setMaximumSize(QSize(16777215, 100));
         modeCombo->setAutoFillBackground(false);
@@ -383,8 +362,8 @@ public:
 
         rstrInput = new QLineEdit(groupBox);
         rstrInput->setObjectName("rstrInput");
-        sizePolicy3.setHeightForWidth(rstrInput->sizePolicy().hasHeightForWidth());
-        rstrInput->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(rstrInput->sizePolicy().hasHeightForWidth());
+        rstrInput->setSizePolicy(sizePolicy2);
         rstrInput->setMinimumSize(QSize(30, 0));
         rstrInput->setMaxLength(4);
 
@@ -397,8 +376,8 @@ public:
 
         rstsInput = new QLineEdit(groupBox);
         rstsInput->setObjectName("rstsInput");
-        sizePolicy3.setHeightForWidth(rstsInput->sizePolicy().hasHeightForWidth());
-        rstsInput->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(rstsInput->sizePolicy().hasHeightForWidth());
+        rstsInput->setSizePolicy(sizePolicy2);
         rstsInput->setMinimumSize(QSize(30, 0));
         rstsInput->setMaxLength(4);
 
@@ -420,8 +399,8 @@ public:
 
         nameInput = new QLineEdit(groupBox);
         nameInput->setObjectName("nameInput");
-        sizePolicy2.setHeightForWidth(nameInput->sizePolicy().hasHeightForWidth());
-        nameInput->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(nameInput->sizePolicy().hasHeightForWidth());
+        nameInput->setSizePolicy(sizePolicy1);
         nameInput->setMinimumSize(QSize(0, 0));
 
         horizontalLayout_3->addWidget(nameInput);
@@ -433,11 +412,11 @@ public:
 
         qthInput = new QLineEdit(groupBox);
         qthInput->setObjectName("qthInput");
-        QSizePolicy sizePolicy4(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Fixed);
-        sizePolicy4.setHorizontalStretch(2);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(qthInput->sizePolicy().hasHeightForWidth());
-        qthInput->setSizePolicy(sizePolicy4);
+        QSizePolicy sizePolicy3(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Fixed);
+        sizePolicy3.setHorizontalStretch(2);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(qthInput->sizePolicy().hasHeightForWidth());
+        qthInput->setSizePolicy(sizePolicy3);
         qthInput->setMinimumSize(QSize(0, 0));
 
         horizontalLayout_3->addWidget(qthInput);
@@ -449,8 +428,8 @@ public:
 
         gridsquareInput = new QLineEdit(groupBox);
         gridsquareInput->setObjectName("gridsquareInput");
-        sizePolicy3.setHeightForWidth(gridsquareInput->sizePolicy().hasHeightForWidth());
-        gridsquareInput->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(gridsquareInput->sizePolicy().hasHeightForWidth());
+        gridsquareInput->setSizePolicy(sizePolicy2);
         gridsquareInput->setMinimumSize(QSize(0, 0));
 
         horizontalLayout_3->addWidget(gridsquareInput);
@@ -472,8 +451,8 @@ public:
 
         commentInput = new QLineEdit(groupBox);
         commentInput->setObjectName("commentInput");
-        sizePolicy4.setHeightForWidth(commentInput->sizePolicy().hasHeightForWidth());
-        commentInput->setSizePolicy(sizePolicy4);
+        sizePolicy3.setHeightForWidth(commentInput->sizePolicy().hasHeightForWidth());
+        commentInput->setSizePolicy(sizePolicy3);
         commentInput->setMinimumSize(QSize(0, 0));
 
         horizontalLayout_3->addWidget(commentInput);
@@ -575,7 +554,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 996, 22));
+        menubar->setGeometry(QRect(0, 0, 955, 22));
         menu = new QMenu(menubar);
         menu->setObjectName("menu");
         menu_2 = new QMenu(menubar);
@@ -616,10 +595,9 @@ public:
         actionFlrig->setText(QCoreApplication::translate("MainWindow", "\320\237\320\276\320\264\320\272\320\273\321\216\321\207\320\270\321\202\321\214 FLRIG", nullptr));
         actionExportAdif->setText(QCoreApplication::translate("MainWindow", "\320\255\320\272\321\201\320\277\320\276\321\200\321\202 \320\262\321\201\320\265\320\263\320\276 \320\266\321\203\321\200\320\275\320\260\320\273\320\260 \320\262 ADIF", nullptr));
         actionSync->setText(QCoreApplication::translate("MainWindow", "\320\241\320\270\320\275\321\205\321\200\320\276\320\275\320\270\320\267\320\270\321\200\320\276\320\262\320\260\321\202\321\214 \320\266\321\203\321\200\320\275\320\260\320\273", nullptr));
-        actionAbout->setText(QCoreApplication::translate("MainWindow", "\320\236 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\265", nullptr));
+        actionAbout->setText(QCoreApplication::translate("MainWindow", "\320\236 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\265...", nullptr));
         actionQsosuFaqLink->setText(QCoreApplication::translate("MainWindow", "FAQ", nullptr));
         actionQsosuLink->setText(QCoreApplication::translate("MainWindow", "\320\241\321\202\321\200\320\260\320\275\320\270\321\206\320\260 \321\201\320\265\321\200\320\262\320\270\321\201\320\260 QSO.SU", nullptr));
-        label_19->setText(QString());
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "\320\237\320\260\321\200\320\260\320\274\320\265\321\202\321\200\321\213 QSO", nullptr));
         label_12->setText(QCoreApplication::translate("MainWindow", "\320\237\320\276\320\267\321\213\320\262\320\275\320\276\320\271 \321\201\321\202\320\260\320\275\321\206\320\270\320\270", nullptr));
         label_13->setText(QCoreApplication::translate("MainWindow", "\320\236\320\277\320\265\321\200\320\260\321\202\320\276\321\200", nullptr));

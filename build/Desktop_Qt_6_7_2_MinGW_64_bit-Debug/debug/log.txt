@@ -1,133 +1,2082 @@
-2024-09-23 02:09:36.544 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 02:09:36.547 [INFO] Loaded bands:  25
-2024-09-23 02:09:36.548 [INFO] Loaded modes:  209
-2024-09-23 02:09:36.972 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 02:09:37.738 [INFO] Application started
-2024-09-23 20:55:20.862 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 20:55:20.865 [INFO] Loaded bands:  25
-2024-09-23 20:55:20.866 [INFO] Loaded modes:  209
-2024-09-23 20:55:21.061 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 20:55:22.109 [INFO] Application started
-2024-09-23 20:58:33.060 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 20:58:33.063 [INFO] Loaded bands:  25
-2024-09-23 20:58:33.064 [INFO] Loaded modes:  209
-2024-09-23 20:58:33.081 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 20:58:33.987 [INFO] Application started
-2024-09-23 20:59:41.425 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 20:59:41.427 [INFO] Loaded bands:  25
-2024-09-23 20:59:41.428 [INFO] Loaded modes:  209
-2024-09-23 20:59:41.443 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 20:59:41.866 [INFO] Application started
-2024-09-23 21:03:11.283 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 21:03:11.286 [INFO] Loaded bands:  25
-2024-09-23 21:03:11.286 [INFO] Loaded modes:  209
-2024-09-23 21:03:11.301 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 21:03:12.107 [INFO] Application started
-2024-09-23 21:09:40.880 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 21:09:40.882 [INFO] Loaded bands:  25
-2024-09-23 21:09:40.883 [INFO] Loaded modes:  209
-2024-09-23 21:09:40.903 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 21:09:41.320 [INFO] Application started
-2024-09-23 21:21:26.973 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 21:21:26.976 [INFO] Loaded bands:  25
-2024-09-23 21:21:26.976 [INFO] Loaded modes:  209
-2024-09-23 21:21:26.991 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 21:21:27.676 [INFO] Application started
-2024-09-23 21:27:29.863 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 21:27:29.866 [INFO] Loaded bands:  25
-2024-09-23 21:27:29.866 [INFO] Loaded modes:  209
-2024-09-23 21:27:29.882 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 21:27:30.267 [INFO] Application started
-2024-09-23 21:53:50.635 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 21:53:50.637 [INFO] Loaded bands:  25
-2024-09-23 21:53:50.638 [INFO] Loaded modes:  209
-2024-09-23 21:53:50.654 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 21:53:51.487 [INFO] Application started
-2024-09-23 21:57:41.460 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 21:57:41.462 [INFO] Loaded bands:  25
-2024-09-23 21:57:41.462 [INFO] Loaded modes:  209
-2024-09-23 21:57:41.479 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 21:57:42.336 [INFO] Application started
-2024-09-23 22:00:32.577 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 22:00:32.581 [INFO] Loaded bands:  25
-2024-09-23 22:00:32.581 [INFO] Loaded modes:  209
-2024-09-23 22:00:32.604 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 22:00:33.790 [INFO] Application started
-2024-09-23 22:03:06.247 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 22:03:06.249 [INFO] Loaded bands:  25
-2024-09-23 22:03:06.250 [INFO] Loaded modes:  209
-2024-09-23 22:03:06.270 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 22:03:07.703 [INFO] Application started
-2024-09-23 22:04:02.234 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-23 22:04:02.234 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-23 22:05:11.828 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-23 22:05:11.828 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-23 22:05:26.225 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-23 22:05:26.225 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-23 22:08:08.223 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 22:08:08.225 [INFO] Loaded bands:  25
-2024-09-23 22:08:08.225 [INFO] Loaded modes:  209
-2024-09-23 22:08:08.240 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 22:08:09.022 [INFO] Application started
-2024-09-23 22:08:22.194 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-23 22:08:22.194 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-23 22:08:45.220 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-23 22:08:45.220 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-23 22:10:07.632 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 22:10:07.635 [INFO] Loaded bands:  25
-2024-09-23 22:10:07.635 [INFO] Loaded modes:  209
-2024-09-23 22:10:07.650 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 22:10:08.078 [INFO] Application started
-2024-09-23 22:10:11.524 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-23 22:10:11.524 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-23 22:10:50.134 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 22:10:50.136 [INFO] Loaded bands:  25
-2024-09-23 22:10:50.136 [INFO] Loaded modes:  209
-2024-09-23 22:10:50.151 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 22:10:50.518 [INFO] Application started
-2024-09-23 22:14:27.681 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-23 22:14:27.681 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-23 22:35:09.278 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 22:35:09.280 [INFO] Loaded bands:  25
-2024-09-23 22:35:09.280 [INFO] Loaded modes:  209
-2024-09-23 22:35:09.295 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 22:35:09.667 [INFO] Application started
-2024-09-23 22:40:32.921 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 22:40:32.923 [INFO] Loaded bands:  25
-2024-09-23 22:40:32.923 [INFO] Loaded modes:  209
-2024-09-23 22:40:32.939 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 22:40:33.316 [INFO] Application started
-2024-09-23 22:47:16.285 [INFO] Succesful loaded HamDefs.xml
-2024-09-23 22:47:16.289 [INFO] Loaded bands:  25
-2024-09-23 22:47:16.289 [INFO] Loaded modes:  209
-2024-09-23 22:47:16.312 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-23 22:47:17.394 [INFO] Application started
-2024-09-24 21:58:33.224 [INFO] Succesful loaded HamDefs.xml
-2024-09-24 21:58:33.226 [INFO] Loaded bands:  25
-2024-09-24 21:58:33.226 [INFO] Loaded modes:  209
-2024-09-24 21:58:33.579 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-24 21:58:34.761 [INFO] Application started
-2024-09-24 22:46:18.397 [INFO] Succesful loaded HamDefs.xml
-2024-09-24 22:46:18.399 [INFO] Loaded bands:  25
-2024-09-24 22:46:18.400 [INFO] Loaded modes:  209
-2024-09-24 22:46:18.416 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-24 22:46:19.412 [INFO] Application started
-2024-09-24 22:50:03.823 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-24 22:50:03.823 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-24 23:03:09.263 [INFO] Succesful loaded HamDefs.xml
-2024-09-24 23:03:09.266 [INFO] Loaded bands:  25
-2024-09-24 23:03:09.267 [INFO] Loaded modes:  209
-2024-09-24 23:03:09.283 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-24 23:03:10.048 [INFO] Application started
-2024-09-24 23:04:37.051 [WARNING] QAbstractItemView::commitData called with an editor that does not belong to this view
-2024-09-24 23:04:37.051 [WARNING] QAbstractItemView::closeEditor called with an editor that does not belong to this view
-2024-09-24 23:06:37.241 [INFO] Succesful loaded HamDefs.xml
-2024-09-24 23:06:37.243 [INFO] Loaded bands:  25
-2024-09-24 23:06:37.243 [INFO] Loaded modes:  209
-2024-09-24 23:06:37.259 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-24 23:06:38.117 [INFO] Application started
-2024-09-24 23:51:54.517 [INFO] Succesful loaded HamDefs.xml
-2024-09-24 23:51:54.519 [INFO] Loaded bands:  25
-2024-09-24 23:51:54.520 [INFO] Loaded modes:  209
-2024-09-24 23:51:54.757 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
-2024-09-24 23:51:55.914 [INFO] Application started
+2024-09-25 20:13:26.355 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:13:26.358 [INFO] Loaded bands:  25
+2024-09-25 20:13:26.359 [INFO] Loaded modes:  209
+2024-09-25 20:13:26.378 [DEBUG] Support SSL:  true  SSL Build Library:  "OpenSSL 3.0.7 1 Nov 2022"  SSL Library Version:  "OpenSSL 3.3.2 3 Sep 2024"
+2024-09-25 20:13:26.821 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 20:17:44.092 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:17:44.097 [INFO] Loaded bands:  25
+2024-09-25 20:17:44.097 [INFO] Loaded modes:  209
+2024-09-25 20:17:44.563 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 20:30:14.001 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:30:14.004 [INFO] Loaded bands:  25
+2024-09-25 20:30:14.006 [INFO] Loaded modes:  209
+2024-09-25 20:30:14.362 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 20:31:29.582 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:31:29.586 [INFO] Loaded bands:  25
+2024-09-25 20:31:29.586 [INFO] Loaded modes:  209
+2024-09-25 20:31:29.929 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 20:39:13.115 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:39:13.118 [INFO] Loaded bands:  25
+2024-09-25 20:39:13.119 [INFO] Loaded modes:  209
+2024-09-25 20:39:13.456 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 20:50:11.214 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:50:11.217 [INFO] Loaded bands:  25
+2024-09-25 20:50:11.218 [INFO] Loaded modes:  209
+2024-09-25 20:50:12.088 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 20:52:30.661 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:52:30.664 [INFO] Loaded bands:  25
+2024-09-25 20:52:30.664 [INFO] Loaded modes:  209
+2024-09-25 20:52:31.005 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 20:56:06.906 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:56:06.909 [INFO] Loaded bands:  25
+2024-09-25 20:56:06.909 [INFO] Loaded modes:  209
+2024-09-25 20:56:07.692 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 20:58:18.278 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 20:58:18.281 [INFO] Loaded bands:  25
+2024-09-25 20:58:18.281 [INFO] Loaded modes:  209
+2024-09-25 20:58:18.630 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:00:49.078 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:00:49.081 [INFO] Loaded bands:  25
+2024-09-25 21:00:49.081 [INFO] Loaded modes:  209
+2024-09-25 21:00:49.429 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:09:00.001 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:09:00.004 [INFO] Loaded bands:  25
+2024-09-25 21:09:00.005 [INFO] Loaded modes:  209
+2024-09-25 21:09:00.362 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:12:08.135 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:12:08.138 [INFO] Loaded bands:  25
+2024-09-25 21:12:08.138 [INFO] Loaded modes:  209
+2024-09-25 21:12:08.480 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:31:10.585 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:31:10.588 [INFO] Loaded bands:  25
+2024-09-25 21:31:10.588 [INFO] Loaded modes:  209
+2024-09-25 21:31:11.460 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:31:33.291 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:31:33.294 [INFO] Loaded bands:  25
+2024-09-25 21:31:33.294 [INFO] Loaded modes:  209
+2024-09-25 21:31:33.649 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:34:14.284 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:34:14.287 [INFO] Loaded bands:  25
+2024-09-25 21:34:14.287 [INFO] Loaded modes:  209
+2024-09-25 21:34:14.628 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:38:34.158 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:38:34.161 [INFO] Loaded bands:  25
+2024-09-25 21:38:34.161 [INFO] Loaded modes:  209
+2024-09-25 21:38:34.499 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:48:07.020 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:48:07.023 [INFO] Loaded bands:  25
+2024-09-25 21:48:07.023 [INFO] Loaded modes:  209
+2024-09-25 21:48:07.372 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:50:25.736 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:50:25.739 [INFO] Loaded bands:  25
+2024-09-25 21:50:25.739 [INFO] Loaded modes:  209
+2024-09-25 21:50:26.077 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:52:53.322 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:52:53.346 [INFO] Loaded bands:  25
+2024-09-25 21:52:53.347 [INFO] Loaded modes:  209
+2024-09-25 21:52:54.132 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:54:48.330 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:54:48.352 [INFO] Loaded bands:  25
+2024-09-25 21:54:48.352 [INFO] Loaded modes:  209
+2024-09-25 21:54:49.134 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 21:55:57.520 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 21:55:57.523 [INFO] Loaded bands:  25
+2024-09-25 21:55:57.523 [INFO] Loaded modes:  209
+2024-09-25 21:55:57.945 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-25 22:00:44.468 [INFO] Succesful loaded HamDefs.xml
+2024-09-25 22:00:44.471 [INFO] Loaded bands:  25
+2024-09-25 22:00:44.472 [INFO] Loaded modes:  209
+2024-09-25 22:00:44.892 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-26 01:40:27.882 [INFO] Succesful loaded HamDefs.xml
+2024-09-26 01:40:27.885 [INFO] Loaded bands:  25
+2024-09-26 01:40:27.885 [INFO] Loaded modes:  209
+2024-09-26 01:40:28.672 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:08:42.882 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:08:42.931 [INFO] Loaded bands:  25
+2024-09-27 19:08:42.932 [INFO] Loaded modes:  209
+2024-09-27 19:08:43.832 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:22:54.378 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:22:54.381 [INFO] Loaded bands:  25
+2024-09-27 19:22:54.381 [INFO] Loaded modes:  209
+2024-09-27 19:22:55.103 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:23:48.941 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:23:48.944 [INFO] Loaded bands:  25
+2024-09-27 19:23:48.945 [INFO] Loaded modes:  209
+2024-09-27 19:23:49.345 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:25:36.727 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:25:36.730 [INFO] Loaded bands:  25
+2024-09-27 19:25:36.731 [INFO] Loaded modes:  209
+2024-09-27 19:25:37.187 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:27:25.617 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:27:25.621 [INFO] Loaded bands:  25
+2024-09-27 19:27:25.621 [INFO] Loaded modes:  209
+2024-09-27 19:27:26.408 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:33:42.435 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:33:42.438 [INFO] Loaded bands:  25
+2024-09-27 19:33:42.438 [INFO] Loaded modes:  209
+2024-09-27 19:33:42.850 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:34:57.465 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:34:57.468 [INFO] Loaded bands:  25
+2024-09-27 19:34:57.469 [INFO] Loaded modes:  209
+2024-09-27 19:34:57.870 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:36:41.906 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:36:41.909 [INFO] Loaded bands:  25
+2024-09-27 19:36:41.909 [INFO] Loaded modes:  209
+2024-09-27 19:36:42.324 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:37:50.717 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:37:50.720 [INFO] Loaded bands:  25
+2024-09-27 19:37:50.721 [INFO] Loaded modes:  209
+2024-09-27 19:37:51.130 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:38:38.815 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:38:38.818 [INFO] Loaded bands:  25
+2024-09-27 19:38:38.819 [INFO] Loaded modes:  209
+2024-09-27 19:38:39.218 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:40:10.173 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:40:10.176 [INFO] Loaded bands:  25
+2024-09-27 19:40:10.176 [INFO] Loaded modes:  209
+2024-09-27 19:40:10.574 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:41:33.679 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:41:33.682 [INFO] Loaded bands:  25
+2024-09-27 19:41:33.683 [INFO] Loaded modes:  209
+2024-09-27 19:41:34.078 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:42:28.921 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:42:28.924 [INFO] Loaded bands:  25
+2024-09-27 19:42:28.925 [INFO] Loaded modes:  209
+2024-09-27 19:42:29.331 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:51:11.811 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:51:11.814 [INFO] Loaded bands:  25
+2024-09-27 19:51:11.815 [INFO] Loaded modes:  209
+2024-09-27 19:51:12.219 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:52:16.791 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:52:16.794 [INFO] Loaded bands:  25
+2024-09-27 19:52:16.794 [INFO] Loaded modes:  209
+2024-09-27 19:52:17.190 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:53:05.150 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:53:05.153 [INFO] Loaded bands:  25
+2024-09-27 19:53:05.153 [INFO] Loaded modes:  209
+2024-09-27 19:53:05.551 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 19:54:03.887 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 19:54:03.890 [INFO] Loaded bands:  25
+2024-09-27 19:54:03.890 [INFO] Loaded modes:  209
+2024-09-27 19:54:04.299 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:05:41.793 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:05:41.818 [INFO] Loaded bands:  25
+2024-09-27 20:05:41.819 [INFO] Loaded modes:  209
+2024-09-27 20:05:43.072 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:17:10.764 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:17:10.781 [INFO] Loaded bands:  25
+2024-09-27 20:17:10.781 [INFO] Loaded modes:  209
+2024-09-27 20:17:11.620 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:17:16.453 [WARNING] QObject::connect: No such signal Addcallsign::clicked(bool) in ..\..\callsigns.cpp:65
+2024-09-27 20:17:16.453 [WARNING] QObject::connect:  (sender name:   'Addcallsign')
+2024-09-27 20:17:16.453 [WARNING] QObject::connect:  (receiver name: 'Callsigns')
+2024-09-27 20:17:30.361 [WARNING] QObject::connect: No such signal Addcallsign::clicked(bool) in ..\..\callsigns.cpp:65
+2024-09-27 20:17:30.361 [WARNING] QObject::connect:  (sender name:   'Addcallsign')
+2024-09-27 20:17:30.361 [WARNING] QObject::connect:  (receiver name: 'Callsigns')
+2024-09-27 20:19:43.494 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:19:43.497 [INFO] Loaded bands:  25
+2024-09-27 20:19:43.497 [INFO] Loaded modes:  209
+2024-09-27 20:19:44.359 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:19:48.156 [WARNING] QObject::connect: No such signal Addcallsign::clicked(bool) in ..\..\callsigns.cpp:65
+2024-09-27 20:19:48.156 [WARNING] QObject::connect:  (sender name:   'Addcallsign')
+2024-09-27 20:19:48.156 [WARNING] QObject::connect:  (receiver name: 'Callsigns')
+2024-09-27 20:21:10.974 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:21:10.977 [INFO] Loaded bands:  25
+2024-09-27 20:21:10.977 [INFO] Loaded modes:  209
+2024-09-27 20:21:11.374 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:21:15.452 [WARNING] QObject::connect: No such signal Addcallsign::clicked(bool) in ..\..\callsigns.cpp:65
+2024-09-27 20:21:15.452 [WARNING] QObject::connect:  (sender name:   'Addcallsign')
+2024-09-27 20:21:15.452 [WARNING] QObject::connect:  (receiver name: 'Callsigns')
+2024-09-27 20:21:29.417 [WARNING] QObject::connect: No such signal Addcallsign::clicked(bool) in ..\..\callsigns.cpp:65
+2024-09-27 20:21:29.417 [WARNING] QObject::connect:  (sender name:   'Addcallsign')
+2024-09-27 20:21:29.417 [WARNING] QObject::connect:  (receiver name: 'Callsigns')
+2024-09-27 20:22:53.829 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:22:53.832 [INFO] Loaded bands:  25
+2024-09-27 20:22:53.833 [INFO] Loaded modes:  209
+2024-09-27 20:22:54.232 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:23:03.217 [WARNING] QObject::connect: No such signal Addcallsign::on_pushButton_clicked() in ..\..\callsigns.cpp:65
+2024-09-27 20:23:03.217 [WARNING] QObject::connect:  (sender name:   'Addcallsign')
+2024-09-27 20:23:03.217 [WARNING] QObject::connect:  (receiver name: 'Callsigns')
+2024-09-27 20:28:04.289 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:28:04.292 [INFO] Loaded bands:  25
+2024-09-27 20:28:04.292 [INFO] Loaded modes:  209
+2024-09-27 20:28:05.101 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:29:29.484 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:29:29.487 [INFO] Loaded bands:  25
+2024-09-27 20:29:29.488 [INFO] Loaded modes:  209
+2024-09-27 20:29:29.859 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:35:23.204 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:35:23.217 [INFO] Loaded bands:  25
+2024-09-27 20:35:23.217 [INFO] Loaded modes:  209
+2024-09-27 20:35:23.986 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:36:22.542 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:36:22.545 [INFO] Loaded bands:  25
+2024-09-27 20:36:22.545 [INFO] Loaded modes:  209
+2024-09-27 20:36:23.252 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:46:40.984 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:46:40.987 [INFO] Loaded bands:  25
+2024-09-27 20:46:40.988 [INFO] Loaded modes:  209
+2024-09-27 20:46:41.780 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:48:30.345 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:48:30.348 [INFO] Loaded bands:  25
+2024-09-27 20:48:30.348 [INFO] Loaded modes:  209
+2024-09-27 20:48:31.063 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:49:51.969 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:49:51.972 [INFO] Loaded bands:  25
+2024-09-27 20:49:51.973 [INFO] Loaded modes:  209
+2024-09-27 20:49:52.342 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 20:54:48.474 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 20:54:48.479 [INFO] Loaded bands:  25
+2024-09-27 20:54:48.480 [INFO] Loaded modes:  209
+2024-09-27 20:54:49.531 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 21:23:21.125 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 21:23:21.128 [INFO] Loaded bands:  25
+2024-09-27 21:23:21.128 [INFO] Loaded modes:  209
+2024-09-27 21:23:22.046 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-27 21:28:16.867 [INFO] Succesful loaded HamDefs.xml
+2024-09-27 21:28:16.870 [INFO] Loaded bands:  25
+2024-09-27 21:28:16.870 [INFO] Loaded modes:  209
+2024-09-27 21:28:17.261 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-29 21:34:45.939 [INFO] Succesful loaded HamDefs.xml
+2024-09-29 21:34:45.943 [INFO] Loaded bands:  25
+2024-09-29 21:34:45.943 [INFO] Loaded modes:  209
+2024-09-29 21:34:46.793 [INFO] QSOLogger v. 1.2.362  started.
+2024-09-29 21:38:37.402 [INFO] Succesful loaded HamDefs.xml
+2024-09-29 21:38:37.406 [INFO] Loaded bands:  25
+2024-09-29 21:38:37.406 [INFO] Loaded modes:  209
+2024-09-29 21:38:38.389 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 20:13:39.120 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 20:13:39.123 [INFO] Loaded bands:  25
+2024-10-01 20:13:39.123 [INFO] Loaded modes:  209
+2024-10-01 20:13:39.529 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 20:26:36.591 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 20:26:36.596 [INFO] Loaded bands:  25
+2024-10-01 20:26:36.596 [INFO] Loaded modes:  209
+2024-10-01 20:26:36.971 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 20:29:15.985 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 20:29:15.988 [INFO] Loaded bands:  25
+2024-10-01 20:29:15.988 [INFO] Loaded modes:  209
+2024-10-01 20:29:16.367 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 20:31:25.531 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 20:31:25.534 [INFO] Loaded bands:  25
+2024-10-01 20:31:25.534 [INFO] Loaded modes:  209
+2024-10-01 20:31:25.913 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 20:37:18.861 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 20:37:18.864 [INFO] Loaded bands:  25
+2024-10-01 20:37:18.864 [INFO] Loaded modes:  209
+2024-10-01 20:37:19.258 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 20:38:44.857 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 20:38:44.860 [INFO] Loaded bands:  25
+2024-10-01 20:38:44.861 [INFO] Loaded modes:  209
+2024-10-01 20:38:45.298 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 20:43:01.956 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 20:43:01.960 [INFO] Loaded bands:  25
+2024-10-01 20:43:01.960 [INFO] Loaded modes:  209
+2024-10-01 20:43:02.755 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 20:49:00.165 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 20:49:00.168 [INFO] Loaded bands:  25
+2024-10-01 20:49:00.169 [INFO] Loaded modes:  209
+2024-10-01 20:49:00.949 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 21:05:59.839 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 21:05:59.849 [INFO] Loaded bands:  25
+2024-10-01 21:05:59.851 [INFO] Loaded modes:  209
+2024-10-01 21:06:00.282 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 21:06:13.682 [WARNING] QMetaObject::connectSlotsByName: No matching signal for on_pushButton_clicked()
+2024-10-01 21:08:17.326 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 21:08:17.329 [INFO] Loaded bands:  25
+2024-10-01 21:08:17.329 [INFO] Loaded modes:  209
+2024-10-01 21:08:18.130 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 21:12:42.659 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 21:12:42.662 [INFO] Loaded bands:  25
+2024-10-01 21:12:42.662 [INFO] Loaded modes:  209
+2024-10-01 21:12:43.568 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 21:14:59.211 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 21:14:59.216 [INFO] Loaded bands:  25
+2024-10-01 21:14:59.217 [INFO] Loaded modes:  209
+2024-10-01 21:15:00.315 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 21:16:55.523 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 21:16:55.526 [INFO] Loaded bands:  25
+2024-10-01 21:16:55.527 [INFO] Loaded modes:  209
+2024-10-01 21:16:55.906 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 21:39:28.789 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 21:39:28.793 [INFO] Loaded bands:  25
+2024-10-01 21:39:28.793 [INFO] Loaded modes:  209
+2024-10-01 21:39:29.707 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 21:40:36.911 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 21:40:36.914 [INFO] Loaded bands:  25
+2024-10-01 21:40:36.914 [INFO] Loaded modes:  209
+2024-10-01 21:40:37.311 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 22:04:00.003 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 22:04:00.011 [INFO] Loaded bands:  25
+2024-10-01 22:04:00.012 [INFO] Loaded modes:  209
+2024-10-01 22:04:00.948 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 22:42:05.242 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 22:42:05.249 [INFO] Loaded bands:  25
+2024-10-01 22:42:05.250 [INFO] Loaded modes:  209
+2024-10-01 22:42:06.178 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 22:43:07.756 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "0",
+    "cqz": 0,
+    "ituz": 0,
+    "location": "0",
+    "rda": "0",
+    "start_data": "0",
+    "stop_data": "0",
+    "type": 0
+}
+
+2024-10-01 22:44:52.820 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 22:44:52.834 [INFO] Loaded bands:  25
+2024-10-01 22:44:52.835 [INFO] Loaded modes:  209
+2024-10-01 22:44:53.315 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 22:45:26.348 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R4DD",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "1704013200",
+    "stop_data": "1704013200",
+    "type": 0
+}
+
+2024-10-01 22:45:26.653 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-01 22:45:38.809 [DEBUG] Network reply finished. Code: 401
+2024-10-01 22:48:18.613 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 22:48:18.621 [INFO] Loaded bands:  25
+2024-10-01 22:48:18.622 [INFO] Loaded modes:  209
+2024-10-01 22:48:19.101 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 22:48:47.993 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "0",
+    "cqz": 1704013200,
+    "ituz": 111,
+    "location": "HM-12",
+    "rda": "111",
+    "start_data": "1704013200",
+    "stop_data": "",
+    "type": 0
+}
+
+2024-10-01 22:48:48.314 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-01 22:52:20.057 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 22:52:20.066 [INFO] Loaded bands:  25
+2024-10-01 22:52:20.066 [INFO] Loaded modes:  209
+2024-10-01 22:52:20.514 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 22:52:37.636 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "0",
+    "cqz": 1704013200,
+    "ituz": 33,
+    "location": "WE",
+    "rda": "333",
+    "start_data": "1704013200",
+    "stop_data": "",
+    "type": 0
+}
+
+2024-10-01 22:52:37.933 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-01 22:53:05.554 [DEBUG] Network reply finished. Code: 401
+2024-10-01 22:55:54.097 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 22:55:54.106 [INFO] Loaded bands:  25
+2024-10-01 22:55:54.107 [INFO] Loaded modes:  209
+2024-10-01 22:55:54.556 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 23:02:49.308 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 23:02:49.316 [INFO] Loaded bands:  25
+2024-10-01 23:02:49.317 [INFO] Loaded modes:  209
+2024-10-01 23:02:49.762 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 23:03:18.754 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R8JR",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "1704013200",
+    "stop_data": "1704013200",
+    "type": 0
+}
+
+2024-10-01 23:03:19.112 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-01 23:03:27.369 [DEBUG] Network reply finished. Code: 401
+2024-10-01 23:04:06.009 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 23:04:06.012 [INFO] Loaded bands:  25
+2024-10-01 23:04:06.013 [INFO] Loaded modes:  209
+2024-10-01 23:04:06.397 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 23:04:44.625 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R8JR",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "1704013200",
+    "stop_data": "1704013200",
+    "type": 0
+}
+
+2024-10-01 23:04:44.855 [WARNING] stream 3 finished with error: "Host requires authentication"
+2024-10-01 23:04:44.855 [DEBUG] Network reply finished. Code: 401
+2024-10-01 23:08:18.090 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 23:08:18.093 [INFO] Loaded bands:  25
+2024-10-01 23:08:18.093 [INFO] Loaded modes:  209
+2024-10-01 23:08:18.471 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 23:08:48.606 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R8JR",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": 0,
+    "stop_data": 0,
+    "type": 0
+}
+
+2024-10-01 23:08:48.813 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-01 23:08:48.813 [DEBUG] Network reply finished. Code: 401
+2024-10-01 23:12:54.115 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 23:12:54.118 [INFO] Loaded bands:  25
+2024-10-01 23:12:54.118 [INFO] Loaded modes:  209
+2024-10-01 23:12:54.495 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 23:13:31.473 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R8JR",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "",
+    "stop_data": "",
+    "type": 0
+}
+
+2024-10-01 23:13:31.673 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-01 23:13:31.673 [DEBUG] Network reply finished. Code: 401
+2024-10-01 23:36:15.887 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 23:36:15.890 [INFO] Loaded bands:  25
+2024-10-01 23:36:15.891 [INFO] Loaded modes:  209
+2024-10-01 23:36:16.390 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-01 23:36:46.595 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R8JR",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "2023-12-31 14:00:00.000",
+    "stop_data": "2023-12-31 14:00:00.000",
+    "type": 0
+}
+
+2024-10-01 23:36:46.795 [DEBUG] Network reply finished. Code: 200
+2024-10-01 23:44:11.038 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R8JUU",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "2023-12-31 14:00:00.000",
+    "stop_data": "2023-12-31 14:00:00.000",
+    "type": 0
+}
+
+2024-10-01 23:44:11.239 [DEBUG] Network reply finished. Code: 200
+2024-10-01 23:56:22.196 [INFO] Succesful loaded HamDefs.xml
+2024-10-01 23:56:22.201 [INFO] Loaded bands:  25
+2024-10-01 23:56:22.202 [INFO] Loaded modes:  209
+2024-10-01 23:56:23.280 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 00:02:20.635 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 00:02:20.638 [INFO] Loaded bands:  25
+2024-10-02 00:02:20.638 [INFO] Loaded modes:  209
+2024-10-02 00:02:21.011 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 00:02:28.366 [DEBUG] "R8JUU"
+2024-10-02 00:02:35.874 [DEBUG] "R9JAU/M"
+2024-10-02 00:02:38.677 [DEBUG] "R9JAU/P"
+2024-10-02 00:02:41.585 [DEBUG] "R9JAU"
+2024-10-02 00:17:20.898 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 00:17:20.907 [INFO] Loaded bands:  25
+2024-10-02 00:17:20.907 [INFO] Loaded modes:  209
+2024-10-02 00:17:21.889 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 00:17:29.884 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:17:30.390 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:18:03.924 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JUU"
+}
+
+2024-10-02 00:18:04.043 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:18:18.359 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 00:18:18.480 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:18:22.109 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 00:18:22.229 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:18:27.269 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:18:27.379 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:19:21.581 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 00:19:21.584 [INFO] Loaded bands:  25
+2024-10-02 00:19:21.584 [INFO] Loaded modes:  209
+2024-10-02 00:19:21.953 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 00:19:35.608 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JUU"
+}
+
+2024-10-02 00:19:35.850 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:19:59.792 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 00:19:59.919 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:20:05.344 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 00:20:05.467 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:20:08.554 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:20:08.683 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:24:29.541 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 00:24:29.544 [INFO] Loaded bands:  25
+2024-10-02 00:24:29.545 [INFO] Loaded modes:  209
+2024-10-02 00:24:29.926 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 00:24:50.256 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JUU"
+}
+
+2024-10-02 00:24:50.526 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:25:06.502 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:25:06.623 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:25:20.012 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:25:20.122 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:28:04.227 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JUU"
+}
+
+2024-10-02 00:28:04.441 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:28:10.066 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 00:28:10.197 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:28:13.331 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 00:28:14.448 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:28:17.737 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:28:17.862 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:31:39.216 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R8JR",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "2023-01-02 14:00:00.000",
+    "stop_data": "2033-12-31 14:00:00.000",
+    "type": 0
+}
+
+2024-10-02 00:31:39.416 [DEBUG] Network reply finished. Code: 200
+2024-10-02 00:31:57.926 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 00:31:58.042 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:33:54.559 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 00:33:54.562 [INFO] Loaded bands:  25
+2024-10-02 00:33:54.563 [INFO] Loaded modes:  209
+2024-10-02 00:33:54.974 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 00:34:00.482 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 00:34:00.701 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:34:08.531 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 00:34:08.651 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:34:13.250 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 00:34:13.375 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:34:32.153 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:34:32.269 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:43:08.737 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 00:43:08.740 [INFO] Loaded bands:  25
+2024-10-02 00:43:08.740 [INFO] Loaded modes:  209
+2024-10-02 00:43:09.116 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 00:43:36.025 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:43:36.242 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:43:40.953 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 00:43:41.082 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:43:45.272 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 00:43:45.379 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:48:33.599 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:48:34.924 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:48:38.886 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:48:38.998 [DEBUG] Network reply finished. Code: 405
+2024-10-02 00:48:49.991 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 00:48:50.101 [DEBUG] Network reply finished. Code: 405
+2024-10-02 20:36:52.912 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 20:36:52.915 [INFO] Loaded bands:  25
+2024-10-02 20:36:52.915 [INFO] Loaded modes:  209
+2024-10-02 20:36:53.339 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 20:37:02.072 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 20:37:03.444 [DEBUG] Network reply finished. Code: 200
+2024-10-02 20:37:19.234 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 20:37:19.344 [DEBUG] Network reply finished. Code: 200
+2024-10-02 20:37:49.974 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 20:37:50.080 [DEBUG] Network reply finished. Code: 200
+2024-10-02 20:38:33.486 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R5TT",
+    "cqz": 10,
+    "ituz": 10,
+    "location": "MP77",
+    "rda": "HM-12",
+    "start_data": "2023-12-31 14:00:00.000",
+    "stop_data": "2023-12-31 14:00:00.000",
+    "type": 0
+}
+
+2024-10-02 20:38:33.606 [DEBUG] Network reply finished. Code: 200
+2024-10-02 20:38:39.661 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 20:38:39.762 [DEBUG] Network reply finished. Code: 200
+2024-10-02 20:38:49.586 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 20:38:49.694 [DEBUG] Network reply finished. Code: 200
+2024-10-02 21:12:17.471 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 21:12:17.474 [INFO] Loaded bands:  25
+2024-10-02 21:12:17.475 [INFO] Loaded modes:  209
+2024-10-02 21:12:18.325 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 21:12:24.781 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:12:25.122 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-02 21:13:10.208 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 21:13:10.285 [WARNING] stream 3 finished with error: "Host requires authentication"
+2024-10-02 21:15:48.153 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 21:15:48.156 [INFO] Loaded bands:  25
+2024-10-02 21:15:48.156 [INFO] Loaded modes:  209
+2024-10-02 21:15:48.549 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 21:16:00.330 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:16:00.544 [DEBUG] "{\"response\":{\"id\":2265,\"status\":0}}"
+2024-10-02 21:16:17.315 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 21:16:17.428 [DEBUG] "{\"response\":{\"id\":102,\"status\":1}}"
+2024-10-02 21:16:23.746 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 21:16:23.863 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
+2024-10-02 21:16:27.545 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 21:16:27.648 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-02 21:16:46.266 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "D5FF",
+    "cqz": 2,
+    "ituz": 23,
+    "location": "TH",
+    "rda": "GH",
+    "start_data": "2023-12-31 14:00:00.000",
+    "stop_data": "2023-12-31 14:00:00.000",
+    "type": 0
+}
+
+2024-10-02 21:16:46.378 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-02 21:16:46.378 [DEBUG] Network reply finished. Code: 401
+2024-10-02 21:16:57.856 [DEBUG] Checking Callsign from service. {
+    "callsign": "D5FF"
+}
+
+2024-10-02 21:17:06.029 [DEBUG] Checking Callsign from service. {
+    "callsign": "D5FF"
+}
+
+2024-10-02 21:17:13.810 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 21:17:13.920 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-02 21:17:17.307 [DEBUG] Checking Callsign from service. {
+    "callsign": "D5FF"
+}
+
+2024-10-02 21:17:24.354 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 21:17:24.452 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-02 21:24:48.872 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 21:24:48.875 [INFO] Loaded bands:  25
+2024-10-02 21:24:48.875 [INFO] Loaded modes:  209
+2024-10-02 21:24:49.271 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 21:25:01.749 [DEBUG] Checking Callsign from service. {
+    "callsign": "D5FF"
+}
+
+2024-10-02 21:25:11.424 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 21:25:11.529 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-02 21:25:11.537 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:25:20.913 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 21:25:21.022 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-02 21:25:21.022 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:25:24.487 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 21:25:24.600 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
+2024-10-02 21:25:24.600 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:25:32.713 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 21:25:32.826 [DEBUG] "{\"response\":{\"id\":102,\"status\":1}}"
+2024-10-02 21:25:32.826 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:26:35.045 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R5TT",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "2023-12-31 14:00:00.000",
+    "stop_data": "2023-12-31 14:00:00.000",
+    "type": 0
+}
+
+2024-10-02 21:26:35.151 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-02 21:26:35.151 [DEBUG] Network reply finished. Code: 401
+2024-10-02 21:26:37.770 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:26:37.876 [DEBUG] "{\"response\":{\"id\":2265,\"status\":0}}"
+2024-10-02 21:26:37.876 [DEBUG] QJsonValue(double, 0)
+2024-10-02 21:26:45.713 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:26:45.827 [DEBUG] "{\"response\":{\"id\":2265,\"status\":0}}"
+2024-10-02 21:26:45.827 [DEBUG] QJsonValue(double, 0)
+2024-10-02 21:26:49.825 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 21:26:49.946 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-02 21:26:49.946 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:28:45.219 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:28:54.387 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:29:27.828 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:29:35.506 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:29:38.585 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 21:29:38.689 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-02 21:29:38.689 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:29:41.491 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 21:29:41.590 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-02 21:29:41.590 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:29:43.920 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 21:29:44.016 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
+2024-10-02 21:29:44.016 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:29:47.008 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 21:29:47.116 [DEBUG] "{\"response\":{\"id\":102,\"status\":1}}"
+2024-10-02 21:29:47.116 [DEBUG] QJsonValue(double, 1)
+2024-10-02 21:31:07.223 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 21:31:07.226 [INFO] Loaded bands:  25
+2024-10-02 21:31:07.226 [INFO] Loaded modes:  209
+2024-10-02 21:31:07.617 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 21:31:13.856 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:31:27.117 [DEBUG] Checking Callsign from service. {
+    "callsign": "R5TT"
+}
+
+2024-10-02 21:31:32.411 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 21:31:32.512 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-02 21:31:32.512 [DEBUG] 1
+2024-10-02 21:32:18.638 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R9JRH",
+    "cqz": 17,
+    "ituz": 20,
+    "location": "MP61QG",
+    "rda": "HM-12",
+    "start_data": "2023-12-31 14:00:00.000",
+    "stop_data": "2023-12-31 14:00:00.000",
+    "type": 0
+}
+
+2024-10-02 21:32:18.767 [DEBUG] Network reply finished. Code: 200
+2024-10-02 21:32:23.078 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 21:32:23.190 [DEBUG] "{\"response\":{\"id\":2266,\"status\":0}}"
+2024-10-02 21:32:23.190 [DEBUG] 0
+2024-10-02 21:32:33.943 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 21:32:34.058 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-02 21:32:34.058 [DEBUG] 1
+2024-10-02 21:52:38.190 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 21:52:38.211 [INFO] Loaded bands:  25
+2024-10-02 21:52:38.211 [INFO] Loaded modes:  209
+2024-10-02 21:52:39.079 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:02:03.757 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:02:03.760 [INFO] Loaded bands:  25
+2024-10-02 22:02:03.761 [INFO] Loaded modes:  209
+2024-10-02 22:02:04.645 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:02:11.314 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:02:11.658 [DEBUG] 0
+2024-10-02 22:02:19.473 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 22:02:19.577 [DEBUG] 1
+2024-10-02 22:04:39.130 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:04:39.133 [INFO] Loaded bands:  25
+2024-10-02 22:04:39.134 [INFO] Loaded modes:  209
+2024-10-02 22:04:39.525 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:04:47.909 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:04:48.107 [DEBUG] 0
+2024-10-02 22:04:54.440 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 22:04:54.550 [DEBUG] 1
+2024-10-02 22:04:56.888 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 22:04:56.976 [DEBUG] 1
+2024-10-02 22:04:58.985 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 22:04:59.077 [DEBUG] 1
+2024-10-02 22:05:01.267 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:05:01.371 [DEBUG] 0
+2024-10-02 22:08:05.181 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:08:05.184 [INFO] Loaded bands:  25
+2024-10-02 22:08:05.184 [INFO] Loaded modes:  209
+2024-10-02 22:08:05.579 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:08:14.351 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:08:15.561 [DEBUG] 0
+2024-10-02 22:08:23.607 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 22:08:23.695 [DEBUG] 1
+2024-10-02 22:08:28.687 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 22:08:28.775 [DEBUG] 1
+2024-10-02 22:14:06.487 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:14:06.490 [INFO] Loaded bands:  25
+2024-10-02 22:14:06.490 [INFO] Loaded modes:  209
+2024-10-02 22:14:07.270 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:14:15.404 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:14:16.782 [DEBUG] 0
+2024-10-02 22:14:23.698 [DEBUG] 0
+2024-10-02 22:14:26.037 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 22:14:26.141 [DEBUG] 1
+2024-10-02 22:14:30.208 [DEBUG] 1
+2024-10-02 22:14:31.456 [DEBUG] 1
+2024-10-02 22:14:36.205 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 22:14:36.294 [DEBUG] 1
+2024-10-02 22:14:37.825 [DEBUG] 1
+2024-10-02 22:14:38.963 [DEBUG] 1
+2024-10-02 22:14:39.905 [DEBUG] 1
+2024-10-02 22:16:28.429 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:16:28.432 [INFO] Loaded bands:  25
+2024-10-02 22:16:28.432 [INFO] Loaded modes:  209
+2024-10-02 22:16:28.808 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:16:34.707 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 22:16:37.654 [DEBUG] 1
+2024-10-02 22:16:39.566 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 22:16:41.448 [DEBUG] 1
+2024-10-02 22:16:46.497 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 22:16:51.225 [DEBUG] 1
+2024-10-02 22:17:59.122 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:17:59.125 [INFO] Loaded bands:  25
+2024-10-02 22:17:59.125 [INFO] Loaded modes:  209
+2024-10-02 22:17:59.508 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:18:49.299 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 22:18:51.774 [DEBUG] 1
+2024-10-02 22:18:53.069 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 22:18:54.168 [DEBUG] 1
+2024-10-02 22:18:55.407 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 22:18:56.362 [DEBUG] 1
+2024-10-02 22:18:57.512 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 22:18:58.486 [DEBUG] 1
+2024-10-02 22:18:59.776 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:19:01.011 [DEBUG] 0
+2024-10-02 22:19:15.683 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:19:16.892 [DEBUG] 0
+2024-10-02 22:20:22.906 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:20:24.710 [DEBUG] 0
+2024-10-02 22:23:50.102 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:23:50.105 [INFO] Loaded bands:  25
+2024-10-02 22:23:50.105 [INFO] Loaded modes:  209
+2024-10-02 22:23:50.489 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:23:56.611 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:24:00.737 [DEBUG] 0
+2024-10-02 22:24:02.170 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 22:24:03.219 [DEBUG] 1
+2024-10-02 22:24:04.358 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 22:24:05.324 [DEBUG] 1
+2024-10-02 22:24:06.474 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 22:24:07.349 [DEBUG] 1
+2024-10-02 22:24:08.739 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 22:24:10.103 [DEBUG] 1
+2024-10-02 22:24:11.798 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:24:12.959 [DEBUG] 0
+2024-10-02 22:25:24.705 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:25:24.708 [INFO] Loaded bands:  25
+2024-10-02 22:25:24.708 [INFO] Loaded modes:  209
+2024-10-02 22:25:25.091 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:25:30.697 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:25:33.382 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 22:25:41.133 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-02 22:25:44.878 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-02 22:25:57.840 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:28:25.890 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:28:25.893 [INFO] Loaded bands:  25
+2024-10-02 22:28:25.893 [INFO] Loaded modes:  209
+2024-10-02 22:28:26.275 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:29:20.785 [DEBUG] Sending Callsign for validate to service. {
+    "callsign": "R6FA",
+    "cqz": 0,
+    "ituz": 0,
+    "location": "",
+    "rda": "",
+    "start_data": "2023-12-31 14:00:00.000",
+    "stop_data": "2023-12-31 14:00:00.000",
+    "type": 0
+}
+
+2024-10-02 22:29:20.977 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-02 22:29:20.977 [DEBUG] Network reply finished. Code: 401
+2024-10-02 22:29:33.809 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:40.048 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:42.532 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:43.171 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:43.563 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:43.823 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:44.052 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:44.266 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:44.466 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:29:44.665 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:20.488 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:30:23.800 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:30:25.729 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:30:27.124 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:30:27.822 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:30:33.839 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:34.647 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:35.085 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:35.345 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:35.558 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:35.740 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:35.922 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:36.106 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:36.306 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:30:39.307 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-02 22:30:42.339 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-02 22:30:44.849 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:32:43.784 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:32:43.787 [INFO] Loaded bands:  25
+2024-10-02 22:32:43.787 [INFO] Loaded modes:  209
+2024-10-02 22:32:44.172 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:36:47.587 [DEBUG] Checking Callsign from service. {
+    "callsign": "R6FA"
+}
+
+2024-10-02 22:37:28.627 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:37:31.231 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-02 22:41:44.591 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:41:44.594 [INFO] Loaded bands:  25
+2024-10-02 22:41:44.594 [INFO] Loaded modes:  209
+2024-10-02 22:41:44.990 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:44:43.737 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:44:43.740 [INFO] Loaded bands:  25
+2024-10-02 22:44:43.741 [INFO] Loaded modes:  209
+2024-10-02 22:44:44.103 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:51:00.528 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:51:00.532 [INFO] Loaded bands:  25
+2024-10-02 22:51:00.533 [INFO] Loaded modes:  209
+2024-10-02 22:51:01.635 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:57:49.788 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 22:57:49.791 [INFO] Loaded bands:  25
+2024-10-02 22:57:49.791 [INFO] Loaded modes:  209
+2024-10-02 22:57:50.219 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 22:58:16.898 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "02.10.2024T17:58:15",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "name": "Ildar",
+    "qth": "Surgut",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 22:58:17.175 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:10:56.256 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 23:10:56.259 [INFO] Loaded bands:  25
+2024-10-02 23:10:56.259 [INFO] Loaded modes:  209
+2024-10-02 23:10:57.075 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 23:11:23.978 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R8JR",
+    "cnty": "",
+    "datetime": "02.10.2024T18:11:23",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "name": "georgy",
+    "qth": "surgut",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:11:24.254 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:22:02.930 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R8JR",
+    "cnty": "",
+    "datetime": "2024-10-02T18:11:23",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "name": "georgy",
+    "qth": "surgut",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:22:03.127 [DEBUG] Network reply finished. Code: 201
+2024-10-02 23:25:36.748 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 23:25:36.751 [INFO] Loaded bands:  25
+2024-10-02 23:25:36.751 [INFO] Loaded modes:  209
+2024-10-02 23:25:37.545 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 23:26:06.324 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R8GG",
+    "cnty": "",
+    "datetime": "02.10.2024T18:26:04",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGKKK",
+    "my_gridsquare": "HM-12",
+    "name": "MIHUIL",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:26:06.728 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:26:10.567 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R8GG",
+    "cnty": "",
+    "datetime": "2024-10-02T18:26:04",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "",
+    "my_gridsquare": "",
+    "name": "MIHUIL",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:26:10.702 [DEBUG] Network reply finished. Code: 201
+2024-10-02 23:28:36.883 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 23:28:36.886 [INFO] Loaded bands:  25
+2024-10-02 23:28:36.886 [INFO] Loaded modes:  209
+2024-10-02 23:28:37.283 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 23:29:30.872 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "02.10.2024T18:29:30",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61HHH",
+    "my_gridsquare": "HM-12",
+    "name": "R9JAU",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:29:31.117 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:29:35.257 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "2024-10-02T18:29:30",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "",
+    "my_gridsquare": "",
+    "name": "R9JAU",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:29:35.426 [DEBUG] Network reply finished. Code: 201
+2024-10-02 23:39:35.211 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 23:39:35.215 [INFO] Loaded bands:  25
+2024-10-02 23:39:35.215 [INFO] Loaded modes:  209
+2024-10-02 23:39:35.696 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 23:40:06.073 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "02.10.2024T18:40:05",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61BBB",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:40:06.305 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:40:17.052 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "2024-10-02T18:40:05",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61BBB",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:40:17.171 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:40:29.600 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "2024-10-02T18:40:05",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61BBB",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:40:29.688 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:41:01.294 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "2024-10-02T18:40:05",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61BBB",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:41:01.385 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:43:16.764 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 23:43:16.768 [INFO] Loaded bands:  25
+2024-10-02 23:43:16.768 [INFO] Loaded modes:  209
+2024-10-02 23:43:17.262 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 23:43:31.686 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "2024-10-02T18:40:05",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61BBB",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:43:31.854 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:44:38.526 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 23:44:38.529 [INFO] Loaded bands:  25
+2024-10-02 23:44:38.530 [INFO] Loaded modes:  209
+2024-10-02 23:44:39.004 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 23:44:44.399 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "2024-10-02T18:40:05",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:44:44.612 [DEBUG] Network reply finished. Code: 201
+2024-10-02 23:51:27.524 [INFO] Succesful loaded HamDefs.xml
+2024-10-02 23:51:27.528 [INFO] Loaded bands:  25
+2024-10-02 23:51:27.528 [INFO] Loaded modes:  209
+2024-10-02 23:51:28.012 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-02 23:51:55.560 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "02.10.2024T18:51:54",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61KKK",
+    "my_gridsquare": "HM-12",
+    "name": "fox",
+    "qth": "fox",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:51:55.566 [DEBUG] test:  QList(QVariant(int, 26), QVariant(int, 102), QVariant(int, 102), QVariant(QString, "R9JAU"), QVariant(QString, "20M"), QVariant(QString, "USB"), QVariant(qulonglong, 14000000), QVariant(QString, "02.10.2024T18:51:54"), QVariant(QString, "fox"), QVariant(QString, "59"), QVariant(QString, "59"), QVariant(QString, "fox"), QVariant(QString, ""), QVariant(QString, ""), QVariant(QString, "MP61KKK"), QVariant(QString, "HM-12"))
+2024-10-02 23:51:56.889 [DEBUG] Network reply finished. Code: 406
+2024-10-02 23:52:54.018 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "2024-10-02T18:51:54",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "",
+    "my_gridsquare": "",
+    "name": "fox",
+    "qth": "fox",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:52:54.138 [DEBUG] Network reply finished. Code: 201
+2024-10-02 23:53:23.353 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "",
+    "datetime": "2024-10-02T18:51:54",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "",
+    "my_gridsquare": "",
+    "name": "fox",
+    "qth": "fox",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-02 23:53:23.460 [DEBUG] Network reply finished. Code: 409
+2024-10-03 00:04:02.616 [INFO] Succesful loaded HamDefs.xml
+2024-10-03 00:04:02.619 [INFO] Loaded bands:  25
+2024-10-03 00:04:02.619 [INFO] Loaded modes:  209
+2024-10-03 00:04:03.492 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-03 00:27:41.983 [INFO] Succesful loaded HamDefs.xml
+2024-10-03 00:27:42.064 [INFO] Loaded bands:  25
+2024-10-03 00:27:42.065 [INFO] Loaded modes:  209
+2024-10-03 00:27:42.482 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-03 00:28:39.688 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU/P",
+    "cnty": "HM-10",
+    "datetime": "03.10.2024T19:28:39",
+    "freq": 14000000,
+    "gridsquare": "MP61QG",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGHJK",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:28:40.495 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:29:49.380 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU/P",
+    "cnty": "HM-10",
+    "datetime": "2024-10-03T19:28:39",
+    "freq": 14000000,
+    "gridsquare": "MP61QG",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGHJK",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:29:49.500 [DEBUG] Network reply finished. Code: 201
+2024-10-03 00:34:02.888 [INFO] Succesful loaded HamDefs.xml
+2024-10-03 00:34:02.891 [INFO] Loaded bands:  25
+2024-10-03 00:34:02.891 [INFO] Loaded modes:  209
+2024-10-03 00:34:03.294 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-03 00:34:57.143 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "HM-12",
+    "datetime": "03.10.2024T19:34:56",
+    "freq": 14000000,
+    "gridsquare": "MP61QG",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGBBBB",
+    "my_gridsquare": "HM-10",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:34:57.341 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:36:07.781 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "HM-12",
+    "datetime": "2024-10-03T19:34:56",
+    "freq": 14000000,
+    "gridsquare": "MP61QG",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGBBBB",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:36:07.919 [DEBUG] Network reply finished. Code: 201
+2024-10-03 00:37:01.362 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "HM-12",
+    "datetime": "2024-10-03T19:34:56",
+    "freq": 14000000,
+    "gridsquare": "MP61QG",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGBBBB",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:37:01.483 [DEBUG] Network reply finished. Code: 409
+2024-10-03 00:37:13.973 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU/P",
+    "cnty": "HM-10",
+    "datetime": "2024-10-03T19:28:39",
+    "freq": 14000000,
+    "gridsquare": "MP61QG",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGHJK",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:37:14.078 [DEBUG] Network reply finished. Code: 409
+2024-10-03 00:37:17.042 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "HM-12",
+    "datetime": "2024-10-03T19:34:56",
+    "freq": 14000000,
+    "gridsquare": "MP61QG",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGBBBB",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:37:17.162 [DEBUG] Network reply finished. Code: 409
+2024-10-03 00:38:17.062 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "HM-12",
+    "datetime": "03.10.2024T19:38:16",
+    "freq": 14000000,
+    "gridsquare": "MP61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGBBBB",
+    "my_gridsquare": "HM-10",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:38:17.185 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:38:45.107 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "HM-12",
+    "datetime": "2024-10-03T19:38:16",
+    "freq": 14000000,
+    "gridsquare": "MP61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGBBBB",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:38:45.242 [DEBUG] Network reply finished. Code: 201
+2024-10-03 00:47:02.175 [INFO] Succesful loaded HamDefs.xml
+2024-10-03 00:47:02.180 [INFO] Loaded bands:  25
+2024-10-03 00:47:02.180 [INFO] Loaded modes:  209
+2024-10-03 00:47:02.662 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-03 00:48:16.247 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JR",
+    "cnty": "HM-13",
+    "datetime": "03.10.2024T19:48:15",
+    "freq": 14000000,
+    "gridsquare": "MP-61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGNNN",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:48:16.758 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:50:00.245 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JR",
+    "cnty": "HM-13",
+    "datetime": "2024-10-03T19:48:15",
+    "freq": 14000000,
+    "gridsquare": "MP-61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGNNN",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:50:00.354 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:50:03.970 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JR",
+    "cnty": "HM-13",
+    "datetime": "2024-10-03T19:48:15",
+    "freq": 14000000,
+    "gridsquare": "MP-61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGNNN",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:50:04.074 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:50:08.000 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JR",
+    "cnty": "HM-13",
+    "datetime": "2024-10-03T19:48:15",
+    "freq": 14000000,
+    "gridsquare": "MP-61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGNNN",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:50:08.090 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:50:22.886 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JR",
+    "cnty": "HM-13",
+    "datetime": "2024-10-03T19:48:15",
+    "freq": 14000000,
+    "gridsquare": "MP-61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGNNN",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:50:22.995 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:50:34.386 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JAU",
+    "cnty": "HM-12",
+    "datetime": "2024-10-03T19:38:16",
+    "freq": 14000000,
+    "gridsquare": "MP61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGBBBB",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:50:34.491 [DEBUG] Network reply finished. Code: 201
+2024-10-03 00:50:47.750 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JR",
+    "cnty": "HM-13",
+    "datetime": "2024-10-03T19:48:15",
+    "freq": 14000000,
+    "gridsquare": "MP-61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGNNN",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:50:47.838 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:51:20.571 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R8JG",
+    "cnty": "",
+    "datetime": "03.10.2024T19:51:20",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61MM",
+    "my_gridsquare": "HM-12",
+    "name": "qq",
+    "qth": "qq",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:51:20.820 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:51:30.758 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R8JG",
+    "cnty": "",
+    "datetime": "2024-10-03T19:51:20",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61MM",
+    "my_gridsquare": "",
+    "name": "qq",
+    "qth": "qq",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:51:30.878 [DEBUG] Network reply finished. Code: 201
+2024-10-03 00:51:43.167 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R9JR",
+    "cnty": "HM-13",
+    "datetime": "2024-10-03T19:48:15",
+    "freq": 14000000,
+    "gridsquare": "MP-61",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61QGNNN",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:51:43.259 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:53:23.753 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R8JR",
+    "cnty": "HM-00",
+    "datetime": "03.10.2024T19:53:23",
+    "freq": 14000000,
+    "gridsquare": "MP00",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61MM",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:53:23.862 [DEBUG] Network reply finished. Code: 406
+2024-10-03 00:53:49.987 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "R8JR",
+    "cnty": "HM-00",
+    "datetime": "2024-10-03T19:53:23",
+    "freq": 14000000,
+    "gridsquare": "MP00",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61MM",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 00:53:50.112 [DEBUG] Network reply finished. Code: 201
+2024-10-03 01:05:09.668 [INFO] Succesful loaded HamDefs.xml
+2024-10-03 01:05:09.700 [INFO] Loaded bands:  25
+2024-10-03 01:05:09.700 [INFO] Loaded modes:  209
+2024-10-03 01:05:10.607 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-03 01:06:05.531 [DEBUG] Sending QSO data to service. {
+    "band": "40M",
+    "call": "",
+    "cnty": "HM-00",
+    "datetime": "03.10.2024T20:06:05",
+    "freq": 7000000,
+    "gridsquare": "MP00",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61LL",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 01:06:05.760 [DEBUG] Network reply finished. Code: 500
+2024-10-03 01:07:07.862 [DEBUG] Sending QSO data to service. {
+    "band": "40M",
+    "call": "R8JR",
+    "cnty": "HM-00",
+    "datetime": "03.10.2024T20:07:07",
+    "freq": 7000000,
+    "gridsquare": "MP00",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61LL",
+    "my_gridsquare": "HM-12",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 01:07:07.967 [DEBUG] Network reply finished. Code: 406
+2024-10-03 01:07:41.225 [DEBUG] Sending QSO data to service. {
+    "band": "40M",
+    "call": "R8JR",
+    "cnty": "HM-00",
+    "datetime": "2024-10-03T20:07:07",
+    "freq": 7000000,
+    "gridsquare": "MP00",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "USB",
+    "my_cnty": "MP61LL",
+    "my_gridsquare": "",
+    "name": "ILDAR",
+    "qth": "SURGUT",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-10-03 01:07:41.329 [DEBUG] Network reply finished. Code: 201

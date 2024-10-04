@@ -10,6 +10,8 @@ CONFIG += c++17
 
 
 SOURCES += \
+    about.cpp \
+    addcallsign.cpp \
     adif.cpp \
     callsigns.cpp \
     flrig.cpp \
@@ -26,6 +28,8 @@ SOURCES += \
     udpreceiver.cpp
 
 HEADERS += \
+    about.h \
+    addcallsign.h \
     adif.h \
     callsigns.h \
     delegations.h \
@@ -43,6 +47,8 @@ HEADERS += \
     udpreceiver.h
 
 FORMS += \
+    about.ui \
+    addcallsign.ui \
     callsigns.ui \
     mainwindow.ui \
     settings.ui

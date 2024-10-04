@@ -22,6 +22,8 @@
 #include "helpers.h"
 #include "qrzrucallbook.h"
 #include "adif.h"
+#include "about.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -65,6 +67,7 @@ private:
   QrzruCallbook *qrz;
   QTimer *CallTypeTimer;
   Adif *adif;
+  About *about;
 
   typedef struct baseData {
     int callsign_id;
@@ -116,5 +119,6 @@ private slots:
   void onQsoSynced(int dbid);
   void on_modeCombo_currentIndexChanged(int index);
   //void on_callInput_selectionChanged();
+  void on_actionSync_triggered();
 };
 #endif // MAINWINDOW_H

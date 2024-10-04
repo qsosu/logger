@@ -27,6 +27,8 @@ public:
   explicit HttpApi(QSqlDatabase db, QString accessToken, QObject *parent = nullptr);
   void SendQso(QVariantList data);
   void getCallsign();
+  void addCallsign(QVariantList data);
+  void checkStatusCallsign(QString callsign);
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;
@@ -61,6 +63,7 @@ signals:
   void accountDataUpdated();
 
   void callsignsUpdated();
+  void callsignStatus(int);
   void synced(int);
   void syncerror(int);
   void error(QNetworkReply::NetworkError);

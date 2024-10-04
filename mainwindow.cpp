@@ -6,19 +6,20 @@
 #include <QCompleter>
 
 #define SET_ROBOT_FONT
+#define VERSION "1.2.362"
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
-  setWindowTitle("QSO.SU клиент");
+  setWindowTitle("QSO Logger v." + QString::fromStdString(VERSION));
 
   QFontDatabase::addApplicationFont("://resources/fonts/Roboto-Regular.ttf");
 
   ui->callInput->setStyleSheet("color: black; font-weight: bold");
   //BugFix Только латинские символы и цифры
-  ui->callInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^[a-zA-Z0-9_]*$"), this));
+  ui->callInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^[a-zA-Z0-9/]*$"), this));
 
   //ui->qthlocEdit->setReadOnly(true);
   //ui->rdaEdit->setReadOnly(true);
@@ -53,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
   LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
 
   //Проверка использования и версий SSL
-  qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
+  //qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
 
   settings = new Settings();
   settings->setAttribute(Qt::WA_QuitOnClose, false);
@@ -165,14 +166,9 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customMenuRequested(QPoint)));
 
   connect(ui->actionAbout, &QAction::triggered, this, [=]() {
-      QMessageBox::about(0,
-                         tr("О программе"),
-                         tr("Desktop API клиент сервиса QSO.SU\n\n"
-                          "Версия ПО: 1.2.362, версия API: 1.0\n"
-                            "Авторы: Alexey.K (R2SI)\n"
-                            "Ильдар.М (R9JAU)\n"
-                            "Артём.С (R4CAT)")
-                         );
+      about = new About(this);
+      about->setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+      about->exec();
       return;
   });
   connect(ui->actionQsosuLink, &QAction::triggered, this, [=]() {
@@ -186,7 +182,7 @@ MainWindow::MainWindow(QWidget *parent)
   getCallsigns();
   fillDefaultFreq();
 
-  qInfo() << "Application started";
+  qInfo() << "QSOLogger v." << VERSION << " started.";
 }
 
 MainWindow::~MainWindow() {
@@ -399,21 +395,8 @@ void MainWindow::customMenuRequested(QPoint pos) {
     menu->popup(ui->tableView->viewport()->mapToGlobal(pos));
 }
 
-void MainWindow::SaveQso() {
-  if (ui->stationCallsignCombo->currentIndex() == 0) {
-    QMessageBox::critical(0, "Ошибка", "Не выбран позывной станции", QMessageBox::Ok);
-    return;
-  }
-  if (ui->operatorCombo->currentIndex() == 0) {
-    QMessageBox::critical(0, "Ошибка", "Не выбран позывной оператора", QMessageBox::Ok);
-    return;
-  }
-  if (ui->callInput->text().length() == 0) {
-      QMessageBox::critical(0, "Ошибка", "Не указан позывной корреспондента!", QMessageBox::Ok);
-      ui->callInput->setFocus();
-      return;
-  }
-
+void MainWindow::SaveQso()
+{
   //qDebug() << "USER DATA:" << userData.callsign_id << userData.qsosu_callsign_id << userData.qsosu_operator_id << userData.callsign << userData.oper << userData.gridsquare << userData.cnty;
 
   QSqlRecord newRecord = RecordsModel->record();
@@ -423,8 +406,6 @@ void MainWindow::SaveQso() {
   newRecord.setValue("qsosu_operator_id", userData.qsosu_operator_id);
   newRecord.setValue("STATION_CALLSIGN", userData.callsign);
   newRecord.setValue("OPERATOR", userData.oper);
-  newRecord.setValue("MY_GRIDSQUARE", ui->qthlocEdit->text().toUpper());
-  newRecord.setValue("MY_CNTY", ui->rdaEdit->text().toUpper());
   QString call = ui->callInput->text();
   newRecord.setValue("CALL", call);
 
@@ -463,6 +444,10 @@ void MainWindow::SaveQso() {
   newRecord.setValue("CNTY", cnty);
   newRecord.setValue("COMMENT", ui->commentInput->text());
   newRecord.setValue("sync_state", 0);
+  QString my_cnty = ui->qthlocEdit->text().toUpper();
+  newRecord.setValue("MY_GRIDSQUARE", my_cnty);
+  QString my_gridsquare = ui->rdaEdit->text().toUpper();
+  newRecord.setValue("MY_CNTY", my_gridsquare);
 
   if (RecordsModel->insertRecord(-1, newRecord)) {
       RecordsModel->submitAll();
@@ -471,7 +456,7 @@ void MainWindow::SaveQso() {
       int LastID = RecordsModel->query().lastInsertId().toInt();
       QVariantList data;
       data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
-      data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare;
+      data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
       api->SendQso(data);
 
       RefreshRecords();
@@ -578,14 +563,14 @@ void MainWindow::onOperatorChanged() {
 }
 
 void MainWindow::onUdpLogged() {
-  if (ui->stationCallsignCombo->currentIndex() == 0) {
-    QMessageBox::critical(0, "Ошибка", "UDP: Не выбран позывной станции", QMessageBox::Ok);
-    return;
-  }
-  if (ui->operatorCombo->currentIndex() == 0) {
-    QMessageBox::critical(0, "Ошибка", "UDP: Не выбран позывной оператора", QMessageBox::Ok);
-    return;
-  }
+  // if (ui->stationCallsignCombo->currentIndex() == 0) {
+  //   QMessageBox::critical(0, "Ошибка", "UDP: Не выбран позывной станции", QMessageBox::Ok);
+  //   return;
+  // }
+  // if (ui->operatorCombo->currentIndex() == 0) {
+  //   QMessageBox::critical(0, "Ошибка", "UDP: Не выбран позывной оператора", QMessageBox::Ok);
+  //   return;
+  // }
 
   qDebug() << "Creating database record for UDP message";
   QSqlRecord newRecord = RecordsModel->record();
@@ -597,7 +582,6 @@ void MainWindow::onUdpLogged() {
   newRecord.setValue("OPERATOR", userData.oper);
   newRecord.setValue("MY_GRIDSQUARE", userData.gridsquare);
   newRecord.setValue("MY_CNTY", userData.cnty);
-
   newRecord.setValue("QSO_DATE", udpReceiver->time_off.date().toString("yyyyMMdd"));
   newRecord.setValue("TIME_OFF", udpReceiver->time_off.time().toString("hhmm") + "00");
   newRecord.setValue("TIME_ON", udpReceiver->time_on.time().toString("hhmm") + "00");
@@ -631,7 +615,6 @@ void MainWindow::onUdpLogged() {
         ClearQso();
       }
   }
-
 }
 
 void MainWindow::FindCallDataQrzru() {
@@ -668,7 +651,7 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
     }
     QString numberlist = idstrings.join(",");
     QSqlQuery query(db);
-    query.exec(QString("SELECT id, qsosu_callsign_id, qsosu_operator_id, CALL, BAND, MODE, FREQ, QSO_DATE, TIME_OFF, NAME, RST_SENT, RST_RCVD, QTH, CNTY, GRIDSQUARE FROM records WHERE id IN (%1) ORDER BY id").arg(numberlist));
+    query.exec(QString("SELECT id, qsosu_callsign_id, qsosu_operator_id, CALL, BAND, MODE, FREQ, QSO_DATE, TIME_OFF, NAME, RST_SENT, RST_RCVD, QTH, CNTY, GRIDSQUARE MY_CNTY, MY_GRIDSQUARE FROM records WHERE id IN (%1) ORDER BY id").arg(numberlist));
     while (query.next()) {
         int dbid = query.value(0).toInt();
         int qsosu_callsign_id = query.value(1).toInt();
@@ -686,8 +669,11 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
         QString qth = query.value(12).toString();
         QString cnty = query.value(13).toString();
         QString gridsquare = query.value(14).toString();
+        QString my_cnty = query.value(15).toString();
+        QString my_gridsquare = query.value(16).toString();
+
         QVariantList data;
-        data << dbid << qsosu_callsign_id << qsosu_operator_id << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare;
+        data << dbid << qsosu_callsign_id << qsosu_operator_id << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
         api->SendQso(data);
     }
 }

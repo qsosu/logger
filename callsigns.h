@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QComboBox>
 #include "httpapi.h"
+#include "addcallsign.h"
 
 namespace Ui {
   class Callsigns;
@@ -26,8 +27,7 @@ private:
   QSqlTableModel *CallsignsModel;
   QSqlDatabase db;
   HttpApi *api;
-  QComboBox* itemcombobox;
-  QStringList lst;
+  Addcallsign *add_cs;
 
   void init();
   void updateTable();
@@ -41,7 +41,9 @@ private slots:
   void onSavePressed();
   void onCancelPressed();
   void requestQsosu();
-  void CallsignsEdit(int indx);
+  void addCallsigng();
+  void on_checkCallsignBtn_clicked();
+  void callsignStatus(int status);
 
   signals:
   void updated();

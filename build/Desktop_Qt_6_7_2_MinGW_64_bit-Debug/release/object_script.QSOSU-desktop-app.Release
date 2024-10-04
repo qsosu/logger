@@ -1,3 +1,5 @@
+release/about.o
+release/addcallsign.o
 release/adif.o
 release/callsigns.o
 release/flrig.o
@@ -13,6 +15,8 @@ release/maiaXmlRpcServer.o
 release/maiaXmlRpcServerConnection.o
 release/udpreceiver.o
 release/qrc_resources.o
+release/moc_about.o
+release/moc_addcallsign.o
 release/moc_adif.o
 release/moc_callsigns.o
 release/moc_flrig.o
