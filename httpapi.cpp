@@ -168,7 +168,7 @@ void HttpApi::checkStatusCallsign(QString callsign)
         m_reply = nullptr;
     }
 
-    QNetworkRequest request((QUrl("https://api.qso.su/method/v1/checkStatusCallsign")));
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/checkStatusCallsign"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());

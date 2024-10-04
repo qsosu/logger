@@ -2127,3 +2127,34 @@
 }
 
 2024-10-04 19:07:24.279 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
+2024-10-04 19:29:43.031 [INFO] Succesful loaded HamDefs.xml
+2024-10-04 19:29:43.046 [INFO] Loaded bands:  25
+2024-10-04 19:29:43.046 [INFO] Loaded modes:  209
+2024-10-04 19:29:44.198 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-04 19:29:51.495 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-04 19:29:51.843 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-04 19:29:55.309 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JRH"
+}
+
+2024-10-04 19:29:59.213 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-04 19:29:59.306 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
+2024-10-04 19:35:59.668 [INFO] Succesful loaded HamDefs.xml
+2024-10-04 19:35:59.671 [INFO] Loaded bands:  25
+2024-10-04 19:35:59.672 [INFO] Loaded modes:  209
+2024-10-04 19:36:00.867 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-04 19:37:01.095 [INFO] Succesful loaded HamDefs.xml
+2024-10-04 19:37:01.098 [INFO] Loaded bands:  25
+2024-10-04 19:37:01.099 [INFO] Loaded modes:  209
+2024-10-04 19:37:02.256 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-04 19:37:09.160 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-04 19:37:09.389 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
