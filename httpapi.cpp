@@ -185,7 +185,8 @@ void HttpApi::checkStatusCallsign(QString callsign)
     QByteArray jsonBA = doc.toJson();
     qDebug().noquote() << "Checking Callsign from service." << jsonBA;
 
-    QNetworkReply *reply = m_manager.get(request, jsonBA);
+    QNetworkReply *reply = m_manager.get(request);
+    //QNetworkReply *reply = m_manager.get(request, jsonBA);
     connect(reply, &QNetworkReply::finished, this, [=]() {
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray data = reply->readAll();

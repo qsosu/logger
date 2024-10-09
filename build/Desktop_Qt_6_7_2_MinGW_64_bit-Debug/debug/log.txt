@@ -4284,3 +4284,111 @@ Load from XML File...
 2024-10-09 21:19:57.768 [INFO] QSOLogger v. 1.2.362  started.
 2024-10-09 21:19:58.013 [INFO] Upload bands:  25
 2024-10-09 21:19:59.136 [INFO] Upload modes:  209
+2024-10-09 23:33:35.758 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-09 23:33:35.958 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-09 23:33:35.958 [DEBUG] Load from XML File...
+2024-10-09 23:33:35.971 [INFO] Succesful loaded HamDefs.xml
+2024-10-09 23:33:35.976 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-09 23:33:36.320 [INFO] Upload bands:  25
+2024-10-09 23:33:36.341 [INFO] Upload modes:  209
+2024-10-09 23:33:42.909 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-09 23:33:51.746 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-09 23:33:56.449 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-09 23:33:57.209 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-09 23:33:57.433 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-09 23:33:57.633 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-09 23:33:57.818 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-09 23:33:58.010 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-09 23:33:58.202 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-09 23:33:59.993 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-09 23:34:00.786 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-09 23:34:00.961 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-09 23:34:01.170 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-09 23:34:37.403 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-09 23:34:37.439 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-09 23:34:37.439 [DEBUG] Load from XML File...
+2024-10-09 23:34:37.440 [INFO] Succesful loaded HamDefs.xml
+2024-10-09 23:34:37.448 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-09 23:34:37.763 [INFO] Upload modes:  209
+2024-10-09 23:34:38.750 [INFO] Upload bands:  25
+2024-10-09 23:34:43.777 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-09 23:34:46.224 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-09 23:42:29.144 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-09 23:42:29.170 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-09 23:42:29.170 [DEBUG] Load from XML File...
+2024-10-09 23:42:29.186 [INFO] Succesful loaded HamDefs.xml
+2024-10-09 23:42:29.192 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-09 23:42:29.431 [INFO] Upload modes:  209
+2024-10-09 23:42:29.444 [INFO] Upload bands:  25
+2024-10-09 23:42:56.106 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-09 23:42:56.179 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-09 23:42:57.061 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-09 23:42:57.134 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-09 23:42:57.239 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-09 23:42:57.312 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-09 23:42:57.400 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-09 23:42:57.476 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-09 23:51:29.011 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-09 23:51:29.037 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-09 23:51:29.037 [DEBUG] Load from XML File...
+2024-10-09 23:51:29.051 [INFO] Succesful loaded HamDefs.xml
+2024-10-09 23:51:29.059 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-09 23:51:29.327 [INFO] Upload modes:  209
+2024-10-09 23:51:29.336 [INFO] Upload bands:  25
