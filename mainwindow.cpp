@@ -50,8 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->modeCombo->setEditable(true); // включаем встроенный QLineEdit
   ui->modeCombo->setInsertPolicy(QComboBox::NoInsert); // отключаем вставку новых элементов из QLineEdit
   ui->modeCombo->completer()->setCompletionMode(QCompleter::CompletionMode::PopupCompletion); // устанавливаем модель автодополнения (по умолчанию стоит InlineCompletition)
-
-  LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
+  ui->modeCombo->completer()->setModelSorting(QCompleter::UnsortedModel);
 
   //Проверка использования и версий SSL
   //qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
@@ -181,6 +180,11 @@ MainWindow::MainWindow(QWidget *parent)
   InitRecordsTable();
   getCallsigns();
   fillDefaultFreq();
+
+  connect(api, SIGNAL(modesUpdated()), this, SLOT(setModesList()));
+  connect(api, SIGNAL(bandsUpdated()), this, SLOT(setBandsList()));
+
+  LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
 
   qInfo() << "QSOLogger v." << VERSION << " started.";
 }
@@ -687,8 +691,8 @@ void MainWindow::onQsoSynced(int dbid) {
 
 void MainWindow::on_modeCombo_currentIndexChanged(int index)
 {
-    ui->rstrInput->setText(modeList[index].mode_report);
-    ui->rstsInput->setText(modeList[index].mode_report);
+    //ui->rstrInput->setText(modeList[index].mode_report);
+    //ui->rstsInput->setText(modeList[index].mode_report);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -714,7 +718,6 @@ void MainWindow::readXmlfile()
     QDomElement root = HamDefs.firstChildElement();
 
     QDomNodeList BandNames = HamDefs.elementsByTagName("band");
-    qInfo() << "Loaded bands: " << BandNames.count();
 
     for(int i = 0; i < BandNames.count(); i++)
     {
@@ -733,7 +736,6 @@ void MainWindow::readXmlfile()
     }
 
     QDomNodeList ModeNames = HamDefs.elementsByTagName("mode");
-    qInfo() << "Loaded modes: " << ModeNames.count();
 
     for(int j = 0; j < ModeNames.count(); j++)
     {
@@ -753,14 +755,38 @@ void MainWindow::readXmlfile()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-bool MainWindow::LoadHamDefs()
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::LoadHamDefs()
+{
+    qDebug() << "Get band and modulation list from QSO.SU";
+    api->getListBand(); //Загрузка диапазонов
+    api->getListSubmodeDropDown(); //Загрузка списков модуляции
+
+    if(api->modulations.count() == 0 && api->bands.count() == 0)
+    {
+        qDebug() << "Failed to upload band list and mode list from QSO.SU.";
+        qDebug() << "Load from XML File...";
+        readXmlfile();
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::setModesList()
+{
+    ui->modeCombo->clear();
+    if(api->modulations.count() > 0) ui->modeCombo->addItems(api->modulations);
+    qInfo() << "Upload modes: " << api->modulations.count();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::setBandsList()
 {
     ui->bandCombo->clear();
-    ui->modeCombo->clear();
-    readXmlfile();
-    ui->bandCombo->setCurrentIndex(7);
-    ui->modeCombo->setCurrentIndex(1);
-    return true;
+    if(api->bands.count() > 0) ui->bandCombo->addItems(api->bands);
+    qInfo() << "Upload bands: " << api->bands.count();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

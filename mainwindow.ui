@@ -289,133 +289,8 @@
             </size>
            </property>
            <property name="currentText">
-            <string>2190M</string>
+            <string/>
            </property>
-           <item>
-            <property name="text">
-             <string>2190M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>630M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>160M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>80M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>60M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>40M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>30M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>20M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>17M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>15M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>12M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>10M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>6M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>4M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>2M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>1.25M</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>70CM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>33CM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>21CM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>23CM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>13CM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>9CM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>6CM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>3CM</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>1.25CM</string>
-            </property>
-           </item>
           </widget>
          </item>
          <item>
@@ -478,16 +353,13 @@
             <set>Qt::InputMethodHint::ImhNone</set>
            </property>
            <property name="currentIndex">
-            <number>-1</number>
+            <number>0</number>
            </property>
            <property name="maxVisibleItems">
             <number>50</number>
            </property>
            <property name="maxCount">
             <number>210</number>
-           </property>
-           <property name="sizeAdjustPolicy">
-            <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
            </property>
            <property name="minimumContentsLength">
             <number>10</number>
@@ -498,6 +370,11 @@
            <property name="modelColumn">
             <number>0</number>
            </property>
+           <item>
+            <property name="text">
+             <string/>
+            </property>
+           </item>
           </widget>
          </item>
          <item>

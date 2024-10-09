@@ -94,7 +94,7 @@ private:
   void SetRecordsFilter(int log_id);
   void SyncQSOs(QModelIndexList indexes);
 
-  bool LoadHamDefs();
+  //bool LoadHamDefs();
   void readXmlfile();
   double BandToDefaultFreq(QString band);
   QString getBandValue(int index);
@@ -118,7 +118,8 @@ private slots:
   void customMenuRequested(QPoint pos);
   void onQsoSynced(int dbid);
   void on_modeCombo_currentIndexChanged(int index);
-  //void on_callInput_selectionChanged();
-  void on_actionSync_triggered();
+  void LoadHamDefs();
+  void setModesList();
+  void setBandsList();
 };
 #endif // MAINWINDOW_H

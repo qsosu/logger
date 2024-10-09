@@ -29,10 +29,14 @@ public:
   void getCallsign();
   void addCallsign(QVariantList data);
   void checkStatusCallsign(QString callsign);
+  void getListSubmodeDropDown();
+  void getListBand();
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;
-  //QVector<QVariantMap> operators;
+  QStringList modulations;
+  QStringList bands;
+
 
 private:
   enum Method {
@@ -67,7 +71,8 @@ signals:
   void synced(int);
   void syncerror(int);
   void error(QNetworkReply::NetworkError);
-
+  void modesUpdated();
+  void bandsUpdated();
 };
 
 #endif // HTTPAPI_H

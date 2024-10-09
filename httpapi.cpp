@@ -1,6 +1,11 @@
 #include "httpapi.h"
+#include "mainwindow.h"
+
 
 #define DEBUG
+
+
+class MainWindow;
 
 HttpApi::HttpApi(QSqlDatabase db, QString accessToken, QObject *parent)
   : QObject{parent}
@@ -201,3 +206,93 @@ void HttpApi::checkStatusCallsign(QString callsign)
 }
 
 //--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::getListSubmodeDropDown()
+{
+    if (accessToken.length() == 0) {
+        emit emptyToken();
+        return;
+    }
+    if (m_reply) {
+        m_reply->abort();
+        m_reply->deleteLater();
+        m_reply = nullptr;
+    }
+
+    QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getListSubmodeDropDown")));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QNetworkReply *reply = m_manager.get(request);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+            QJsonObject response = jsonDocument["response"].toObject();
+
+            for(int j = 0; j < response.count(); j++)
+            {
+               modulations.append(response.value(response.keys().at(j)).toString());
+            }
+            emit modesUpdated();
+        } else {
+            emit error(reply->error());
+        }
+        reply->deleteLater();
+    });
+}
+
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::getListBand()
+{
+    if (accessToken.length() == 0) {
+        emit emptyToken();
+        return;
+    }
+    if (m_reply) {
+        m_reply->abort();
+        m_reply->deleteLater();
+        m_reply = nullptr;
+    }
+
+    QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getListBand")));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QNetworkReply *reply = m_manager.get(request);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+            QJsonObject response = jsonDocument["response"].toObject();
+
+            for(int j = 0; j < response.count(); j++)
+            {
+                bands.append(response.value(response.keys().at(j)).toString());
+            }
+            emit bandsUpdated();
+        } else {
+            emit error(reply->error());
+        }
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

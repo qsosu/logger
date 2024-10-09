@@ -287,31 +287,6 @@ public:
         horizontalLayout_2->addWidget(label_4);
 
         bandCombo = new QComboBox(groupBox);
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
-        bandCombo->addItem(QString());
         bandCombo->setObjectName("bandCombo");
         sizePolicy2.setHeightForWidth(bandCombo->sizePolicy().hasHeightForWidth());
         bandCombo->setSizePolicy(sizePolicy2);
@@ -338,6 +313,7 @@ public:
         horizontalLayout_2->addWidget(label_6);
 
         modeCombo = new QComboBox(groupBox);
+        modeCombo->addItem(QString());
         modeCombo->setObjectName("modeCombo");
         sizePolicy2.setHeightForWidth(modeCombo->sizePolicy().hasHeightForWidth());
         modeCombo->setSizePolicy(sizePolicy2);
@@ -348,7 +324,6 @@ public:
         modeCombo->setInputMethodHints(Qt::InputMethodHint::ImhNone);
         modeCombo->setMaxVisibleItems(50);
         modeCombo->setMaxCount(210);
-        modeCombo->setSizeAdjustPolicy(QComboBox::SizeAdjustPolicy::AdjustToContents);
         modeCombo->setMinimumContentsLength(10);
         modeCombo->setFrame(true);
         modeCombo->setModelColumn(0);
@@ -581,7 +556,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        modeCombo->setCurrentIndex(-1);
+        modeCombo->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -615,35 +590,11 @@ public:
         timeInput->setText(QCoreApplication::translate("MainWindow", "00:00:00", nullptr));
         showCurrentTime->setText(QCoreApplication::translate("MainWindow", "\320\242\320\265\320\272\321\203\321\211\320\265\320\265 \320\262\321\200\320\265\320\274\321\217", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\320\224\320\270\320\260\320\277\320\260\320\267\320\276\320\275", nullptr));
-        bandCombo->setItemText(0, QCoreApplication::translate("MainWindow", "2190M", nullptr));
-        bandCombo->setItemText(1, QCoreApplication::translate("MainWindow", "630M", nullptr));
-        bandCombo->setItemText(2, QCoreApplication::translate("MainWindow", "160M", nullptr));
-        bandCombo->setItemText(3, QCoreApplication::translate("MainWindow", "80M", nullptr));
-        bandCombo->setItemText(4, QCoreApplication::translate("MainWindow", "60M", nullptr));
-        bandCombo->setItemText(5, QCoreApplication::translate("MainWindow", "40M", nullptr));
-        bandCombo->setItemText(6, QCoreApplication::translate("MainWindow", "30M", nullptr));
-        bandCombo->setItemText(7, QCoreApplication::translate("MainWindow", "20M", nullptr));
-        bandCombo->setItemText(8, QCoreApplication::translate("MainWindow", "17M", nullptr));
-        bandCombo->setItemText(9, QCoreApplication::translate("MainWindow", "15M", nullptr));
-        bandCombo->setItemText(10, QCoreApplication::translate("MainWindow", "12M", nullptr));
-        bandCombo->setItemText(11, QCoreApplication::translate("MainWindow", "10M", nullptr));
-        bandCombo->setItemText(12, QCoreApplication::translate("MainWindow", "6M", nullptr));
-        bandCombo->setItemText(13, QCoreApplication::translate("MainWindow", "4M", nullptr));
-        bandCombo->setItemText(14, QCoreApplication::translate("MainWindow", "2M", nullptr));
-        bandCombo->setItemText(15, QCoreApplication::translate("MainWindow", "1.25M", nullptr));
-        bandCombo->setItemText(16, QCoreApplication::translate("MainWindow", "70CM", nullptr));
-        bandCombo->setItemText(17, QCoreApplication::translate("MainWindow", "33CM", nullptr));
-        bandCombo->setItemText(18, QCoreApplication::translate("MainWindow", "21CM", nullptr));
-        bandCombo->setItemText(19, QCoreApplication::translate("MainWindow", "23CM", nullptr));
-        bandCombo->setItemText(20, QCoreApplication::translate("MainWindow", "13CM", nullptr));
-        bandCombo->setItemText(21, QCoreApplication::translate("MainWindow", "9CM", nullptr));
-        bandCombo->setItemText(22, QCoreApplication::translate("MainWindow", "6CM", nullptr));
-        bandCombo->setItemText(23, QCoreApplication::translate("MainWindow", "3CM", nullptr));
-        bandCombo->setItemText(24, QCoreApplication::translate("MainWindow", "1.25CM", nullptr));
-
-        bandCombo->setCurrentText(QCoreApplication::translate("MainWindow", "2190M", nullptr));
+        bandCombo->setCurrentText(QString());
         label_5->setText(QCoreApplication::translate("MainWindow", "\320\247\320\260\321\201\321\202\320\276\321\202\320\260, \320\234\320\223\321\206", nullptr));
         label_6->setText(QCoreApplication::translate("MainWindow", "\320\234\320\276\320\264\321\203\320\273\321\217\321\206\320\270\321\217", nullptr));
+        modeCombo->setItemText(0, QString());
+
         label_7->setText(QCoreApplication::translate("MainWindow", "RST \320\277\321\200\320\270\320\275.", nullptr));
         rstrInput->setText(QCoreApplication::translate("MainWindow", "59", nullptr));
         label_8->setText(QCoreApplication::translate("MainWindow", "RST \320\276\321\202\320\277\321\200.", nullptr));
