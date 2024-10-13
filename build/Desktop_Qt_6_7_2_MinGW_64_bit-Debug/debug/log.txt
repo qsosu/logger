@@ -4392,3 +4392,976 @@ Load from XML File...
 2024-10-09 23:51:29.059 [INFO] QSOLogger v. 1.2.362  started.
 2024-10-09 23:51:29.327 [INFO] Upload modes:  209
 2024-10-09 23:51:29.336 [INFO] Upload bands:  25
+2024-10-10 21:11:03.592 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 21:11:03.842 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 21:11:03.842 [DEBUG] Load from XML File...
+2024-10-10 21:11:03.856 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 21:11:03.866 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 21:11:04.216 [INFO] Upload bands:  25
+2024-10-10 21:11:04.223 [INFO] Upload modes:  209
+2024-10-10 21:17:24.316 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-10 21:17:24.515 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-10 21:17:25.779 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-10 21:17:25.852 [WARNING] stream 3 finished with error: "Host requires authentication"
+2024-10-10 21:17:27.215 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-10 21:17:27.305 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 21:17:29.729 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-10 21:17:29.818 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 21:17:30.094 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-10 21:17:30.169 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 21:18:37.826 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 21:18:37.856 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 21:18:37.856 [DEBUG] Load from XML File...
+2024-10-10 21:18:37.871 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 21:18:37.877 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 21:18:38.257 [INFO] Upload modes:  209
+2024-10-10 21:18:38.259 [INFO] Upload bands:  25
+2024-10-10 21:18:54.720 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-10 21:18:54.793 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 21:27:47.323 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 21:27:47.349 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 21:27:47.349 [DEBUG] Load from XML File...
+2024-10-10 21:27:47.349 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 21:27:47.360 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 21:27:47.683 [INFO] Upload bands:  25
+2024-10-10 21:27:47.698 [INFO] Upload modes:  209
+2024-10-10 21:27:52.896 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 21:27:59.138 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 21:28:05.452 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 21:28:09.216 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-10 21:28:12.314 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-10 21:28:13.393 [WARNING] stream 15 finished with error: "Host requires authentication"
+2024-10-10 21:28:14.106 [WARNING] stream 17 finished with error: "Host requires authentication"
+2024-10-10 21:28:14.320 [WARNING] stream 19 finished with error: "Host requires authentication"
+2024-10-10 21:28:14.518 [WARNING] stream 21 finished with error: "Host requires authentication"
+2024-10-10 21:28:14.685 [WARNING] stream 23 finished with error: "Host requires authentication"
+2024-10-10 21:28:14.851 [WARNING] stream 25 finished with error: "Host requires authentication"
+2024-10-10 21:28:15.033 [WARNING] stream 27 finished with error: "Host requires authentication"
+2024-10-10 21:28:15.168 [WARNING] stream 29 finished with error: "Host requires authentication"
+2024-10-10 21:28:28.038 [WARNING] stream 33 finished with error: "Host requires authentication"
+2024-10-10 21:30:40.282 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 21:30:40.313 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 21:30:40.313 [DEBUG] Load from XML File...
+2024-10-10 21:30:40.328 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 21:30:40.335 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 21:30:40.588 [INFO] Upload bands:  25
+2024-10-10 21:30:41.598 [INFO] Upload modes:  209
+2024-10-10 21:30:45.766 [DEBUG] "R9JAU/M"
+2024-10-10 21:30:45.842 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 21:30:50.442 [DEBUG] "R9JAU/P"
+2024-10-10 21:30:50.505 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 21:30:53.062 [DEBUG] "R9JAU"
+2024-10-10 21:30:53.135 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 21:31:47.322 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 21:31:47.348 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 21:31:47.348 [DEBUG] Load from XML File...
+2024-10-10 21:31:47.355 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 21:31:47.358 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 21:31:47.619 [INFO] Upload bands:  25
+2024-10-10 21:31:47.629 [INFO] Upload modes:  209
+2024-10-10 21:31:51.515 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?callsign=R9JAU/P")
+2024-10-10 21:31:51.599 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 21:32:08.750 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?callsign=R9JAU/P")
+2024-10-10 21:32:08.840 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 21:32:12.735 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?callsign=R9JAU")
+2024-10-10 21:32:12.792 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 21:43:15.125 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 21:43:15.151 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 21:43:15.151 [DEBUG] Load from XML File...
+2024-10-10 21:43:15.151 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 21:43:15.162 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 21:43:15.438 [INFO] Upload bands:  25
+2024-10-10 21:43:15.485 [INFO] Upload modes:  209
+2024-10-10 21:43:25.546 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?callsign=R9JAU")
+2024-10-10 21:43:25.619 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 21:43:45.043 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?callsign=R9JAU/P")
+2024-10-10 21:43:45.136 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 21:43:50.189 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?callsign=R9JAU/M")
+2024-10-10 21:43:50.264 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 21:43:52.807 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?callsign=R8JR")
+2024-10-10 21:43:52.880 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-10 21:50:09.191 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 21:50:09.221 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 21:50:09.221 [DEBUG] Load from XML File...
+2024-10-10 21:50:09.222 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 21:50:09.228 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 21:50:09.584 [INFO] Upload modes:  209
+2024-10-10 21:50:10.563 [INFO] Upload bands:  25
+2024-10-10 21:50:13.637 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-10 21:50:13.694 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 21:50:20.267 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 21:50:21.351 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 21:50:24.400 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-10 21:50:24.477 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 22:12:49.571 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 22:12:49.851 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 22:12:49.851 [DEBUG] Load from XML File...
+2024-10-10 22:12:49.861 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 22:12:49.870 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 22:12:50.209 [INFO] Upload bands:  25
+2024-10-10 22:12:50.220 [INFO] Upload modes:  209
+2024-10-10 22:13:11.069 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-10 22:13:11.146 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 22:13:18.843 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 22:13:18.916 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 22:13:54.829 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 22:13:54.855 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 22:13:54.855 [DEBUG] Load from XML File...
+2024-10-10 22:13:54.860 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 22:13:54.865 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 22:13:55.126 [INFO] Upload bands:  25
+2024-10-10 22:13:55.137 [INFO] Upload modes:  209
+2024-10-10 22:13:58.602 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-10 22:13:58.721 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-10 22:14:06.709 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-10 22:14:06.805 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-10 22:14:12.647 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-10 22:14:12.750 [DEBUG] "{\"response\":{\"id\":102,\"status\":1}}"
+2024-10-10 23:10:34.097 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 23:10:34.124 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 23:10:34.124 [DEBUG] Load from XML File...
+2024-10-10 23:10:34.124 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 23:10:34.134 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 23:10:34.426 [INFO] Upload modes:  209
+2024-10-10 23:10:34.430 [INFO] Upload bands:  25
+2024-10-10 23:10:38.042 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-10 23:10:38.148 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-10 23:10:40.409 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-10 23:10:40.509 [DEBUG] "{\"response\":{\"id\":102,\"status\":1}}"
+2024-10-10 23:15:53.452 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 23:15:53.478 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 23:15:53.478 [DEBUG] Load from XML File...
+2024-10-10 23:15:53.486 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 23:15:53.489 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 23:15:53.814 [INFO] Upload bands:  25
+2024-10-10 23:15:54.851 [INFO] Upload modes:  209
+2024-10-10 23:15:58.960 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 23:16:05.344 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 23:16:09.276 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 23:17:10.010 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 23:17:10.036 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 23:17:10.036 [DEBUG] Load from XML File...
+2024-10-10 23:17:10.049 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 23:17:10.056 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 23:17:10.325 [INFO] Upload bands:  25
+2024-10-10 23:17:10.334 [INFO] Upload modes:  209
+2024-10-10 23:17:13.747 [DEBUG] "https://api.qso.su/method/v1/checkStatusCallsign?callsign=R8JR"
+2024-10-10 23:17:13.820 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 23:17:24.378 [DEBUG] "https://api.qso.su/method/v1/checkStatusCallsign?callsign=R9JAU/M"
+2024-10-10 23:17:24.436 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 23:50:59.890 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 23:51:00.154 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 23:51:00.154 [DEBUG] Load from XML File...
+2024-10-10 23:51:00.165 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 23:51:00.175 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 23:51:00.483 [INFO] Upload modes:  209
+2024-10-10 23:51:00.485 [INFO] Upload bands:  25
+2024-10-10 23:51:04.906 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-10 23:51:04.909 [DEBUG] "https://api.qso.su/method/v1/checkStatusCallsign"
+2024-10-10 23:51:04.979 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 23:51:07.268 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-10 23:51:07.268 [DEBUG] "https://api.qso.su/method/v1/checkStatusCallsign"
+2024-10-10 23:51:07.352 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 23:51:15.027 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:51:15.027 [DEBUG] "https://api.qso.su/method/v1/checkStatusCallsign"
+2024-10-10 23:51:15.100 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 23:54:07.579 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 23:54:07.608 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 23:54:07.608 [DEBUG] Load from XML File...
+2024-10-10 23:54:07.624 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 23:54:07.629 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 23:54:21.054 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:28.834 [INFO] Upload bands:  25
+2024-10-10 23:54:29.847 [INFO] Upload modes:  209
+2024-10-10 23:54:29.855 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-10 23:54:36.701 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:36.778 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 23:54:47.679 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:47.752 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-10 23:54:48.534 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:48.591 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-10 23:54:49.294 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:49.358 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-10 23:54:49.728 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:49.785 [WARNING] stream 15 finished with error: "Host requires authentication"
+2024-10-10 23:54:49.907 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:50.027 [WARNING] stream 17 finished with error: "Host requires authentication"
+2024-10-10 23:54:50.100 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:50.173 [WARNING] stream 19 finished with error: "Host requires authentication"
+2024-10-10 23:54:50.277 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:50.344 [WARNING] stream 21 finished with error: "Host requires authentication"
+2024-10-10 23:54:50.448 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:50.522 [WARNING] stream 23 finished with error: "Host requires authentication"
+2024-10-10 23:54:50.641 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:50.698 [WARNING] stream 25 finished with error: "Host requires authentication"
+2024-10-10 23:54:50.819 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:50.876 [WARNING] stream 27 finished with error: "Host requires authentication"
+2024-10-10 23:54:50.996 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:51.053 [WARNING] stream 29 finished with error: "Host requires authentication"
+2024-10-10 23:54:51.173 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:51.250 [WARNING] stream 31 finished with error: "Host requires authentication"
+2024-10-10 23:54:51.370 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:51.427 [WARNING] stream 33 finished with error: "Host requires authentication"
+2024-10-10 23:54:51.533 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:51.590 [WARNING] stream 35 finished with error: "Host requires authentication"
+2024-10-10 23:54:51.725 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:51.798 [WARNING] stream 37 finished with error: "Host requires authentication"
+2024-10-10 23:54:51.902 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:54:51.978 [WARNING] stream 39 finished with error: "Host requires authentication"
+2024-10-10 23:55:33.190 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 23:55:33.216 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 23:55:33.216 [DEBUG] Load from XML File...
+2024-10-10 23:55:33.224 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 23:55:33.227 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 23:55:33.504 [INFO] Upload bands:  25
+2024-10-10 23:55:33.511 [INFO] Upload modes:  209
+2024-10-10 23:55:39.590 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-10 23:55:39.666 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-10 23:55:44.586 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-10 23:55:44.643 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-10 23:57:39.418 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-10 23:57:39.443 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-10 23:57:39.443 [DEBUG] Load from XML File...
+2024-10-10 23:57:39.443 [INFO] Succesful loaded HamDefs.xml
+2024-10-10 23:57:39.454 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-10 23:57:39.730 [INFO] Upload bands:  25
+2024-10-10 23:57:40.730 [INFO] Upload modes:  209
+2024-10-10 23:57:43.813 [DEBUG] Checking Callsign from service.
+ {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-10 23:57:43.826 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign")
+2024-10-10 23:57:43.883 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:21:37.214 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:21:37.466 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:21:37.466 [DEBUG] Load from XML File...
+2024-10-11 21:21:37.476 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:21:37.484 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:21:37.846 [FATAL] ASSERT failure in QList::operator[]: "index out of range", file C:/Qt/6.7.2/mingw_64/include/QtCore/qlist.h, line 439
+2024-10-11 21:22:46.355 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:22:46.397 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:22:46.397 [DEBUG] Load from XML File...
+2024-10-11 21:22:46.397 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:22:46.404 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:22:46.798 [INFO] Upload bands:  25
+2024-10-11 21:22:46.937 [INFO] Upload modes:  209
+2024-10-11 21:22:53.213 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?json=%7B%22callsign%22:%22R9JAU%22%7D")
+2024-10-11 21:22:53.304 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:23:12.870 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?json=%7B%22callsign%22:%22R9JAU%22%7D")
+2024-10-11 21:23:12.950 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 21:23:15.219 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?json=%7B%22callsign%22:%22R9JAU%22%7D")
+2024-10-11 21:23:15.294 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 21:23:16.607 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?json=%7B%22callsign%22:%22R9JAU%22%7D")
+2024-10-11 21:23:16.680 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 21:27:16.155 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:27:16.186 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:27:16.186 [DEBUG] Load from XML File...
+2024-10-11 21:27:16.201 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:27:16.208 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:27:16.493 [INFO] Upload modes:  209
+2024-10-11 21:27:17.477 [INFO] Upload bands:  25
+2024-10-11 21:27:21.398 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 21:27:21.487 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:28:01.115 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:01.172 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 21:28:05.468 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:05.525 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 21:28:06.371 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:06.428 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 21:28:06.877 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:06.949 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-11 21:28:07.319 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:07.395 [WARNING] stream 15 finished with error: "Host requires authentication"
+2024-10-11 21:28:07.703 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:07.775 [WARNING] stream 17 finished with error: "Host requires authentication"
+2024-10-11 21:28:07.895 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:07.972 [WARNING] stream 19 finished with error: "Host requires authentication"
+2024-10-11 21:28:08.091 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:08.152 [WARNING] stream 21 finished with error: "Host requires authentication"
+2024-10-11 21:28:08.257 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:08.314 [WARNING] stream 23 finished with error: "Host requires authentication"
+2024-10-11 21:28:08.434 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:08.507 [WARNING] stream 25 finished with error: "Host requires authentication"
+2024-10-11 21:28:08.611 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:08.668 [WARNING] stream 27 finished with error: "Host requires authentication"
+2024-10-11 21:28:08.774 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:08.867 [WARNING] stream 29 finished with error: "Host requires authentication"
+2024-10-11 21:28:08.955 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:09.029 [WARNING] stream 31 finished with error: "Host requires authentication"
+2024-10-11 21:28:09.132 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:28:09.206 [WARNING] stream 33 finished with error: "Host requires authentication"
+2024-10-11 21:28:12.686 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:12.763 [WARNING] stream 35 finished with error: "Host requires authentication"
+2024-10-11 21:28:13.430 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:13.503 [WARNING] stream 37 finished with error: "Host requires authentication"
+2024-10-11 21:28:13.638 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:13.716 [WARNING] stream 39 finished with error: "Host requires authentication"
+2024-10-11 21:28:14.749 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:14.821 [WARNING] stream 41 finished with error: "Host requires authentication"
+2024-10-11 21:28:15.322 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:15.396 [WARNING] stream 43 finished with error: "Host requires authentication"
+2024-10-11 21:28:15.813 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:15.885 [WARNING] stream 45 finished with error: "Host requires authentication"
+2024-10-11 21:28:16.192 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:16.268 [WARNING] stream 47 finished with error: "Host requires authentication"
+2024-10-11 21:28:16.420 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:16.492 [WARNING] stream 49 finished with error: "Host requires authentication"
+2024-10-11 21:28:16.612 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:16.684 [WARNING] stream 51 finished with error: "Host requires authentication"
+2024-10-11 21:28:16.820 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:16.892 [WARNING] stream 53 finished with error: "Host requires authentication"
+2024-10-11 21:28:17.044 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:17.112 [WARNING] stream 55 finished with error: "Host requires authentication"
+2024-10-11 21:28:17.622 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:17.696 [WARNING] stream 57 finished with error: "Host requires authentication"
+2024-10-11 21:28:18.600 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:18.723 [WARNING] stream 59 finished with error: "Host requires authentication"
+2024-10-11 21:28:18.863 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:18.939 [WARNING] stream 61 finished with error: "Host requires authentication"
+2024-10-11 21:28:19.078 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:19.155 [WARNING] stream 63 finished with error: "Host requires authentication"
+2024-10-11 21:28:19.291 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:19.348 [WARNING] stream 65 finished with error: "Host requires authentication"
+2024-10-11 21:28:20.004 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:20.078 [WARNING] stream 67 finished with error: "Host requires authentication"
+2024-10-11 21:28:20.233 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:20.307 [WARNING] stream 69 finished with error: "Host requires authentication"
+2024-10-11 21:28:20.816 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:28:20.891 [WARNING] stream 71 finished with error: "Host requires authentication"
+2024-10-11 21:29:05.667 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:29:05.693 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:29:05.693 [DEBUG] Load from XML File...
+2024-10-11 21:29:05.704 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:29:05.710 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:29:05.965 [INFO] Upload bands:  25
+2024-10-11 21:29:05.975 [INFO] Upload modes:  209
+2024-10-11 21:29:13.254 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 21:29:13.311 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:29:15.859 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 21:29:16.166 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 21:29:17.546 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 21:29:17.619 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 21:29:20.338 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:29:20.395 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 21:31:47.267 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:31:47.293 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:31:47.293 [DEBUG] Load from XML File...
+2024-10-11 21:31:47.293 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:31:47.316 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:31:47.567 [INFO] Upload bands:  25
+2024-10-11 21:31:48.585 [INFO] Upload modes:  209
+2024-10-11 21:31:52.395 [DEBUG] Checking Callsign from service.
+ {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:31:52.395 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:31:52.472 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:32:57.576 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:32:57.603 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:32:57.603 [DEBUG] Load from XML File...
+2024-10-11 21:32:57.603 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:32:57.614 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:32:57.890 [INFO] Upload bands:  25
+2024-10-11 21:32:57.901 [INFO] Upload modes:  209
+2024-10-11 21:33:09.566 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-11 21:33:09.566 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 21:33:09.624 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:33:14.122 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/P"
+}
+
+2024-10-11 21:33:14.122 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 21:33:14.199 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 21:33:17.107 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:33:17.107 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:33:17.183 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 21:38:40.637 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:38:40.664 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:38:40.664 [DEBUG] Load from XML File...
+2024-10-11 21:38:40.677 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:38:40.685 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:38:40.953 [INFO] Upload modes:  209
+2024-10-11 21:38:40.968 [INFO] Upload bands:  25
+2024-10-11 21:38:47.957 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:38:47.957 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:38:48.014 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:38:57.223 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-11 21:38:57.223 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R8JR%22%0A%7D%0A")
+2024-10-11 21:38:57.300 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 21:38:59.322 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-11 21:38:59.322 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R8JR%22%0A%7D%0A")
+2024-10-11 21:38:59.379 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 21:38:59.983 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-11 21:38:59.983 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R8JR%22%0A%7D%0A")
+2024-10-11 21:39:00.056 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 21:39:03.209 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-11 21:39:03.209 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R8JR%22%0A%7D%0A")
+2024-10-11 21:39:03.520 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-11 21:39:05.645 [DEBUG] Checking Callsign from service. {
+    "callsign": "R8JR"
+}
+
+2024-10-11 21:39:05.645 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R8JR%22%0A%7D%0A")
+2024-10-11 21:39:05.721 [WARNING] stream 15 finished with error: "Host requires authentication"
+2024-10-11 21:40:05.255 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:40:05.281 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:40:05.281 [DEBUG] Load from XML File...
+2024-10-11 21:40:05.291 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:40:05.298 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:40:05.584 [INFO] Upload modes:  209
+2024-10-11 21:40:05.590 [INFO] Upload bands:  25
+2024-10-11 21:40:09.435 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:09.435 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:09.523 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:40:15.491 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:15.491 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:15.564 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 21:40:17.738 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:17.738 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:17.809 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 21:40:18.460 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:18.460 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:18.517 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 21:40:18.844 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:18.844 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:18.932 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-11 21:40:19.006 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:19.006 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:19.084 [WARNING] stream 15 finished with error: "Host requires authentication"
+2024-10-11 21:40:19.203 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:19.203 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:19.276 [WARNING] stream 17 finished with error: "Host requires authentication"
+2024-10-11 21:40:19.381 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:19.381 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:19.453 [WARNING] stream 19 finished with error: "Host requires authentication"
+2024-10-11 21:40:19.557 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:19.557 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:19.636 [WARNING] stream 21 finished with error: "Host requires authentication"
+2024-10-11 21:40:19.740 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU/M"
+}
+
+2024-10-11 21:40:19.740 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 21:40:19.813 [WARNING] stream 23 finished with error: "Host requires authentication"
+2024-10-11 21:40:21.229 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:21.229 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:21.301 [WARNING] stream 25 finished with error: "Host requires authentication"
+2024-10-11 21:40:21.687 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:21.687 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:21.759 [WARNING] stream 27 finished with error: "Host requires authentication"
+2024-10-11 21:40:22.426 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:22.426 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:22.499 [WARNING] stream 29 finished with error: "Host requires authentication"
+2024-10-11 21:40:22.900 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:22.900 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:22.957 [WARNING] stream 31 finished with error: "Host requires authentication"
+2024-10-11 21:40:23.452 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:23.452 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:23.524 [WARNING] stream 33 finished with error: "Host requires authentication"
+2024-10-11 21:40:23.644 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:23.644 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:23.718 [WARNING] stream 35 finished with error: "Host requires authentication"
+2024-10-11 21:40:23.822 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:23.822 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:23.900 [WARNING] stream 37 finished with error: "Host requires authentication"
+2024-10-11 21:40:24.019 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:24.019 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:24.093 [WARNING] stream 39 finished with error: "Host requires authentication"
+2024-10-11 21:40:24.196 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:24.196 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:24.270 [WARNING] stream 41 finished with error: "Host requires authentication"
+2024-10-11 21:40:24.374 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:24.374 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:24.452 [WARNING] stream 43 finished with error: "Host requires authentication"
+2024-10-11 21:40:24.572 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:24.572 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:24.629 [WARNING] stream 45 finished with error: "Host requires authentication"
+2024-10-11 21:40:25.336 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:25.336 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:25.409 [WARNING] stream 47 finished with error: "Host requires authentication"
+2024-10-11 21:40:26.051 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:26.051 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:26.110 [WARNING] stream 49 finished with error: "Host requires authentication"
+2024-10-11 21:40:26.544 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:26.544 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:26.617 [WARNING] stream 51 finished with error: "Host requires authentication"
+2024-10-11 21:40:26.721 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:26.721 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:26.811 [WARNING] stream 53 finished with error: "Host requires authentication"
+2024-10-11 21:40:26.919 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:26.919 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:26.995 [WARNING] stream 55 finished with error: "Host requires authentication"
+2024-10-11 21:40:27.543 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:27.543 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:27.616 [WARNING] stream 57 finished with error: "Host requires authentication"
+2024-10-11 21:40:27.923 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:27.923 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:27.996 [WARNING] stream 59 finished with error: "Host requires authentication"
+2024-10-11 21:40:30.782 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:30.782 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:30.859 [WARNING] stream 61 finished with error: "Host requires authentication"
+2024-10-11 21:40:36.924 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:36.924 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:36.997 [WARNING] stream 63 finished with error: "Host requires authentication"
+2024-10-11 21:40:37.996 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:37.996 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:38.069 [WARNING] stream 65 finished with error: "Host requires authentication"
+2024-10-11 21:40:38.773 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:38.773 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:38.851 [WARNING] stream 67 finished with error: "Host requires authentication"
+2024-10-11 21:40:39.393 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:39.393 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:39.467 [WARNING] stream 69 finished with error: "Host requires authentication"
+2024-10-11 21:40:39.915 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:39.915 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:40.004 [WARNING] stream 71 finished with error: "Host requires authentication"
+2024-10-11 21:40:40.108 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:40.108 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:40.165 [WARNING] stream 73 finished with error: "Host requires authentication"
+2024-10-11 21:40:40.318 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:40.318 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:40.397 [WARNING] stream 75 finished with error: "Host requires authentication"
+2024-10-11 21:40:40.564 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:40.564 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:40.621 [WARNING] stream 77 finished with error: "Host requires authentication"
+2024-10-11 21:40:42.799 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:42.799 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:42.875 [WARNING] stream 79 finished with error: "Host requires authentication"
+2024-10-11 21:40:43.511 [DEBUG] Checking Callsign from service. {
+    "callsign": "R9JAU"
+}
+
+2024-10-11 21:40:43.511 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%22%0A%7D%0A")
+2024-10-11 21:40:43.587 [WARNING] stream 81 finished with error: "Host requires authentication"
+2024-10-11 21:42:30.663 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 21:42:30.705 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 21:42:30.705 [DEBUG] Load from XML File...
+2024-10-11 21:42:30.709 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 21:42:30.715 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 21:42:30.991 [INFO] Upload modes:  209
+2024-10-11 21:42:30.994 [INFO] Upload bands:  25
+2024-10-11 21:42:34.482 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 21:42:34.539 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 21:42:38.909 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 21:42:38.986 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 22:28:33.341 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 22:28:33.649 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-11 22:28:48.238 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:28:48.311 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 22:28:49.352 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:28:49.425 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 22:28:49.794 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:28:49.867 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 22:28:49.972 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:28:50.045 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-11 22:28:50.133 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:28:50.206 [WARNING] stream 15 finished with error: "Host requires authentication"
+2024-10-11 22:33:35.324 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 22:33:35.355 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 22:33:35.371 [DEBUG] Load from XML File...
+2024-10-11 22:33:35.371 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 22:33:35.376 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 22:33:35.709 [INFO] Upload modes:  209
+2024-10-11 22:33:35.724 [INFO] Upload bands:  25
+2024-10-11 22:33:39.741 [DEBUG] QUrl("http://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 22:33:41.503 [DEBUG] QUrl("http://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 22:33:42.014 [DEBUG] QUrl("http://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 22:33:42.244 [DEBUG] QUrl("http://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 22:38:08.827 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 22:38:08.858 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 22:38:08.858 [DEBUG] Load from XML File...
+2024-10-11 22:38:08.873 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 22:38:08.879 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 22:38:09.274 [INFO] Upload bands:  25
+2024-10-11 22:38:09.284 [INFO] Upload modes:  209
+2024-10-11 22:38:13.207 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 22:38:13.223 [DEBUG] QList("User-Agent", "Content-Type", "Authorization")
+2024-10-11 22:38:13.311 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 22:40:18.070 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 22:40:18.097 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 22:40:18.097 [DEBUG] Load from XML File...
+2024-10-11 22:40:18.112 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 22:40:18.120 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 22:40:18.388 [INFO] Upload modes:  209
+2024-10-11 22:40:18.399 [INFO] Upload bands:  25
+2024-10-11 22:40:22.344 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 22:40:22.433 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-11 22:40:32.924 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:40:33.012 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-11 22:40:36.948 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU%22%0A%7D%0A")
+2024-10-11 22:40:37.037 [DEBUG] "{\"response\":{\"id\":102,\"status\":1}}"
+2024-10-11 22:40:40.282 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:40:40.372 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-11 22:40:43.366 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/M%22%0A%7D%0A")
+2024-10-11 22:40:43.455 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-11 22:59:43.728 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 22:59:43.754 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 22:59:43.754 [DEBUG] Load from XML File...
+2024-10-11 22:59:43.754 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 22:59:43.770 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 22:59:44.027 [INFO] Upload bands:  25
+2024-10-11 22:59:44.040 [INFO] Upload modes:  209
+2024-10-11 22:59:50.989 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:59:51.082 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 22:59:54.200 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:59:54.273 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 22:59:54.877 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:59:54.954 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 22:59:55.089 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:59:55.166 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 22:59:55.270 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:59:55.346 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-11 22:59:55.450 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:59:55.507 [WARNING] stream 15 finished with error: "Host requires authentication"
+2024-10-11 22:59:55.613 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:59:55.690 [WARNING] stream 17 finished with error: "Host requires authentication"
+2024-10-11 22:59:55.795 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R8JR%22%0A%7D%0A")
+2024-10-11 22:59:55.855 [WARNING] stream 19 finished with error: "Host requires authentication"
+2024-10-11 23:01:34.598 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 23:01:34.628 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 23:01:34.628 [DEBUG] Load from XML File...
+2024-10-11 23:01:34.643 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 23:01:34.650 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 23:01:34.919 [INFO] Upload bands:  25
+2024-10-11 23:01:34.932 [INFO] Upload modes:  209
+2024-10-11 23:01:41.183 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 23:01:41.246 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 23:01:42.928 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 23:01:42.985 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 23:01:43.593 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 23:01:43.650 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 23:01:44.039 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 23:01:44.129 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 23:01:44.249 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 23:01:44.415 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 23:01:44.506 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-11 23:01:44.520 [WARNING] stream 15 finished with error: "Host requires authentication"
+2024-10-11 23:01:44.593 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-11 23:01:44.650 [WARNING] stream 17 finished with error: "Host requires authentication"
+2024-10-11 23:27:45.452 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-11 23:27:45.494 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-11 23:27:45.494 [DEBUG] Load from XML File...
+2024-10-11 23:27:45.494 [INFO] Succesful loaded HamDefs.xml
+2024-10-11 23:27:45.505 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-11 23:27:45.781 [INFO] Upload modes:  209
+2024-10-11 23:27:45.788 [INFO] Upload bands:  25
+2024-10-11 23:28:08.494 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 23:28:08.568 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 23:39:43.000 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FM%22%0A%7D%0A")
+2024-10-11 23:39:43.214 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-11 23:41:23.571 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FP%22%0A%7D%0A")
+2024-10-11 23:41:23.646 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-11 23:41:24.599 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FP%22%0A%7D%0A")
+2024-10-11 23:41:24.677 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-11 23:41:24.813 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FP%22%0A%7D%0A")
+2024-10-11 23:41:24.886 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-11 23:41:24.944 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FP%22%0A%7D%0A")
+2024-10-11 23:41:25.022 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-11 23:41:25.142 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FP%22%0A%7D%0A")
+2024-10-11 23:41:25.216 [WARNING] stream 13 finished with error: "Host requires authentication"
+2024-10-12 00:58:41.876 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22%3A %22R9JAU%2FP%22%0A%7D%0A")
+2024-10-12 00:58:42.136 [WARNING] stream 1 finished with error: "Host requires authentication"
+2024-10-12 01:00:28.219 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-12 01:00:28.511 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-12 01:00:28.511 [DEBUG] Load from XML File...
+2024-10-12 01:00:28.521 [INFO] Succesful loaded HamDefs.xml
+2024-10-12 01:00:28.530 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-12 01:00:28.812 [INFO] Upload bands:  25
+2024-10-12 01:00:28.823 [INFO] Upload modes:  209
+2024-10-12 01:00:32.418 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-12 01:00:32.492 [WARNING] stream 5 finished with error: "Host requires authentication"
+2024-10-12 01:00:40.010 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-12 01:00:40.100 [WARNING] stream 7 finished with error: "Host requires authentication"
+2024-10-12 01:00:40.438 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-12 01:00:40.515 [WARNING] stream 9 finished with error: "Host requires authentication"
+2024-10-12 01:00:41.244 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-12 01:00:41.317 [WARNING] stream 11 finished with error: "Host requires authentication"
+2024-10-12 01:01:37.734 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-12 01:01:37.764 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-12 01:01:37.764 [DEBUG] Load from XML File...
+2024-10-12 01:01:37.764 [INFO] Succesful loaded HamDefs.xml
+2024-10-12 01:01:37.785 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-12 01:01:38.087 [INFO] Upload bands:  25
+2024-10-12 01:01:38.098 [INFO] Upload modes:  209
+2024-10-12 01:01:43.138 [DEBUG] QUrl("https://api.qso.su/method/v1/checkStatusCallsign?%7B%0A    %22callsign%22: %22R9JAU/P%22%0A%7D%0A")
+2024-10-12 01:01:43.228 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
+2024-10-12 01:05:37.704 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-12 01:05:37.741 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-12 01:05:37.741 [DEBUG] Load from XML File...
+2024-10-12 01:05:37.741 [INFO] Succesful loaded HamDefs.xml
+2024-10-12 01:05:37.748 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-12 01:05:38.032 [INFO] Upload bands:  25
+2024-10-12 01:05:38.042 [INFO] Upload modes:  209
+2024-10-13 21:34:53.866 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-13 21:34:54.083 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-13 21:34:54.097 [DEBUG] Load from XML File...
+2024-10-13 21:34:54.107 [INFO] Succesful loaded HamDefs.xml
+2024-10-13 21:34:54.114 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-13 21:35:05.613 [INFO] Upload modes:  209
+2024-10-13 21:35:06.565 [INFO] Upload bands:  25
+2024-10-13 21:35:06.889 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
+2024-10-13 21:35:07.537 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-13 21:35:13.347 [DEBUG] "{\"response\":{\"id\":102,\"status\":1}}"
+2024-10-13 21:35:17.837 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"
+2024-10-13 21:35:21.560 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-13 21:35:24.186 [DEBUG] "{\"response\":{\"id\":2262,\"status\":1}}"
+2024-10-13 21:36:57.066 [DEBUG] Get band and modulation list from QSO.SU
+2024-10-13 21:36:57.099 [DEBUG] Failed to upload band list and mode list from QSO.SU.
+2024-10-13 21:36:57.099 [DEBUG] Load from XML File...
+2024-10-13 21:36:57.100 [INFO] Succesful loaded HamDefs.xml
+2024-10-13 21:36:57.107 [INFO] QSOLogger v. 1.2.362  started.
+2024-10-13 21:36:57.402 [INFO] Upload modes:  209
+2024-10-13 21:36:58.384 [INFO] Upload bands:  25
+2024-10-13 21:37:02.600 [DEBUG] "{\"response\":{\"id\":2248,\"status\":1}}"
+2024-10-13 21:37:05.592 [DEBUG] "{\"response\":{\"id\":2247,\"status\":1}}"

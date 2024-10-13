@@ -73,7 +73,8 @@ void HttpApi::SendQso(QVariantList data) {
 }
 
 /* TEST */
-void HttpApi::getCallsign() {
+void HttpApi::getCallsign()
+{
   if (accessToken.length() == 0) {
       emit emptyToken();
       return;
@@ -119,7 +120,8 @@ void HttpApi::getCallsign() {
 
 //--------------------------------------------------------------------------------------------------------------------
 
-void HttpApi::addCallsign(QVariantList data) {
+void HttpApi::addCallsign(QVariantList data)
+{
     if (accessToken.length() == 0) {
         emit emptyToken();
         return;
@@ -129,7 +131,7 @@ void HttpApi::addCallsign(QVariantList data) {
         m_reply->deleteLater();
         m_reply = nullptr;
     }
-    QNetworkRequest request((QUrl("https://api.qso.su/method/v1/addCallsign")));
+    QNetworkRequest request(QUrl("https://api.qso.su/method/v1/addCallsign"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
@@ -160,7 +162,7 @@ void HttpApi::addCallsign(QVariantList data) {
     });
 }
 //--------------------------------------------------------------------------------------------------------------------
-
+/*
 void HttpApi::checkStatusCallsign(QString callsign)
 {
     if (accessToken.length() == 0) {
@@ -175,6 +177,7 @@ void HttpApi::checkStatusCallsign(QString callsign)
 
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/checkStatusCallsign"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -184,6 +187,7 @@ void HttpApi::checkStatusCallsign(QString callsign)
     QJsonDocument doc(body);
     QByteArray jsonBA = doc.toJson();
     qDebug().noquote() << "Checking Callsign from service." << jsonBA;
+
 
     QNetworkReply *reply = m_manager.get(request);
     //QNetworkReply *reply = m_manager.get(request, jsonBA);
@@ -205,8 +209,60 @@ void HttpApi::checkStatusCallsign(QString callsign)
         reply->deleteLater();
     });
 }
+*/
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::checkStatusCallsign(QString callsign)
+{
+    if (accessToken.length() == 0) {
+        emit emptyToken();
+        return;
+    }
+    if (m_reply) {
+        m_reply->abort();
+        m_reply->deleteLater();
+        m_reply = nullptr;
+    }
+
+    QJsonObject body;
+    body["callsign"] = callsign;
+    QJsonDocument doc(body);
+
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/checkStatusCallsign"));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QByteArray postDataByteArray = doc.toJson();
+    QBuffer *buff = new QBuffer;
+    buff->setData(postDataByteArray);
+    buff->open(QIODevice::ReadOnly);
+
+    QNetworkReply *reply = m_manager.sendCustomRequest(request, "GET", buff);
+    buff->setParent(reply);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            qDebug() << data;
+
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+            if (jsonDocument.object().contains("error")) {
+                QJsonObject errorObject = jsonDocument["error"].toObject();
+                qDebug() << "ERROR:" << errorObject["name"].toString() << errorObject["message"].toString();
+                return;
+            }
+            QJsonObject response = jsonDocument["response"].toObject();
+            QJsonValue callsign_status = response["status"].toInt();
+            emit callsignStatus(callsign_status.toInt());
+        }
+        reply->deleteLater();
+    });
+}
 
 //--------------------------------------------------------------------------------------------------------------------
+
 
 void HttpApi::getListSubmodeDropDown()
 {
