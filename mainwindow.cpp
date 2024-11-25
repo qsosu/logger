@@ -184,9 +184,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(api, SIGNAL(modesUpdated()), this, SLOT(setModesList()));
   connect(api, SIGNAL(bandsUpdated()), this, SLOT(setBandsList()));
 
-  LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
-
   qInfo() << "QSOLogger v." << VERSION << " started.";
+  LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
 }
 
 MainWindow::~MainWindow() {
@@ -416,9 +415,13 @@ void MainWindow::SaveQso()
   //QDate qsoDate = QDate::fromString(ui->dateInput->text(), "yyyy-MM-dd");
   QDate qsoDate = ui->dateInput->date();
   newRecord.setValue("QSO_DATE", qsoDate.toString("yyyyMMdd"));
-
   QTime qsoTime = QTime::fromString(ui->timeInput->text(), "hh:mm:ss");
-  QString datetime = ui->dateInput->text() + "T" + ui->timeInput->text();
+
+  QString date = qsoDate.toString("yyyy-MM-dd");
+  QString time = qsoTime.toString("hh:mm:ss");
+  QString datetime = date + "T" + time;
+
+
   QString qsoTimeFormated = qsoTime.toString("hhmmss");
   newRecord.setValue("TIME_ON", qsoTimeFormated);
   newRecord.setValue("TIME_OFF", qsoTimeFormated);
@@ -448,10 +451,12 @@ void MainWindow::SaveQso()
   newRecord.setValue("CNTY", cnty);
   newRecord.setValue("COMMENT", ui->commentInput->text());
   newRecord.setValue("sync_state", 0);
-  QString my_cnty = ui->qthlocEdit->text().toUpper();
-  newRecord.setValue("MY_GRIDSQUARE", my_cnty);
-  QString my_gridsquare = ui->rdaEdit->text().toUpper();
-  newRecord.setValue("MY_CNTY", my_gridsquare);
+
+  //BugFix Added my_gridsquare and my_cnty
+  QString my_gridsquare = ui->qthlocEdit->text().toUpper();
+  newRecord.setValue("MY_GRIDSQUARE", my_gridsquare);
+  QString my_cnty = ui->rdaEdit->text().toUpper();
+  newRecord.setValue("MY_CNTY", my_cnty);
 
   if (RecordsModel->insertRecord(-1, newRecord)) {
       RecordsModel->submitAll();
@@ -543,6 +548,7 @@ void MainWindow::ScrollRecordsToBottom() {
 void MainWindow::onCallsignsUpdated() {
   getCallsigns();
 }
+
 
 void MainWindow::onStationCallsignChanged() {
   auto data = ui->stationCallsignCombo->itemData(ui->stationCallsignCombo->currentIndex()).value<QList<QVariant>>();
@@ -755,17 +761,13 @@ void MainWindow::readXmlfile()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
 void MainWindow::LoadHamDefs()
 {
     qDebug() << "Get band and modulation list from QSO.SU";
     api->getListBand(); //Загрузка диапазонов
     api->getListSubmodeDropDown(); //Загрузка списков модуляции
 
-    if(api->modulations.count() == 0 && api->bands.count() == 0)
+    if(api->bands.count() == 0)
     {
         qDebug() << "Failed to upload band list and mode list from QSO.SU.";
         qDebug() << "Load from XML File...";

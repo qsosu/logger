@@ -1,11 +1,8 @@
 #include "httpapi.h"
-#include "mainwindow.h"
 
 
 #define DEBUG
 
-
-class MainWindow;
 
 HttpApi::HttpApi(QSqlDatabase db, QString accessToken, QObject *parent)
   : QObject{parent}
@@ -13,6 +10,7 @@ HttpApi::HttpApi(QSqlDatabase db, QString accessToken, QObject *parent)
   this->db = db;
   this->accessToken = accessToken;
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void HttpApi::SendQso(QVariantList data) {
     if (accessToken.length() == 0) {
@@ -71,8 +69,8 @@ void HttpApi::SendQso(QVariantList data) {
        reply->deleteLater();
     });
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-/* TEST */
 void HttpApi::getCallsign()
 {
   if (accessToken.length() == 0) {
@@ -117,7 +115,6 @@ void HttpApi::getCallsign()
     reply->deleteLater();
   });
 }
-
 //--------------------------------------------------------------------------------------------------------------------
 
 void HttpApi::addCallsign(QVariantList data)
@@ -131,6 +128,7 @@ void HttpApi::addCallsign(QVariantList data)
         m_reply->deleteLater();
         m_reply = nullptr;
     }
+
     QNetworkRequest request(QUrl("https://api.qso.su/method/v1/addCallsign"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -156,60 +154,11 @@ void HttpApi::addCallsign(QVariantList data)
 
     QNetworkReply *reply = m_manager.post(request, jsonBA);
     connect(reply, &QNetworkReply::finished, this, [=]() {
-        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        qDebug() << "Network reply finished. Code:" << status_code.toInt();
-        reply->deleteLater();
-    });
+    QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    qDebug() << "Network reply finished. Code:" << status_code.toInt();
+    reply->deleteLater();
+   });
 }
-//--------------------------------------------------------------------------------------------------------------------
-/*
-void HttpApi::checkStatusCallsign(QString callsign)
-{
-    if (accessToken.length() == 0) {
-        emit emptyToken();
-        return;
-    }
-    if (m_reply) {
-        m_reply->abort();
-        m_reply->deleteLater();
-        m_reply = nullptr;
-    }
-
-    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/checkStatusCallsign"));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
-    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
-
-    QJsonObject body;
-    body["callsign"] = callsign;
-
-    QJsonDocument doc(body);
-    QByteArray jsonBA = doc.toJson();
-    qDebug().noquote() << "Checking Callsign from service." << jsonBA;
-
-
-    QNetworkReply *reply = m_manager.get(request);
-    //QNetworkReply *reply = m_manager.get(request, jsonBA);
-    connect(reply, &QNetworkReply::finished, this, [=]() {
-        if (reply->error() == QNetworkReply::NoError) {
-            QByteArray data = reply->readAll();
-            qDebug() << data;
-
-            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
-            if (jsonDocument.object().contains("error")) {
-                QJsonObject errorObject = jsonDocument["error"].toObject();
-                qDebug() << "ERROR:" << errorObject["name"].toString() << errorObject["message"].toString();
-                return;
-            }
-            QJsonObject response = jsonDocument["response"].toObject();
-            QJsonValue callsign_status = response["status"].toInt();
-            emit callsignStatus(callsign_status.toInt());
-        }
-        reply->deleteLater();
-    });
-}
-*/
 //--------------------------------------------------------------------------------------------------------------------
 
 void HttpApi::checkStatusCallsign(QString callsign)
@@ -263,7 +212,6 @@ void HttpApi::checkStatusCallsign(QString callsign)
 
 //--------------------------------------------------------------------------------------------------------------------
 
-
 void HttpApi::getListSubmodeDropDown()
 {
     if (accessToken.length() == 0) {
@@ -299,7 +247,6 @@ void HttpApi::getListSubmodeDropDown()
         reply->deleteLater();
     });
 }
-
 //--------------------------------------------------------------------------------------------------------------------
 
 void HttpApi::getListBand()
