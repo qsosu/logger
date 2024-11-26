@@ -31,11 +31,13 @@ public:
   void checkStatusCallsign(QString callsign);
   void getListSubmodeDropDown();
   void getListBand();
+  void loadHamDefs();
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;
   QStringList modulations;
   QStringList bands;
+  QByteArray XMLdata;
 
 
 private:
@@ -73,6 +75,9 @@ signals:
   void error(QNetworkReply::NetworkError);
   void modesUpdated();
   void bandsUpdated();
+  void HamDefsUploaded();
+  void HamDefsError();
+
 };
 
 #endif // HTTPAPI_H

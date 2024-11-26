@@ -43,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
       }
   });
 
-
   //ui->modeCombo->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
   //ui->modeCombo->setMaxVisibleItems(130);
 
@@ -159,7 +158,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->saveQsoButton, SIGNAL(clicked()), this, SLOT(SaveQso()));
   connect(ui->refreshButton, &QPushButton::clicked, this, [=] {
       RefreshRecords();
-      ScrollRecordsToBottom();
+      //ScrollRecordsToBottom();
+      ScrollRecordsToTop();
   });
   connect(ui->bandCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(fillDefaultFreq()));
   connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customMenuRequested(QPoint)));
@@ -181,11 +181,18 @@ MainWindow::MainWindow(QWidget *parent)
   getCallsigns();
   fillDefaultFreq();
 
-  connect(api, SIGNAL(modesUpdated()), this, SLOT(setModesList()));
-  connect(api, SIGNAL(bandsUpdated()), this, SLOT(setBandsList()));
+  //connect(api, SIGNAL(modesUpdated()), this, SLOT(setModesList()));
+  //connect(api, SIGNAL(bandsUpdated()), this, SLOT(setBandsList()));
+  connect(api, SIGNAL(HamDefsUploaded()), this, SLOT(HamDefsUploaded()));
+  connect(api, SIGNAL(HamDefsError()), this, SLOT(HamDefsError()));
+
 
   qInfo() << "QSOLogger v." << VERSION << " started.";
   LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
+
+  ui->tableView->setSortingEnabled(true);
+  ui->tableView->sortByColumn(0, Qt::DescendingOrder);
+  ui->tableView->selectRow(0);
 }
 
 MainWindow::~MainWindow() {
@@ -303,6 +310,7 @@ void MainWindow::InitRecordsTable() {
 
   //RecordsModel->setEditStrategy(QAbstractItemView::NoEditTriggers);
 
+  RecordsModel->setQuery("SELECT * FROM RECORDS ORDER BY ID");
   RecordsModel->setHeaderData(8, Qt::Horizontal, tr("Позывной"));
   RecordsModel->setHeaderData(9, Qt::Horizontal, tr("Дата"));
   RecordsModel->setHeaderData(10, Qt::Horizontal, tr("Время нач."));
@@ -318,6 +326,9 @@ void MainWindow::InitRecordsTable() {
   RecordsModel->setHeaderData(20, Qt::Horizontal, tr("Район"));
   RecordsModel->setHeaderData(21, Qt::Horizontal, tr("Коммент."));
   RecordsModel->setHeaderData(22, Qt::Horizontal, tr("Синхр."));
+
+  RecordsModel->setSort(0, Qt::DescendingOrder);
+  RecordsModel->sort(0, Qt::DescendingOrder);
 
   ui->tableView->setModel(RecordsModel);
   ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -417,6 +428,7 @@ void MainWindow::SaveQso()
   newRecord.setValue("QSO_DATE", qsoDate.toString("yyyyMMdd"));
   QTime qsoTime = QTime::fromString(ui->timeInput->text(), "hh:mm:ss");
 
+  //BugFix
   QString date = qsoDate.toString("yyyy-MM-dd");
   QString time = qsoTime.toString("hh:mm:ss");
   QString datetime = date + "T" + time;
@@ -427,14 +439,14 @@ void MainWindow::SaveQso()
   newRecord.setValue("TIME_OFF", qsoTimeFormated);
 
   //QString band = ui->bandCombo->currentText();
-  QString band = getBandValue(ui->bandCombo->currentIndex());
+  QString band = getBandValue(ui->bandCombo->currentIndex()); //BugFix
   newRecord.setValue("BAND", band);
 
   unsigned long long freqHz = static_cast<unsigned long long>(ui->freqInput->text().toDouble() * 1000000);
   newRecord.setValue("FREQ", freqHz);
 
   //QString mode = ui->modeCombo->currentText();
-  QString mode = getModeValue(ui->modeCombo->currentIndex());
+  QString mode = getModeValue(ui->modeCombo->currentIndex()); //BugFix
   newRecord.setValue("MODE", mode);
 
   QString rsts = ui->rstsInput->text();
@@ -455,6 +467,7 @@ void MainWindow::SaveQso()
   //BugFix Added my_gridsquare and my_cnty
   QString my_gridsquare = ui->qthlocEdit->text().toUpper();
   newRecord.setValue("MY_GRIDSQUARE", my_gridsquare);
+
   QString my_cnty = ui->rdaEdit->text().toUpper();
   newRecord.setValue("MY_CNTY", my_cnty);
 
@@ -469,7 +482,8 @@ void MainWindow::SaveQso()
       api->SendQso(data);
 
       RefreshRecords();
-      ScrollRecordsToBottom();
+      //ScrollRecordsToBottom();
+      ScrollRecordsToTop();
       ClearQso();
 
       ui->callInput->setFocus();
@@ -506,7 +520,8 @@ void MainWindow::RemoveQSOs(QModelIndexList indexes) {
         db.commit();
 
         RefreshRecords();
-        ScrollRecordsToBottom();
+        //ScrollRecordsToBottom(); //BugFix
+        ScrollRecordsToTop();
     } else {
         return;
     }
@@ -545,6 +560,13 @@ void MainWindow::ScrollRecordsToBottom() {
     ui->tableView->scrollToBottom();
 }
 
+void MainWindow::ScrollRecordsToTop() {
+    ui->tableView->resizeColumnsToContents();
+    ui->tableView->horizontalHeader()->setStretchLastSection(true);
+    ui->tableView->selectRow(0);
+    ui->tableView->scrollToTop();
+}
+
 void MainWindow::onCallsignsUpdated() {
   getCallsigns();
 }
@@ -563,7 +585,8 @@ void MainWindow::onStationCallsignChanged() {
 
   SetRecordsFilter(userData.callsign_id);
   RefreshRecords();
-  ScrollRecordsToBottom();
+  //ScrollRecordsToBottom(); //BugFix
+  ScrollRecordsToTop();
 }
 
 void MainWindow::onOperatorChanged() {
@@ -621,7 +644,8 @@ void MainWindow::onUdpLogged() {
         api->SendQso(data);
 
         RefreshRecords();
-        ScrollRecordsToBottom();
+        //ScrollRecordsToBottom(); //BugFix
+        ScrollRecordsToTop();
         ClearQso();
       }
   }
@@ -713,7 +737,7 @@ void MainWindow::readXmlfile()
         qDebug() << "Error open HamDefs.xml";
         return;
     }
-    qInfo() << "Succesful loaded HamDefs.xml";
+    qDebug() << "Succesful open HamDefs.xml";
 
     if(!HamDefs.setContent(&xmlFile))
     {
@@ -722,7 +746,6 @@ void MainWindow::readXmlfile()
     }
 
     QDomElement root = HamDefs.firstChildElement();
-
     QDomNodeList BandNames = HamDefs.elementsByTagName("band");
 
     for(int i = 0; i < BandNames.count(); i++)
@@ -763,16 +786,11 @@ void MainWindow::readXmlfile()
 
 void MainWindow::LoadHamDefs()
 {
-    qDebug() << "Get band and modulation list from QSO.SU";
-    api->getListBand(); //Загрузка диапазонов
-    api->getListSubmodeDropDown(); //Загрузка списков модуляции
+    qDebug() << "Upload HamDefs.xml from QSO.SU";
+    //api->getListBand(); //Загрузка диапазонов
+    //api->getListSubmodeDropDown(); //Загрузка списков модуляции
 
-    if(api->bands.count() == 0)
-    {
-        qDebug() << "Failed to upload band list and mode list from QSO.SU.";
-        qDebug() << "Load from XML File...";
-        readXmlfile();
-    }
+    api->loadHamDefs(); //Попытка загрузки HamDefs.xml с сайта
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -790,6 +808,30 @@ void MainWindow::setBandsList()
     if(api->bands.count() > 0) ui->bandCombo->addItems(api->bands);
     qInfo() << "Upload bands: " << api->bands.count();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::HamDefsUploaded()
+{
+    ui->bandCombo->clear();
+    ui->modeCombo->clear();
+
+    QDomDocument HamDefsDoc;
+    HamDefsDoc.setContent(api->XMLdata);
+
+    QFile file("HamDefs.xml");
+    file.open(QIODevice::WriteOnly);
+    QTextStream out(&file);
+    HamDefsDoc.save(out, 0);
+    readXmlfile();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::HamDefsError()
+{
+    qDebug() << "Open HamDefs.xml flom local file...";
+    readXmlfile();
+}
+
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 double MainWindow::BandToDefaultFreq(QString band)

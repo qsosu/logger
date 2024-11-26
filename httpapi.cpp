@@ -286,6 +286,27 @@ void HttpApi::getListBand()
 }
 //--------------------------------------------------------------------------------------------------------------------
 
+void HttpApi::loadHamDefs()
+{
+    QNetworkRequest request((QUrl("https://api.qso.su/HamDefs.xml")));
+    QNetworkReply *reply = m_manager.get(request);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            qDebug() << "Succesful uploaded HamDefs.xml size:" << data.size() << "bytes";
+            XMLdata.append(data);
+            emit HamDefsUploaded();
+        } else {
+            //emit error(reply->error());
+            qDebug() << "Error upload HamDefs.xml...";
+            emit HamDefsError();
+        }
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+
 
 
 

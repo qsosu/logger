@@ -88,6 +88,7 @@ private:
   void getCallsigns();
   void InitRecordsTable();
   void ScrollRecordsToBottom();
+  void ScrollRecordsToTop();
   void FindCallDataQrzru();
   void ClearCallbookFields();
   void RemoveQSOs(QModelIndexList indexes);
@@ -121,5 +122,7 @@ private slots:
   void LoadHamDefs();
   void setModesList();
   void setBandsList();
+  void HamDefsUploaded();
+  void HamDefsError();
 };
 #endif // MAINWINDOW_H

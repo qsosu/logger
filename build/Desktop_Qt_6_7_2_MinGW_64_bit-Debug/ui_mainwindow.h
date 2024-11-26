@@ -482,6 +482,9 @@ public:
 
         tableView = new QTableView(centralwidget);
         tableView->setObjectName("tableView");
+        tableView->setSortingEnabled(false);
+        tableView->verticalHeader()->setVisible(true);
+        tableView->verticalHeader()->setProperty("showSortIndicator", QVariant(false));
 
         verticalLayout_2->addWidget(tableView);
 

@@ -50,7 +50,9 @@ constexpr auto qt_meta_stringdata_CLASSHttpApiENDCLASS = QtMocHelpers::stringDat
     "error",
     "QNetworkReply::NetworkError",
     "modesUpdated",
-    "bandsUpdated"
+    "bandsUpdated",
+    "HamDefsUploaded",
+    "HamDefsError"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -63,25 +65,27 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSHttpApiENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      13,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      11,       // signalCount
+      13,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   80,    2, 0x06,    1 /* Public */,
-       3,    0,   81,    2, 0x06,    2 /* Public */,
-       4,    0,   82,    2, 0x06,    3 /* Public */,
-       5,    0,   83,    2, 0x06,    4 /* Public */,
-       6,    0,   84,    2, 0x06,    5 /* Public */,
-       7,    1,   85,    2, 0x06,    6 /* Public */,
-       8,    1,   88,    2, 0x06,    8 /* Public */,
-       9,    1,   91,    2, 0x06,   10 /* Public */,
-      10,    1,   94,    2, 0x06,   12 /* Public */,
-      12,    0,   97,    2, 0x06,   14 /* Public */,
-      13,    0,   98,    2, 0x06,   15 /* Public */,
+       1,    0,   92,    2, 0x06,    1 /* Public */,
+       3,    0,   93,    2, 0x06,    2 /* Public */,
+       4,    0,   94,    2, 0x06,    3 /* Public */,
+       5,    0,   95,    2, 0x06,    4 /* Public */,
+       6,    0,   96,    2, 0x06,    5 /* Public */,
+       7,    1,   97,    2, 0x06,    6 /* Public */,
+       8,    1,  100,    2, 0x06,    8 /* Public */,
+       9,    1,  103,    2, 0x06,   10 /* Public */,
+      10,    1,  106,    2, 0x06,   12 /* Public */,
+      12,    0,  109,    2, 0x06,   14 /* Public */,
+      13,    0,  110,    2, 0x06,   15 /* Public */,
+      14,    0,  111,    2, 0x06,   16 /* Public */,
+      15,    0,  112,    2, 0x06,   17 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -93,6 +97,8 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSHttpApiENDCLASS[] = {
     QMetaType::Void, QMetaType::Int,    2,
     QMetaType::Void, QMetaType::Int,    2,
     QMetaType::Void, 0x80000000 | 11,    2,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -133,6 +139,10 @@ Q_CONSTINIT const QMetaObject HttpApi::staticMetaObject = { {
         // method 'modesUpdated'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'bandsUpdated'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'HamDefsUploaded'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'HamDefsError'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -155,6 +165,8 @@ void HttpApi::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 8: _t->error((*reinterpret_cast< std::add_pointer_t<QNetworkReply::NetworkError>>(_a[1]))); break;
         case 9: _t->modesUpdated(); break;
         case 10: _t->bandsUpdated(); break;
+        case 11: _t->HamDefsUploaded(); break;
+        case 12: _t->HamDefsError(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -247,6 +259,20 @@ void HttpApi::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
                 return;
             }
         }
+        {
+            using _t = void (HttpApi::*)();
+            if (_t _q_method = &HttpApi::HamDefsUploaded; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+                *result = 11;
+                return;
+            }
+        }
+        {
+            using _t = void (HttpApi::*)();
+            if (_t _q_method = &HttpApi::HamDefsError; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+                *result = 12;
+                return;
+            }
+        }
     }
 }
 
@@ -269,13 +295,13 @@ int HttpApi::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 13;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 13;
     }
     return _id;
 }
@@ -348,5 +374,17 @@ void HttpApi::modesUpdated()
 void HttpApi::bandsUpdated()
 {
     QMetaObject::activate(this, &staticMetaObject, 10, nullptr);
+}
+
+// SIGNAL 11
+void HttpApi::HamDefsUploaded()
+{
+    QMetaObject::activate(this, &staticMetaObject, 11, nullptr);
+}
+
+// SIGNAL 12
+void HttpApi::HamDefsError()
+{
+    QMetaObject::activate(this, &staticMetaObject, 12, nullptr);
 }
 QT_WARNING_POP
