@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent)
   //BugFix Только латинские символы и цифры
   ui->callInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^[a-zA-Z0-9/]*$"), this));
 
+  ui->bandCombo->blockSignals(true);
+  ui->modeCombo->blockSignals(true);
+
   //ui->qthlocEdit->setReadOnly(true);
   //ui->rdaEdit->setReadOnly(true);
   ui->actionSync->setEnabled(false);
@@ -46,11 +49,6 @@ MainWindow::MainWindow(QWidget *parent)
   //ui->modeCombo->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
   //ui->modeCombo->setMaxVisibleItems(130);
 
-  ui->modeCombo->setEditable(true); // включаем встроенный QLineEdit
-  ui->modeCombo->setInsertPolicy(QComboBox::NoInsert); // отключаем вставку новых элементов из QLineEdit
-  ui->modeCombo->completer()->setCompletionMode(QCompleter::CompletionMode::PopupCompletion); // устанавливаем модель автодополнения (по умолчанию стоит InlineCompletition)
-  ui->modeCombo->completer()->setModelSorting(QCompleter::UnsortedModel);
-
   //Проверка использования и версий SSL
   //qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
 
@@ -60,6 +58,11 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionSettings, &QAction::triggered, this, [=]() {
       settings->show();
   });
+
+  ui->modeCombo->setEditable(true); // включаем встроенный QLineEdit
+  ui->modeCombo->setInsertPolicy(QComboBox::NoInsert); // отключаем вставку новых элементов из QLineEdit
+  ui->modeCombo->completer()->setCompletionMode(QCompleter::CompletionMode::PopupCompletion); // устанавливаем модель автодополнения (по умолчанию стоит InlineCompletition)
+  ui->modeCombo->completer()->setModelSorting(QCompleter::UnsortedModel);
 
   qApp->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
 
@@ -181,16 +184,13 @@ MainWindow::MainWindow(QWidget *parent)
   getCallsigns();
   fillDefaultFreq();
 
-  //connect(api, SIGNAL(modesUpdated()), this, SLOT(setModesList()));
-  //connect(api, SIGNAL(bandsUpdated()), this, SLOT(setBandsList()));
   connect(api, SIGNAL(HamDefsUploaded()), this, SLOT(HamDefsUploaded()));
   connect(api, SIGNAL(HamDefsError()), this, SLOT(HamDefsError()));
-
 
   qInfo() << "QSOLogger v." << VERSION << " started.";
   LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
 
-  ui->tableView->setSortingEnabled(true);
+  //ui->tableView->setSortingEnabled(true);
   ui->tableView->sortByColumn(0, Qt::DescendingOrder);
   ui->tableView->selectRow(0);
 }
@@ -327,8 +327,8 @@ void MainWindow::InitRecordsTable() {
   RecordsModel->setHeaderData(21, Qt::Horizontal, tr("Коммент."));
   RecordsModel->setHeaderData(22, Qt::Horizontal, tr("Синхр."));
 
-  RecordsModel->setSort(0, Qt::DescendingOrder);
-  RecordsModel->sort(0, Qt::DescendingOrder);
+  //RecordsModel->setSort(0, Qt::DescendingOrder);
+  //RecordsModel->sort(0, Qt::DescendingOrder);
 
   ui->tableView->setModel(RecordsModel);
   ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -711,6 +711,7 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
         api->SendQso(data);
     }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::onQsoSynced(int dbid) {
     QSqlQuery query(db);
@@ -718,13 +719,6 @@ void MainWindow::onQsoSynced(int dbid) {
         RefreshRecords();
     }
 }
-
-void MainWindow::on_modeCombo_currentIndexChanged(int index)
-{
-    //ui->rstrInput->setText(modeList[index].mode_report);
-    //ui->rstsInput->setText(modeList[index].mode_report);
-}
-
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::readXmlfile()
@@ -781,6 +775,10 @@ void MainWindow::readXmlfile()
             ui->modeCombo->addItem(Mode.attribute("mode_name"));
         }
     }
+    ui->bandCombo->blockSignals(false);
+    ui->modeCombo->blockSignals(false);
+    ui->bandCombo->setCurrentText(settings->lastBand);
+    ui->modeCombo->setCurrentText(settings->lastMode);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -864,5 +862,21 @@ QString MainWindow::getModeValue(int index)
             return modeList[j].mode_value;
     }
     return "";
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::on_bandCombo_currentTextChanged(const QString &arg1)
+{
+    settings->lastBand = arg1;
+    settings->saveForm();
+    //qDebug() << "Band changed " << settings->lastBand;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::on_modeCombo_currentTextChanged(const QString &arg1)
+{
+    settings->lastMode = arg1;
+    settings->saveForm();
+    //qDebug() << "Mode changed " << settings->lastMode;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

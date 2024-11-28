@@ -10,6 +10,7 @@
 #define UI_CALLSIGNS_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
@@ -40,6 +41,9 @@ public:
         if (Callsigns->objectName().isEmpty())
             Callsigns->setObjectName("Callsigns");
         Callsigns->resize(655, 296);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/resources/images/icon32.ico"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        Callsigns->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(Callsigns);
         verticalLayout->setObjectName("verticalLayout");
         callTable = new QTableView(Callsigns);

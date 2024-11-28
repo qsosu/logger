@@ -5,5 +5,9 @@
         <file>resources/images/arrows-rotate.svg</file>
         <file>resources/images/arrow-rotate-left.svg</file>
         <file>resources/images/logo_mini.svg</file>
+        <file>resources/images/icon.svg</file>
+        <file>resources/images/icon16.ico</file>
+        <file>resources/images/icon32.ico</file>
+        <file>resources/images/icon48.ico</file>
     </qresource>
 </RCC>

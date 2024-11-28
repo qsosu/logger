@@ -58,6 +58,11 @@ void Settings::read() {
     fontSize = qs->value("fontsize", 10).toInt();
     qs->endGroup();
 
+    qs->beginGroup("FORM");
+    lastBand = qs->value("band", "").toString();
+    lastMode = qs->value("mode", "").toString();
+    qs->endGroup();
+
     display();
 }
 
@@ -97,6 +102,10 @@ void Settings::createDefaultFile() {
     stream << Qt::endl;
     stream << "[VIEW]" << Qt::endl;
     stream << "fontsize = 10" << Qt::endl;
+    stream << Qt::endl;
+    stream << "[FORM]" << Qt::endl;
+    stream << "band = 20M" << Qt::endl;
+    stream << "mode = USB" << Qt::endl;
 
     newFile.close();
 }
@@ -129,4 +138,13 @@ void Settings::save() {
 
     qs->sync();
     emit SettingsChanged();
+}
+
+void Settings::saveForm()
+{
+    qs->beginGroup("FORM");
+    qs->setValue("band", lastBand);
+    qs->setValue("mode", lastMode);
+    qs->endGroup();
+    qs->sync();
 }

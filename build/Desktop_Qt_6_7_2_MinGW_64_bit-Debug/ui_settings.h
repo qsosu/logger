@@ -10,6 +10,7 @@
 #define UI_SETTINGS_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
@@ -71,6 +72,9 @@ public:
         if (Settings->objectName().isEmpty())
             Settings->setObjectName("Settings");
         Settings->resize(608, 374);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/resources/images/icon32.ico"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        Settings->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(Settings);
         verticalLayout->setObjectName("verticalLayout");
         groupBox_2 = new QGroupBox(Settings);

@@ -120,6 +120,9 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->resize(955, 595);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/resources/images/icon32.ico"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        MainWindow->setWindowIcon(icon);
         actionSettings = new QAction(MainWindow);
         actionSettings->setObjectName("actionSettings");
         actionCallsigns = new QAction(MainWindow);
@@ -444,9 +447,9 @@ public:
         saveQsoButton = new QPushButton(groupBox);
         saveQsoButton->setObjectName("saveQsoButton");
         saveQsoButton->setMinimumSize(QSize(0, 26));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/resources/images/check.svg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        saveQsoButton->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/resources/images/check.svg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        saveQsoButton->setIcon(icon1);
         saveQsoButton->setIconSize(QSize(15, 15));
 
         horizontalLayout_7->addWidget(saveQsoButton);
@@ -454,18 +457,18 @@ public:
         clearQsoButton = new QPushButton(groupBox);
         clearQsoButton->setObjectName("clearQsoButton");
         clearQsoButton->setMinimumSize(QSize(0, 26));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/resources/images/arrow-rotate-left.svg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        clearQsoButton->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/resources/images/arrow-rotate-left.svg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        clearQsoButton->setIcon(icon2);
         clearQsoButton->setIconSize(QSize(15, 15));
 
         horizontalLayout_7->addWidget(clearQsoButton);
 
         refreshButton = new QPushButton(groupBox);
         refreshButton->setObjectName("refreshButton");
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/resources/images/arrows-rotate.svg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        refreshButton->setIcon(icon2);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/resources/images/arrows-rotate.svg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        refreshButton->setIcon(icon3);
         refreshButton->setIconSize(QSize(15, 15));
 
         horizontalLayout_7->addWidget(refreshButton);

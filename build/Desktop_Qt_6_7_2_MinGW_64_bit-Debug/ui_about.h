@@ -39,7 +39,7 @@ public:
         About->setMinimumSize(QSize(420, 210));
         About->setBaseSize(QSize(420, 210));
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/resources/images/logo_mini.svg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        icon.addFile(QString::fromUtf8(":/resources/images/icon32.ico"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         About->setWindowIcon(icon);
         label = new QLabel(About);
         label->setObjectName("label");

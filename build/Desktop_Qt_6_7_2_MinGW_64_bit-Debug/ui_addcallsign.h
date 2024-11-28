@@ -58,7 +58,7 @@ public:
         Addcallsign->setMinimumSize(QSize(500, 280));
         Addcallsign->setMaximumSize(QSize(500, 280));
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/resources/images/logo_mini.svg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        icon.addFile(QString::fromUtf8(":/resources/images/icon32.ico"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         Addcallsign->setWindowIcon(icon);
         gridLayout = new QGridLayout(Addcallsign);
         gridLayout->setObjectName("gridLayout");
@@ -102,7 +102,7 @@ public:
 
         validity_stop = new QDateEdit(groupBox);
         validity_stop->setObjectName("validity_stop");
-        validity_stop->setDateTime(QDateTime(QDate(2023, 12, 31), QTime(9, 0, 0)));
+        validity_stop->setDateTime(QDateTime(QDate(2023, 12, 31), QTime(4, 0, 0)));
         validity_stop->setCalendarPopup(true);
 
         gridLayout_2->addWidget(validity_stop, 4, 1, 1, 1);
@@ -148,7 +148,7 @@ public:
 
         validity_start = new QDateEdit(groupBox);
         validity_start->setObjectName("validity_start");
-        validity_start->setDateTime(QDateTime(QDate(2023, 12, 31), QTime(9, 0, 0)));
+        validity_start->setDateTime(QDateTime(QDate(2023, 12, 31), QTime(4, 0, 0)));
         validity_start->setCalendarPopup(true);
 
         gridLayout_2->addWidget(validity_start, 4, 0, 1, 1);

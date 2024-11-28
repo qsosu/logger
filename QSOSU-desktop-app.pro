@@ -55,7 +55,7 @@ FORMS += \
 
 INCLUDEPATH += thirdparty/libmaia
 
-RC_ICONS += resources/images/logo_mini.ico
+win32:RC_ICONS = $$PWD/resources/images/icon32.ico
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

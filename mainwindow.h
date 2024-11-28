@@ -118,11 +118,12 @@ private slots:
   void fillDefaultFreq();
   void customMenuRequested(QPoint pos);
   void onQsoSynced(int dbid);
-  void on_modeCombo_currentIndexChanged(int index);
   void LoadHamDefs();
   void setModesList();
   void setBandsList();
   void HamDefsUploaded();
   void HamDefsError();
+  void on_bandCombo_currentTextChanged(const QString &arg1);
+  void on_modeCombo_currentTextChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H

@@ -28,11 +28,15 @@ public:
     bool enableQrzruCallbook;
     QString QrzruLogin, QrzruPassword;
     unsigned int fontSize;
+    QString lastBand;
+    QString lastMode;
+
+    void saveForm();
 
 private:
     Ui::Settings *ui;
-    QSettings *qs;
     QString path;
+    QSettings *qs;
 
     void openPath(QString path);
     void read();

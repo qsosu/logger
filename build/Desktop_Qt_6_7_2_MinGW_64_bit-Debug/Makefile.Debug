@@ -195,10 +195,14 @@ compiler_rcc_clean:
 debug/qrc_resources.cpp: ../../resources.qrc \
 		C:/Qt/6.7.2/mingw_64/bin/rcc.exe \
 		../../resources/images/logo_mini.svg \
+		../../resources/images/icon48.ico \
 		../../resources/images/arrow-rotate-left.svg \
 		../../resources/images/trash.svg \
+		../../resources/images/icon.svg \
+		../../resources/images/icon16.ico \
 		../../resources/images/check.svg \
-		../../resources/images/arrows-rotate.svg
+		../../resources/images/arrows-rotate.svg \
+		../../resources/images/icon32.ico
 	C:\Qt\6.7.2\mingw_64\bin\rcc.exe -name resources --no-zstd ..\..\resources.qrc -o debug\qrc_resources.cpp
 
 compiler_moc_predefs_make_all: debug/moc_predefs.h
@@ -5565,6 +5569,7 @@ debug/callsigns.o: ../../callsigns.cpp ../../callsigns.h \
 		C:/Qt/6.7.2/mingw_64/include/QtNetwork/qudpsocket.h \
 		../../addcallsign.h \
 		ui_callsigns.h \
+		C:/Qt/6.7.2/mingw_64/include/QtGui/QIcon \
 		C:/Qt/6.7.2/mingw_64/include/QtWidgets/QApplication \
 		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qapplication.h \
 		C:/Qt/6.7.2/mingw_64/include/QtWidgets/QHBoxLayout \
@@ -6281,112 +6286,7 @@ debug/httpapi.o: ../../httpapi.cpp ../../httpapi.h \
 		C:/Qt/6.7.2/mingw_64/include/QtNetwork/QSslError \
 		C:/Qt/6.7.2/mingw_64/include/QtNetwork/QSslSocket \
 		C:/Qt/6.7.2/mingw_64/include/QtNetwork/qtnetworkversion.h \
-		C:/Qt/6.7.2/mingw_64/include/QtNetwork/qudpsocket.h \
-		../../mainwindow.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/QMainWindow \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qmainwindow.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qtguiglobal.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qtgui-config.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qtguiexports.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtwidgets-config.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtwidgetsexports.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qwidget.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs_win.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qaction.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qkeysequence.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qicon.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qpixmap.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qpaintdevice.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qcolor.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qrgb.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qrgba64.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qimage.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qpixelformat.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qtransform.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qpolygon.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qregion.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qpalette.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qbrush.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qfont.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qfontmetrics.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qfontinfo.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qsizepolicy.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qcursor.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qbitmap.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qevent.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qeventpoint.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qvector2d.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qvectornd.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qpointingdevice.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qinputdevice.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qscreen.h \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QRect \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QSize \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QSizeF \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/QTransform \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qscreen_platform.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qguiapplication.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qinputmethod.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qguiapplication_platform.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtabwidget.h \
-		C:/Qt/6.7.2/mingw_64/include/QtSql/QSqlTableModel \
-		C:/Qt/6.7.2/mingw_64/include/QtSql/qsqltablemodel.h \
-		C:/Qt/6.7.2/mingw_64/include/QtSql/qsqlquerymodel.h \
-		C:/Qt/6.7.2/mingw_64/include/QtSql/QSqlRecord \
-		C:/Qt/6.7.2/mingw_64/include/QtSql/qsqlrecord.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/QMessageBox \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qmessagebox.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qdialog.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QFileInfo \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/QKeyEvent \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QProcess \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/QDesktopServices \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qdesktopservices.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/QFontDatabase \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qfontdatabase.h \
-		../../settings.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/QDialog \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QSettings \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QFile \
-		C:/Qt/6.7.2/mingw_64/include/QtNetwork/QHostAddress \
-		../../callsigns.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/QComboBox \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qcombobox.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qstyleoption.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractspinbox.h \
-		C:/Qt/6.7.2/mingw_64/include/QtGui/qvalidator.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qslider.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractslider.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qstyle.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtabbar.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qrubberband.h \
-		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qframe.h \
-		../../addcallsign.h \
-		../../udpreceiver.h \
-		C:/Qt/6.7.2/mingw_64/include/QtNetwork/QUdpSocket \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QDataStream \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QDateTime \
-		../../flrig.h \
-		../../thirdparty/libmaia/maia/maiaXmlRpcClient.h \
-		C:/Qt/6.7.2/mingw_64/include/QtXml/QtXml \
-		C:/Qt/6.7.2/mingw_64/include/QtXml/QtXmlDepends \
-		C:/Qt/6.7.2/mingw_64/include/QtXml/qtxmlglobal.h \
-		C:/Qt/6.7.2/mingw_64/include/QtXml/qtxml-config.h \
-		C:/Qt/6.7.2/mingw_64/include/QtXml/qtxmlexports.h \
-		C:/Qt/6.7.2/mingw_64/include/QtXml/qdom.h \
-		C:/Qt/6.7.2/mingw_64/include/QtXml/qtxmlversion.h \
-		../../thirdparty/libmaia/maia/maiaObject.h \
-		../../helpers.h \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QDebug \
-		../../qrzrucallbook.h \
-		../../adif.h \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QTextStream \
-		C:/Qt/6.7.2/mingw_64/include/QtCore/QThread \
-		../../about.h
+		C:/Qt/6.7.2/mingw_64/include/QtNetwork/qudpsocket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\httpapi.o ..\..\httpapi.cpp
 
 debug/main.o: ../../main.cpp ../../mainwindow.h \
@@ -7727,6 +7627,7 @@ debug/settings.o: ../../settings.cpp ../../settings.h \
 		C:/Qt/6.7.2/mingw_64/include/QtNetwork/qabstractsocket.h \
 		ui_settings.h \
 		C:/Qt/6.7.2/mingw_64/include/QtCore/QVariant \
+		C:/Qt/6.7.2/mingw_64/include/QtGui/QIcon \
 		C:/Qt/6.7.2/mingw_64/include/QtWidgets/QApplication \
 		C:/Qt/6.7.2/mingw_64/include/QtWidgets/qapplication.h \
 		C:/Qt/6.7.2/mingw_64/include/QtWidgets/QCheckBox \
