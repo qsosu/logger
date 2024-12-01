@@ -30,6 +30,14 @@ public:
     unsigned int fontSize;
     QString lastBand;
     QString lastMode;
+    QString lastFrequence;
+    int lastCallsign;
+    int lastOperator;
+    QString lastRDA;
+    QString lastLocator;
+    QString lastRST_SENT;
+    QString lastRST_RCVD;
+
 
     void saveForm();
 

@@ -29,6 +29,7 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableView>
+#include <QtWidgets/QTimeEdit>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -68,7 +69,7 @@ public:
     QLabel *label_2;
     QDateEdit *dateInput;
     QLabel *label_3;
-    QLineEdit *timeInput;
+    QTimeEdit *timeEdit;
     QCheckBox *showCurrentTime;
     QSpacerItem *horizontalSpacer;
     QHBoxLayout *horizontalLayout_2;
@@ -261,14 +262,10 @@ public:
 
         horizontalLayout->addWidget(label_3);
 
-        timeInput = new QLineEdit(groupBox);
-        timeInput->setObjectName("timeInput");
-        sizePolicy2.setHeightForWidth(timeInput->sizePolicy().hasHeightForWidth());
-        timeInput->setSizePolicy(sizePolicy2);
-        timeInput->setMinimumSize(QSize(0, 0));
-        timeInput->setMaxLength(8);
+        timeEdit = new QTimeEdit(groupBox);
+        timeEdit->setObjectName("timeEdit");
 
-        horizontalLayout->addWidget(timeInput);
+        horizontalLayout->addWidget(timeEdit);
 
         showCurrentTime = new QCheckBox(groupBox);
         showCurrentTime->setObjectName("showCurrentTime");
@@ -343,7 +340,8 @@ public:
         sizePolicy2.setHeightForWidth(rstrInput->sizePolicy().hasHeightForWidth());
         rstrInput->setSizePolicy(sizePolicy2);
         rstrInput->setMinimumSize(QSize(30, 0));
-        rstrInput->setMaxLength(4);
+        rstrInput->setMaxLength(3);
+        rstrInput->setCursorPosition(2);
 
         horizontalLayout_2->addWidget(rstrInput);
 
@@ -357,7 +355,7 @@ public:
         sizePolicy2.setHeightForWidth(rstsInput->sizePolicy().hasHeightForWidth());
         rstsInput->setSizePolicy(sizePolicy2);
         rstsInput->setMinimumSize(QSize(30, 0));
-        rstsInput->setMaxLength(4);
+        rstsInput->setMaxLength(3);
 
         horizontalLayout_2->addWidget(rstsInput);
 
@@ -486,7 +484,13 @@ public:
         tableView = new QTableView(centralwidget);
         tableView->setObjectName("tableView");
         tableView->setSortingEnabled(false);
-        tableView->verticalHeader()->setVisible(true);
+        tableView->horizontalHeader()->setCascadingSectionResizes(false);
+        tableView->horizontalHeader()->setMinimumSectionSize(20);
+        tableView->horizontalHeader()->setDefaultSectionSize(20);
+        tableView->horizontalHeader()->setProperty("showSortIndicator", QVariant(false));
+        tableView->horizontalHeader()->setStretchLastSection(true);
+        tableView->verticalHeader()->setVisible(false);
+        tableView->verticalHeader()->setDefaultSectionSize(24);
         tableView->verticalHeader()->setProperty("showSortIndicator", QVariant(false));
 
         verticalLayout_2->addWidget(tableView);
@@ -511,11 +515,13 @@ public:
 
         label_18 = new QLabel(centralwidget);
         label_18->setObjectName("label_18");
+        label_18->setTextFormat(Qt::TextFormat::PlainText);
 
         horizontalLayout_5->addWidget(label_18);
 
         udpserverLabel = new QLabel(centralwidget);
         udpserverLabel->setObjectName("udpserverLabel");
+        udpserverLabel->setTextFormat(Qt::TextFormat::PlainText);
 
         horizontalLayout_5->addWidget(udpserverLabel);
 
@@ -590,10 +596,7 @@ public:
         callInput->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "\320\224\320\260\321\202\320\260", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\320\222\321\200\320\265\320\274\321\217 \320\262 UTC", nullptr));
-#if QT_CONFIG(accessibility)
-        timeInput->setAccessibleDescription(QCoreApplication::translate("MainWindow", "99:99:99", nullptr));
-#endif // QT_CONFIG(accessibility)
-        timeInput->setText(QCoreApplication::translate("MainWindow", "00:00:00", nullptr));
+        timeEdit->setDisplayFormat(QCoreApplication::translate("MainWindow", "H:mm:ss", nullptr));
         showCurrentTime->setText(QCoreApplication::translate("MainWindow", "\320\242\320\265\320\272\321\203\321\211\320\265\320\265 \320\262\321\200\320\265\320\274\321\217", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\320\224\320\270\320\260\320\277\320\260\320\267\320\276\320\275", nullptr));
         bandCombo->setCurrentText(QString());

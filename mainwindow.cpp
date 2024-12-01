@@ -6,7 +6,7 @@
 #include <QCompleter>
 
 #define SET_ROBOT_FONT
-#define VERSION "1.2.362"
+#define VERSION "1.8.0"
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -20,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent)
   ui->callInput->setStyleSheet("color: black; font-weight: bold");
   //BugFix Только латинские символы и цифры
   ui->callInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^[a-zA-Z0-9/]*$"), this));
+
+  //BugFix Только цифры
+  ui->rstrInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^[+-]?[0-9]*$"), this));
+  ui->rstsInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^[+-]?[0-9]*$"), this));
+  ui->gridsquareInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^([a-zA-Z]{2})([0-9]{2})(((([a-zA-Z]{2}?)?)([0-9]{2}?)?)([a-zA-Z]{2}?)?)$/"), this));
 
   ui->bandCombo->blockSignals(true);
   ui->modeCombo->blockSignals(true);
@@ -59,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
       settings->show();
   });
 
-  ui->modeCombo->setEditable(true); // включаем встроенный QLineEdit
+  ui->modeCombo->setEditable(true); //Включаем встроенный QLineEdit
   ui->modeCombo->setInsertPolicy(QComboBox::NoInsert); // отключаем вставку новых элементов из QLineEdit
   ui->modeCombo->completer()->setCompletionMode(QCompleter::CompletionMode::PopupCompletion); // устанавливаем модель автодополнения (по умолчанию стоит InlineCompletition)
   ui->modeCombo->completer()->setModelSorting(QCompleter::UnsortedModel);
@@ -180,19 +185,15 @@ MainWindow::MainWindow(QWidget *parent)
       QDesktopServices::openUrl(QUrl("https://qso.su/ru/faq"));
   });
 
-  InitRecordsTable();
-  getCallsigns();
-  fillDefaultFreq();
-
   connect(api, SIGNAL(HamDefsUploaded()), this, SLOT(HamDefsUploaded()));
   connect(api, SIGNAL(HamDefsError()), this, SLOT(HamDefsError()));
 
   qInfo() << "QSOLogger v." << VERSION << " started.";
   LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
 
-  //ui->tableView->setSortingEnabled(true);
-  ui->tableView->sortByColumn(0, Qt::DescendingOrder);
-  ui->tableView->selectRow(0);
+  InitRecordsTable();
+  getCallsigns();
+  fillDefaultFreq();
 }
 
 MainWindow::~MainWindow() {
@@ -284,10 +285,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
 void MainWindow::getCallsigns() {
   ui->stationCallsignCombo->clear();
-  ui->stationCallsignCombo->setCurrentIndex(0); //Bug Fix Change
+  //ui->stationCallsignCombo->setCurrentIndex(0); //Bug Fix Change
   //ui->stationCallsignCombo->addItem("- Не выбран -", 0); //Bug Fix Change
   ui->operatorCombo->clear();
-  ui->operatorCombo->setCurrentIndex(0); //Bug Fix Change
+  //ui->operatorCombo->setCurrentIndex(0); //Bug Fix Change
   //ui->operatorCombo->addItem("- Не выбран -", 0); //Bug Fix Change
 
   QSqlQuery query(db);
@@ -302,6 +303,8 @@ void MainWindow::getCallsigns() {
       ui->stationCallsignCombo->addItem(name, QList<QVariant>() << id << qsosu_id << type << gridsquare << cnty);
       if(type == 0) ui->operatorCombo->addItem(name, QList<QVariant>() << id << qsosu_id); //Bug Fix Change
   }
+  ui->stationCallsignCombo->setCurrentIndex(settings->lastCallsign);
+  ui->operatorCombo->setCurrentIndex(settings->lastOperator);
 }
 
 void MainWindow::InitRecordsTable() {
@@ -309,7 +312,6 @@ void MainWindow::InitRecordsTable() {
   RecordsModel->setTable("records");
 
   //RecordsModel->setEditStrategy(QAbstractItemView::NoEditTriggers);
-
   RecordsModel->setQuery("SELECT * FROM RECORDS ORDER BY ID");
   RecordsModel->setHeaderData(8, Qt::Horizontal, tr("Позывной"));
   RecordsModel->setHeaderData(9, Qt::Horizontal, tr("Дата"));
@@ -327,9 +329,6 @@ void MainWindow::InitRecordsTable() {
   RecordsModel->setHeaderData(21, Qt::Horizontal, tr("Коммент."));
   RecordsModel->setHeaderData(22, Qt::Horizontal, tr("Синхр."));
 
-  //RecordsModel->setSort(0, Qt::DescendingOrder);
-  //RecordsModel->sort(0, Qt::DescendingOrder);
-
   ui->tableView->setModel(RecordsModel);
   ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
   ui->tableView->setColumnHidden(0, true);
@@ -340,7 +339,6 @@ void MainWindow::InitRecordsTable() {
   ui->tableView->setColumnHidden(5, true);
   ui->tableView->setColumnHidden(6, true);
   ui->tableView->setColumnHidden(7, true);
-  ui->tableView->resizeColumnsToContents();
 
   ui->tableView->setItemDelegateForColumn(8, new FormatCallsign(ui->tableView));
   ui->tableView->setItemDelegateForColumn(9, new FormatDate(ui->tableView));
@@ -348,13 +346,14 @@ void MainWindow::InitRecordsTable() {
   ui->tableView->setItemDelegateForColumn(11, new FormatTime(ui->tableView));
   ui->tableView->setItemDelegateForColumn(13, new FormatFreq(ui->tableView));
   ui->tableView->setItemDelegateForColumn(22, new FormatSyncState(ui->tableView));
+  ui->tableView->horizontalHeader()->swapSections(0, 22); //Swap columns
 
   ui->tableView->setStyleSheet("selection-background-color: rgb(201, 217, 233); selection-color: rgb(0, 0, 0);");
   ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
   QHeaderView *horizontalHeader = ui->tableView->horizontalHeader();
   horizontalHeader->setSectionResizeMode(QHeaderView::Interactive);
-  horizontalHeader->setMinimumSectionSize(90);
+  horizontalHeader->setMinimumSectionSize(70);
   horizontalHeader->setStretchLastSection(true);
   horizontalHeader->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
 
@@ -364,11 +363,13 @@ void MainWindow::InitRecordsTable() {
 
   ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
   ui->tableView->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
+  ui->tableView->selectRow(0);
 }
 
 void MainWindow::SetRecordsFilter(int log_id) {
     RecordsModel->setFilter(QString("callsign_id=%1").arg(log_id));
-    RecordsModel->setSort(1, Qt::AscendingOrder); // Sort by ID
+    //RecordsModel->setSort(1, Qt::AscendingOrder); // Sort by ID
+    RecordsModel->setSort(0, Qt::DescendingOrder); // Sort by TIME_ON
 }
 
 void MainWindow::RefreshRecords() {
@@ -413,6 +414,11 @@ void MainWindow::SaveQso()
 {
   //qDebug() << "USER DATA:" << userData.callsign_id << userData.qsosu_callsign_id << userData.qsosu_operator_id << userData.callsign << userData.oper << userData.gridsquare << userData.cnty;
 
+  if(ui->callInput->text().size() < 3) {
+       QMessageBox::critical(0, "Ошибка", "Не возможно сохранить QSO. Не введен позывной кореспондента!", QMessageBox::Ok);
+       return;
+  }
+
   QSqlRecord newRecord = RecordsModel->record();
   newRecord.remove(newRecord.indexOf("id"));
   newRecord.setValue("callsign_id", userData.callsign_id);
@@ -426,7 +432,8 @@ void MainWindow::SaveQso()
   //QDate qsoDate = QDate::fromString(ui->dateInput->text(), "yyyy-MM-dd");
   QDate qsoDate = ui->dateInput->date();
   newRecord.setValue("QSO_DATE", qsoDate.toString("yyyyMMdd"));
-  QTime qsoTime = QTime::fromString(ui->timeInput->text(), "hh:mm:ss");
+  //QTime qsoTime = QTime::fromString(ui->timeEdit->text(), "hh:mm:ss");
+  QTime qsoTime = ui->timeEdit->time();
 
   //BugFix
   QString date = qsoDate.toString("yyyy-MM-dd");
@@ -485,8 +492,8 @@ void MainWindow::SaveQso()
       //ScrollRecordsToBottom();
       ScrollRecordsToTop();
       ClearQso();
-
       ui->callInput->setFocus();
+      //SaveFormData();
   } else {
       QMessageBox::critical(0, "Ошибка", "Не возможно сохранить QSO. Ошибка базы данных!", QMessageBox::Ok);
       return;
@@ -550,7 +557,7 @@ void MainWindow::UpdateFormDateTime() {
     QDateTime DateTimeNow = QDateTime::currentDateTimeUtc().toUTC();
     QDate DateNow = QDate::currentDate();
     ui->dateInput->setDate(DateNow);
-    ui->timeInput->setText(DateTimeNow.toString("hh:mm:ss"));
+    ui->timeEdit->setTime(DateTimeNow.time());
 }
 
 void MainWindow::ScrollRecordsToBottom() {
@@ -570,7 +577,6 @@ void MainWindow::ScrollRecordsToTop() {
 void MainWindow::onCallsignsUpdated() {
   getCallsigns();
 }
-
 
 void MainWindow::onStationCallsignChanged() {
   auto data = ui->stationCallsignCombo->itemData(ui->stationCallsignCombo->currentIndex()).value<QList<QVariant>>();
@@ -777,8 +783,22 @@ void MainWindow::readXmlfile()
     }
     ui->bandCombo->blockSignals(false);
     ui->modeCombo->blockSignals(false);
+
     ui->bandCombo->setCurrentText(settings->lastBand);
     ui->modeCombo->setCurrentText(settings->lastMode);
+    ui->qthlocEdit->setText(settings->lastLocator);
+    ui->rdaEdit->setText(settings->lastRDA);
+    ui->freqInput->setText(settings->lastFrequence);
+    ui->rstrInput->setText(settings->lastRST_RCVD);
+    ui->rstsInput->setText(settings->lastRST_SENT);
+
+    //ui->stationCallsignCombo->setCurrentText(settings->lastCallsign);
+    //ui->operatorCombo->setCurrentText(settings->lastOperator);
+
+    ui->stationCallsignCombo->setCurrentIndex(settings->lastCallsign);
+    ui->operatorCombo->setCurrentIndex(settings->lastOperator);
+    ui->stationCallsignCombo->setCurrentIndex(settings->lastCallsign);
+    ui->operatorCombo->setCurrentIndex(settings->lastOperator);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -829,7 +849,6 @@ void MainWindow::HamDefsError()
     qDebug() << "Open HamDefs.xml flom local file...";
     readXmlfile();
 }
-
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 double MainWindow::BandToDefaultFreq(QString band)
@@ -865,18 +884,79 @@ QString MainWindow::getModeValue(int index)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+QString MainWindow::getRepotValueFromMode(QString mode)
+{
+    for(int j = 0; j < modeList.count(); j++)
+    {
+        if(mode == modeList[j].mode_name)
+            return modeList[j].mode_report;
+    }
+    return "";
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void MainWindow::on_bandCombo_currentTextChanged(const QString &arg1)
 {
     settings->lastBand = arg1;
-    settings->saveForm();
-    //qDebug() << "Band changed " << settings->lastBand;
+    SaveFormData();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::on_modeCombo_currentTextChanged(const QString &arg1)
 {
+    QString report;
     settings->lastMode = arg1;
-    settings->saveForm();
+    SaveFormData();
+
+    report = getRepotValueFromMode(arg1);
+
+    if(report != "") {
+        ui->rstrInput->setText(report);
+        ui->rstsInput->setText(report);
+    }
+
     //qDebug() << "Mode changed " << settings->lastMode;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::SaveFormData()
+{
+    settings->lastCallsign = ui->stationCallsignCombo->currentIndex();
+    settings->lastOperator = ui->operatorCombo->currentIndex();
+    settings->lastLocator = ui->qthlocEdit->text();
+    settings->lastRDA = ui->rdaEdit->text();
+    settings->lastFrequence = ui->freqInput->text();
+    settings->lastRST_RCVD = ui->rstrInput->text();
+    settings->lastRST_SENT = ui->rstsInput->text();
+    settings->saveForm();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::on_freqInput_editingFinished()
+{
+    SaveFormData();
+}
+
+void MainWindow::on_rstrInput_editingFinished()
+{
+    SaveFormData();
+}
+
+void MainWindow::on_rstsInput_editingFinished()
+{
+    SaveFormData();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::on_stationCallsignCombo_currentTextChanged(const QString &arg1)
+{
+    SaveFormData();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::on_operatorCombo_currentTextChanged(const QString &arg1)
+{
+    SaveFormData();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+

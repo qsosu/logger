@@ -76,7 +76,7 @@ public:
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
                         "<span style=\" color:#000000;\">\320\262\320\270\320\264\320\276\320\262 \321\201\320\262\321\217\320\267\320\270.</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#000000;\">\320\222\320\265\321\200\321\201\320\270\321\217 \320\237\320\236: 1.2.362, \320\262\320\265\321\200\321\201\320\270\321\217 API: 1.0</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#000000;\">\320\222\320\265\321\200\321\201\320\270\321\217 \320\237\320\236: 1.8.0, \320\262\320\265\321\200\321\201\320\270\321\217 API: 1.0</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#000000;\">\320\220\320\262\321\202\320\276\321\200\321\213: Alexey.K (R2SI)</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#000000;\">\320\230\320\273\321\214\320\264"
                         "\320\260\321\200.\320\234 (R9JAU)</span></p>\n"

@@ -61,6 +61,13 @@ void Settings::read() {
     qs->beginGroup("FORM");
     lastBand = qs->value("band", "").toString();
     lastMode = qs->value("mode", "").toString();
+    lastFrequence = qs->value("freq", "").toString();
+    lastCallsign = qs->value("calsign", "").toInt();
+    lastOperator = qs->value("operator", "").toInt();
+    lastRDA = qs->value("RDA", "").toString();
+    lastLocator = qs->value("LOC", "").toString();
+    lastRST_SENT = qs->value("rst_send", "").toString();
+    lastRST_RCVD = qs->value("rst_rcvd", "").toString();
     qs->endGroup();
 
     display();
@@ -105,8 +112,14 @@ void Settings::createDefaultFile() {
     stream << Qt::endl;
     stream << "[FORM]" << Qt::endl;
     stream << "band = 20M" << Qt::endl;
-    stream << "mode = USB" << Qt::endl;
-
+    stream << "mode = SSB (USB)" << Qt::endl;
+    stream << "freq = " << Qt::endl;
+    stream << "calsign = " << Qt::endl;
+    stream << "operator = " << Qt::endl;
+    stream << "RDA = " << Qt::endl;
+    stream << "LOC = " << Qt::endl;
+    stream << "rst_send = " << Qt::endl;
+    stream << "rst_rcvd = " << Qt::endl;
     newFile.close();
 }
 
@@ -145,6 +158,13 @@ void Settings::saveForm()
     qs->beginGroup("FORM");
     qs->setValue("band", lastBand);
     qs->setValue("mode", lastMode);
+    qs->setValue("freq", lastFrequence);
+    qs->setValue("calsign", lastCallsign);
+    qs->setValue("operator", lastOperator);
+    qs->setValue("RDA", lastRDA);
+    qs->setValue("LOC", lastLocator);
+    qs->setValue("rst_send", lastRST_SENT);
+    qs->setValue("rst_rcvd", lastRST_RCVD);
     qs->endGroup();
     qs->sync();
 }

@@ -80,7 +80,6 @@ private:
   } baseData_t;
   baseData_t userData;
 
-
   void InitDatabase(QString dbFile);
   bool CheckDatabase();
   bool ConnectDatabase();
@@ -94,12 +93,14 @@ private:
   void RemoveQSOs(QModelIndexList indexes);
   void SetRecordsFilter(int log_id);
   void SyncQSOs(QModelIndexList indexes);
+  void SaveFormData();
 
   //bool LoadHamDefs();
   void readXmlfile();
   double BandToDefaultFreq(QString band);
   QString getBandValue(int index);
   QString getModeValue(int index);
+  QString getRepotValueFromMode(QString mode);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
@@ -125,5 +126,10 @@ private slots:
   void HamDefsError();
   void on_bandCombo_currentTextChanged(const QString &arg1);
   void on_modeCombo_currentTextChanged(const QString &arg1);
+  void on_freqInput_editingFinished();
+  void on_rstrInput_editingFinished();
+  void on_rstsInput_editingFinished();
+  void on_stationCallsignCombo_currentTextChanged(const QString &arg1);
+  void on_operatorCombo_currentTextChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H

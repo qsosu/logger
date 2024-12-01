@@ -19,12 +19,13 @@ void QrzruCallbook::GetApiSession() {
 }
 
 QStringList QrzruCallbook::Get(QString call) {
+    QString ncall = call.left(call.indexOf('/'));
     QStringList ret;
     if (session_time.secsTo(QDateTime::currentDateTime()) > 3600) {
         GetApiSession();
     }
 
-    QByteArray data = Request(QString("https://api.qrz.ru/callsign?id=%1&callsign=%2").arg(session_id, call));
+    QByteArray data = Request(QString("https://api.qrz.ru/callsign?id=%1&callsign=%2").arg(session_id, ncall));
     QString name = getTagValue(data, "name");
     QString city = getTagValue(data, "city");
     QString qthloc = getTagValue(data, "qthloc");
