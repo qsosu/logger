@@ -273,3 +273,45 @@
 2024-12-01 22:57:02.504 [DEBUG] Upload HamDefs.xml from QSO.SU
 2024-12-01 22:57:03.005 [DEBUG] Succesful uploaded HamDefs.xml size: 17423 bytes
 2024-12-01 22:57:03.015 [DEBUG] Succesful open HamDefs.xml
+2024-12-02 00:36:38.150 [INFO] QSOLogger v. 1.8.0  started.
+2024-12-02 00:36:38.150 [DEBUG] Upload HamDefs.xml from QSO.SU
+2024-12-02 00:36:38.723 [DEBUG] Succesful uploaded HamDefs.xml size: 17423 bytes
+2024-12-02 00:36:38.734 [DEBUG] Succesful open HamDefs.xml
+2024-12-02 00:37:10.829 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "FDDDF",
+    "cnty": "",
+    "datetime": "2024-12-02T19:37:09",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "LSB",
+    "my_cnty": "HM-12",
+    "my_gridsquare": "MP61QG",
+    "name": "",
+    "qth": "",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-12-02 00:37:12.167 [DEBUG] Network reply finished. Code: 201
+2024-12-02 00:37:13.459 [DEBUG] Sending QSO data to service. {
+    "band": "20M",
+    "call": "DFDFDFDF",
+    "cnty": "",
+    "datetime": "2024-12-02T19:37:12",
+    "freq": 14000000,
+    "gridsquare": "",
+    "id_operator": 102,
+    "id_station_callsign": 102,
+    "mode": "LSB",
+    "my_cnty": "HM-12",
+    "my_gridsquare": "MP61QG",
+    "name": "",
+    "qth": "",
+    "rstr": "59",
+    "rsts": "59"
+}
+
+2024-12-02 00:37:15.535 [DEBUG] Network reply finished. Code: 201

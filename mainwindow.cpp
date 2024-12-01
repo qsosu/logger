@@ -312,7 +312,7 @@ void MainWindow::InitRecordsTable() {
   RecordsModel->setTable("records");
 
   //RecordsModel->setEditStrategy(QAbstractItemView::NoEditTriggers);
-  RecordsModel->setQuery("SELECT * FROM RECORDS ORDER BY ID");
+  //RecordsModel->setQuery("SELECT * FROM RECORDS ORDER BY ID");
   RecordsModel->setHeaderData(8, Qt::Horizontal, tr("Позывной"));
   RecordsModel->setHeaderData(9, Qt::Horizontal, tr("Дата"));
   RecordsModel->setHeaderData(10, Qt::Horizontal, tr("Время нач."));
