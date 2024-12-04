@@ -96,9 +96,6 @@
       </item>
       <item>
        <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>0</width>
@@ -184,9 +181,6 @@
       </item>
       <item>
        <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>0</width>
@@ -225,9 +219,6 @@
       </item>
       <item>
        <spacer name="horizontalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>0</width>
@@ -296,9 +287,6 @@
       </item>
       <item>
        <spacer name="horizontalSpacer_6">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>0</width>
@@ -307,6 +295,13 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QCheckBox" name="darkTheimeCheckBox">
+        <property name="text">
+         <string>Тёмная тема</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -314,9 +309,6 @@
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
        <property name="sizeHint" stdset="0">
         <size>
          <width>0</width>
@@ -341,9 +333,6 @@
      </item>
      <item>
       <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
        <property name="sizeHint" stdset="0">
         <size>
          <width>0</width>

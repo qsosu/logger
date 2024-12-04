@@ -56,13 +56,14 @@ void Settings::read() {
 
     qs->beginGroup("VIEW");
     fontSize = qs->value("fontsize", 10).toInt();
+    darkTheime = qs->value("darktheime", false).toBool();
     qs->endGroup();
 
     qs->beginGroup("FORM");
     lastBand = qs->value("band", "").toString();
     lastMode = qs->value("mode", "").toString();
     lastFrequence = qs->value("freq", "").toString();
-    lastCallsign = qs->value("calsign", "").toInt();
+    lastCallsign = qs->value("callsign", "").toInt();
     lastOperator = qs->value("operator", "").toInt();
     lastRDA = qs->value("RDA", "").toString();
     lastLocator = qs->value("LOC", "").toString();
@@ -84,6 +85,7 @@ void Settings::display() {
     ui->qrzruLogin->setText(QrzruLogin);
     ui->qrzruPassword->setText(QrzruPassword);
     ui->fontSize->setValue(fontSize);
+    ui->darkTheimeCheckBox->setChecked(darkTheime);
 }
 
 void Settings::createDefaultFile() {
@@ -109,12 +111,13 @@ void Settings::createDefaultFile() {
     stream << Qt::endl;
     stream << "[VIEW]" << Qt::endl;
     stream << "fontsize = 10" << Qt::endl;
+    stream << "darktheime = true" << Qt::endl;
     stream << Qt::endl;
     stream << "[FORM]" << Qt::endl;
     stream << "band = 20M" << Qt::endl;
     stream << "mode = SSB (USB)" << Qt::endl;
     stream << "freq = " << Qt::endl;
-    stream << "calsign = " << Qt::endl;
+    stream << "callsign = " << Qt::endl;
     stream << "operator = " << Qt::endl;
     stream << "RDA = " << Qt::endl;
     stream << "LOC = " << Qt::endl;
@@ -147,6 +150,7 @@ void Settings::save() {
 
     qs->beginGroup("VIEW");
     qs->setValue("fontsize", ui->fontSize->value());
+    qs->setValue("darktheime", ui->darkTheimeCheckBox->isChecked() ? 1 : 0);
     qs->endGroup();
 
     qs->sync();
@@ -159,7 +163,7 @@ void Settings::saveForm()
     qs->setValue("band", lastBand);
     qs->setValue("mode", lastMode);
     qs->setValue("freq", lastFrequence);
-    qs->setValue("calsign", lastCallsign);
+    qs->setValue("callsign", lastCallsign);
     qs->setValue("operator", lastOperator);
     qs->setValue("RDA", lastRDA);
     qs->setValue("LOC", lastLocator);

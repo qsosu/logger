@@ -37,6 +37,7 @@ public:
     QString lastLocator;
     QString lastRST_SENT;
     QString lastRST_RCVD;
+    bool darkTheime;
 
 
     void saveForm();

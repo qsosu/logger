@@ -194,13 +194,22 @@ MainWindow::MainWindow(QWidget *parent)
   InitRecordsTable();
   getCallsigns();
   fillDefaultFreq();
+
+  ui->stationCallsignCombo->blockSignals(true);
+
+  if(settings->darkTheime) darkTheime();
+  else qApp->setPalette(style()->standardPalette());
+
+  qDebug() << " Loaded lastCallsign " << settings->lastCallsign;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 MainWindow::~MainWindow() {
   delete ui;
 }
 
 /* Database section */
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::InitDatabase(QString dbFile) {
     database_file = qApp->applicationDirPath() + "/" + dbFile;
@@ -216,12 +225,14 @@ void MainWindow::InitDatabase(QString dbFile) {
         return;
     }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 bool MainWindow::CheckDatabase() {
     QFileInfo check_file(database_file);
     if (check_file.exists() && check_file.isFile()) return true;
     return false;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::CreateDatabase() {
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "CreateConnection");
@@ -270,6 +281,7 @@ bool MainWindow::ConnectDatabase() {
     if (!db.open()) return false;
     return true;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
@@ -282,6 +294,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         }
     }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::getCallsigns() {
   ui->stationCallsignCombo->clear();
@@ -303,9 +316,8 @@ void MainWindow::getCallsigns() {
       ui->stationCallsignCombo->addItem(name, QList<QVariant>() << id << qsosu_id << type << gridsquare << cnty);
       if(type == 0) ui->operatorCombo->addItem(name, QList<QVariant>() << id << qsosu_id); //Bug Fix Change
   }
-  ui->stationCallsignCombo->setCurrentIndex(settings->lastCallsign);
-  ui->operatorCombo->setCurrentIndex(settings->lastOperator);
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::InitRecordsTable() {
   RecordsModel = new QSqlTableModel(this);
@@ -365,18 +377,20 @@ void MainWindow::InitRecordsTable() {
   ui->tableView->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
   ui->tableView->selectRow(0);
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::SetRecordsFilter(int log_id) {
     RecordsModel->setFilter(QString("callsign_id=%1").arg(log_id));
-    //RecordsModel->setSort(1, Qt::AscendingOrder); // Sort by ID
-    RecordsModel->setSort(0, Qt::DescendingOrder); // Sort by TIME_ON
+    RecordsModel->setSort(0, Qt::DescendingOrder); // Sort by ID
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::RefreshRecords() {
     RecordsModel->select();
     while (RecordsModel->canFetchMore()) // FIX. Fetch more than 256 records!!!
         RecordsModel->fetchMore();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::customMenuRequested(QPoint pos) {
     QModelIndexList indexes = ui->tableView->selectionModel()->selectedRows();
@@ -409,6 +423,7 @@ void MainWindow::customMenuRequested(QPoint pos) {
     menu->addAction(syncAction);
     menu->popup(ui->tableView->viewport()->mapToGlobal(pos));
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::SaveQso()
 {
@@ -493,12 +508,13 @@ void MainWindow::SaveQso()
       ScrollRecordsToTop();
       ClearQso();
       ui->callInput->setFocus();
-      //SaveFormData();
+      SaveCallsignState();
   } else {
       QMessageBox::critical(0, "Ошибка", "Не возможно сохранить QSO. Ошибка базы данных!", QMessageBox::Ok);
       return;
   }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::ClearQso() {
   ui->callInput->clear();
@@ -508,6 +524,7 @@ void MainWindow::ClearQso() {
   ui->nameInput->clear();
   ui->commentInput->clear();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::RemoveQSOs(QModelIndexList indexes) {
     int countRow = indexes.count();
@@ -533,7 +550,7 @@ void MainWindow::RemoveQSOs(QModelIndexList indexes) {
         return;
     }
 }
-
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::onSettingsChanged() {
   QMessageBox::StandardButton confirm;
@@ -544,6 +561,7 @@ void MainWindow::onSettingsChanged() {
       QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
   }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::CallsignToUppercase(const QString &arg) {
     QString callsign = arg.toUpper();
@@ -552,6 +570,7 @@ void MainWindow::CallsignToUppercase(const QString &arg) {
 
     CallTypeTimer->start();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::UpdateFormDateTime() {
     QDateTime DateTimeNow = QDateTime::currentDateTimeUtc().toUTC();
@@ -559,6 +578,7 @@ void MainWindow::UpdateFormDateTime() {
     ui->dateInput->setDate(DateNow);
     ui->timeEdit->setTime(DateTimeNow.time());
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::ScrollRecordsToBottom() {
     ui->tableView->resizeColumnsToContents();
@@ -566,6 +586,7 @@ void MainWindow::ScrollRecordsToBottom() {
     ui->tableView->selectRow(RecordsModel->rowCount() - 1);
     ui->tableView->scrollToBottom();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::ScrollRecordsToTop() {
     ui->tableView->resizeColumnsToContents();
@@ -573,10 +594,12 @@ void MainWindow::ScrollRecordsToTop() {
     ui->tableView->selectRow(0);
     ui->tableView->scrollToTop();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::onCallsignsUpdated() {
   getCallsigns();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::onStationCallsignChanged() {
   auto data = ui->stationCallsignCombo->itemData(ui->stationCallsignCombo->currentIndex()).value<QList<QVariant>>();
@@ -594,12 +617,14 @@ void MainWindow::onStationCallsignChanged() {
   //ScrollRecordsToBottom(); //BugFix
   ScrollRecordsToTop();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::onOperatorChanged() {
   auto data = ui->operatorCombo->itemData(ui->operatorCombo->currentIndex()).value<QList<QVariant>>();
   userData.qsosu_operator_id = data.value(1).toInt();
   userData.oper = ui->operatorCombo->currentText();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::onUdpLogged() {
   // if (ui->stationCallsignCombo->currentIndex() == 0) {
@@ -656,6 +681,7 @@ void MainWindow::onUdpLogged() {
       }
   }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::FindCallDataQrzru() {
   QString callsign = ui->callInput->text().trimmed();
@@ -670,6 +696,7 @@ void MainWindow::FindCallDataQrzru() {
   ui->gridsquareInput->setText((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
   ui->cntyInput->setText((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::ClearCallbookFields() {
   ui->nameInput->clear();
@@ -677,12 +704,14 @@ void MainWindow::ClearCallbookFields() {
   ui->gridsquareInput->clear();
   ui->cntyInput->clear();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::fillDefaultFreq() {
   //double freqMhz = Helpers::BandToDefaultFreqMHz(ui->bandCombo->currentText());
   double freqMhz = BandToDefaultFreq(ui->bandCombo->currentText());
   ui->freqInput->setText(QString::number(freqMhz, 'f', 6));
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::SyncQSOs(QModelIndexList indexes) {
     QStringList idstrings;
@@ -723,6 +752,7 @@ void MainWindow::onQsoSynced(int dbid) {
     QSqlQuery query(db);
     if(query.exec(QString("UPDATE records SET sync_state = 1 WHERE id=%1").arg(dbid))) {
         RefreshRecords();
+        ScrollRecordsToTop();
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -783,6 +813,7 @@ void MainWindow::readXmlfile()
     }
     ui->bandCombo->blockSignals(false);
     ui->modeCombo->blockSignals(false);
+    ui->stationCallsignCombo->blockSignals(false);
 
     ui->bandCombo->setCurrentText(settings->lastBand);
     ui->modeCombo->setCurrentText(settings->lastMode);
@@ -792,11 +823,6 @@ void MainWindow::readXmlfile()
     ui->rstrInput->setText(settings->lastRST_RCVD);
     ui->rstsInput->setText(settings->lastRST_SENT);
 
-    //ui->stationCallsignCombo->setCurrentText(settings->lastCallsign);
-    //ui->operatorCombo->setCurrentText(settings->lastOperator);
-
-    ui->stationCallsignCombo->setCurrentIndex(settings->lastCallsign);
-    ui->operatorCombo->setCurrentIndex(settings->lastOperator);
     ui->stationCallsignCombo->setCurrentIndex(settings->lastCallsign);
     ui->operatorCombo->setCurrentIndex(settings->lastOperator);
 }
@@ -914,15 +940,12 @@ void MainWindow::on_modeCombo_currentTextChanged(const QString &arg1)
         ui->rstrInput->setText(report);
         ui->rstsInput->setText(report);
     }
-
     //qDebug() << "Mode changed " << settings->lastMode;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::SaveFormData()
 {
-    settings->lastCallsign = ui->stationCallsignCombo->currentIndex();
-    settings->lastOperator = ui->operatorCombo->currentIndex();
     settings->lastLocator = ui->qthlocEdit->text();
     settings->lastRDA = ui->rdaEdit->text();
     settings->lastFrequence = ui->freqInput->text();
@@ -932,15 +955,26 @@ void MainWindow::SaveFormData()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void MainWindow::SaveCallsignState()
+{
+    settings->lastCallsign = ui->stationCallsignCombo->currentIndex();
+    settings->lastOperator = ui->operatorCombo->currentIndex();
+    settings->saveForm();
+    qDebug() << " Save lastCallsign " << ui->stationCallsignCombo->currentIndex();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void MainWindow::on_freqInput_editingFinished()
 {
     SaveFormData();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::on_rstrInput_editingFinished()
 {
     SaveFormData();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::on_rstsInput_editingFinished()
 {
@@ -948,15 +982,30 @@ void MainWindow::on_rstsInput_editingFinished()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::on_stationCallsignCombo_currentTextChanged(const QString &arg1)
+void MainWindow::darkTheime()
 {
-    SaveFormData();
+    // Создаём палитру для тёмной темы оформления
+    QPalette darkPalette;
+
+    // Настраиваем палитру для цветовых ролей элементов интерфейса
+    darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+    darkPalette.setColor(QPalette::WindowText, Qt::white);
+    darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
+    darkPalette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
+    darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+    darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+    darkPalette.setColor(QPalette::Text, Qt::white);
+    darkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
+    darkPalette.setColor(QPalette::ButtonText, Qt::white);
+    darkPalette.setColor(QPalette::BrightText, Qt::red);
+    darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+    darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+    darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+
+    // Устанавливаем данную палитру
+    qApp->setPalette(darkPalette);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::on_operatorCombo_currentTextChanged(const QString &arg1)
-{
-    SaveFormData();
-}
-//------------------------------------------------------------------------------------------------------------------------------------------
+
 

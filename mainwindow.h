@@ -94,6 +94,8 @@ private:
   void SetRecordsFilter(int log_id);
   void SyncQSOs(QModelIndexList indexes);
   void SaveFormData();
+  void SaveCallsignState();
+  void darkTheime();
 
   //bool LoadHamDefs();
   void readXmlfile();
@@ -129,7 +131,5 @@ private slots:
   void on_freqInput_editingFinished();
   void on_rstrInput_editingFinished();
   void on_rstsInput_editingFinished();
-  void on_stationCallsignCombo_currentTextChanged(const QString &arg1);
-  void on_operatorCombo_currentTextChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H

@@ -261,8 +261,6 @@ void Callsigns::callsignStatus(int status)
 }
 //---------------------------------------------------------------------------------------------------------------------
 
-
-
 //CREATE TABLE "callsigns" (
 //	"id"	INTEGER NOT NULL,
 //	"qsosu_id"	INTEGER NOT NULL DEFAULT 0,
