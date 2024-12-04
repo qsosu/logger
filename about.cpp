@@ -6,7 +6,7 @@ About::About(QWidget *parent)
     , ui(new Ui::About)
 {
     ui->setupUi(this);
-    qApp->setFont(QFont("Roboto", 8, QFont::Normal, false));
+    ui->Info->setFont(QFont("Roboto", 9, QFont::Normal, false));
 }
 
 About::~About()

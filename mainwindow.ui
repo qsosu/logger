@@ -47,9 +47,6 @@
          </property>
          <item>
           <spacer name="horizontalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
@@ -66,7 +63,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="stationCallsignCombo"/>
+          <widget class="QComboBox" name="stationCallsignCombo">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_13">
@@ -76,7 +80,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="operatorCombo"/>
+          <widget class="QComboBox" name="operatorCombo">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_14">
@@ -120,9 +131,6 @@
          </item>
          <item>
           <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
@@ -238,9 +246,6 @@
          </item>
          <item>
           <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
@@ -336,7 +341,7 @@
             <string notr="true"/>
            </property>
            <property name="inputMethodHints">
-            <set>Qt::InputMethodHint::ImhNone</set>
+            <set>Qt::ImhNone</set>
            </property>
            <property name="currentIndex">
             <number>0</number>
@@ -426,9 +431,6 @@
          </item>
          <item>
           <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
@@ -549,9 +551,6 @@
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <spacer name="horizontalSpacer_8">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
@@ -625,9 +624,6 @@
          </item>
          <item>
           <spacer name="horizontalSpacer_9">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
@@ -676,9 +672,6 @@
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>0</width>
@@ -713,7 +706,7 @@
          <string>UDP сервер:</string>
         </property>
         <property name="textFormat">
-         <enum>Qt::TextFormat::PlainText</enum>
+         <enum>Qt::PlainText</enum>
         </property>
        </widget>
       </item>
@@ -723,7 +716,7 @@
          <string>Не запущен</string>
         </property>
         <property name="textFormat">
-         <enum>Qt::TextFormat::PlainText</enum>
+         <enum>Qt::PlainText</enum>
         </property>
        </widget>
       </item>

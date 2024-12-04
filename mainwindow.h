@@ -101,7 +101,7 @@ private:
   void readXmlfile();
   double BandToDefaultFreq(QString band);
   QString getBandValue(int index);
-  QString getModeValue(int index);
+  QString getModeValue(QString mode);
   QString getRepotValueFromMode(QString mode);
 
 protected:

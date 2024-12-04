@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
+    <width>432</width>
     <height>210</height>
    </rect>
   </property>
@@ -73,12 +73,12 @@
     <string>ОК</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="Info">
    <property name="geometry">
     <rect>
      <x>100</x>
      <y>10</y>
-     <width>311</width>
+     <width>321</width>
      <height>161</height>
     </rect>
    </property>
@@ -94,7 +94,7 @@
 в роли агента для взаимодействия с ПО для цифровых 
 видов связи.
 
-Версия ПО: 1.8.0, версия API: 1.0
+Версия ПО: 1.8.1, версия API: 1.0
 Авторы: Alexey.K (R2SI)
 Ильдар.М (R9JAU)
 Артём.С (R4CAT)</string>

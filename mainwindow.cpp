@@ -6,7 +6,7 @@
 #include <QCompleter>
 
 #define SET_ROBOT_FONT
-#define VERSION "1.8.0"
+#define VERSION "1.8.1"
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -199,8 +199,6 @@ MainWindow::MainWindow(QWidget *parent)
 
   if(settings->darkTheime) darkTheime();
   else qApp->setPalette(style()->standardPalette());
-
-  qDebug() << " Loaded lastCallsign " << settings->lastCallsign;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -274,6 +272,7 @@ void MainWindow::CreateDatabase() {
   query.finish();
   db.close();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 bool MainWindow::ConnectDatabase() {
     db = QSqlDatabase::addDatabase("QSQLITE");
@@ -468,7 +467,7 @@ void MainWindow::SaveQso()
   newRecord.setValue("FREQ", freqHz);
 
   //QString mode = ui->modeCombo->currentText();
-  QString mode = getModeValue(ui->modeCombo->currentIndex()); //BugFix
+  QString mode = getModeValue(ui->modeCombo->currentText()); //BugFix
   newRecord.setValue("MODE", mode);
 
   QString rsts = ui->rstsInput->text();
@@ -892,18 +891,18 @@ QString MainWindow::getBandValue(int index)
 {
     for(int j = 0; j < bandList.count(); j++)
     {
-        if(index == bandList[j].band_id)
+        if(bandList[j].band_id == index)
             return bandList[j].band_value;
     }
     return "";
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-QString MainWindow::getModeValue(int index)
+QString MainWindow::getModeValue(QString mode)
 {
     for(int j = 0; j < modeList.count(); j++)
     {
-        if(index == modeList[j].mode_id)
+        if(modeList[j].mode_name == mode)
             return modeList[j].mode_value;
     }
     return "";
@@ -960,7 +959,7 @@ void MainWindow::SaveCallsignState()
     settings->lastCallsign = ui->stationCallsignCombo->currentIndex();
     settings->lastOperator = ui->operatorCombo->currentIndex();
     settings->saveForm();
-    qDebug() << " Save lastCallsign " << ui->stationCallsignCombo->currentIndex();
+    //qDebug() << " Save lastCallsign " << ui->stationCallsignCombo->currentIndex();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
