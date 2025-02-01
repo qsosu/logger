@@ -1,9 +1,11 @@
 QT       += core gui network sql xml
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-
+#CONFIG+= static #release
+#CONFIG += release
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -16,6 +18,7 @@ SOURCES += \
     callsigns.cpp \
     flrig.cpp \
     httpapi.cpp \
+    loggercat.cpp \
     main.cpp \
     mainwindow.cpp \
     qrzrucallbook.cpp \
@@ -36,6 +39,7 @@ HEADERS += \
     flrig.h \
     helpers.h \
     httpapi.h \
+    loggercat.h \
     mainwindow.h \
     qrzrucallbook.h \
     settings.h \
@@ -50,6 +54,7 @@ FORMS += \
     about.ui \
     addcallsign.ui \
     callsigns.ui \
+    loggercat.ui \
     mainwindow.ui \
     settings.ui
 

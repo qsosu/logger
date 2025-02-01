@@ -123,6 +123,12 @@ void Settings::createDefaultFile() {
     stream << "LOC = " << Qt::endl;
     stream << "rst_send = " << Qt::endl;
     stream << "rst_rcvd = " << Qt::endl;
+    stream << "[CAT]" << Qt::endl;
+    stream << "portName = " << Qt::endl;
+    stream << "baud = 4800" << Qt::endl;
+    stream << "stopBits = 1" << Qt::endl;
+    stream << "flowControl = 0" << Qt::endl;
+    stream << "CATinterval = 400" << Qt::endl;
     newFile.close();
 }
 
