@@ -18,43 +18,37 @@ class loggerCAT : public QDialog
 public:
     explicit loggerCAT(QWidget *parent = nullptr);
     ~loggerCAT();
-    QList<QString> rigRequesting();
-    bool portOpened; //=false?
+    void rigRequesting();
     void createSetFile();
     int CATinterval;
-    QSerialPort serialPort;
-    //QString rigFreqHz;
-    //QString rigModeName;
-    //QList<QString> info;
+    QSerialPort *serialPort;
+    unsigned long long rigFreq;
+    QString rigMode;
+
 
 
 private slots:
-    //QString rigRequesting(bool inf);
     void rigTmrSig();
     void saveCATset();
     void setupPort();
+    void reading();
 
 
 private:
     Ui::loggerCAT *ui;
-    //void rigupd();
-    //QSerialPort serialPort;
     QString path;
     QSettings *qs;
     void setRead();
     void openPath(QString path);
-    //bool portOpened;
     //QVector<QString> modes={"no selection", "SSB (LSB)", "SSB (USB)", "CW", "FM", "AM", "FSK", "CW", "no selection", "FSK"};
-    //QString rigFreq;
-    //QString rigMode;
-    //QString answ;
-    //QString rigFreqHz;
-    //QList<QString> info;
+    QByteArray answ;
+    QByteArray rigAnswer;
 
 signals:
     void rigupd();
     void CATSettingsChanged();
     void portErr();
+    void updated();
 
 };
 

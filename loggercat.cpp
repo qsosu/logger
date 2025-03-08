@@ -15,7 +15,9 @@ loggerCAT::loggerCAT(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::loggerCAT)
 {
+
     ui->setupUi(this);
+    serialPort = new QSerialPort(this);
 
     ui->freqLabel->setText("Частота:");
     ui->modeLabel->setText("Модуляция:");
@@ -36,9 +38,7 @@ loggerCAT::loggerCAT(QWidget *parent)
             requestTimer->start();
         } else {
             requestTimer->stop();
-            //rigRequesting(); //вызываем функцию чтобы порт точно закрылся
-            serialPort.close();
-            portOpened=false;
+            serialPort->close();
 
             ui->freqLabel->setText("Частота:");
             ui->modeLabel->setText("Модуляция:");
@@ -52,24 +52,17 @@ loggerCAT::loggerCAT(QWidget *parent)
     connect(ui->saveCATsettings, &QPushButton::clicked, this, &loggerCAT::saveCATset);
     connect(ui->closeCATwindow, &QPushButton::clicked, this, &loggerCAT::hide);
 
-    //изменяем настройки при изменении их пользователем в интерфейсе
-    /*connect(ui->CATspeed, &QComboBox::currentIndexChanged, this, &loggerCAT::setupPort);
-    connect(ui->CATport, SIGNAL(currentIndexChanged), this, SLOT(setupPort()));
-    connect(ui->CATstopbits, SIGNAL(currentIndexChanged), this, SLOT(setupPort()));
-    connect(ui->flowctrl, SIGNAL(currentIndexChanged), this, SLOT(setupPort()));
-*/
+
     connect(ui->intvlEdit, &QLineEdit::editingFinished, this, [=] () {
                     requestTimer->setInterval(ui->intvlEdit->text().toInt());
                 });
 
     connect(ui->setupButton, &QPushButton::clicked, this, &loggerCAT::setupPort);
     connect(this, &loggerCAT::portErr, this, [=] (){
-        //requestTimer->stop();
         ui->useLoggerCAT->setChecked(false);
         QMessageBox::warning(this, "Ошибка", "Не удалось подключится к порту");
-        portOpened = false;
-        //return;
     });
+    connect(this->serialPort, SIGNAL(readyRead()), this, SLOT(reading()));
 
 }
 
@@ -82,17 +75,13 @@ loggerCAT::~loggerCAT()
 
 
 
-QList<QString> loggerCAT::rigRequesting()
+void loggerCAT::rigRequesting()
 {
-    if (!portOpened) {
+    if (!serialPort->isOpen()) {
 
         setupPort();
 
-        if (!serialPort.open(QIODevice::ReadWrite)) {
-        // если подключится не получится, то покажем сообщение с ошибкой
-            emit portErr();
-    }
-        else portOpened = true;
+        if (!serialPort->open(QIODevice::ReadWrite)) emit portErr(); // если подключится не получится, то покажем сообщение с ошибкой
     }
 
 
@@ -104,83 +93,62 @@ QList<QString> loggerCAT::rigRequesting()
 
     /*
     // способ с раздельным опросом
-    serialPort.write("FA;");
-    serialPort.waitForBytesWritten();
+    serialPort->write("FA;");
+    serialPort->waitForBytesWritten();
 
     QByteArray rigFreq;
-    while (serialPort.waitForReadyRead(50)) {
+    while (serialPort->waitForReadyRead(50)) {
 
-        rigFreq.append(serialPort.readAll());
+        rigFreq.append(serialPort->readAll());
     }
     ui->CATreceived->append(rigFreq);
 
-    serialPort.write("MD;");
-    serialPort.waitForBytesWritten();
+    serialPort->write("MD;");
+    serialPort->waitForBytesWritten();
 
     QByteArray rigMode;
-    while (serialPort.waitForReadyRead(50)) {
+    while (serialPort->waitForReadyRead(50)) {
 
-        rigFreq.append(serialPort.readAll());
+        rigFreq.append(serialPort->readAll());
     }
     ui->CATreceived->append(rigMode);
     */
 
     // способ с постоянным опросом через IF
-    serialPort.write("IF;");
-    serialPort.waitForBytesWritten(); // опрашиваем трансивер
-
-    QByteArray rigAnswer; // читаем ответ
-    while (serialPort.waitForReadyRead(590)) {
-
-        rigAnswer.append(serialPort.readAll());
-    }
-    QString answ=rigAnswer; // информация о трансивере, включая rit, xit, mode и др.
-    QString rigFreqHz = QString::number(answ.mid(2, 11).toInt()); //символы с 3 по 12 - это частота. эта переменная для поля в mainwindow
-    QString rigFreq = QString::number(rigFreqHz.toFloat()/1000000); //узнаем частоту и переводим в МГц. а эта переменная для контрольного поля в этом окне
-    QString rigMode=answ.mid(29, 1); //узнаем модуляцию, здесь будет число от 1 до 9
-
-    QVector<QString> modes={"no selection", "SSB (LSB)", "SSB (USB)", "CW", "FM", "AM", "FSK", "CW", "no selection", "FSK"};
-    // список соответсвия номера и модуляции, будем узнавать модуляцию по индексу. CW-R и FSK-R записаны без R
-    QString rigModeName=modes.at(rigMode.toInt());
+    serialPort->write("IF;");
+    serialPort->waitForBytesWritten(); // опрашиваем трансивер
 
 
-    ui->freqLabel->setText("Частота: " + rigFreq);
-    ui->modeLabel->setText("Модуляция: " + rigModeName);
 
-    if (portOpened & !ui->useLoggerCAT->isChecked()){
-        serialPort.close(); // если убрать галку с чекбокса во время выполнения след. строк, то он останется открытым?!
-        portOpened=false;
-
+    if (serialPort->isOpen() & !ui->useLoggerCAT->isChecked()){
+        serialPort->close();
     }
 
 
-    QList<QString> info;
-    info.append(rigFreqHz);
-    info.append(rigModeName); //наверно можно было эти переменные записать в public в хедере, но я поздновато это понял
-    return info;
+
 }
     void loggerCAT::setupPort()
     {
         // тут идут настройки порта. data bits (по умолчанию 8) я не устанавливал, т.к. вроде у всех Kenwood 8 data bits
-        serialPort.setPortName(this->ui->CATport->currentText());
+        serialPort->setPortName(this->ui->CATport->currentText());
         qint32 baud=this->ui->CATspeed->currentText().toInt();
 
         if(this->ui->flowctrl->currentText()=="Нет"){
-            serialPort.setFlowControl(QSerialPort::NoFlowControl);
+            serialPort->setFlowControl(QSerialPort::NoFlowControl);
         }
         else{
-            serialPort.setFlowControl(QSerialPort::HardwareControl);
+            serialPort->setFlowControl(QSerialPort::HardwareControl);
         }
 
-        serialPort.setBaudRate(baud);
+        serialPort->setBaudRate(baud);
         int32_t stopbits=this->ui->CATstopbits->currentText().toInt();
         switch (stopbits)
         {
         case 1:
-            serialPort.setStopBits(QSerialPort::OneStop);
+            serialPort->setStopBits(QSerialPort::OneStop);
             break;
         case 2:
-            serialPort.setStopBits(QSerialPort::TwoStop);
+            serialPort->setStopBits(QSerialPort::TwoStop);
             break;
 
         }
@@ -279,3 +247,47 @@ void loggerCAT::saveCATset()
     emit CATSettingsChanged();
 }
 
+
+void loggerCAT::reading()
+{
+    rigAnswer.append(serialPort->readAll());
+    /* readAll и readLine почему-то читают только по 8 байт (не у меня одного так, похоже, что так и должно быть.
+    или дело в объеме буфера), поэтому ждем, пока наберутся 38 байт ответа. (readyRead генерируется каждые "8 байт")*/
+    if (rigAnswer.count()>=38)
+    //когда полностью приняли ответ, смотрим частоту. Вместо readAll можно было использовать readLine(char *data, 38-rigAnswer.count())
+    //т.е. читаем оставшуюся часть ответа, чтобы не прочитать "в никуда" начало следующего ответа (такое может случится
+    //при малом интервале опроса, когда может не дойти перевод на новую строку или другие символы), к тому же
+    //сигнал таймера rigUpd() и updated(), генерируемый при успешномм прочтении частоты, никак не синхронизированы
+    //и, когда в ответе потеряются какие нибудь байты, и он не пройдет следующее условие, может отправиться
+    //еще один ответ с трансивера в частично заполненный буфер
+    {
+    answ = rigAnswer; // информация о трансивере, включая rit, xit, mode и др. 38 символов
+
+    rigAnswer.clear();
+
+    if (answ.count()==38 && answ.mid(0, 2)=="IF" && answ.mid(37, 1)==";")
+    //подходят только ответы длиной 38 байт(символов) вида "IF<35 байт>;"
+    //чтобы частично решить первую проблему и проблему с потерей байтов в середине ответа (при тестах с моим TS-570D
+    //почему-то обычно терялись пробелы в середине сообщения, а информация доходила целой) можно было поступить так:
+    //находить "F". следующие 11 байт после нее это частота. Находить ";". 8-й символ левее ";" - это rigMode_.
+    //Но при интервале опроса >600 мс все работает нормально. Аппаратное управление потоком нет возможности проверить, может там все работает хорошо и так.
+    {
+    //qDebug("ok " + answ);
+    unsigned long long rigFreqHz = answ.mid(2, 11).toULongLong(); //символы с 3 по 12 - это частота. эта переменная для поля в mainwindow
+    QString rigFreq_ = QString::number((double) rigFreqHz/1000000, 'f', 6); //узнаем частоту и переводим в МГц. а эта переменная для контрольного поля в этом окне
+    int rigMode_=answ.mid(29, 1).toInt(); //узнаем модуляцию, здесь будет число от 1 до 9
+
+    QVector<QString> modes={"no selection", "SSB (LSB)", "SSB (USB)", "CW", "FM", "AM", "FSK", "CW", "no selection", "FSK"};
+    // список соответсвия номера и модуляции, будем узнавать модуляцию по индексу. CW-R и FSK-R записаны без R
+    QString rigModeName=modes.at(rigMode_);
+
+    ui->freqLabel->setText("Частота: " + rigFreq_);
+    ui->modeLabel->setText("Модуляция: " + rigModeName);
+    rigFreq = rigFreqHz;
+    rigMode = rigModeName;
+    emit updated();
+    }
+    }
+    //else qDebug(rigAnswer);
+
+}

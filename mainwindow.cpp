@@ -73,14 +73,16 @@ MainWindow::MainWindow(QWidget *parent)
       loggercat->show();
   });
   connect(loggercat, &loggerCAT::rigupd, this, [=]() {
-      //if(loggercat->useLoggerCAT->isChecked()){
-      QList <QString> info = loggercat->rigRequesting();
-      unsigned int rigFreq = info.at(0).toUInt();
-      QString rigMode = info.at(1);
+      loggercat->rigRequesting();
+  });
+
+
+  connect(loggercat, &loggerCAT::updated, this, [=]() {
+      unsigned int rigFreq = loggercat->rigFreq;
+      QString rigMode = loggercat->rigMode;
       ui->bandCombo->setCurrentText(Helpers::GetBandByFreqHz(rigFreq));
       ui->freqInput->setText(QString::number((double) rigFreq / 1000000, 'f', 6));
       ui->modeCombo->setCurrentText(rigMode);
-      //}
   });
 
   ui->modeCombo->setEditable(true); //Включаем встроенный QLineEdit
@@ -224,9 +226,8 @@ MainWindow::MainWindow(QWidget *parent)
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 MainWindow::~MainWindow() {
-    if (loggercat->portOpened){ //закрываем порт, если он открыт
-        loggercat->serialPort.close();
-        loggercat->portOpened=false;
+    if (loggercat->serialPort->isOpen()){ //закрываем порт, если он открыт
+        loggercat->serialPort->close();
     }
   delete ui;
 }
