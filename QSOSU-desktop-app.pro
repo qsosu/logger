@@ -1,4 +1,5 @@
 QT       += core gui network sql xml
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,6 +17,7 @@ SOURCES += \
     callsigns.cpp \
     flrig.cpp \
     httpapi.cpp \
+    loggercat.cpp \
     main.cpp \
     mainwindow.cpp \
     qrzrucallbook.cpp \
@@ -36,6 +38,7 @@ HEADERS += \
     flrig.h \
     helpers.h \
     httpapi.h \
+    loggercat.h \
     mainwindow.h \
     qrzrucallbook.h \
     settings.h \
@@ -50,6 +53,7 @@ FORMS += \
     about.ui \
     addcallsign.ui \
     callsigns.ui \
+    loggercat.ui \
     mainwindow.ui \
     settings.ui
 

@@ -47,6 +47,9 @@
          </property>
          <item>
           <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
@@ -131,6 +134,9 @@
          </item>
          <item>
           <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
@@ -246,6 +252,9 @@
          </item>
          <item>
           <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
@@ -431,6 +440,9 @@
          </item>
          <item>
           <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
@@ -551,6 +563,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
@@ -624,6 +639,9 @@
          </item>
          <item>
           <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
@@ -672,6 +690,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>0</width>
@@ -753,6 +774,7 @@
     </property>
     <addaction name="actionSettings"/>
     <addaction name="actionFlrig"/>
+    <addaction name="actionLogger_CAT"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -817,6 +839,14 @@
   <action name="actionQsosuLink">
    <property name="text">
     <string>Страница сервиса QSO.SU</string>
+   </property>
+  </action>
+  <action name="actionLogger_CAT">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Logger CAT</string>
    </property>
   </action>
  </widget>

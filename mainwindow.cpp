@@ -64,6 +64,27 @@ MainWindow::MainWindow(QWidget *parent)
       settings->show();
   });
 
+
+  //--------Logger CAT
+  loggercat = new loggerCAT();
+  loggercat->setAttribute(Qt::WA_QuitOnClose, false);
+  connect(loggercat, SIGNAL(CATSettingsChanged()), this, SLOT(onSettingsChanged()));
+  connect(ui->actionLogger_CAT, &QAction::triggered, this, [=]() {
+      loggercat->show();
+  });
+  connect(loggercat, &loggerCAT::rigupd, this, [=]() {
+      loggercat->rigRequesting();
+  });
+
+
+  connect(loggercat, &loggerCAT::updated, this, [=]() {
+      unsigned int rigFreq = loggercat->rigFreq;
+      QString rigMode = loggercat->rigMode;
+      ui->bandCombo->setCurrentText(Helpers::GetBandByFreqHz(rigFreq));
+      ui->freqInput->setText(QString::number((double) rigFreq / 1000000, 'f', 6));
+      ui->modeCombo->setCurrentText(rigMode);
+  });
+
   ui->modeCombo->setEditable(true); //Включаем встроенный QLineEdit
   ui->modeCombo->setInsertPolicy(QComboBox::NoInsert); // отключаем вставку новых элементов из QLineEdit
   ui->modeCombo->completer()->setCompletionMode(QCompleter::CompletionMode::PopupCompletion); // устанавливаем модель автодополнения (по умолчанию стоит InlineCompletition)
@@ -112,6 +133,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(flrig, &Flrig::rpcError, this, [=]() {
     ui->statusbar->showMessage(QString("Ошибка XML-RPC: %1 %2").arg(QString::number(flrig->getErrorCode()), flrig->getErrorString()), 300);
   });
+
+
 
   adif = new Adif(db);
   connect(ui->actionExportAdif, &QAction::triggered, this, [=]() {
@@ -203,6 +226,9 @@ MainWindow::MainWindow(QWidget *parent)
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 MainWindow::~MainWindow() {
+    if (loggercat->serialPort->isOpen()){ //закрываем порт, если он открыт
+        loggercat->serialPort->close();
+    }
   delete ui;
 }
 
@@ -1007,4 +1033,11 @@ void MainWindow::darkTheime()
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
+
+//void MainWindow::on_actionLogger_CAT_triggered()
+//{
+    //logcat = new loggercat(this);
+    //loggercat->show();
+//}
 

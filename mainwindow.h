@@ -23,6 +23,7 @@
 #include "qrzrucallbook.h"
 #include "adif.h"
 #include "about.h"
+#include "loggercat.h" //or <loggercat.h>?
 
 
 QT_BEGIN_NAMESPACE
@@ -68,6 +69,7 @@ private:
   QTimer *CallTypeTimer;
   Adif *adif;
   About *about;
+  loggerCAT *loggercat;
 
   typedef struct baseData {
     int callsign_id;
@@ -131,5 +133,6 @@ private slots:
   void on_freqInput_editingFinished();
   void on_rstrInput_editingFinished();
   void on_rstsInput_editingFinished();
+  //void on_actionLogger_CAT_triggered();
 };
 #endif // MAINWINDOW_H
