@@ -34,15 +34,6 @@ public:
     return Band;
   }
 
-  static QString getUniqueId() {
-
-
-
-      qDebug() << "StandardPaths " << QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-      return "";
-  }
-
-
 //   static double BandToDefaultFreqMHz(QString band) {
 //     if (band == "160M") return 1.8;
 //     if (band == "80M") return 3.5;

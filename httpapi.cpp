@@ -51,7 +51,7 @@ void HttpApi::SendQso(QVariantList data) {
     QJsonDocument doc(body);
 
     QByteArray jsonBA = doc.toJson();
-    qDebug().noquote() << "Sending QSO data to service." << jsonBA;
+    qDebug().noquote() << "Sending QSO data to QSO.SU." << jsonBA;
 
     QNetworkReply *reply = m_manager.post(request, jsonBA);
     connect(reply, &QNetworkReply::finished, this, [=]() {

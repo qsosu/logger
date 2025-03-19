@@ -29,6 +29,9 @@ public:
     QNetworkAccessManager m_manager;
     QString APILogRadioAccessToken;
 
+private:
+    QString XApplicationKey = "f23005c5-681e-43fb-96fa-6e80c89cbb9c";
+
 signals:
     void received(QString, QString, QString, QString, QString, QString);
     void checked(int, QString);

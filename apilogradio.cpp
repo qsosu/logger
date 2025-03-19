@@ -48,7 +48,7 @@ bool APILogRadio::checkToken()
     QNetworkRequest request(QUrl("https://api.logradio.ru/user/api-token"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + APILogRadioAccessToken).toUtf8());
-    request.setRawHeader(QByteArrayLiteral("X-Application-Key"), QString("f23005c5-681e-43fb-96fa-6e80c89cbb9c").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("X-Application-Key"), QString(XApplicationKey).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
     QNetworkReply *reply = m_manager.get(request);
@@ -83,7 +83,7 @@ void APILogRadio::SendQso(QVariantList data) {
     QNetworkRequest request(QUrl("https://api.logradio.ru/ham/qso"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + APILogRadioAccessToken).toUtf8());
-    request.setRawHeader(QByteArrayLiteral("X-Application-Key"), QString("f23005c5-681e-43fb-96fa-6e80c89cbb9c").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("X-Application-Key"), QString(XApplicationKey).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
     QJsonObject QSO_Obj;
@@ -126,17 +126,16 @@ void APILogRadio::SendQso(QVariantList data) {
     connect(reply, &QNetworkReply::finished, this, [=]() {
         QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         QByteArray data = reply->readAll();
-
-        qDebug() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
         QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
-        qDebug() << jsonDocument;
 
-//        switch(status_code.toInt()) {
-//            case 200:
-//                break;
-//            case 409:
-//            default:
-//        }
+        switch(status_code.toInt()) {
+            case 200:
+                qDebug() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
+                break;
+            case 401:
+                qDebug() << jsonDocument;
+                break;
+        }
        reply->deleteLater();
     });
 }

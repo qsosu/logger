@@ -93,9 +93,6 @@ void Settings::display() {
     ui->fontSize->setValue(fontSize);
     ui->darkTheimeCheckBox->setChecked(darkTheime);
 
-    qDebug() << "QSO.SU Token: " << accessToken;
-    qDebug() << "LogRadio.ru Token: " << logRadioAccessToken;
-
     logradio = new APILogRadio(logRadioAccessToken);
     connect(logradio, SIGNAL(checked(int,QString)), this, SLOT(checked(int,QString)));
     connect(logradio, SIGNAL(received(QString, QString, QString, QString, QString, QString)), this, SLOT(received(QString, QString, QString, QString, QString, QString)));
