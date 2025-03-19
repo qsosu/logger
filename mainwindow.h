@@ -23,6 +23,7 @@
 #include "qrzrucallbook.h"
 #include "adif.h"
 #include "about.h"
+#include "apilogradio.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -60,6 +61,8 @@ private:
   UdpReceiver *udpReceiver;
   Flrig *flrig;
   HttpApi *api;
+  APILogRadio *logradio;
+
   QString database_file;
   QSqlDatabase db;
   QSqlTableModel *RecordsModel;
@@ -96,6 +99,7 @@ private:
   void SaveFormData();
   void SaveCallsignState();
   void darkTheime();
+  void RemoveDeferredQSOs();
 
   //bool LoadHamDefs();
   void readXmlfile();
@@ -120,7 +124,7 @@ private slots:
   void onUdpLogged();
   void fillDefaultFreq();
   void customMenuRequested(QPoint pos);
-  void onQsoSynced(int dbid);
+  void onQsoSynced(int dbid, QString hash);
   void LoadHamDefs();
   void setModesList();
   void setBandsList();

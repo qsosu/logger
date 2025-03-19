@@ -8,11 +8,11 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
 SOURCES += \
     about.cpp \
     addcallsign.cpp \
     adif.cpp \
+    apilogradio.cpp \
     callsigns.cpp \
     flrig.cpp \
     httpapi.cpp \
@@ -31,6 +31,7 @@ HEADERS += \
     about.h \
     addcallsign.h \
     adif.h \
+    apilogradio.h \
     callsigns.h \
     delegations.h \
     flrig.h \

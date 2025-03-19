@@ -14,6 +14,12 @@ bool UdpReceiver::start(uint16_t port) {
 
     connect(socket, &QUdpSocket::readyRead, this, &UdpReceiver::onReadyRead);
 
+    this->retransmit_port = 2555;
+    retransmit_socket = new QUdpSocket(this);
+    if (!retransmit_socket->bind(QHostAddress::Any, retransmit_port)) {
+        return false;
+    }
+
     return true;
 }
 
@@ -26,6 +32,7 @@ void UdpReceiver::onReadyRead() {
         qint64 readLen = socket->readDatagram(data.data(), data.size());
         if (readLen == -1) return;
         process(data);
+        retransmit_socket->writeDatagram(data.data(), QHostAddress::Any, retransmit_port);
     }
 }
 

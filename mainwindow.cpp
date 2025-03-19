@@ -4,9 +4,10 @@
 #include "QRegularExpressionValidator"
 #include "qlistview.h"
 #include <QCompleter>
+#include <QSqlError>
 
 #define SET_ROBOT_FONT
-#define VERSION "1.8.1"
+#define VERSION "1.8.2"
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -55,7 +56,8 @@ MainWindow::MainWindow(QWidget *parent)
   //ui->modeCombo->setMaxVisibleItems(130);
 
   //Проверка использования и версий SSL
-  //qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
+  qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
+//------------------------------------------------------------------------------------------------------------------------------------------
 
   settings = new Settings();
   settings->setAttribute(Qt::WA_QuitOnClose, false);
@@ -63,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionSettings, &QAction::triggered, this, [=]() {
       settings->show();
   });
+//------------------------------------------------------------------------------------------------------------------------------------------
 
   ui->modeCombo->setEditable(true); //Включаем встроенный QLineEdit
   ui->modeCombo->setInsertPolicy(QComboBox::NoInsert); // отключаем вставку новых элементов из QLineEdit
@@ -72,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
   qApp->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
 
   InitDatabase("data.db");
+//------------------------------------------------------------------------------------------------------------------------------------------
 
   udpReceiver = new UdpReceiver(this);
   if (settings->udpServerEnable) {
@@ -90,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent)
           //QMessageBox::critical(nullptr, "Ошибка", "Ошибка запуска UDP сервера");
       }
   }
-
+//------------------------------------------------------------------------------------------------------------------------------------------
   flrig = new Flrig(settings->flrigHost, settings->flrigPort, 500, this);
   connect(flrig, &Flrig::connected, this, [=]() {
     ui->flrigLabel->setText("Подключен");
@@ -112,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(flrig, &Flrig::rpcError, this, [=]() {
     ui->statusbar->showMessage(QString("Ошибка XML-RPC: %1 %2").arg(QString::number(flrig->getErrorCode()), flrig->getErrorString()), 300);
   });
-
+//------------------------------------------------------------------------------------------------------------------------------------------
   adif = new Adif(db);
   connect(ui->actionExportAdif, &QAction::triggered, this, [=]() {
       if (userData.callsign_id > 0) adif->Export(userData.callsign_id);
@@ -143,7 +147,7 @@ MainWindow::MainWindow(QWidget *parent)
       return;
   });
   connect(api, &HttpApi::synced, this, &MainWindow::onQsoSynced);
-
+//------------------------------------------------------------------------------------------------------------------------------------------
   callsigns = new Callsigns(db, api, this);
   callsigns->setAttribute(Qt::WA_QuitOnClose, false);
   connect(callsigns, &Callsigns::updated, this, &MainWindow::onCallsignsUpdated);
@@ -166,12 +170,14 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->saveQsoButton, SIGNAL(clicked()), this, SLOT(SaveQso()));
   connect(ui->refreshButton, &QPushButton::clicked, this, [=] {
       RefreshRecords();
-      //ScrollRecordsToBottom();
       ScrollRecordsToTop();
   });
   connect(ui->bandCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(fillDefaultFreq()));
   connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customMenuRequested(QPoint)));
 
+  logradio = new APILogRadio(settings->logRadioAccessToken);
+
+//------------------------------------------------------------------------------------------------------------------------------------------
   connect(ui->actionAbout, &QAction::triggered, this, [=]() {
       about = new About(this);
       about->setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
@@ -184,7 +190,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionQsosuFaqLink, &QAction::triggered, this, [=]() {
       QDesktopServices::openUrl(QUrl("https://qso.su/ru/faq"));
   });
-
+//------------------------------------------------------------------------------------------------------------------------------------------
   connect(api, SIGNAL(HamDefsUploaded()), this, SLOT(HamDefsUploaded()));
   connect(api, SIGNAL(HamDefsError()), this, SLOT(HamDefsError()));
 
@@ -199,6 +205,8 @@ MainWindow::MainWindow(QWidget *parent)
 
   if(settings->darkTheime) darkTheime();
   else qApp->setPalette(style()->standardPalette());
+
+  RemoveDeferredQSOs(); //Удаляем с QSO.SU ранее не удаленные QSO
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -268,7 +276,10 @@ void MainWindow::CreateDatabase() {
              "\"CNTY\" TEXT,"
              "\"COMMENT\" TEXT,"
              "\"sync_state\" INTEGER NOT NULL DEFAULT 0,"
+             "\"HASH\" TEXT,"
              "PRIMARY KEY(\"id\" AUTOINCREMENT))");
+  qInfo() << "Creating DELRECORDS table";
+  query.exec("CREATE TABLE \"delrecords\" (\"id\" INTEGER NOT NULL, \"HASH\" TEXT, PRIMARY KEY(\"id\" AUTOINCREMENT))");
   query.finish();
   db.close();
 }
@@ -350,6 +361,7 @@ void MainWindow::InitRecordsTable() {
   ui->tableView->setColumnHidden(5, true);
   ui->tableView->setColumnHidden(6, true);
   ui->tableView->setColumnHidden(7, true);
+  ui->tableView->setColumnHidden(23, true);
 
   ui->tableView->setItemDelegateForColumn(8, new FormatCallsign(ui->tableView));
   ui->tableView->setItemDelegateForColumn(9, new FormatDate(ui->tableView));
@@ -396,6 +408,7 @@ void MainWindow::customMenuRequested(QPoint pos) {
     if (indexes.count() == 0) return;
 
     QMenu *menu = new QMenu(this);
+
     QAction *deleteAction = new QAction((indexes.count() > 1) ? "Удалить выбранные" : "Удалить", this);
     connect(deleteAction, &QAction::triggered, this, [=]() {
         RemoveQSOs(indexes);
@@ -473,7 +486,7 @@ void MainWindow::SaveQso()
   QString rsts = ui->rstsInput->text();
   newRecord.setValue("RST_SENT", rsts);
   QString rstr = ui->rstrInput->text();
-  newRecord.setValue("RST_RCVD", rsts);
+  newRecord.setValue("RST_RCVD", rstr);
   QString name = ui->nameInput->text();
   newRecord.setValue("NAME",name);
   QString qth = ui->qthInput->text();
@@ -501,9 +514,10 @@ void MainWindow::SaveQso()
       data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
       data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
       api->SendQso(data);
+      data << userData.callsign;
+      logradio->SendQso(data);
 
       RefreshRecords();
-      //ScrollRecordsToBottom();
       ScrollRecordsToTop();
       ClearQso();
       ui->callInput->setFocus();
@@ -537,13 +551,16 @@ void MainWindow::RemoveQSOs(QModelIndexList indexes) {
         query.prepare("DELETE FROM records WHERE id = ?");
         for (int i = countRow; i > 0; i--) {
             int id = RecordsModel->data(RecordsModel->index(indexes.at(i-1).row(), 0)).toInt();
+
+            QString hash = RecordsModel->data(RecordsModel->index(indexes.at(i-1).row(), 23), 0).toString();
+            api->deleteByHashLog(hash);
+
             query.addBindValue(id);
             query.exec();
         }
         db.commit();
 
         RefreshRecords();
-        //ScrollRecordsToBottom(); //BugFix
         ScrollRecordsToTop();
     } else {
         return;
@@ -613,7 +630,6 @@ void MainWindow::onStationCallsignChanged() {
 
   SetRecordsFilter(userData.callsign_id);
   RefreshRecords();
-  //ScrollRecordsToBottom(); //BugFix
   ScrollRecordsToTop();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -626,15 +642,6 @@ void MainWindow::onOperatorChanged() {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::onUdpLogged() {
-  // if (ui->stationCallsignCombo->currentIndex() == 0) {
-  //   QMessageBox::critical(0, "Ошибка", "UDP: Не выбран позывной станции", QMessageBox::Ok);
-  //   return;
-  // }
-  // if (ui->operatorCombo->currentIndex() == 0) {
-  //   QMessageBox::critical(0, "Ошибка", "UDP: Не выбран позывной оператора", QMessageBox::Ok);
-  //   return;
-  // }
-
   qDebug() << "Creating database record for UDP message";
   QSqlRecord newRecord = RecordsModel->record();
   newRecord.remove(newRecord.indexOf("id"));
@@ -672,9 +679,11 @@ void MainWindow::onUdpLogged() {
         data << QString::fromUtf8(udpReceiver->dx_call) << Helpers::GetBandByFreqHz(udpReceiver->tx_frequency_hz) << QString::fromUtf8(udpReceiver->mode);
         data << udpReceiver->tx_frequency_hz << datetime << QString::fromUtf8(udpReceiver->name) << QString::fromUtf8(udpReceiver->report_sent) << QString::fromUtf8(udpReceiver->report_received) << "" << "" << QString::fromUtf8(udpReceiver->dx_grid);
         api->SendQso(data);
+        data << userData.gridsquare << "" << userData.callsign;
+
+        logradio->SendQso(data);
 
         RefreshRecords();
-        //ScrollRecordsToBottom(); //BugFix
         ScrollRecordsToTop();
         ClearQso();
       }
@@ -740,19 +749,35 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
         QString my_cnty = query.value(15).toString();
         QString my_gridsquare = query.value(16).toString();
 
+        /*
         QVariantList data;
         data << dbid << qsosu_callsign_id << qsosu_operator_id << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
+        data << userData.cnty << userData.gridsquare;
         api->SendQso(data);
+        */
+
+        QVariantList data;
+        data << dbid << userData.qsosu_callsign_id << userData.qsosu_operator_id;
+        data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
+        api->SendQso(data);
+        data << userData.callsign;
+        logradio->SendQso(data);
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-
-void MainWindow::onQsoSynced(int dbid) {
+//Тут нужно добавить хэш синхронизированного QSO
+void MainWindow::onQsoSynced(int dbid, QString hash) {
     QSqlQuery query(db);
-    if(query.exec(QString("UPDATE records SET sync_state = 1 WHERE id=%1").arg(dbid))) {
+    query.prepare("UPDATE records SET sync_state = 1, HASH = :hash WHERE id=:id");
+    query.bindValue(":hash", hash);
+    query.bindValue(":id", dbid);
+
+    if(!query.exec()){
+        qDebug() << "ERROR UPDATE TABLE records " << query.lastError().text();
+     } else {
         RefreshRecords();
         ScrollRecordsToTop();
-    }
+     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1006,5 +1031,28 @@ void MainWindow::darkTheime()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void MainWindow::RemoveDeferredQSOs()
+{
+    int rowcount = 0;
 
+    qDebug() << "Remove Deferred QSOs.";
+    db.transaction();
+    QSqlQuery query(db);
+    query.prepare("SELECT COUNT(*) FROM DELRECORDS");
+    query.exec(); query.next();
+    rowcount = query.value(0).toInt();
+
+    query.prepare("SELECT HASH FROM DELRECORDS");
+    query.exec(); query.next();
+
+    for(int i = rowcount; i > 0; i--) {
+        api->deleteByHashLog(query.value(0).toString());
+        qDebug() << "Del QSO: " << query.value(0).toString();
+        query.next();
+    }
+    query.prepare("DELETE FROM DELRECORDS");
+    query.exec();
+    db.commit();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 

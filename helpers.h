@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QDebug>
 #include <math.h>
+#include <QSysInfo>
+#include <QStandardPaths>
+
 
 class Helpers {
 
@@ -30,6 +33,15 @@ public:
     if (MHz >= 10000 && MHz <= 10500) Band = "3CM";
     return Band;
   }
+
+  static QString getUniqueId() {
+
+
+
+      qDebug() << "StandardPaths " << QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+      return "";
+  }
+
 
 //   static double BandToDefaultFreqMHz(QString band) {
 //     if (band == "160M") return 1.8;

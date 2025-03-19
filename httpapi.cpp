@@ -56,16 +56,20 @@ void HttpApi::SendQso(QVariantList data) {
     QNetworkReply *reply = m_manager.post(request, jsonBA);
     connect(reply, &QNetworkReply::finished, this, [=]() {
         QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        qDebug() << "Network reply finished. Code:" << status_code.toInt();
+        QByteArray data = reply->readAll();
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+        QJsonObject response = jsonDocument["response"].toObject();
+        QJsonValue hash = response["hash"].toString();
+
+        qDebug() << "QSO.SU Network reply finished. Code:" << status_code.toInt() << " Loaded hash: " << hash.toString();
         switch(status_code.toInt()) {
             case 201:
+                emit synced(dbid, hash.toString());
+                break;
             case 409:
-                emit synced(dbid);
-            break;
             default:
-                emit syncerror(dbid);
+                emit syncerror(dbid, hash.toString());
         }
-
        reply->deleteLater();
     });
 }
@@ -192,6 +196,10 @@ void HttpApi::checkStatusCallsign(QString callsign)
     buff->setParent(reply);
 
     connect(reply, &QNetworkReply::finished, this, [=]() {
+
+        QByteArray data = reply->readAll();
+        qDebug() << data;
+
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray data = reply->readAll();
             qDebug() << data;
@@ -305,9 +313,55 @@ void HttpApi::loadHamDefs()
     });
 }
 //--------------------------------------------------------------------------------------------------------------------
+//Удаление QSO из радиолюбительского журнала
 
+void HttpApi::deleteByHashLog(QString hash)
+{
+    if(hash == "") return;
+    if (accessToken.length() == 0) {
+        emit emptyToken();
+        return;
+    }
+    if (m_reply) {
+        m_reply->abort();
+        m_reply->deleteLater();
+        m_reply = nullptr;
+    }
 
+    QNetworkRequest request(QUrl("https://api.qso.su/method/v1/deleteByHashLog"));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
+    QJsonObject body;
+    body["hash"] = hash;
+    QJsonDocument doc(body);
+
+    QByteArray removeData = doc.toJson();
+    QBuffer *buff = new QBuffer;
+    buff->setData(removeData);
+    buff->open(QIODevice::ReadOnly);
+
+    QNetworkReply *reply = m_manager.sendCustomRequest(request, "DELETE", buff);
+    buff->setParent(reply);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+    QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+    switch(status_code.toInt())
+    {
+        case 202:
+            qDebug() << "QSO Deleted. Code:" << status_code.toInt();
+            break;
+        case 406:
+            qDebug() << "Error deleted QSO. Code:" << status_code.toInt();
+            break;
+    }
+    reply->deleteLater();
+   });
+}
+//--------------------------------------------------------------------------------------------------------------------
 
 
 

@@ -32,6 +32,7 @@ public:
   void getListSubmodeDropDown();
   void getListBand();
   void loadHamDefs();
+  void deleteByHashLog(QString hash); //Удаление QSO из радиолюбительского журнала.
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;
@@ -39,11 +40,11 @@ public:
   QStringList bands;
   QByteArray XMLdata;
 
-
 private:
   enum Method {
     GET,
-    POST
+    POST,
+    DELETE
   };
 
   QByteArray request(Method method, QString token, QString url, QByteArray postData = nullptr);
@@ -61,7 +62,6 @@ private:
 
 private slots:
 
-
 signals:
   void emptyToken();
   void available();
@@ -70,8 +70,8 @@ signals:
 
   void callsignsUpdated();
   void callsignStatus(int);
-  void synced(int);
-  void syncerror(int);
+  void synced(int, QString);
+  void syncerror(int, QString);
   void error(QNetworkReply::NetworkError);
   void modesUpdated();
   void bandsUpdated();

@@ -2,6 +2,7 @@
 #include "ui_settings.h"
 #include <QDebug>
 
+
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Settings)
@@ -9,12 +10,17 @@ Settings::Settings(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("Настройки программы");
     ui->accessToken->setEchoMode(QLineEdit::Password);
+    ui->LogRadioAccessToken->setEchoMode(QLineEdit::Password);
     ui->qrzruPassword->setEchoMode(QLineEdit::Password);
 
     connect(ui->saveButton, &QPushButton::clicked, this, &Settings::save);
     connect(ui->closeButton, &QPushButton::clicked, this, &Settings::hide);
+    connect(ui->getLogRadioTokenBtn, &QPushButton::clicked, this, &Settings::getLogRadioToken);
+    connect(ui->checkLogRadioTokenBtn, &QPushButton::clicked, this, &Settings::checkLogRadioToken);
 
-    openPath(QCoreApplication::applicationDirPath() + "/settings.ini");
+    //openPath(QCoreApplication::applicationDirPath() + "/settings.ini");
+    openPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/settings.ini");
+
 }
 
 Settings::~Settings() {
@@ -27,38 +33,38 @@ void Settings::openPath(QString path) {
     if (!info.exists()) {
         createDefaultFile();
     }
-
     qs = new QSettings(path, QSettings::IniFormat);
     read();
 }
 
 void Settings::read() {
+    QString str;
     qs->beginGroup("API");
-    accessToken = qs->value("token", "").toString();
+    str = qs->value("token", "").toString();
+    accessToken = EncryptToken(str);
     qs->endGroup();
-
+    qs->beginGroup("APILOGRADIORU");
+    str = qs->value("token", "").toString();
+    logRadioAccessToken = EncryptToken(str);
+    qs->endGroup();
     qs->beginGroup("UDP");
     udpServerEnable = qs->value("enable", true).toBool();
     udpServerPort = qs->value("port", 2237).toInt();
     qs->endGroup();
-
     qs->beginGroup("FLRIG");
     flrigHost = QHostAddress(qs->value("host", "127.0.0.1").toString());
     flrigPort = qs->value("port", 12345).toInt();
     flrigPeriod = qs->value("period", 500).toInt();
     qs->endGroup();
-
     qs->beginGroup("QRZRU");
     enableQrzruCallbook = qs->value("enable", true).toBool();
     QrzruLogin = qs->value("login", "").toString();
     QrzruPassword = qs->value("password", "").toString();
     qs->endGroup();
-
     qs->beginGroup("VIEW");
     fontSize = qs->value("fontsize", 10).toInt();
     darkTheime = qs->value("darktheime", false).toBool();
     qs->endGroup();
-
     qs->beginGroup("FORM");
     lastBand = qs->value("band", "").toString();
     lastMode = qs->value("mode", "").toString();
@@ -70,12 +76,12 @@ void Settings::read() {
     lastRST_SENT = qs->value("rst_send", "").toString();
     lastRST_RCVD = qs->value("rst_rcvd", "").toString();
     qs->endGroup();
-
     display();
 }
 
 void Settings::display() {
     ui->accessToken->setText(accessToken);
+    ui->LogRadioAccessToken->setText(logRadioAccessToken);
     ui->udpServerEnableCheckbox->setChecked(udpServerEnable);
     ui->udpServerPort->setValue(udpServerPort);
     ui->flrigHost->setText(flrigHost.toString());
@@ -86,6 +92,13 @@ void Settings::display() {
     ui->qrzruPassword->setText(QrzruPassword);
     ui->fontSize->setValue(fontSize);
     ui->darkTheimeCheckBox->setChecked(darkTheime);
+
+    qDebug() << "QSO.SU Token: " << accessToken;
+    qDebug() << "LogRadio.ru Token: " << logRadioAccessToken;
+
+    logradio = new APILogRadio(logRadioAccessToken);
+    connect(logradio, SIGNAL(checked(int,QString)), this, SLOT(checked(int,QString)));
+    connect(logradio, SIGNAL(received(QString, QString, QString, QString, QString, QString)), this, SLOT(received(QString, QString, QString, QString, QString, QString)));
 }
 
 void Settings::createDefaultFile() {
@@ -93,6 +106,9 @@ void Settings::createDefaultFile() {
     newFile.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream stream(&newFile);
     stream << "[API]" << Qt::endl;
+    stream << "token =" << Qt::endl;
+    stream << Qt::endl;
+    stream << "[APILOGRADIORU]" << Qt::endl;
     stream << "token =" << Qt::endl;
     stream << Qt::endl;
     stream << "[UDP]" << Qt::endl;
@@ -128,31 +144,29 @@ void Settings::createDefaultFile() {
 
 void Settings::save() {
     qs->beginGroup("API");
-    qs->setValue("token", ui->accessToken->text());
+    qs->setValue("token", EncryptToken(ui->accessToken->text()));
     qs->endGroup();
-
+    qs->beginGroup("APILOGRADIORU");
+    qs->setValue("token", EncryptToken(ui->LogRadioAccessToken->text()));
+    qs->endGroup();
     qs->beginGroup("UDP");
     qs->setValue("enable", ui->udpServerEnableCheckbox->isChecked() ? 1 : 0);
     qs->setValue("port", ui->udpServerPort->value());
     qs->endGroup();
-
     qs->beginGroup("FLRIG");
     qs->setValue("host", ui->flrigHost->text());
     qs->setValue("port", ui->flrigPort->value());
     qs->setValue("period", ui->flrigPeriod->value());
     qs->endGroup();
-
     qs->beginGroup("QRZRU");
     qs->setValue("enable", ui->qrzruEnable->isChecked() ? 1 : 0);
     qs->setValue("login", ui->qrzruLogin->text());
     qs->setValue("password", ui->qrzruPassword->text());
     qs->endGroup();
-
     qs->beginGroup("VIEW");
     qs->setValue("fontsize", ui->fontSize->value());
     qs->setValue("darktheime", ui->darkTheimeCheckBox->isChecked() ? 1 : 0);
     qs->endGroup();
-
     qs->sync();
     emit SettingsChanged();
 }
@@ -172,3 +186,61 @@ void Settings::saveForm()
     qs->endGroup();
     qs->sync();
 }
+
+QString Settings::EncryptToken(QString data)
+{
+    int ln = data.length();
+    QString sd = genSalt(data);
+
+    QString result = "";
+    for (int i = 0; i < ln; i++)
+    {
+         result.append(QString(QChar(data[i]).unicode()^QChar(sd[i]).unicode()));
+    }
+    return result;
+}
+
+QString Settings::genSalt(QString data)
+{
+    int dataLength = data.length();
+    QString Salt;
+    QByteArray UID = QSysInfo::machineUniqueId();
+
+    for(int i = 0; i < dataLength; ++i)
+    {
+        int index = i % UID.length();
+        QChar nextUIDChar = UID.at(index);
+        Salt.append(nextUIDChar);
+     }
+    return Salt;
+}
+
+
+void Settings::getLogRadioToken()
+{
+   logradio->getToken();
+}
+
+void Settings::checkLogRadioToken()
+{
+    logradio->checkToken();
+}
+
+void Settings::checked(int code, QString message)
+{
+    QMessageBox::information(0, "LogRadio.ru", "Код ответа: " + QString::number(code) +
+                             "\n"+message, QMessageBox::Ok);
+}
+
+void Settings::received(QString access_token, QString confirmation_key, QString confirmation_after, QString confirmation_before, QString valid_after, QString valid_before)
+{
+    QMessageBox::information(0, "LogRadio.ru",
+                                "Введите ключ подтверждения в разделе Токены API на LogRadio.ru\nКлюч подтверждения: " + confirmation_key + "\n" +
+                                "Интервал подтверждения: от " + confirmation_after + " до " + confirmation_before + "\n" +
+                                "Срок действия токена: от " + valid_after + " до " + valid_before, QMessageBox::Ok);
+    ui->LogRadioAccessToken->setText(access_token);
+
+}
+
+
+

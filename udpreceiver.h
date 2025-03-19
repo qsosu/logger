@@ -65,6 +65,9 @@ private:
     QUdpSocket *socket;
     uint16_t port;
 
+    QUdpSocket *retransmit_socket;
+    uint16_t retransmit_port;
+
 private slots:
     void onReadyRead();
     void process(QByteArray data);
