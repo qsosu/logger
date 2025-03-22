@@ -55,7 +55,7 @@ public:
 
     void initStyleOption(QStyleOptionViewItem* option, const QModelIndex& index) const {
         QStyledItemDelegate::initStyleOption(option, index);
-        option->displayAlignment = Qt::AlignVCenter | Qt::AlignCenter;
+        //option->displayAlignment = Qt::AlignVCenter | Qt::AlignCenter;
     }
 
     QString displayText(const QVariant& value, const QLocale&) const {

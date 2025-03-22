@@ -363,7 +363,7 @@ void MainWindow::InitRecordsTable() {
   ui->tableView->setItemDelegateForColumn(10, new FormatTime(ui->tableView));
   ui->tableView->setItemDelegateForColumn(11, new FormatTime(ui->tableView));
   ui->tableView->setItemDelegateForColumn(13, new FormatFreq(ui->tableView));
-  //ui->tableView->setItemDelegateForColumn(22, new FormatSyncState(ui->tableView));
+  ui->tableView->setItemDelegateForColumn(22, new FormatSyncState(ui->tableView));
   ui->tableView->horizontalHeader()->swapSections(0, 22); //Swap columns
 
   ui->tableView->setStyleSheet("selection-background-color: rgb(201, 217, 233); selection-color: rgb(0, 0, 0);");
@@ -371,7 +371,7 @@ void MainWindow::InitRecordsTable() {
 
   QHeaderView *horizontalHeader = ui->tableView->horizontalHeader();
   horizontalHeader->setSectionResizeMode(QHeaderView::Interactive);
-  horizontalHeader->setMinimumSectionSize(70);
+  horizontalHeader->setMinimumSectionSize(32);
   horizontalHeader->setStretchLastSection(true);
   horizontalHeader->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
 
