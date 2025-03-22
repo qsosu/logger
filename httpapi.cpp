@@ -352,7 +352,7 @@ void HttpApi::deleteByHashLog(QString hash)
     switch(status_code.toInt())
     {
         case 202:
-            qDebug() << "QSO Deleted. Code:" << status_code.toInt();
+            qDebug() << "QSO deleted. Code:" << status_code.toInt();
             break;
         case 406:
             qDebug() << "Error deleted QSO. Code:" << status_code.toInt();
@@ -362,10 +362,40 @@ void HttpApi::deleteByHashLog(QString hash)
    });
 }
 //--------------------------------------------------------------------------------------------------------------------
+//Получение координат по локатору
 
+void HttpApi::getGeocodeByLocator(QString Locator)
+{
+    QJsonObject body;
+    body["locator"] = Locator;
+    QJsonDocument doc(body);
 
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getGeocodeByLocator"));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
+    QByteArray postDataByteArray = doc.toJson();
+    QBuffer *buff = new QBuffer;
+    buff->setData(postDataByteArray);
+    buff->open(QIODevice::ReadOnly);
 
+    QNetworkReply *reply = m_manager.sendCustomRequest(request, "GET", buff);
+    buff->setParent(reply);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        QByteArray data = reply->readAll();
+        qDebug() << data;
+
+        if (reply->error() == QNetworkReply::NoError) {
+            qDebug() << data;
+        }
+        reply->deleteLater();
+    });
+}
+
+//--------------------------------------------------------------------------------------------------------------------
 
 
 

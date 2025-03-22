@@ -9,5 +9,7 @@
         <file>resources/images/icon16.ico</file>
         <file>resources/images/icon32.ico</file>
         <file>resources/images/icon48.ico</file>
+        <file>resources/images/no.png</file>
+        <file>resources/images/yes.png</file>
     </qresource>
 </RCC>

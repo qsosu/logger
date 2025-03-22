@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "delegations.h"
+
 #include "QRegularExpressionValidator"
 #include "qlistview.h"
 #include <QCompleter>
@@ -29,9 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->bandCombo->blockSignals(true);
   ui->modeCombo->blockSignals(true);
-
-  //ui->qthlocEdit->setReadOnly(true);
-  //ui->rdaEdit->setReadOnly(true);
   ui->actionSync->setEnabled(false);
 
   EverySecondTimer = new QTimer(this);
@@ -51,9 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
           //BugFix ui->timeInput->clear();
       }
   });
-
-  //ui->modeCombo->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-  //ui->modeCombo->setMaxVisibleItems(130);
 
   //Проверка использования и версий SSL
   qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
@@ -207,6 +201,7 @@ MainWindow::MainWindow(QWidget *parent)
   else qApp->setPalette(style()->standardPalette());
 
   RemoveDeferredQSOs(); //Удаляем с QSO.SU ранее не удаленные QSO
+  //api->getGeocodeByLocator("MP61QG");
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -330,7 +325,7 @@ void MainWindow::getCallsigns() {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::InitRecordsTable() {
-  RecordsModel = new QSqlTableModel(this);
+  RecordsModel = new ColorSqlTableModel(this);
   RecordsModel->setTable("records");
 
   //RecordsModel->setEditStrategy(QAbstractItemView::NoEditTriggers);
@@ -368,7 +363,7 @@ void MainWindow::InitRecordsTable() {
   ui->tableView->setItemDelegateForColumn(10, new FormatTime(ui->tableView));
   ui->tableView->setItemDelegateForColumn(11, new FormatTime(ui->tableView));
   ui->tableView->setItemDelegateForColumn(13, new FormatFreq(ui->tableView));
-  ui->tableView->setItemDelegateForColumn(22, new FormatSyncState(ui->tableView));
+  //ui->tableView->setItemDelegateForColumn(22, new FormatSyncState(ui->tableView));
   ui->tableView->horizontalHeader()->swapSections(0, 22); //Swap columns
 
   ui->tableView->setStyleSheet("selection-background-color: rgb(201, 217, 233); selection-color: rgb(0, 0, 0);");
@@ -748,13 +743,6 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
         QString gridsquare = query.value(14).toString();
         QString my_cnty = query.value(15).toString();
         QString my_gridsquare = query.value(16).toString();
-
-        /*
-        QVariantList data;
-        data << dbid << qsosu_callsign_id << qsosu_operator_id << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
-        data << userData.cnty << userData.gridsquare;
-        api->SendQso(data);
-        */
 
         QVariantList data;
         data << dbid << userData.qsosu_callsign_id << userData.qsosu_operator_id;

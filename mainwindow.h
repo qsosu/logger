@@ -24,6 +24,7 @@
 #include "adif.h"
 #include "about.h"
 #include "apilogradio.h"
+#include "delegations.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -65,7 +66,7 @@ private:
 
   QString database_file;
   QSqlDatabase db;
-  QSqlTableModel *RecordsModel;
+  ColorSqlTableModel *RecordsModel;
   QTimer *EverySecondTimer;
   QrzruCallbook *qrz;
   QTimer *CallTypeTimer;

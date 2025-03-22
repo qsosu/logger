@@ -35,6 +35,7 @@ private:
 signals:
     void received(QString, QString, QString, QString, QString, QString);
     void checked(int, QString);
+    void QSOStatus(int);
 };
 
 #endif // APILOGRADIO_H

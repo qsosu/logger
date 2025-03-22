@@ -31,8 +31,10 @@ public:
   void checkStatusCallsign(QString callsign);
   void getListSubmodeDropDown();
   void getListBand();
+  void getGeocodeByLocator(QString Locator);
   void loadHamDefs();
-  void deleteByHashLog(QString hash); //Удаление QSO из радиолюбительского журнала.
+  void deleteByHashLog(QString hash); //Удаление QSO из радиолюбительского журнала
+
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;

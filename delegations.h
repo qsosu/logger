@@ -6,6 +6,8 @@
 #include <QItemDelegate>
 #include <QDate>
 #include <QTime>
+#include <QSqlTableModel>
+#include <QDebug>
 
 class FormatCallsign : public QStyledItemDelegate {
 public:
@@ -59,11 +61,38 @@ public:
     QString displayText(const QVariant& value, const QLocale&) const {
       //return QString(value.toInt() == 0 ? "Нет" : "Да");
         switch (value.toInt()) {
-            case 0: return "Нет"; break;
-            case 1: return "Да"; break;
-            case 3: return "Ошибка"; break;
-            default: return "Нет данных";
+            //case 0: return "Нет"; break;
+            //case 1: return "Да"; break;
+            //case 3: return "Ошибка"; break;
+            default: return "";
         }
+    }
+};
+
+class ColorSqlTableModel : public QSqlTableModel
+{
+    Q_OBJECT
+public:
+    ColorSqlTableModel(QObject * parent = 0, QSqlDatabase db = QSqlDatabase())
+        : QSqlTableModel(parent,db) {;}
+    QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const
+    {
+        if(role==Qt::BackgroundRole && index.column() == 22)
+        {
+            const QVariant value(data(index, Qt::DisplayRole));
+            return QVariant(QColor(value.toString()=="1"?QColor(25, 25, 25):Qt::yellow));
+        }
+        if(role==Qt::DecorationRole && index.column() == 22)
+        {
+            if (QSqlQueryModel::data(index, Qt::DisplayRole).toInt() == 1){
+                return QIcon(":resources/images/yes.png");
+            } else {
+                return QIcon(":resources/images/no.png");
+            }
+        }
+
+
+        return QSqlTableModel::data(index,role);
     }
 };
 

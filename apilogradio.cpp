@@ -127,11 +127,23 @@ void APILogRadio::SendQso(QVariantList data) {
         QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         QByteArray data = reply->readAll();
         QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+        QJsonArray jsonArray = jsonDocument.array();
+        QJsonObject jo = jsonArray.at(0).toObject();
+
+        bool error = jo.value("error").toBool();
+        int number = jo.value("number").toInt();
 
         switch(status_code.toInt()) {
-            case 200:
+            case 200: {
                 qDebug() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
+                if(error == 0) qDebug() << "QSO №" << number << " sended to LogRadio.ru service.";
+                else {
+                    qDebug() << "Error! QSO №" << number << " not sended to LogRadio.ru service.";
+                    qDebug() << jsonDocument;
+                }
+                emit QSOStatus(error);
                 break;
+            };
             case 401:
                 qDebug() << jsonDocument;
                 break;
@@ -140,4 +152,3 @@ void APILogRadio::SendQso(QVariantList data) {
     });
 }
 //--------------------------------------------------------------------------------------------------------------------
-
