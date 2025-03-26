@@ -19,6 +19,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     qrzrucallbook.cpp \
+    qsoedit.cpp \
     settings.cpp \
     thirdparty/libmaia/maia/maiaFault.cpp \
     thirdparty/libmaia/maia/maiaObject.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     httpapi.h \
     mainwindow.h \
     qrzrucallbook.h \
+    qsoedit.h \
     settings.h \
     thirdparty/libmaia/maia/maiaFault.h \
     thirdparty/libmaia/maia/maiaObject.h \
@@ -52,6 +54,7 @@ FORMS += \
     addcallsign.ui \
     callsigns.ui \
     mainwindow.ui \
+    qsoedit.ui \
     settings.ui
 
 INCLUDEPATH += thirdparty/libmaia

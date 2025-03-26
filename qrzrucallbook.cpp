@@ -30,9 +30,46 @@ QStringList QrzruCallbook::Get(QString call) {
     QString city = getTagValue(data, "city");
     QString qthloc = getTagValue(data, "qthloc");
     QString cnty = getTagValue(data, "state");
-    ret << name << city << qthloc << cnty;
-
+    QString photo = getTagValue(data, "file");
+    ret << name << city << qthloc << cnty << photo;
     return ret;
+}
+
+void QrzruCallbook::LoadPhoto(QString imageUrl)
+{
+    QNetworkAccessManager manager;
+    QEventLoop eventLoop;
+    QTimer tot;
+
+    QObject::connect(&tot, &QTimer::timeout, &eventLoop, &QEventLoop::quit);
+    QObject::connect(&manager, &QNetworkAccessManager::finished,
+                     &eventLoop, &QEventLoop::quit);
+
+    QNetworkRequest request((QUrl(imageUrl)));
+    request.setRawHeader("Content-Type", "image");
+    QNetworkReply *reply = manager.get(request);
+
+    tot.start(1000);
+    eventLoop.exec();
+
+    if (tot.isActive()) {
+        tot.stop();
+        if (reply->error() != QNetworkReply::NoError) {
+            switch (reply->error()) {
+                case QNetworkReply::ContentNotFoundError:
+                    qDebug() << "ContentNotFoundError";
+                break;
+                default:
+                    qDebug() << "Error";
+            }
+        } else {
+            QPixmap pixmap;
+            pixmap.loadFromData(reply->readAll());
+            emit loaded(pixmap);
+            qDebug() << "Pixmap Loaded!";
+            reply->deleteLater();
+        }
+    }
 }
 
 QByteArray QrzruCallbook::Request(QString url) {

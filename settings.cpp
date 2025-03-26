@@ -17,7 +17,6 @@ Settings::Settings(QWidget *parent) :
     connect(ui->closeButton, &QPushButton::clicked, this, &Settings::hide);
     connect(ui->getLogRadioTokenBtn, &QPushButton::clicked, this, &Settings::getLogRadioToken);
     connect(ui->checkLogRadioTokenBtn, &QPushButton::clicked, this, &Settings::checkLogRadioToken);
-
     //openPath(QCoreApplication::applicationDirPath() + "/settings.ini");
     openPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/settings.ini");
 

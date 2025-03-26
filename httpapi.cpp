@@ -26,6 +26,11 @@ void HttpApi::SendQso(QVariantList data) {
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/sendLog")));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -90,6 +95,11 @@ void HttpApi::getCallsign()
 
   QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getCallsign")));
   request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+
+  request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+  request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+  request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
   request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
   request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -136,6 +146,11 @@ void HttpApi::addCallsign(QVariantList data)
     QNetworkRequest request(QUrl("https://api.qso.su/method/v1/addCallsign"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -181,9 +196,16 @@ void HttpApi::checkStatusCallsign(QString callsign)
     body["callsign"] = callsign;
     QJsonDocument doc(body);
 
+
+
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/checkStatusCallsign"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -234,6 +256,11 @@ void HttpApi::getListSubmodeDropDown()
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getListSubmodeDropDown")));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -271,6 +298,11 @@ void HttpApi::getListBand()
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getListBand")));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -331,6 +363,11 @@ void HttpApi::deleteByHashLog(QString hash)
     QNetworkRequest request(QUrl("https://api.qso.su/method/v1/deleteByHashLog"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -373,6 +410,11 @@ void HttpApi::getGeocodeByLocator(QString Locator)
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getGeocodeByLocator"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -397,8 +439,47 @@ void HttpApi::getGeocodeByLocator(QString Locator)
 
 //--------------------------------------------------------------------------------------------------------------------
 
+void HttpApi::getConfirmedLogs()
+{
+    QJsonObject body;
+    body["date"] = "2025-01-01";
+    body["id_station_callsign"] = 102;
+    QJsonDocument doc(body);
 
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getConfirmedLogs"));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
+
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QByteArray postDataByteArray = doc.toJson();
+    QBuffer *buff = new QBuffer;
+    buff->setData(postDataByteArray);
+    buff->open(QIODevice::ReadOnly);
+
+    qDebug() << postDataByteArray;
+
+    QNetworkReply *reply = m_manager.sendCustomRequest(request, "GET", buff);
+    buff->setParent(reply);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        qDebug() << reply->error();
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+            QJsonObject response = jsonDocument["response"].toObject();
+
+            qDebug() << "getConfirmedLogs: " << response;
+         }
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
 
 
 

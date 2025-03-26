@@ -25,6 +25,7 @@
 #include "about.h"
 #include "apilogradio.h"
 #include "delegations.h"
+#include "qsoedit.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -58,6 +59,7 @@ public:
 private:
   Ui::MainWindow *ui;
   Settings *settings;
+  Qsoedit *qsoedit;
   Callsigns *callsigns;
   UdpReceiver *udpReceiver;
   Flrig *flrig;
@@ -101,6 +103,7 @@ private:
   void SaveCallsignState();
   void darkTheime();
   void RemoveDeferredQSOs();
+  void EditQSO(QModelIndex index);
 
   //bool LoadHamDefs();
   void readXmlfile();
@@ -136,5 +139,6 @@ private slots:
   void on_freqInput_editingFinished();
   void on_rstrInput_editingFinished();
   void on_rstsInput_editingFinished();
+  void doubleClickedQSO(QModelIndex idx);
 };
 #endif // MAINWINDOW_H

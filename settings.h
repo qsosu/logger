@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QHostAddress>
 #include "apilogradio.h"
+#include "settings.h"
 
 namespace Ui {
 class Settings;

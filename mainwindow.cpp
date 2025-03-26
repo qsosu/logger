@@ -61,6 +61,11 @@ MainWindow::MainWindow(QWidget *parent)
   });
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+  qsoedit = new Qsoedit(db);
+  connect(qsoedit, SIGNAL(db_updated()), this, SLOT(RefreshRecords()));
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
   ui->modeCombo->setEditable(true); //Включаем встроенный QLineEdit
   ui->modeCombo->setInsertPolicy(QComboBox::NoInsert); // отключаем вставку новых элементов из QLineEdit
   ui->modeCombo->completer()->setCompletionMode(QCompleter::CompletionMode::PopupCompletion); // устанавливаем модель автодополнения (по умолчанию стоит InlineCompletition)
@@ -168,6 +173,7 @@ MainWindow::MainWindow(QWidget *parent)
   });
   connect(ui->bandCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(fillDefaultFreq()));
   connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customMenuRequested(QPoint)));
+  connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClickedQSO(QModelIndex)));
 
   logradio = new APILogRadio(settings->logRadioAccessToken);
 
@@ -202,6 +208,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   RemoveDeferredQSOs(); //Удаляем с QSO.SU ранее не удаленные QSO
   //api->getGeocodeByLocator("MP61QG");
+  //api->getConfirmedLogs();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -425,9 +432,15 @@ void MainWindow::customMenuRequested(QPoint pos) {
         SyncQSOs(indexes);
     });
 
+    QAction *qsoEditAction = new QAction("Редактировать QSO", this);
+    connect(qsoEditAction, &QAction::triggered, this, [=]() {
+        EditQSO(indexes.at(0));
+    });
+
     menu->addAction(deleteAction);
     menu->addAction(exportAction);
     menu->addAction(syncAction);
+    menu->addAction(qsoEditAction);
     menu->popup(ui->tableView->viewport()->mapToGlobal(pos));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -726,8 +739,8 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
     query.exec(QString("SELECT id, qsosu_callsign_id, qsosu_operator_id, CALL, BAND, MODE, FREQ, QSO_DATE, TIME_OFF, NAME, RST_SENT, RST_RCVD, QTH, CNTY, GRIDSQUARE MY_CNTY, MY_GRIDSQUARE FROM records WHERE id IN (%1) ORDER BY id").arg(numberlist));
     while (query.next()) {
         int dbid = query.value(0).toInt();
-        int qsosu_callsign_id = query.value(1).toInt();
-        int qsosu_operator_id = query.value(2).toInt();
+        //int qsosu_callsign_id = query.value(1).toInt();
+        //int qsosu_operator_id = query.value(2).toInt();
         QString call = query.value(3).toString();
         QString band = query.value(4).toString();
         QString mode = query.value(5).toString();
@@ -1044,3 +1057,34 @@ void MainWindow::RemoveDeferredQSOs()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void MainWindow::EditQSO(QModelIndex index)
+{
+    int idx = index.row();
+    int dbid = RecordsModel->data(RecordsModel->index(idx, 0)).toInt();
+    QString call = RecordsModel->data(RecordsModel->index(idx, 8)).toString();
+    QString date = RecordsModel->data(RecordsModel->index(idx, 9)).toString();
+    QString time_start = RecordsModel->data(RecordsModel->index(idx, 10)).toString();
+    QString time_stop = RecordsModel->data(RecordsModel->index(idx, 11)).toString();
+    QString band = RecordsModel->data(RecordsModel->index(idx, 12)).toString();
+    QString mode = RecordsModel->data(RecordsModel->index(idx, 14)).toString();
+    QString freq = RecordsModel->data(RecordsModel->index(idx, 13)).toString();
+    QString name = RecordsModel->data(RecordsModel->index(idx, 17)).toString();
+    QString qth = RecordsModel->data(RecordsModel->index(idx, 18)).toString();
+    QString rstr = RecordsModel->data(RecordsModel->index(idx, 16)).toString();
+    QString rsts = RecordsModel->data(RecordsModel->index(idx, 15)).toString();
+    QString locator = RecordsModel->data(RecordsModel->index(idx, 19)).toString();
+    QString rda = RecordsModel->data(RecordsModel->index(idx, 20)).toString();
+    QString comment = RecordsModel->data(RecordsModel->index(idx, 21)).toString();
+
+    QVariantList data;
+    data << dbid << call << date << time_start << time_stop << band << mode << freq << name << qth << rstr << rsts << locator << rda << comment;
+    qsoedit->ShowQSOParams(data);
+    qsoedit->show();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::doubleClickedQSO(QModelIndex idx)
+{
+    EditQSO(idx);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------

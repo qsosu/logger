@@ -77,11 +77,11 @@ public:
         : QSqlTableModel(parent,db) {;}
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const
     {
-        if(role==Qt::BackgroundRole && index.column() == 22)
-        {
-            const QVariant value(data(index, Qt::DisplayRole));
-            return QVariant(QColor(value.toString()=="1"?QColor(25, 25, 25):Qt::yellow));
-        }
+//        if(role==Qt::BackgroundRole && index.column() == 22)
+//        {
+//            const QVariant value(data(index, Qt::DisplayRole));
+//            return QVariant(QColor(value.toString()=="1"?QColor(25, 25, 25):Qt::yellow));
+//        }
         if(role==Qt::DecorationRole && index.column() == 22)
         {
             if (QSqlQueryModel::data(index, Qt::DisplayRole).toInt() == 1){

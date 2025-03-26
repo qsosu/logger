@@ -32,6 +32,7 @@ public:
   void getListSubmodeDropDown();
   void getListBand();
   void getGeocodeByLocator(QString Locator);
+  void getConfirmedLogs();
   void loadHamDefs();
   void deleteByHashLog(QString hash); //Удаление QSO из радиолюбительского журнала
 

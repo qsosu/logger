@@ -5,6 +5,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QPixmap>
 
 class QrzruCallbook : public QObject
 {
@@ -12,6 +13,8 @@ class QrzruCallbook : public QObject
 public:
     explicit QrzruCallbook(QString username, QString password, QObject *parent = nullptr);
     QStringList Get(QString call);
+    void LoadPhoto(QString imageUrl);
+    QPixmap pixmap;
 
 private:
     QString username;
@@ -26,6 +29,7 @@ private:
 signals:
     void error404();
     void error();
+    void loaded(QPixmap);
 };
 
 #endif // QRZRUCALLBOOK_H
