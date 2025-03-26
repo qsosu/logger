@@ -7,7 +7,7 @@
 #include <QSqlError>
 
 #define SET_ROBOT_FONT
-#define VERSION "1.8.2"
+
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -209,19 +209,6 @@ MainWindow::MainWindow(QWidget *parent)
   RemoveDeferredQSOs(); //Удаляем с QSO.SU ранее не удаленные QSO
   //api->getGeocodeByLocator("MP61QG");
   //api->getConfirmedLogs();
-
-  qDebug() << "ProductName():" << QSysInfo::prettyProductName();
-  qDebug() << "HostName():" << QHostInfo::localHostName();
-  qDebug() << "LoggerVersion():" << VERSION;
-
-  qDebug() << "buildCpuArchitecture():" << QSysInfo::buildCpuArchitecture();
-  qDebug() << "currentCpuArchitecture():" << QSysInfo::currentCpuArchitecture();
-  qDebug() << "kernelType():" << QSysInfo::kernelType();
-  qDebug() << "kernelVersion():" << QSysInfo::kernelVersion();
-  qDebug() << "machineHostName():" << QSysInfo::machineHostName();
-  qDebug() << "productType():" << QSysInfo::productType();
-  qDebug() << "productVersion():" << QSysInfo::productVersion();
-
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

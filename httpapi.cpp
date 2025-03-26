@@ -1,4 +1,5 @@
 #include "httpapi.h"
+#include "mainwindow.h"
 
 
 #define DEBUG
@@ -9,6 +10,10 @@ HttpApi::HttpApi(QSqlDatabase db, QString accessToken, QObject *parent)
 {
   this->db = db;
   this->accessToken = accessToken;
+
+  XOperatingSystem = QSysInfo::prettyProductName();
+  XDeviceName = QSysInfo::machineHostName();
+  XVersionLogger = VERSION;
 }
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -26,11 +31,9 @@ void HttpApi::SendQso(QVariantList data) {
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/sendLog")));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -95,11 +98,9 @@ void HttpApi::getCallsign()
 
   QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getCallsign")));
   request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
-
-  request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-  request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-  request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+  request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+  request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+  request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
   request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
   request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -146,11 +147,9 @@ void HttpApi::addCallsign(QVariantList data)
     QNetworkRequest request(QUrl("https://api.qso.su/method/v1/addCallsign"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -201,11 +200,9 @@ void HttpApi::checkStatusCallsign(QString callsign)
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/checkStatusCallsign"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -256,11 +253,9 @@ void HttpApi::getListSubmodeDropDown()
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getListSubmodeDropDown")));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
-
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -298,11 +293,9 @@ void HttpApi::getListBand()
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getListBand")));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
-
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -363,11 +356,9 @@ void HttpApi::deleteByHashLog(QString hash)
     QNetworkRequest request(QUrl("https://api.qso.su/method/v1/deleteByHashLog"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -410,11 +401,9 @@ void HttpApi::getGeocodeByLocator(QString Locator)
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getGeocodeByLocator"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
@@ -449,11 +438,9 @@ void HttpApi::getConfirmedLogs()
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getConfirmedLogs"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString("Windows 10 x64").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString("MIIStation").toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString("1.8.2").toUtf8());
-
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 

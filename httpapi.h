@@ -55,6 +55,9 @@ private:
   void requestKeepalive();
 
   QString accessToken;
+  QString XOperatingSystem;
+  QString XDeviceName;
+  QString XVersionLogger;
   QSqlDatabase db;
   QTimer *keepaliveTimer;
 

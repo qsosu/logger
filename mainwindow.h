@@ -27,6 +27,7 @@
 #include "delegations.h"
 #include "qsoedit.h"
 
+#define VERSION "1.8.2"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
