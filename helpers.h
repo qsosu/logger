@@ -53,8 +53,6 @@ public:
 //     if (band == "3CM") return 10000.0;
 //     return 0.0;
 // }
-
-
 };
 
 #endif // HELPERS_H
