@@ -1059,9 +1059,7 @@ void MainWindow::on_bandCombo_currentTextChanged(const QString &arg1)
     if(settings->catEnable)
     {
         CAT->setBand(ui->bandCombo->currentIndex());
-        Sleep(50);
         CAT->setMode(ui->modeCombo->findText(settings->lastMode));
-        Sleep(50);
         CAT->setFreq(freqCat);
     }
     SaveFormData();
