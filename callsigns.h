@@ -45,7 +45,7 @@ private slots:
   void on_checkCallsignBtn_clicked();
   void callsignStatus(int status);
 
-  signals:
+signals:
   void updated();
 
 };

@@ -45,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent)
           EverySecondTimer->start();
       } else {
           EverySecondTimer->stop();
-          //BugFix ui->timeInput->clear();
       }
   });
 
@@ -57,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
   settings->setAttribute(Qt::WA_QuitOnClose, false);
   connect(settings, SIGNAL(SettingsChanged()), this, SLOT(onSettingsChanged()));
   connect(ui->actionSettings, &QAction::triggered, this, [=]() {
+      if(api->serviceAvailable) api->getUser();
       settings->show();
   });
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,6 +74,29 @@ MainWindow::MainWindow(QWidget *parent)
   qApp->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
 
   InitDatabase("data.db");
+
+  qsosuLbl = new QLabel(this);
+  statusBar()->insertPermanentWidget(0, qsosuLbl, 0);
+  qsosuLabel = new QLabel(this);
+  statusBar()->insertPermanentWidget(1, qsosuLabel, 0);
+  udpserverLbl = new QLabel(this);
+  statusBar()->insertPermanentWidget(2, udpserverLbl, 0);
+  udpserverLabel = new QLabel(this);
+  statusBar()->insertPermanentWidget(3, udpserverLabel, 0);
+  flrigLbl = new QLabel(this);
+  statusBar()->insertPermanentWidget(4, flrigLbl, 0);
+  flrigLabel = new QLabel(this);
+  statusBar()->insertPermanentWidget(5, flrigLabel, 0);
+  catLbl = new QLabel(this);
+  statusBar()->insertPermanentWidget(6, catLbl, 0);
+  catLabel = new QLabel(this);
+  statusBar()->insertPermanentWidget(7, catLabel, 0);
+
+  udpserverLbl->setText("UDP сервер: ");
+  flrigLbl->setText("FLRIG: ");
+  qsosuLbl->setText("Сервис QSO.SU: ");
+  catLbl->setText("CAT интерфейс: ");
+
 //------------------------------------------------------------------------------------------------------------------------------------------
 
   udpReceiver = new UdpReceiver(this);
@@ -85,24 +108,25 @@ MainWindow::MainWindow(QWidget *parent)
 
           connect(udpReceiver, &UdpReceiver::logged, this, &MainWindow::onUdpLogged);
           ui->statusbar->showMessage("UDP сервер запущен на порту " + QString::number(settings->udpServerPort), 3000);
-          ui->udpserverLabel->setText("Запущен");
-          ui->udpserverLabel->setStyleSheet("QLabel { color: green }");
+          udpserverLabel->setText("Запущен");
+          udpserverLabel->setStyleSheet("QLabel { color: green }");
       } else {
-          ui->udpserverLabel->setText("Ошибка");
-          ui->udpserverLabel->setStyleSheet("QLabel { color: red }");
+          udpserverLabel->setText("Ошибка");
+          udpserverLabel->setStyleSheet("QLabel { color: red }");
           //QMessageBox::critical(nullptr, "Ошибка", "Ошибка запуска UDP сервера");
       }
   }
 //------------------------------------------------------------------------------------------------------------------------------------------
   flrig = new Flrig(settings->flrigHost, settings->flrigPort, 500, this);
+  flrigLabel->setText("Отключен");
   connect(flrig, &Flrig::connected, this, [=]() {
-    ui->flrigLabel->setText("Подключен");
-    ui->flrigLabel->setStyleSheet("QLabel { color: green; }");
+    flrigLabel->setText("Подключен");
+    flrigLabel->setStyleSheet("QLabel { color: green; }");
     ui->statusbar->showMessage("Подключен к FLRIG", 1000);
   });
   connect(flrig, &Flrig::disconnected, this, [=]() {
-    ui->flrigLabel->setText("Отключен");
-    ui->flrigLabel->setStyleSheet("");
+    flrigLabel->setText("Отключен");
+    flrigLabel->setStyleSheet("");
     ui->statusbar->showMessage("Отключен от FLRIG", 1000);
   });
   connect(flrig, &Flrig::updated, this, [=]() {
@@ -131,14 +155,15 @@ MainWindow::MainWindow(QWidget *parent)
 
   CallTypeTimer = new QTimer(this);
   CallTypeTimer->setSingleShot(true);
-  CallTypeTimer->setInterval(2000);
+  CallTypeTimer->setInterval(1000);
+
   connect(CallTypeTimer, &QTimer::timeout, this, [=]() {
-      if (settings->enableQrzruCallbook) FindCallDataQrzru();
+     if (settings->enableQrzruCallbook || settings->useCallbook) FindCallData();
   });
 
   api = new HttpApi(db, settings->accessToken);
   connect(api, &HttpApi::emptyToken, this, [=]() {
-      QMessageBox::critical(0, "Ошибка", "Не указан ACCESS TOKEN", QMessageBox::Ok);
+      //QMessageBox::critical(0, "Ошибка", "Не указан ACCESS TOKEN", QMessageBox::Ok);
       return;
   });
   connect(api, &HttpApi::error, this, [=](QNetworkReply::NetworkError error) {
@@ -146,6 +171,18 @@ MainWindow::MainWindow(QWidget *parent)
       return;
   });
   connect(api, &HttpApi::synced, this, &MainWindow::onQsoSynced);
+
+  connect(api, SIGNAL(getUserInfo(QStringList)), settings, SLOT(getUserInfo(QStringList)));
+
+  if(settings->accessToken.length() != 0)
+  {
+      QsoSuPingTimer = new QTimer(this);
+      QsoSuPingTimer->setInterval(5000); //5 секунд
+      connect(QsoSuPingTimer, &QTimer::timeout, this, [=]() {
+          PingQsoSu();
+      });
+      QsoSuPingTimer->start();
+  }
 //------------------------------------------------------------------------------------------------------------------------------------------
   callsigns = new Callsigns(db, api, this);
   callsigns->setAttribute(Qt::WA_QuitOnClose, false);
@@ -193,10 +230,11 @@ MainWindow::MainWindow(QWidget *parent)
 //------------------------------------------------------------------------------------------------------------------------------------------
   connect(api, SIGNAL(HamDefsUploaded()), this, SLOT(HamDefsUploaded()));
   connect(api, SIGNAL(HamDefsError()), this, SLOT(HamDefsError()));
+  connect(api, SIGNAL(userDataUpdated()), this, SLOT(setUserData()));
 
   qInfo() << "QSOLogger v." << VERSION << " started.";
+  qInfo() << "Product Name: " << QSysInfo::prettyProductName();
   LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
-
   InitRecordsTable();
   getCallsigns();
   fillDefaultFreq();
@@ -207,8 +245,28 @@ MainWindow::MainWindow(QWidget *parent)
   else qApp->setPalette(style()->standardPalette());
 
   RemoveDeferredQSOs(); //Удаляем с QSO.SU ранее не удаленные QSO
-  //api->getGeocodeByLocator("MP61QG");
   //api->getConfirmedLogs();
+  //QApplication::aboutQt();
+
+   ui->SRRIcon->setVisible(false);
+   ui->SRRLabel->setVisible(false);
+   ui->QSOSUUserIcon->setVisible(false);
+   ui->QSOSUUserLabel->setVisible(false);
+   //PingQsoSu();
+
+   if(settings->catEnable) {
+       CAT = new cat_Interface(settings->catEnable);
+       CAT->openSerial(settings->serialPort);
+       connect(CAT, SIGNAL(cat_freq(long)), this, SLOT(setFreq(long)));
+       connect(CAT, SIGNAL(cat_band(int)), this, SLOT(setBand(int)));
+       connect(CAT, SIGNAL(cat_mode(int)), this, SLOT(setMode(int)));
+       CAT->catTimer->start();
+       catLabel->setText("Включен");
+       catLabel->setStyleSheet("QLabel { color: green; }");
+   } else {
+       catLabel->setText("Отключен");
+       catLabel->setStyleSheet("");
+   }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -447,8 +505,6 @@ void MainWindow::customMenuRequested(QPoint pos) {
 
 void MainWindow::SaveQso()
 {
-  //qDebug() << "USER DATA:" << userData.callsign_id << userData.qsosu_callsign_id << userData.qsosu_operator_id << userData.callsign << userData.oper << userData.gridsquare << userData.cnty;
-
   if(ui->callInput->text().size() < 3) {
        QMessageBox::critical(0, "Ошибка", "Не возможно сохранить QSO. Не введен позывной кореспондента!", QMessageBox::Ok);
        return;
@@ -464,10 +520,8 @@ void MainWindow::SaveQso()
   QString call = ui->callInput->text();
   newRecord.setValue("CALL", call);
 
-  //QDate qsoDate = QDate::fromString(ui->dateInput->text(), "yyyy-MM-dd");
   QDate qsoDate = ui->dateInput->date();
   newRecord.setValue("QSO_DATE", qsoDate.toString("yyyyMMdd"));
-  //QTime qsoTime = QTime::fromString(ui->timeEdit->text(), "hh:mm:ss");
   QTime qsoTime = ui->timeEdit->time();
 
   //BugFix
@@ -475,19 +529,16 @@ void MainWindow::SaveQso()
   QString time = qsoTime.toString("hh:mm:ss");
   QString datetime = date + "T" + time;
 
-
   QString qsoTimeFormated = qsoTime.toString("hhmmss");
   newRecord.setValue("TIME_ON", qsoTimeFormated);
   newRecord.setValue("TIME_OFF", qsoTimeFormated);
 
-  //QString band = ui->bandCombo->currentText();
   QString band = getBandValue(ui->bandCombo->currentIndex()); //BugFix
   newRecord.setValue("BAND", band);
 
   unsigned long long freqHz = static_cast<unsigned long long>(ui->freqInput->text().toDouble() * 1000000);
   newRecord.setValue("FREQ", freqHz);
 
-  //QString mode = ui->modeCombo->currentText();
   QString mode = getModeValue(ui->modeCombo->currentText()); //BugFix
   newRecord.setValue("MODE", mode);
 
@@ -522,6 +573,7 @@ void MainWindow::SaveQso()
       data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
       data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
       api->SendQso(data);
+
       data << userData.callsign;
       logradio->SendQso(data);
 
@@ -544,6 +596,11 @@ void MainWindow::ClearQso() {
   ui->qthInput->clear();
   ui->nameInput->clear();
   ui->commentInput->clear();
+
+  ui->SRRIcon->setVisible(false);
+  ui->SRRLabel->setVisible(false);
+  ui->QSOSUUserIcon->setVisible(false);
+  ui->QSOSUUserLabel->setVisible(false);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -561,13 +618,13 @@ void MainWindow::RemoveQSOs(QModelIndexList indexes) {
             int id = RecordsModel->data(RecordsModel->index(indexes.at(i-1).row(), 0)).toInt();
 
             QString hash = RecordsModel->data(RecordsModel->index(indexes.at(i-1).row(), 23), 0).toString();
-            api->deleteByHashLog(hash);
+            if(api->serviceAvailable) api->deleteByHashLog(hash);
+            else insertDataToDeferredQSOs(id, hash);
 
             query.addBindValue(id);
             query.exec();
         }
         db.commit();
-
         RefreshRecords();
         ScrollRecordsToTop();
     } else {
@@ -673,7 +730,6 @@ void MainWindow::onUdpLogged() {
   newRecord.setValue("RST_SENT", QString::fromUtf8(udpReceiver->report_sent));
   newRecord.setValue("RST_RCVD", QString::fromUtf8(udpReceiver->report_received));
   newRecord.setValue("COMMENT", QString::fromUtf8(udpReceiver->comments));
-
   newRecord.setValue("sync_state", 0);
 
   if(RecordsModel->insertRecord(-1, newRecord)) {
@@ -699,18 +755,69 @@ void MainWindow::onUdpLogged() {
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::FindCallDataQrzru() {
+void MainWindow::FindCallData() {
   QString callsign = ui->callInput->text().trimmed();
   if (callsign.isEmpty()) {
       ClearCallbookFields();
       return;
   }
 
-  QStringList data = qrz->Get(callsign);
+  if(settings->useCallbook) {
+      api->getCallbook(callsign);
+      qDebug() << "Use QSO.SU callbook.";
+  }
+  if(settings->enableQrzruCallbook){
+      QStringList data = qrz->Get(callsign);
+      ui->nameInput->setText((data.at(0).length() > 0) ? data.at(0) : "");
+      ui->qthInput->setText((data.at(1).length() > 0) ? data.at(1) : "");
+      ui->gridsquareInput->setText((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
+      ui->cntyInput->setText((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
+      qDebug() << "Use QRZ.RU callbook.";
+   }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::setUserData() {
+  QStringList data;
+  data.append(api->callsignInfo);
+
   ui->nameInput->setText((data.at(0).length() > 0) ? data.at(0) : "");
   ui->qthInput->setText((data.at(1).length() > 0) ? data.at(1) : "");
   ui->gridsquareInput->setText((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
   ui->cntyInput->setText((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
+
+  if(data.at(4).length() > 0) {
+     if(data.at(4) == "1") {
+         ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/loguser.png"));
+         ui->QSOSUUserIcon->setVisible(true);
+         ui->QSOSUUserLabel->setVisible(true);
+         ui->QSOSUUserLabel->setText("Пользователь QSO.SU");
+         ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
+     } else {
+         ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/no_loguser.png"));
+         ui->QSOSUUserLabel->setText("Не пользователь QSO.SU");
+         ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(220, 53, 69) }");
+     }
+  } else {
+      ui->QSOSUUserIcon->setVisible(false);
+      ui->QSOSUUserLabel->setVisible(false);
+  }
+
+  if(data.at(5).length() > 0) {
+     if(data.at(5) == "1") {
+         ui->SRRIcon->setPixmap(QPixmap(":resources/images/srr_user.png"));
+         ui->SRRIcon->setVisible(true);
+         ui->SRRLabel->setVisible(true);
+         ui->SRRLabel->setText("Член СРР");
+         ui->SRRLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
+     } else {
+         ui->SRRIcon->setVisible(false);
+         ui->SRRLabel->setVisible(false);
+     }
+  } else {
+      ui->SRRIcon->setVisible(false);
+      ui->SRRLabel->setVisible(false);
+  }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -839,7 +946,6 @@ void MainWindow::readXmlfile()
     ui->bandCombo->blockSignals(false);
     ui->modeCombo->blockSignals(false);
     ui->stationCallsignCombo->blockSignals(false);
-
     ui->bandCombo->setCurrentText(settings->lastBand);
     ui->modeCombo->setCurrentText(settings->lastMode);
     ui->qthlocEdit->setText(settings->lastLocator);
@@ -847,7 +953,6 @@ void MainWindow::readXmlfile()
     ui->freqInput->setText(settings->lastFrequence);
     ui->rstrInput->setText(settings->lastRST_RCVD);
     ui->rstsInput->setText(settings->lastRST_SENT);
-
     ui->stationCallsignCombo->setCurrentIndex(settings->lastCallsign);
     ui->operatorCombo->setCurrentIndex(settings->lastOperator);
 }
@@ -949,6 +1054,16 @@ QString MainWindow::getRepotValueFromMode(QString mode)
 void MainWindow::on_bandCombo_currentTextChanged(const QString &arg1)
 {
     settings->lastBand = arg1;
+    freqCat = static_cast<long>(ui->freqInput->text().toDouble() * 1000000);
+
+    if(settings->catEnable)
+    {
+        CAT->setBand(ui->bandCombo->currentIndex());
+        Sleep(50);
+        CAT->setMode(ui->modeCombo->findText(settings->lastMode));
+        Sleep(50);
+        CAT->setFreq(freqCat);
+    }
     SaveFormData();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -957,14 +1072,15 @@ void MainWindow::on_modeCombo_currentTextChanged(const QString &arg1)
 {
     QString report;
     settings->lastMode = arg1;
-    SaveFormData();
-
     report = getRepotValueFromMode(arg1);
 
     if(report != "") {
         ui->rstrInput->setText(report);
         ui->rstsInput->setText(report);
     }
+
+    if(settings->catEnable) CAT->setMode(ui->modeCombo->findText(arg1));
+    SaveFormData();
     //qDebug() << "Mode changed " << settings->lastMode;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -985,7 +1101,6 @@ void MainWindow::SaveCallsignState()
     settings->lastCallsign = ui->stationCallsignCombo->currentIndex();
     settings->lastOperator = ui->operatorCombo->currentIndex();
     settings->saveForm();
-    //qDebug() << " Save lastCallsign " << ui->stationCallsignCombo->currentIndex();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1029,6 +1144,23 @@ void MainWindow::darkTheime()
 
     // Устанавливаем данную палитру
     qApp->setPalette(darkPalette);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::insertDataToDeferredQSOs(int idx, QString hash)
+{
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO DELRECORDS(id, HASH) VALUES(?, ?)");
+    query.addBindValue(idx);
+    query.addBindValue(hash);
+
+    qDebug() << QString::number(idx) << hash;
+
+    if(!query.exec()){
+        qDebug() << "ERROR insert data into deferred QSOs... " << query.lastError().text();
+     } else {
+        qDebug() << "Insert record " << QString::number(idx) << " into deferred QSOs.";
+     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1088,3 +1220,59 @@ void MainWindow::doubleClickedQSO(QModelIndex idx)
     EditQSO(idx);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::PingQsoSu()
+{
+    api->getPing();
+    if(api->serviceAvailable) {
+        qsosuLabel->setText("Online");
+        qsosuLabel->setStyleSheet("QLabel { color: green }");
+    } else {
+        qsosuLabel->setText("Offline");
+        qsosuLabel->setStyleSheet("QLabel { color: red }");
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::on_freqInput_textChanged(const QString &arg1)
+{
+    if(settings->catEnable) {
+        freqCat = static_cast<long>(ui->freqInput->text().toDouble() * 1000000);
+        CAT->setFreq(freqCat);
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::setFreq(long freq)
+{
+    settings->lastFrequence = QString::number((double) freq / 1000000, 'f', 6);
+    ui->freqInput->setText(settings->lastFrequence);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::setBand(int band)
+{
+    settings->lastBand = bandList[band].band_name;
+    ui->bandCombo->setCurrentText(bandList[band].band_name);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::setMode(int mode)
+{
+    settings->lastMode = modeList[mode].mode_name;
+    ui->modeCombo->setCurrentText(modeList[mode].mode_name);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+

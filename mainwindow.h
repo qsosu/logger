@@ -26,8 +26,9 @@
 #include "apilogradio.h"
 #include "delegations.h"
 #include "qsoedit.h"
+#include "cat_interface.h"
 
-#define VERSION "1.8.2"
+#define VERSION "2.0"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -57,25 +58,6 @@ public:
   };
   QList<modeData> modeList;
 
-private:
-  Ui::MainWindow *ui;
-  Settings *settings;
-  Qsoedit *qsoedit;
-  Callsigns *callsigns;
-  UdpReceiver *udpReceiver;
-  Flrig *flrig;
-  HttpApi *api;
-  APILogRadio *logradio;
-
-  QString database_file;
-  QSqlDatabase db;
-  ColorSqlTableModel *RecordsModel;
-  QTimer *EverySecondTimer;
-  QrzruCallbook *qrz;
-  QTimer *CallTypeTimer;
-  Adif *adif;
-  About *about;
-
   typedef struct baseData {
     int callsign_id;
     int qsosu_callsign_id;
@@ -87,6 +69,37 @@ private:
   } baseData_t;
   baseData_t userData;
 
+private:
+  Ui::MainWindow *ui;
+  Settings *settings;
+  Qsoedit *qsoedit;
+  Callsigns *callsigns;
+  UdpReceiver *udpReceiver;
+  Flrig *flrig;
+  HttpApi *api;
+  APILogRadio *logradio;
+  cat_Interface *CAT;
+
+  QString database_file;
+  QSqlDatabase db;
+  ColorSqlTableModel *RecordsModel;
+  QTimer *EverySecondTimer;
+  QrzruCallbook *qrz;
+  QTimer *CallTypeTimer;
+  QTimer *QsoSuPingTimer;
+  Adif *adif;
+  About *about;
+  long freqCat;
+
+  QLabel *qsosuLbl;
+  QLabel *qsosuLabel;
+  QLabel *udpserverLbl;
+  QLabel *udpserverLabel;
+  QLabel *flrigLbl;
+  QLabel *flrigLabel;
+  QLabel *catLabel;
+  QLabel *catLbl;
+
   void InitDatabase(QString dbFile);
   bool CheckDatabase();
   bool ConnectDatabase();
@@ -95,7 +108,7 @@ private:
   void InitRecordsTable();
   void ScrollRecordsToBottom();
   void ScrollRecordsToTop();
-  void FindCallDataQrzru();
+  void FindCallData();
   void ClearCallbookFields();
   void RemoveQSOs(QModelIndexList indexes);
   void SetRecordsFilter(int log_id);
@@ -104,9 +117,8 @@ private:
   void SaveCallsignState();
   void darkTheime();
   void RemoveDeferredQSOs();
+  void insertDataToDeferredQSOs(int idx, QString hash);
   void EditQSO(QModelIndex index);
-
-  //bool LoadHamDefs();
   void readXmlfile();
   double BandToDefaultFreq(QString band);
   QString getBandValue(int index);
@@ -114,19 +126,15 @@ private:
   QString getRepotValueFromMode(QString mode);
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
+  void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
-  void onSettingsChanged();
+  void PingQsoSu();
   void CallsignToUppercase(const QString &arg);
   void RefreshRecords();
   void SaveQso();
   void ClearQso();
   void UpdateFormDateTime();
-  void onCallsignsUpdated();
-  void onStationCallsignChanged();
-  void onOperatorChanged();
-  void onUdpLogged();
   void fillDefaultFreq();
   void customMenuRequested(QPoint pos);
   void onQsoSynced(int dbid, QString hash);
@@ -135,11 +143,21 @@ private slots:
   void setBandsList();
   void HamDefsUploaded();
   void HamDefsError();
+  void onSettingsChanged();
+  void onCallsignsUpdated();
+  void onStationCallsignChanged();
+  void onOperatorChanged();
+  void onUdpLogged();
   void on_bandCombo_currentTextChanged(const QString &arg1);
   void on_modeCombo_currentTextChanged(const QString &arg1);
   void on_freqInput_editingFinished();
   void on_rstrInput_editingFinished();
   void on_rstsInput_editingFinished();
   void doubleClickedQSO(QModelIndex idx);
+  void setUserData();
+  void on_freqInput_textChanged(const QString &arg1);
+  void setFreq(long freq);
+  void setBand(int band);
+  void setMode(int mode);
 };
 #endif // MAINWINDOW_H

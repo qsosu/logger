@@ -16,7 +16,7 @@ void APILogRadio::getToken()
 
     QJsonObject body;
     body["vendor"] = "QSO.SU";
-    body["name"] = "R9JAU";
+    body["name"] = "QSOLogger";
     body["version"] = "1.0";
 
     QJsonDocument doc(body);

@@ -66,7 +66,6 @@ void QrzruCallbook::LoadPhoto(QString imageUrl)
             QPixmap pixmap;
             pixmap.loadFromData(reply->readAll());
             emit loaded(pixmap);
-            qDebug() << "Pixmap Loaded!";
             reply->deleteLater();
         }
     }

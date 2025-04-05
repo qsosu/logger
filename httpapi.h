@@ -26,6 +26,7 @@ class HttpApi : public QObject
 public:
   explicit HttpApi(QSqlDatabase db, QString accessToken, QObject *parent = nullptr);
   void SendQso(QVariantList data);
+  void getUser();
   void getCallsign();
   void addCallsign(QVariantList data);
   void checkStatusCallsign(QString callsign);
@@ -35,13 +36,25 @@ public:
   void getConfirmedLogs();
   void loadHamDefs();
   void deleteByHashLog(QString hash); //Удаление QSO из радиолюбительского журнала
-
+  void getCallbook(QString callsign);
+  void getPing();
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;
   QStringList modulations;
   QStringList bands;
+  QStringList callsignInfo;
   QByteArray XMLdata;
+
+  typedef struct userData {
+      int id;
+      QString lang;
+      QString last_activity;
+      bool premium;
+      QString premium_time;
+      QString registered;
+  } userData_t;
+  userData_t userData;
 
 private:
   enum Method {
@@ -60,11 +73,9 @@ private:
   QString XVersionLogger;
   QSqlDatabase db;
   QTimer *keepaliveTimer;
-
   unsigned int serverTimestamp = 0;
-
   QNetworkAccessManager m_manager;
-  QNetworkReply *m_reply = nullptr;
+  QStringList userDataList;
 
 private slots:
 
@@ -73,7 +84,6 @@ signals:
   void available();
   void unavailable();
   void accountDataUpdated();
-
   void callsignsUpdated();
   void callsignStatus(int);
   void synced(int, QString);
@@ -83,7 +93,8 @@ signals:
   void bandsUpdated();
   void HamDefsUploaded();
   void HamDefsError();
-
+  void userDataUpdated();
+  void getUserInfo(QStringList);
 };
 
 #endif // HTTPAPI_H

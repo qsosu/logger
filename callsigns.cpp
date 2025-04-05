@@ -10,6 +10,7 @@ Callsigns::Callsigns(QSqlDatabase db, HttpApi *api, QWidget *parent) :
 {
   ui->setupUi(this);
   setWindowTitle("Управление позывными");
+  this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
   ui->saveButton->setEnabled(false);
   ui->cancelButton->setEnabled(false);
 

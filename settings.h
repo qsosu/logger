@@ -7,7 +7,10 @@
 #include <QFile>
 #include <QHostAddress>
 #include "apilogradio.h"
-#include "settings.h"
+#include "httpapi.h"
+#include "cat_interface.h"
+
+
 
 namespace Ui {
 class Settings;
@@ -22,6 +25,7 @@ public:
     ~Settings();
 
     QString accessToken;
+    QString premium;
     QString logRadioAccessToken;
     bool udpServerEnable;
     uint16_t udpServerPort;
@@ -33,6 +37,13 @@ public:
     QString QrzruLogin, QrzruPassword;
     QString LogradioLogin, LogradioPassword;
     unsigned int fontSize;
+    bool catEnable;
+    QString trxType;
+    int catInterval;
+    QString serialPort;
+    QString serialPortBaud;
+    QString serialPortDataBits;
+    QString serialPortStopBit;
     QString lastBand;
     QString lastMode;
     QString lastFrequence;
@@ -43,6 +54,7 @@ public:
     QString lastRST_SENT;
     QString lastRST_RCVD;
     bool darkTheime;
+    bool useCallbook;
     void saveForm();
 
 private:
@@ -50,6 +62,7 @@ private:
     QString path;
     QSettings *qs;
     APILogRadio *logradio;
+    cat_Interface *CAT;
 
     void openPath(QString path);
     void read();
@@ -65,6 +78,9 @@ private slots:
     void checkLogRadioToken();
     void checked(int code, QString message);
     void received(QString access_token, QString confirmation_key, QString confirmation_after, QString confirmation_before, QString valid_after, QString valid_before);
+    void getUserInfo(QStringList data);
+    void on_CallbookCheckBox_toggled(bool checked);
+    void on_qrzruEnable_toggled(bool checked);
 
 signals:
     void SettingsChanged();

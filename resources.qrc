@@ -11,5 +11,8 @@
         <file>resources/images/icon48.ico</file>
         <file>resources/images/no.png</file>
         <file>resources/images/yes.png</file>
+        <file>resources/images/loguser.png</file>
+        <file>resources/images/no_loguser.png</file>
+        <file>resources/images/srr_user.png</file>
     </qresource>
 </RCC>

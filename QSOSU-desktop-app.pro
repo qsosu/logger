@@ -1,4 +1,5 @@
 QT       += core gui network sql xml
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,6 +15,7 @@ SOURCES += \
     adif.cpp \
     apilogradio.cpp \
     callsigns.cpp \
+    cat_interface.cpp \
     flrig.cpp \
     httpapi.cpp \
     main.cpp \
@@ -34,6 +36,7 @@ HEADERS += \
     adif.h \
     apilogradio.h \
     callsigns.h \
+    cat_interface.h \
     delegations.h \
     flrig.h \
     helpers.h \

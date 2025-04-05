@@ -15,6 +15,7 @@ Qsoedit::Qsoedit(QSqlDatabase db, QWidget *parent) :
     this->db = db;
     ui->setupUi(this);
     setWindowTitle("Редактирование QSO");
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     load_flag = false;
 
     settings = new Settings();
@@ -30,18 +31,27 @@ Qsoedit::Qsoedit(QSqlDatabase db, QWidget *parent) :
     api = new HttpApi(db, settings->accessToken);
     api->getListBand(); //Загрузка диапазонов
     api->getListSubmodeDropDown(); //Загрузка списков модуляции
+    connect(api, SIGNAL(userDataUpdated()), this, SLOT(setUserData()));
 
     resizeTimer = new QTimer(this);
     resizeTimer->setSingleShot(true); // Выполнить только один раз
     connect(resizeTimer, &QTimer::timeout, this, &Qsoedit::onResizeFinished);
+
+    ui->QSOSUUserIcon->setVisible(false);
+    ui->QSOSUUserLabel->setVisible(false);
+    ui->SRRUserIcon->setVisible(false);
+    ui->SRRUserLabel->setVisible(false);
+    ui->countrylineEdit->setText("");
+    ui->cqzlineEdit->setText("");
+    ui->ituzlineEdit->setText("");
 }
 
 Qsoedit::~Qsoedit()
 {
     delete ui;
-    delete settings;
-    delete qrz;
-    delete resizeTimer;
+    //delete settings;
+    //delete qrz;
+    //delete resizeTimer;
 }
 
 void Qsoedit::ShowQSOParams(QVariantList data)
@@ -54,7 +64,6 @@ void Qsoedit::ShowQSOParams(QVariantList data)
     ui->qso_timeStartEdit->setTime(start_time);
     QTime end_time = QTime::fromString(data.at(4).toString(), "hhmmss");
     ui->QSO_timeEndEdit->setTime(end_time);
-    ui->freq_lineEdit->setText(data.at(7).toString());
     ui->name_lineEdit->setText(data.at(8).toString());
     ui->qth_lineEdit->setText(data.at(9).toString());
     ui->rstr_lineEdit->setText(data.at(10).toString());
@@ -62,34 +71,87 @@ void Qsoedit::ShowQSOParams(QVariantList data)
     ui->qthloc_lineEdit->setText(data.at(12).toString());
     ui->rda_lineEdit->setText(data.at(13).toString());
     ui->comment_lineEdit->setText(data.at(14).toString());
-
-    ui->mode_comboBox->clear();
-    if(api->modulations.count() > 0) ui->mode_comboBox->addItems(api->modulations);
-    ui->band_comboBox->clear();
-    if(api->bands.count() > 0) ui->band_comboBox->addItems(api->bands);
-    ui->band_comboBox->setCurrentText(data.at(5).toString());
-    ui->mode_comboBox->setCurrentText(data.at(6).toString());
 }
 
 void Qsoedit::on_QRZUpdateButton_clicked()
 {
-    QStringList data = qrz->Get(ui->CalsignlineEdit->text());
-    ui->name_lineEdit->setText((data.at(0).length() > 0) ? data.at(0) : "");
-    ui->qth_lineEdit->setText((data.at(1).length() > 0) ? data.at(1) : "");
-    ui->qthloc_lineEdit->setText((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
-    ui->rda_lineEdit->setText((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
-    image = ((data.at(4).length() > 0) ? data.at(4) : "");
-    if(image != "") {
-        qrz->LoadPhoto(image);
-        load_flag = true;
+    if(settings->useCallbook)
+    {
+        api->getCallbook(ui->CalsignlineEdit->text());
+    } else {
+        QStringList data = qrz->Get(ui->CalsignlineEdit->text());
+        ui->name_lineEdit->setText((data.at(0).length() > 0) ? data.at(0) : "");
+        ui->qth_lineEdit->setText((data.at(1).length() > 0) ? data.at(1) : "");
+        ui->qthloc_lineEdit->setText((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
+        ui->rda_lineEdit->setText((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
+        image = ((data.at(4).length() > 0) ? data.at(4) : "");
+        if(image != "") {
+            qrz->LoadPhoto(image);
+            load_flag = true;
+        } else noneImage();
     }
+    //api->getGeocodeByLocator(ui->qthloc_lineEdit->text());
 }
+
+void Qsoedit::setUserData() {
+  QStringList data;
+  data.append(api->callsignInfo);
+
+  ui->name_lineEdit->setText((data.at(0).length() > 0) ? data.at(0) : "");
+  ui->qth_lineEdit->setText((data.at(1).length() > 0) ? data.at(1) : "");
+  ui->qthloc_lineEdit->setText((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
+  ui->rda_lineEdit->setText((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
+  ui->countrylineEdit->setText((data.at(8).length() > 0) ? data.at(8).toUpper() : "");
+  ui->ituzlineEdit->setText((data.at(10).length() > 0) ? data.at(10).toUpper() : "");
+  ui->cqzlineEdit->setText((data.at(11).length() > 0) ? data.at(11).toUpper() : "");
+
+  qDebug() << "Recceived data: " << data;
+
+  if(data.at(4).length() > 0) {
+      ui->QSOSUUserIcon->setVisible(true);
+      ui->QSOSUUserLabel->setVisible(true);
+      if(data.at(4) == "1") {
+         ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/loguser.png"));
+         ui->QSOSUUserLabel->setText("Пользователь QSO.SU");
+         ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
+     } else {
+         ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/no_loguser.png"));
+         ui->QSOSUUserLabel->setText("Не пользователь QSO.SU");
+         ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(220, 53, 69) }");
+     }
+  } else {
+      ui->QSOSUUserIcon->setVisible(false);
+      ui->QSOSUUserLabel->setVisible(false);
+  }
+
+  if(data.at(5).length() > 0) {
+      ui->SRRUserIcon->setVisible(true);
+      ui->SRRUserLabel->setVisible(true);
+      if(data.at(5) == "1") {
+         ui->SRRUserIcon->setPixmap(QPixmap(":resources/images/srr_user.png"));
+         ui->SRRUserLabel->setText("Член СРР");
+         ui->SRRUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
+     } else {
+         ui->SRRUserIcon->setVisible(false);
+         ui->SRRUserLabel->setVisible(false);
+     }
+  } else {
+      ui->SRRUserIcon->setVisible(false);
+      ui->SRRUserLabel->setVisible(false);
+  }
+
+  image = ((data.at(12).length() > 0) ? data.at(12) : "");
+  if(image != "") {
+      qrz->LoadPhoto(image);
+      load_flag = true;
+  } else noneImage();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::loadImage(QPixmap pix)
 {
     pixmap_item = new QGraphicsPixmapItem();
     scene = new QGraphicsScene;
-
     ui->graphicsView->setScene(scene);
     scene->addItem(pixmap_item);
     pixmap_item->setVisible(true);
@@ -97,7 +159,19 @@ void Qsoedit::loadImage(QPixmap pix)
     scene->setSceneRect(0, 0, pix.width(), pix.height());
     ui->graphicsView->fitInView(pixmap_item, Qt::KeepAspectRatio);
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
+void Qsoedit::noneImage()
+{
+    scene = new QGraphicsScene;
+    ui->graphicsView->setScene(scene);
+    textItem = scene->addText("Нет фотографии!");
+    QFont font("Arial", 24);
+    textItem->setFont(font);
+    textItem->setDefaultTextColor(Qt::lightGray);
+    textItem->setPos(100, 100);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::on_saveButton_clicked()
 {
@@ -117,36 +191,52 @@ void Qsoedit::on_saveButton_clicked()
      }
     close();
 }
-
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::on_cancelButton_clicked()
 {
     close();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::closeEvent(QCloseEvent *event)
 {
     if(load_flag) {
         scene->removeItem(pixmap_item);
+        scene->deleteLater();
+        scene = nullptr;
         delete pixmap_item;
         load_flag = false;
     }
+    ui->QSOSUUserIcon->setVisible(false);
+    ui->QSOSUUserLabel->setVisible(false);
+    ui->SRRUserIcon->setVisible(false);
+    ui->SRRUserLabel->setVisible(false);
     event->accept();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::resizeEvent(QResizeEvent * event)
 {
     QWidget::resizeEvent(event);
-    // Перезапускаем таймер при каждом изменении размера
     resizeTimer->start(300); // Установить задержку в 300 мс
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::onResizeFinished()
 {
-      // Действия после окончания изменения размера окна
-      qDebug() << "Изменение размера окна завершено.";
-      if(image != "") {
-          qrz->LoadPhoto(image);
-          load_flag = true;
-      }
+    if(image != "") {
+        qrz->LoadPhoto(image);
+        load_flag = true;
+    }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void Qsoedit::setVisible(bool set)
+{
+    QDialog::setVisible( set );
+    if( set ) {
+        if(settings->useCallbook) api->getCallbook(ui->CalsignlineEdit->text());
+    }
+}
+
