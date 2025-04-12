@@ -281,7 +281,7 @@ MainWindow::MainWindow(QWidget *parent)
   });
 
    if(settings->catEnable) {
-       ui->actionCAT->setChecked(true);
+       //ui->actionCAT->setChecked(true);
        bool portAvailable = CAT->openSerial(settings->serialPort);
        if(portAvailable) {
            CAT->catSetBaudRate(settings->serialPortBaud.toInt());
