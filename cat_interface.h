@@ -17,6 +17,7 @@ public:
     bool catEnable;
     QSerialPort *serialPort;
     QTimer *catTimer;
+    int catInterval;
     long freq;
     long old_freq;
     int band;
@@ -24,13 +25,19 @@ public:
     int mode;
     int old_mode;
 
-    void openSerial(QString port);
+    bool openSerial(QString port);
+    void convertMode(int mode);
+    void catSetBaudRate(int baud);
+    void catSetParity(QString parity);
+    void catSetStopBit(int stopbits);
+    void catSetDataBits(int databits);
+    void catSetFlowControl(QString flowcontrol);
     void sendCommand(const char *cmd);
     void setBand(int band);
     void setMode(int mode);
     void setFreq(long freq);
     int freqToBand(long freq);
-    void convertMode(int mode);
+    void setInterval(int interval);
 
 private slots:
     void portRead();

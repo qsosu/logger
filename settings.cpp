@@ -10,21 +10,6 @@ Settings::Settings(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowTitle("Настройки программы");
-    ui->accessToken->setEchoMode(QLineEdit::Password);
-    ui->LogRadioAccessToken->setEchoMode(QLineEdit::Password);
-    ui->qrzruPassword->setEchoMode(QLineEdit::Password);
-
-    logradio = new APILogRadio(logRadioAccessToken);
-    connect(logradio, SIGNAL(checked(int,QString)), this, SLOT(checked(int,QString)));
-    connect(logradio, SIGNAL(received(QString, QString, QString, QString, QString, QString)), this, SLOT(received(QString, QString, QString, QString, QString, QString)));
-    connect(ui->saveButton, &QPushButton::clicked, this, &Settings::save);
-    connect(ui->closeButton, &QPushButton::clicked, this, &Settings::hide);
-    connect(ui->getLogRadioTokenBtn, &QPushButton::clicked, this, &Settings::getLogRadioToken);
-    connect(ui->checkLogRadioTokenBtn, &QPushButton::clicked, this, &Settings::checkLogRadioToken);
-    openPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/settings.ini");
-    premium = "0";
-
-    CAT = new cat_Interface(catEnable);
 
     //Определение списка доступных портов
     const auto infos = QSerialPortInfo::availablePorts();
@@ -32,11 +17,28 @@ Settings::Settings(QWidget *parent) :
         //qDebug() << "Available Ports: " << info.portName();
         ui->SerialPortComboBox->addItem(info.portName());
     }
+
+    ui->accessToken->setEchoMode(QLineEdit::Password);
+    ui->LogRadioAccessToken->setEchoMode(QLineEdit::Password);
+    ui->qrzruPassword->setEchoMode(QLineEdit::Password);
+
+    logradio = new APILogRadio(logRadioAccessToken);
+    connect(logradio, SIGNAL(checked(int,QString)), this, SLOT(checked(int,QString)));
+    connect(logradio, SIGNAL(received(QString, QString, QString, QString, QString, QString)), this, SLOT(received(QString, QString, QString, QString, QString, QString)));
+
+    connect(ui->saveButton, &QPushButton::clicked, this, &Settings::save);
+    connect(ui->closeButton, &QPushButton::clicked, this, &Settings::hide);
+    connect(ui->getLogRadioTokenBtn, &QPushButton::clicked, this, &Settings::getLogRadioToken);
+    connect(ui->checkLogRadioTokenBtn, &QPushButton::clicked, this, &Settings::checkLogRadioToken);
+    openPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/settings.ini");
+    premium = "0";
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 Settings::~Settings() {
     delete ui;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::openPath(QString path) {
     this->path = path;
@@ -47,6 +49,7 @@ void Settings::openPath(QString path) {
     qs = new QSettings(path, QSettings::IniFormat);
     read();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::read() {
     QString str;
@@ -62,15 +65,19 @@ void Settings::read() {
     qs->beginGroup("UDP");
     udpServerEnable = qs->value("enable", true).toBool();
     udpServerPort = qs->value("port", 2237).toInt();
+    udpClientEnable = qs->value("enable_retransl", true).toBool();
+    udpClientPort = qs->value("port_retransl", 2240).toInt();
     qs->endGroup();
     qs->beginGroup("CAT");
     catEnable = qs->value("enable", false).toBool();
     catInterval = qs->value("interval", 60).toInt();
     trxType = qs->value("trx", "").toString();
     serialPort = qs->value("port", "").toString();
-    serialPortBaud = qs->value("baud", "").toString();
-    serialPortDataBits = qs->value("databits", "").toString();
-    serialPortStopBit = qs->value("stopbit", "").toString();
+    serialPortBaud = qs->value("baud", "57600").toString();
+    serialPortDataBits = qs->value("databits", "8").toString();
+    serialPortStopBit = qs->value("stopbit", "1").toString();
+    serialPortParity = qs->value("parity", "Нет").toString();
+    serialPortFlowControl = qs->value("flowctrl", "Отключено").toString();
     qs->endGroup();
     qs->beginGroup("FLRIG");
     flrigHost = QHostAddress(qs->value("host", "127.0.0.1").toString());
@@ -97,14 +104,18 @@ void Settings::read() {
     lastRST_SENT = qs->value("rst_send", "").toString();
     lastRST_RCVD = qs->value("rst_rcvd", "").toString();
     qs->endGroup();
+
     display();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::display() {
     ui->accessToken->setText(accessToken);
     ui->LogRadioAccessToken->setText(logRadioAccessToken);
     ui->udpServerEnableCheckbox->setChecked(udpServerEnable);
     ui->udpServerPort->setValue(udpServerPort);
+    ui->udpClientEnableCheckbox->setChecked(udpClientEnable);
+    ui->udpClientPort->setValue(udpClientPort);
     ui->flrigHost->setText(flrigHost.toString());
     ui->flrigPort->setValue(flrigPort);
     ui->flrigPeriod->setValue(flrigPeriod);
@@ -121,8 +132,11 @@ void Settings::display() {
     ui->SerialPortBaudComboBox->setCurrentText(serialPortBaud);
     ui->SerialPortDataBitsComboBox->setCurrentText(serialPortDataBits);
     ui->SerialPortStopBitComboBox->setCurrentText(serialPortStopBit);
+    ui->SerialPortParityComboBox->setCurrentText(serialPortParity);
+    ui->SerialPortFlowControlComboBox->setCurrentText(serialPortFlowControl);
     ui->tabWidget->setCurrentIndex(0);
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::createDefaultFile() {
     QFile newFile(path);
@@ -137,7 +151,9 @@ void Settings::createDefaultFile() {
     stream << Qt::endl;
     stream << "[UDP]" << Qt::endl;
     stream << "enable = 1" << Qt::endl;
-    stream << "port = 2237" << Qt::endl;
+    stream << "port = 2240" << Qt::endl;
+    stream << "enable_retransl = 1" << Qt::endl;
+    stream << "port_retransl = 2244" << Qt::endl;
     stream << Qt::endl;
     stream << "[CAT]" << Qt::endl;
     stream << "enable =" << Qt::endl;
@@ -147,6 +163,8 @@ void Settings::createDefaultFile() {
     stream << "baud =" << Qt::endl;
     stream << "databits =" << Qt::endl;
     stream << "stopbit =" << Qt::endl;
+    stream << "parity =" << Qt::endl;
+    stream << "flowctrl =" << Qt::endl;
     stream << Qt::endl;
     stream << "[FLRIG]" << Qt::endl;
     stream << "host = 127.0.0.1" << Qt::endl;
@@ -174,6 +192,7 @@ void Settings::createDefaultFile() {
     stream << "rst_rcvd = " << Qt::endl;
     newFile.close();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::save() {
     qs->beginGroup("API");
@@ -186,6 +205,8 @@ void Settings::save() {
     qs->beginGroup("UDP");
     qs->setValue("enable", ui->udpServerEnableCheckbox->isChecked() ? 1 : 0);
     qs->setValue("port", ui->udpServerPort->value());
+    qs->setValue("enable_retransl", ui->udpClientEnableCheckbox->isChecked() ? 1 : 0);
+    qs->setValue("port_retransl", ui->udpClientPort->value());
     qs->endGroup();
     qs->beginGroup("CAT");
     qs->setValue("enable", ui->EnableCATcheckBox->isChecked() ? 1 : 0);
@@ -195,6 +216,8 @@ void Settings::save() {
     qs->setValue("baud", ui->SerialPortBaudComboBox->currentText());
     qs->setValue("databits", ui->SerialPortDataBitsComboBox->currentText());
     qs->setValue("stopbit", ui->SerialPortStopBitComboBox->currentText());
+    qs->setValue("parity", ui->SerialPortParityComboBox->currentText());
+    qs->setValue("flowctrl", ui->SerialPortFlowControlComboBox->currentText());
     qs->endGroup();
     qs->beginGroup("FLRIG");
     qs->setValue("host", ui->flrigHost->text());
@@ -213,6 +236,7 @@ void Settings::save() {
     qs->sync();
     emit SettingsChanged();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::saveForm()
 {
@@ -229,6 +253,7 @@ void Settings::saveForm()
     qs->endGroup();
     qs->sync();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 QString Settings::EncryptToken(QString data)
 {
@@ -242,6 +267,7 @@ QString Settings::EncryptToken(QString data)
     }
     return result;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 QString Settings::genSalt(QString data)
 {
@@ -257,17 +283,19 @@ QString Settings::genSalt(QString data)
      }
     return Salt;
 }
-
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::getLogRadioToken()
 {
    logradio->getToken();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::checkLogRadioToken()
 {
     logradio->checkToken();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::getUserInfo(QStringList data)
 {
@@ -284,13 +312,14 @@ void Settings::getUserInfo(QStringList data)
    }
    else ui->userStatusLabel->setText("Подписка Premium: Не активна");
 }
-
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::checked(int code, QString message)
 {
     QMessageBox::information(0, "LogRadio.ru", "Код ответа: " + QString::number(code) +
                              "\n"+message, QMessageBox::Ok);
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::received(QString access_token, QString confirmation_key, QString confirmation_after, QString confirmation_before, QString valid_after, QString valid_before)
 {
@@ -301,6 +330,7 @@ void Settings::received(QString access_token, QString confirmation_key, QString 
     ui->LogRadioAccessToken->setText(access_token);
 
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::on_CallbookCheckBox_toggled(bool checked)
 {
@@ -312,7 +342,7 @@ void Settings::on_CallbookCheckBox_toggled(bool checked)
         useCallbook = false;
     }
 }
-
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::on_qrzruEnable_toggled(bool checked)
 {
@@ -324,4 +354,6 @@ void Settings::on_qrzruEnable_toggled(bool checked)
         useCallbook = true;
     }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 

@@ -29,6 +29,8 @@ public:
     QString logRadioAccessToken;
     bool udpServerEnable;
     uint16_t udpServerPort;
+    bool udpClientEnable;
+    uint16_t udpClientPort;
     QHostAddress flrigHost;
     uint16_t flrigPort;
     unsigned int flrigPeriod;
@@ -44,6 +46,8 @@ public:
     QString serialPortBaud;
     QString serialPortDataBits;
     QString serialPortStopBit;
+    QString serialPortParity;
+    QString serialPortFlowControl;
     QString lastBand;
     QString lastMode;
     QString lastFrequence;

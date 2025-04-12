@@ -316,7 +316,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <widget class="QCheckBox" name="checkBox">
+             <widget class="QCheckBox" name="udpClientEnableCheckbox">
               <property name="text">
                <string>Ретранслировать QSO по сети</string>
               </property>
@@ -330,7 +330,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="udpServerPort_2">
+             <widget class="QSpinBox" name="udpClientPort">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -686,12 +686,15 @@
                 <height>0</height>
                </size>
               </property>
+              <property name="maximum">
+               <number>60000</number>
+              </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_17">
               <property name="text">
-               <string>сек</string>
+               <string>мс</string>
               </property>
              </widget>
             </item>
@@ -738,12 +741,12 @@
               </property>
               <item>
                <property name="text">
-                <string>7</string>
+                <string>8</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>8</string>
+                <string>7</string>
                </property>
               </item>
              </widget>
@@ -771,6 +774,42 @@
               <item>
                <property name="text">
                 <string>2</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>Чётность:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="SerialPortParityComboBox">
+              <item>
+               <property name="text">
+                <string>No</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Odd</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Even</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Mark</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Space</string>
                </property>
               </item>
              </widget>
@@ -888,17 +927,17 @@
              <widget class="QComboBox" name="SerialPortFlowControlComboBox">
               <item>
                <property name="text">
-                <string>Программное</string>
+                <string>Disable</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Аппаратное</string>
+                <string>Hardware</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Отключено</string>
+                <string>Software</string>
                </property>
               </item>
              </widget>

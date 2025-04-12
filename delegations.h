@@ -77,11 +77,22 @@ public:
         : QSqlTableModel(parent,db) {;}
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const
     {
-//        if(role==Qt::BackgroundRole && index.column() == 22)
-//        {
-//            const QVariant value(data(index, Qt::DisplayRole));
-//            return QVariant(QColor(value.toString()=="1"?QColor(25, 25, 25):Qt::yellow));
-//        }
+        if(role==Qt::BackgroundRole)
+        {
+            if(QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 0)
+            {
+                return QColor(239,81,81);
+            }
+            if((QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 1)||(QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 2))
+            {
+                return QColor(239,153,81);
+            }
+            else if(role == Qt::DisplayRole)
+            {
+                return QSqlTableModel::data(index);
+            }
+        }
+
         if(role==Qt::DecorationRole && index.column() == 22)
         {
             if (QSqlQueryModel::data(index, Qt::DisplayRole).toInt() == 1){
@@ -90,8 +101,6 @@ public:
                 return QIcon(":resources/images/no.png");
             }
         }
-
-
         return QSqlTableModel::data(index,role);
     }
 };

@@ -1,29 +1,32 @@
-#include "udpreceiver.h"
+#include "udpserver.h"
 
-UdpReceiver::UdpReceiver(QObject *parent)
+UdpServer::UdpServer(QObject *parent)
     : QObject{parent}
 {
 }
 
-bool UdpReceiver::start(uint16_t port) {
+void UdpServer::setRetransl(bool retransl)
+{
+    this->retransl = retransl;
+}
+
+void UdpServer::setRetranslPort(uint16_t port)
+{
+    this->retransl_port = port;
+}
+
+bool UdpServer::start(uint16_t port) {
     this->port = port;
+    clientSocket = new QUdpSocket(this);
     socket = new QUdpSocket(this);
     if (!socket->bind(QHostAddress::Any, port)) {
         return false;
     }
-
-    connect(socket, &QUdpSocket::readyRead, this, &UdpReceiver::onReadyRead);
-
-    this->retransmit_port = 2555;
-    retransmit_socket = new QUdpSocket(this);
-    if (!retransmit_socket->bind(QHostAddress::Any, retransmit_port)) {
-        return false;
-    }
-
+    connect(socket, &QUdpSocket::readyRead, this, &UdpServer::onReadyRead);
     return true;
 }
 
-void UdpReceiver::onReadyRead() {
+void UdpServer::onReadyRead() {
     while (socket->hasPendingDatagrams()) {
         QByteArray data;
         int datagramSize = socket->pendingDatagramSize();
@@ -31,12 +34,19 @@ void UdpReceiver::onReadyRead() {
 
         qint64 readLen = socket->readDatagram(data.data(), data.size());
         if (readLen == -1) return;
+
+        if(retransl) send(data);
         process(data);
-        retransmit_socket->writeDatagram(data.data(), QHostAddress::Any, retransmit_port);
     }
 }
 
-void UdpReceiver::process(QByteArray data) {
+bool UdpServer::send(QByteArray data)
+{
+    clientSocket->writeDatagram(data, QHostAddress::LocalHost, retransl_port);
+    return true;
+}
+
+void UdpServer::process(QByteArray data) {
     QDataStream in(data);
     in.setVersion(16);
     in.setByteOrder(QDataStream::BigEndian);

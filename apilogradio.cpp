@@ -87,6 +87,7 @@ void APILogRadio::SendQso(QVariantList data) {
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
     QJsonObject QSO_Obj;
+    int dbid = data.value(0).toInt();
     QSO_Obj["id"] = data.value(0).toInt();
     QSO_Obj["comm_datetime_at"] = data.value(7).toString();
     QSO_Obj["callsign_s"] = data.value(16).toString();
@@ -136,16 +137,19 @@ void APILogRadio::SendQso(QVariantList data) {
         switch(status_code.toInt()) {
             case 200: {
                 qDebug() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
-                if(error == 0) qDebug() << "QSO №" << number << " sended to LogRadio.ru service.";
+                if(error == 0) {
+                    emit synced(dbid);
+                    qDebug() << "QSO №" << number << " sended to LogRadio.ru service.";
+                }
                 else {
-                    qDebug() << "Error! QSO №" << number << " not sended to LogRadio.ru service.";
+                    qDebug() << "LogRadio.ru Error! QSO №" << number << " not sended to LogRadio.ru service.";
                     qDebug() << jsonDocument;
                 }
                 emit QSOStatus(error);
                 break;
             };
-            case 401:
-                qDebug() << jsonDocument;
+            default:
+                qDebug() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
                 break;
         }
        reply->deleteLater();

@@ -12,14 +12,12 @@ Callsigns::Callsigns(QSqlDatabase db, HttpApi *api, QWidget *parent) :
   setWindowTitle("Управление позывными");
   this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
   ui->saveButton->setEnabled(false);
-  ui->cancelButton->setEnabled(false);
 
   connect(ui->addButton, SIGNAL(clicked()), this, SLOT(onAddPressed()));
   connect(ui->removeButton, SIGNAL(clicked()), this, SLOT(onRemovePressed()));
   connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(onSavePressed()));
-  connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(onCancelPressed()));
   connect(ui->updateFromQsosu, SIGNAL(clicked(bool)), this, SLOT(requestQsosu()));
-  connect(api, SIGNAL(callsignStatus(int)), this, SLOT(callsignStatus(int)));
+  connect(api, SIGNAL(callsignStatus(int)), this, SLOT(callStatus(int)));
 
   init();
   updateTable();
@@ -87,7 +85,6 @@ void Callsigns::addCallsigng()
 
     ui->addButton->setEnabled(false);
     ui->saveButton->setEnabled(true);
-    ui->cancelButton->setEnabled(true);
     QVariantList data;
     data << add_cs->add_Callsign << add_cs->add_CallsignType << add_cs->add_location << add_cs->add_rda << add_cs->add_ituz << add_cs->add_cqz << add_cs->add_validity_start << add_cs->add_validity_stop;
     api->addCallsign(data);
@@ -138,7 +135,6 @@ void Callsigns::onSavePressed() {
     updateTable();
     ui->addButton->setEnabled(true);
     ui->saveButton->setEnabled(false);
-    ui->cancelButton->setEnabled(false);
 
     emit updated();
   } else {
@@ -146,13 +142,6 @@ void Callsigns::onSavePressed() {
     return;
   }
 
-}
-
-void Callsigns::onCancelPressed() {
-  updateTable();
-  ui->addButton->setEnabled(true);
-  ui->saveButton->setEnabled(false);
-  ui->cancelButton->setEnabled(false);
 }
 
 void Callsigns::requestQsosu() {
@@ -180,11 +169,11 @@ void Callsigns::onCallsignsUpdated() {
     if (query.at() + 1 == 1) {
       int dbid = query.value(0).toInt();
 
-      if (QMessageBox::question(this,
-                                "Обновление позывного",
-                                QString("Обновить данные для позывного %1?").arg(name),
-                                QMessageBox::Yes|QMessageBox::No
-                                ) == QMessageBox::No) continue;
+//      if (QMessageBox::question(this,
+//                                "Обновление позывного",
+//                                QString("Обновить данные для позывного %1?").arg(name),
+//                                QMessageBox::Yes|QMessageBox::No
+//                                ) == QMessageBox::No) continue;
 
       QSqlQuery update;
       update.prepare("UPDATE callsigns SET qsosu_id=:qsosu_id, type=:type, validity_start=:validity_start, validity_stop=:validity_stop, gridsquare=:gridsquare, gridsquare=:gridsquare, cnty=:cnty, ituz=:ituz, cqz=:cqz WHERE id=:id");
@@ -201,11 +190,11 @@ void Callsigns::onCallsignsUpdated() {
       update.exec();
       if (!update.exec()) qDebug() << "Error while updateing callsing in DB";
     } else {
-        if (QMessageBox::question(this,
-                                  "Добавление позывного",
-                                  QString("Позывной %1 отсутствует в системе. Добавить?").arg(name),
-                                  QMessageBox::Yes|QMessageBox::No
-                                  ) == QMessageBox::No) continue;
+//        if (QMessageBox::question(this,
+//                                  "Добавление позывного",
+//                                  QString("Позывной %1 отсутствует в системе. Добавить?").arg(name),
+//                                  QMessageBox::Yes|QMessageBox::No
+//                                  ) == QMessageBox::No) continue;
 
       QSqlQuery insert;
       insert.prepare("INSERT INTO callsigns (id, qsosu_id, type, name, validity_start, validity_stop, gridsquare, cnty, ituz, cqz) VALUES (NULL, :qsosu_id, :type, :name, :validity_start, :validity_stop, :gridsquare, :cnty, :ituz, :cqz)");
@@ -245,7 +234,7 @@ void Callsigns::on_checkCallsignBtn_clicked()
 }
 //---------------------------------------------------------------------------------------------------------------------
 
-void Callsigns::callsignStatus(int status)
+void Callsigns::callStatus(int status)
 {
     if(status == 0) {
         QMessageBox::information(0, "Проверка статуса позывного.", "Позывной на проверке!", QMessageBox::Ok);
@@ -260,21 +249,9 @@ void Callsigns::callsignStatus(int status)
         return;
     }
 }
+
 //---------------------------------------------------------------------------------------------------------------------
 
-//CREATE TABLE "callsigns" (
-//	"id"	INTEGER NOT NULL,
-//	"qsosu_id"	INTEGER NOT NULL DEFAULT 0,
-//	"type"	INTEGER NOT NULL DEFAULT 10,
-//	"name"	TEXT NOT NULL,
-//	"validity_start"	INTEGER NOT NULL DEFAULT 0,
-//	"validity_stop"	INTEGER NOT NULL DEFAULT 0,
-//	"gridsquare"	TEXT NOT NULL,
-//	"cnty"	TEXT,
-//	"ituz"	INTEGER NOT NULL DEFAULT 0,
-//	"cqz"	INTEGER NOT NULL DEFAULT 0,
-//	PRIMARY KEY("id" AUTOICREMENT)
-//)
 
 
 

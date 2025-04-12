@@ -1,5 +1,5 @@
 QT       += core gui network sql xml
-QT       += serialport
+QT       += serialport #testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,7 +28,7 @@ SOURCES += \
     thirdparty/libmaia/maia/maiaXmlRpcClient.cpp \
     thirdparty/libmaia/maia/maiaXmlRpcServer.cpp \
     thirdparty/libmaia/maia/maiaXmlRpcServerConnection.cpp \
-    udpreceiver.cpp
+    udpserver.cpp
 
 HEADERS += \
     about.h \
@@ -50,7 +50,7 @@ HEADERS += \
     thirdparty/libmaia/maia/maiaXmlRpcClient.h \
     thirdparty/libmaia/maia/maiaXmlRpcServer.h \
     thirdparty/libmaia/maia/maiaXmlRpcServerConnection.h \
-    udpreceiver.h
+    udpserver.h
 
 FORMS += \
     about.ui \

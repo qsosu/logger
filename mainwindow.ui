@@ -379,6 +379,9 @@
              <height>0</height>
             </size>
            </property>
+           <property name="inputMethodHints">
+            <set>Qt::ImhNone</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -425,6 +428,9 @@
              <height>0</height>
             </size>
            </property>
+           <property name="inputMethodHints">
+            <set>Qt::ImhNone</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -435,7 +441,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="cntyInput"/>
+          <widget class="QLineEdit" name="cntyInput">
+           <property name="inputMethodHints">
+            <set>Qt::ImhNone</set>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_15">
@@ -697,10 +707,11 @@
     </property>
     <addaction name="actionSettings"/>
     <addaction name="actionFlrig"/>
+    <addaction name="actionCAT"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
-     <string>Журнал</string>
+     <string>Позывные</string>
     </property>
     <addaction name="actionCallsigns"/>
     <addaction name="actionExportAdif"/>
@@ -713,6 +724,7 @@
     <addaction name="actionQsosuLink"/>
     <addaction name="actionQsosuFaqLink"/>
     <addaction name="separator"/>
+    <addaction name="actionAboutQt"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menu"/>
@@ -742,15 +754,21 @@
    <property name="text">
     <string>Экспорт всего журнала в ADIF</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionSync">
    <property name="text">
     <string>Синхронизировать журнал</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>О программе...</string>
+    <string>О программе</string>
    </property>
   </action>
   <action name="actionQsosuFaqLink">
@@ -761,6 +779,19 @@
   <action name="actionQsosuLink">
    <property name="text">
     <string>Страница сервиса QSO.SU</string>
+   </property>
+  </action>
+  <action name="actionCAT">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Подключить CAT</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>O Qt</string>
    </property>
   </action>
  </widget>

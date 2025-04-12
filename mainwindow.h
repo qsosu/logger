@@ -16,7 +16,7 @@
 
 #include "settings.h"
 #include "callsigns.h"
-#include "udpreceiver.h"
+#include "udpserver.h"
 #include "flrig.h"
 #include "httpapi.h"
 #include "helpers.h"
@@ -74,7 +74,7 @@ private:
   Settings *settings;
   Qsoedit *qsoedit;
   Callsigns *callsigns;
-  UdpReceiver *udpReceiver;
+  UdpServer *udpServer;
   Flrig *flrig;
   HttpApi *api;
   APILogRadio *logradio;
@@ -124,6 +124,7 @@ private:
   QString getBandValue(int index);
   QString getModeValue(QString mode);
   QString getRepotValueFromMode(QString mode);
+  int getSynchroStatus(int id);
 
 protected:
   void keyPressEvent(QKeyEvent *event) override;
@@ -137,12 +138,19 @@ private slots:
   void UpdateFormDateTime();
   void fillDefaultFreq();
   void customMenuRequested(QPoint pos);
-  void onQsoSynced(int dbid, QString hash);
+  void onQSOSUSynced(int dbid, QString hash);
+  void onLogRadioSynced(int dbid);
   void LoadHamDefs();
   void setModesList();
   void setBandsList();
   void HamDefsUploaded();
   void HamDefsError();
+  void setFreq(long freq);
+  void setBand(int band);
+  void setMode(int mode);
+  void setUserData();
+  void onQSOConfirmed();
+
   void onSettingsChanged();
   void onCallsignsUpdated();
   void onStationCallsignChanged();
@@ -150,14 +158,12 @@ private slots:
   void onUdpLogged();
   void on_bandCombo_currentTextChanged(const QString &arg1);
   void on_modeCombo_currentTextChanged(const QString &arg1);
+  void on_freqInput_textChanged(const QString &arg1);
   void on_freqInput_editingFinished();
   void on_rstrInput_editingFinished();
   void on_rstsInput_editingFinished();
   void doubleClickedQSO(QModelIndex idx);
-  void setUserData();
-  void on_freqInput_textChanged(const QString &arg1);
-  void setFreq(long freq);
-  void setBand(int band);
-  void setMode(int mode);
+  void on_gridsquareInput_textEdited(const QString &arg1);
+  void on_cntyInput_textEdited(const QString &arg1);
 };
 #endif // MAINWINDOW_H

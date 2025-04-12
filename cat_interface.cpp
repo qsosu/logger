@@ -1,8 +1,10 @@
 #include "cat_interface.h"
 #include <QDebug>
 #include <string>
+//#include "QtTest/QTest"
 
-#define TIMEOUT 100
+
+#define TIMEOUT 10
 
 
 cat_Interface::cat_Interface(bool catEnable, QObject *parent)
@@ -10,15 +12,11 @@ cat_Interface::cat_Interface(bool catEnable, QObject *parent)
 {
     this->catEnable = catEnable;
     serialPort = new QSerialPort;
-    connect(serialPort, &QSerialPort::readyRead, this, &cat_Interface::portRead); //Соединяем сигнал
     catTimer = new QTimer(this);
-    catTimer->setInterval(2000);
+
     connect(catTimer, &QTimer::timeout, this, [=]() {
-        if(catEnable)
-        {
-            sendCommand("FA;");
-            sendCommand("MD;");
-        }
+        sendCommand("FA;");
+        sendCommand("MD;");
     });
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,42 +24,73 @@ cat_Interface::cat_Interface(bool catEnable, QObject *parent)
 cat_Interface::~cat_Interface()
 {
     if(serialPort->isOpen()) serialPort->close();
-    delete serialPort;
-}
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-void cat_Interface::handleError(QSerialPort::SerialPortError error)
-{
-   qDebug() << "Ошибка: " << error;
-   if(serialPort->isOpen()) serialPort->close();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void cat_Interface::openSerial(QString port)
+void cat_Interface::handleError(QSerialPort::SerialPortError serialPortError)
 {
-    serialPort->setPortName(port);
-    serialPort->setBaudRate(QSerialPort::Baud9600);
-    serialPort->setParity(QSerialPort::NoParity);
-    serialPort->setStopBits(QSerialPort::OneStop);
-    serialPort->setDataBits(QSerialPort::Data8);
-    serialPort->setFlowControl(QSerialPort::NoFlowControl);
-
-    if (!serialPort->open(QIODevice::ReadWrite)) {
-        qDebug() << "Ошибка, Не удалось подключится к порту";
-        catEnable = false;
-        return;
+    if (serialPortError == QSerialPort::ReadError) {
+            qDebug() << "CAT I/O error on port" << serialPort->portName() << serialPort->errorString();
     }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+bool cat_Interface::openSerial(QString port)
+{    
+    serialPort->setPortName(port);
+    if (!serialPort->open(QIODevice::ReadWrite)) {
+        qDebug() << "CAT Ошибка, Не удалось подключится к порту. " << serialPort->errorString();
+        catTimer->stop();
+        return false;
+    }
+    connect(serialPort, &QSerialPort::readyRead, this, &cat_Interface::portRead);
+    connect(serialPort, SIGNAL(errorOccurred(QSerialPort::SerialPortError)), this, SLOT(handleError(QSerialPort::SerialPortError)));
+    return true;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void cat_Interface::sendCommand(const char *cmd)
 {
-    serialPort->write(cmd); //Запрос состояния трансивера
-
-    if(serialPort->waitForBytesWritten(TIMEOUT)) {
-        //qDebug() << "CAT command: " << cmd;
+    if(serialPort->isOpen())
+    {
+        serialPort->write(cmd);
+        if(!serialPort->waitForBytesWritten(TIMEOUT)) {
+            qDebug() << "CAT Serial Port Write Error. " << serialPort->errorString();
+            //catTimer->stop();
+        }
     }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void cat_Interface::portRead()
+{
+    QByteArray responseData = serialPort->readAll();
+    while (serialPort->waitForReadyRead(TIMEOUT)) /*qDebug() << "Trx answer:" << QString::fromUtf8(responseData)*/;
+
+    if(((responseData[0] == 'F')&&(responseData[1] == 'A'))||((responseData[0] == 'I')&&(responseData[1] == 'F'))) {
+        sscanf(responseData, "FA%11lu;", &freq);
+        band = freqToBand(freq);
+
+        if(freq != old_freq) {
+            emit cat_freq(freq);
+            //qDebug() << "Freq: " << freq;
+            old_freq = freq;
+        }
+        if(band != old_band) {
+            emit cat_band(band);
+            //qDebug() << "Band: " << band;
+            old_band = band;
+        }
+    }
+    if((responseData[0] == 'M')&&(responseData[1] == 'D')) {
+        sscanf(responseData, "MD%2d;", &mode);
+        if(mode != old_mode) {
+            convertMode(mode);
+            //qDebug() << "Mode: " << mode;
+            old_mode = mode;
+        }
+    }
+    //responseData.clear();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -150,38 +179,6 @@ void cat_Interface::setFreq(long freq)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void cat_Interface::portRead()
-{
-    QByteArray responseData = serialPort->readAll();
-    while (serialPort->waitForReadyRead(TIMEOUT)) /*qDebug() << "Trx answer:" << QString::fromUtf8(responseData)*/;
-
-    if((responseData[0] == 'F')&&(responseData[1] == 'A')) {
-        sscanf(responseData, "FA%11lu;", &freq);
-        band = freqToBand(freq);
-
-        if(freq != old_freq) {
-            emit cat_freq(freq);
-            //qDebug() << "Freq: " << freq;
-            old_freq = freq;
-        }
-        if(band != old_band) {
-            emit cat_band(band);
-            //qDebug() << "Band: " << band;
-            old_band = band;
-        }
-    }
-    if((responseData[0] == 'M')&&(responseData[1] == 'D')) {
-        sscanf(responseData, "MD%2d;", &mode);
-        if(mode != old_mode) {
-            convertMode(mode);
-            //qDebug() << "Mode: " << mode;
-            old_mode = mode;
-        }
-    }
-    responseData.clear();
-}
-//------------------------------------------------------------------------------------------------------------------------------------------
-
 int cat_Interface::freqToBand(long freq)
 {
     if (freq >=   1810000 && freq <=   2000000)  { band = 2;}         // 160m
@@ -218,6 +215,96 @@ void cat_Interface::convertMode(int mode)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void cat_Interface::catSetBaudRate(int baud)
+{
+    switch (baud) {
+    case 1200:
+        serialPort->setBaudRate(QSerialPort::Baud1200);
+        break;
+    case 2400:
+        serialPort->setBaudRate(QSerialPort::Baud2400);
+        break;
+    case 4800:
+        serialPort->setBaudRate(QSerialPort::Baud4800);
+        break;
+    case 9600:
+        serialPort->setBaudRate(QSerialPort::Baud9600);
+        break;
+    case 19200:
+        serialPort->setBaudRate(QSerialPort::Baud19200);
+        break;
+    case 38400:
+        serialPort->setBaudRate(QSerialPort::Baud38400);
+        break;
+    case 57600:
+        serialPort->setBaudRate(QSerialPort::Baud57600);
+        break;
+    case 115200:
+        serialPort->setBaudRate(QSerialPort::Baud115200);
+        break;
+    default:
+        serialPort->setBaudRate(QSerialPort::Baud9600);
+        break;
+    };
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void cat_Interface::catSetParity(QString parity)
+{
+    if(parity == "No") serialPort->setParity(QSerialPort::NoParity);
+    else if(parity == "Odd") serialPort->setParity(QSerialPort::OddParity);
+    else if(parity == "Even") serialPort->setParity(QSerialPort::EvenParity);
+    else if(parity == "Mark") serialPort->setParity(QSerialPort::MarkParity);
+    else if(parity == "Space") serialPort->setParity(QSerialPort::SpaceParity);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void cat_Interface::catSetStopBit(int stopbits)
+{
+    switch (stopbits) {
+    case 1:
+        serialPort->setStopBits(QSerialPort::OneStop);
+        break;
+    case 2:
+        serialPort->setStopBits(QSerialPort::TwoStop);
+        break;
+    default:
+        serialPort->setStopBits(QSerialPort::OneStop);
+        break;
+    };
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void cat_Interface::catSetDataBits(int databits)
+{
+    switch (databits) {
+    case 7:
+        serialPort->setDataBits(QSerialPort::Data7);
+        break;
+    case 8:
+        serialPort->setDataBits(QSerialPort::Data8);
+        break;
+    default:
+        serialPort->setDataBits(QSerialPort::Data8);
+        break;
+    };
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void cat_Interface::catSetFlowControl(QString flowcontrol)
+{
+    if(flowcontrol == "Disable") serialPort->setFlowControl(QSerialPort::NoFlowControl);
+    else if(flowcontrol == "Hardware") serialPort->setFlowControl(QSerialPort::HardwareControl);
+    else if(flowcontrol == "Software") serialPort->setFlowControl(QSerialPort::SoftwareControl);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void cat_Interface::setInterval(int interval)
+{
+    catTimer->setInterval(interval);
+    //qDebug() << "CAT Timer Interval: " << interval;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 /*
 byte rig_group = (digitalRead(RIG_JMP_1) * 2) + digitalRead(RIG_JMP_0);
 

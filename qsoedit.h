@@ -21,11 +21,15 @@ public:
     ~Qsoedit();
     void ShowQSOParams(QVariantList data);
     void noneImage();
-
+    void getCallsigns();
+    QString getHashByID(int db_id);
+    QString getCallsignName(int id);
+    int getCallsignID(QString callsign);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual void setVisible(bool set) override;
+    virtual void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void on_QRZUpdateButton_clicked();
@@ -34,6 +38,9 @@ private slots:
     void loadImage(QPixmap pix);
     void onResizeFinished();
     void setUserData();
+    void updateQSOData(QString hash);
+    void errorUpdateQSOData(QString error);
+    //void onQSOConfirmed();
 
 private:
     Ui::Qsoedit *ui;
@@ -47,9 +54,12 @@ private:
     QGraphicsPixmapItem *pixmap_item;
     QGraphicsScene *scene;
     QGraphicsTextItem *textItem;
-    void closeEvent(QCloseEvent *event);
+    QStringList userData;
+
     bool load_flag;
     QTimer *resizeTimer; // Таймер для отслеживания окончания изменения размера
+    int qsosu_id;
+    int type;
 
 signals:
     void db_updated();

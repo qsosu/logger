@@ -6,8 +6,6 @@
 #include <QList>
 
 
-
-
 Qsoedit::Qsoedit(QSqlDatabase db, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Qsoedit)
@@ -32,6 +30,10 @@ Qsoedit::Qsoedit(QSqlDatabase db, QWidget *parent) :
     api->getListBand(); //Загрузка диапазонов
     api->getListSubmodeDropDown(); //Загрузка списков модуляции
     connect(api, SIGNAL(userDataUpdated()), this, SLOT(setUserData()));
+    connect(api, SIGNAL(QSODataUpdated(QString)), this, SLOT(updateQSOData(QString)));
+    connect(api, SIGNAL(errorQSODataUpdated(QString)), this, SLOT(errorUpdateQSOData(QString)));
+    //connect(api, SIGNAL(confirmQSOs()), this, SLOT(onQSOConfirmed()));
+
 
     resizeTimer = new QTimer(this);
     resizeTimer->setSingleShot(true); // Выполнить только один раз
@@ -44,40 +46,62 @@ Qsoedit::Qsoedit(QSqlDatabase db, QWidget *parent) :
     ui->countrylineEdit->setText("");
     ui->cqzlineEdit->setText("");
     ui->ituzlineEdit->setText("");
+
+    ui->ituzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-8][0-9]|90)$"), this));
+    ui->cqzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-3][0-9]|40)$"), this));
+    ui->rstr_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
+    ui->rsts_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 Qsoedit::~Qsoedit()
 {
     delete ui;
-    //delete settings;
-    //delete qrz;
-    //delete resizeTimer;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::ShowQSOParams(QVariantList data)
 {
+    getCallsigns();
     dbid = data.at(0).toInt();
-    ui->CalsignlineEdit->setText(data.at(1).toString());
-    QDate qsoDate = QDate::fromString(data.at(2).toString(), "yyyyMMdd");
+    int callsign_id = data.at(1).toInt();
+    int operator_id = data.at(2).toInt();
+    ui->StationComboBox->setCurrentText(getCallsignName(callsign_id));
+    ui->OperatorComboBox->setCurrentText(getCallsignName(operator_id));
+    ui->CalsignlineEdit->setText(data.at(3).toString());
+    QDate qsoDate = QDate::fromString(data.at(4).toString(), "yyyyMMdd");
     ui->dateEdit->setDate(qsoDate);
-    QTime start_time = QTime::fromString(data.at(3).toString(), "hhmmss");
+    QTime start_time = QTime::fromString(data.at(5).toString(), "hhmmss");
     ui->qso_timeStartEdit->setTime(start_time);
-    QTime end_time = QTime::fromString(data.at(4).toString(), "hhmmss");
+    QTime end_time = QTime::fromString(data.at(6).toString(), "hhmmss");
     ui->QSO_timeEndEdit->setTime(end_time);
-    ui->name_lineEdit->setText(data.at(8).toString());
-    ui->qth_lineEdit->setText(data.at(9).toString());
-    ui->rstr_lineEdit->setText(data.at(10).toString());
-    ui->rsts_lineEdit->setText(data.at(11).toString());
-    ui->qthloc_lineEdit->setText(data.at(12).toString());
-    ui->rda_lineEdit->setText(data.at(13).toString());
-    ui->comment_lineEdit->setText(data.at(14).toString());
+    ui->name_lineEdit->setText(data.at(10).toString());
+    ui->qth_lineEdit->setText(data.at(11).toString());
+    ui->rstr_lineEdit->setText(data.at(12).toString());
+    ui->rsts_lineEdit->setText(data.at(13).toString());
+    ui->qthloc_lineEdit->setText(data.at(14).toString());
+    ui->rda_lineEdit->setText(data.at(15).toString());
+    ui->ituzlineEdit->setText(data.at(16).toString());
+    ui->cqzlineEdit->setText(data.at(17).toString());
+    ui->comment_lineEdit->setText(data.at(18).toString());
+    ui->countrylineEdit->setText("");
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::on_QRZUpdateButton_clicked()
 {
     if(settings->useCallbook)
     {
         api->getCallbook(ui->CalsignlineEdit->text());
+        if(userData.length() > 10) {
+            ui->name_lineEdit->setText((userData.at(0).length() > 0) ? userData.at(0) : "");
+            ui->qth_lineEdit->setText((userData.at(1).length() > 0) ? userData.at(1) : "");
+            ui->qthloc_lineEdit->setText((userData.at(2).length() > 0) ? userData.at(2).toUpper() : "");
+            ui->rda_lineEdit->setText((userData.at(3).length() > 0) ? userData.at(3).toUpper() : "");
+            ui->countrylineEdit->setText((userData.at(8).length() > 0) ? userData.at(8).toUpper() : "");
+            ui->ituzlineEdit->setText((userData.at(10).length() > 0) ? userData.at(10).toUpper() : "");
+            ui->cqzlineEdit->setText((userData.at(11).length() > 0) ? userData.at(11).toUpper() : "");
+        }
     } else {
         QStringList data = qrz->Get(ui->CalsignlineEdit->text());
         ui->name_lineEdit->setText((data.at(0).length() > 0) ? data.at(0) : "");
@@ -90,27 +114,18 @@ void Qsoedit::on_QRZUpdateButton_clicked()
             load_flag = true;
         } else noneImage();
     }
-    //api->getGeocodeByLocator(ui->qthloc_lineEdit->text());
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
-void Qsoedit::setUserData() {
-  QStringList data;
-  data.append(api->callsignInfo);
+void Qsoedit::setUserData()
+{
+  userData.clear();
+  userData.append(api->callsignInfo);
 
-  ui->name_lineEdit->setText((data.at(0).length() > 0) ? data.at(0) : "");
-  ui->qth_lineEdit->setText((data.at(1).length() > 0) ? data.at(1) : "");
-  ui->qthloc_lineEdit->setText((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
-  ui->rda_lineEdit->setText((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
-  ui->countrylineEdit->setText((data.at(8).length() > 0) ? data.at(8).toUpper() : "");
-  ui->ituzlineEdit->setText((data.at(10).length() > 0) ? data.at(10).toUpper() : "");
-  ui->cqzlineEdit->setText((data.at(11).length() > 0) ? data.at(11).toUpper() : "");
-
-  qDebug() << "Recceived data: " << data;
-
-  if(data.at(4).length() > 0) {
+  if(userData.at(4).length() > 0) {
       ui->QSOSUUserIcon->setVisible(true);
       ui->QSOSUUserLabel->setVisible(true);
-      if(data.at(4) == "1") {
+      if(userData.at(4) == "1") {
          ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/loguser.png"));
          ui->QSOSUUserLabel->setText("Пользователь QSO.SU");
          ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
@@ -124,10 +139,10 @@ void Qsoedit::setUserData() {
       ui->QSOSUUserLabel->setVisible(false);
   }
 
-  if(data.at(5).length() > 0) {
+  if(userData.at(5).length() > 0) {
       ui->SRRUserIcon->setVisible(true);
       ui->SRRUserLabel->setVisible(true);
-      if(data.at(5) == "1") {
+      if(userData.at(5) == "1") {
          ui->SRRUserIcon->setPixmap(QPixmap(":resources/images/srr_user.png"));
          ui->SRRUserLabel->setText("Член СРР");
          ui->SRRUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
@@ -140,7 +155,7 @@ void Qsoedit::setUserData() {
       ui->SRRUserLabel->setVisible(false);
   }
 
-  image = ((data.at(12).length() > 0) ? data.at(12) : "");
+  image = ((userData.at(12).length() > 0) ? userData.at(12) : "");
   if(image != "") {
       qrz->LoadPhoto(image);
       load_flag = true;
@@ -175,13 +190,31 @@ void Qsoedit::noneImage()
 
 void Qsoedit::on_saveButton_clicked()
 {
+    int callsign_id = getCallsignID(ui->StationComboBox->currentText());
+    int operator_id = getCallsignID(ui->OperatorComboBox->currentText());
     QSqlQuery query(db);
-    query.prepare("UPDATE records SET NAME = :name, QTH = :qth, GRIDSQUARE = :grid, CNTY = :rda WHERE id=:id");
+    query.prepare("UPDATE records SET CALL = :call, QSOSU_CALLSIGN_ID = :callsign_id, QSOSU_OPERATOR_ID = :operator_id, NAME = :name, QSO_DATE = :qso_date, TIME_ON = :time_on, "
+                  "TIME_OFF = :time_off, QTH = :qth, GRIDSQUARE = :grid, CNTY = :rda, RST_SENT = :rsts, RST_RCVD = :rstr, ITUZ = :ituz, CQZ = :cqz WHERE id=:id");
     query.bindValue(":id", dbid);
+    query.bindValue(":call", ui->CalsignlineEdit->text());
+    query.bindValue(":callsign_id", callsign_id);
+    query.bindValue(":operator_id", operator_id);
     query.bindValue(":name",  ui->name_lineEdit->text());
+    QDate qsoDate = ui->dateEdit->date();
+    query.bindValue(":qso_date",  qsoDate.toString("yyyyMMdd"));
+    QTime qsoTimeOn = ui->qso_timeStartEdit->time();
+    QString qsoTimeOnFormated = qsoTimeOn.toString("hhmmss");
+    QTime qsoTimeEnd = ui->QSO_timeEndEdit->time();
+    QString qsoTimeEndFormated = qsoTimeEnd.toString("hhmmss");
+    query.bindValue(":time_on",  qsoTimeOnFormated);
+    query.bindValue(":time_off", qsoTimeEndFormated);
     query.bindValue(":qth",  ui->qth_lineEdit->text());
     query.bindValue(":grid",  ui->qthloc_lineEdit->text());
     query.bindValue(":rda",  ui->rda_lineEdit->text());
+    query.bindValue(":rsts",  ui->rsts_lineEdit->text());
+    query.bindValue(":rstr",  ui->rstr_lineEdit->text());
+    query.bindValue(":ituz",  ui->ituzlineEdit->text());
+    query.bindValue(":cqz",  ui->cqzlineEdit->text());
 
     if(!query.exec()){
         qDebug() << "ERROR UPDATE TABLE record " << query.lastError().text();
@@ -189,6 +222,17 @@ void Qsoedit::on_saveButton_clicked()
         qDebug() << "Record " << dbid << " updated.";
         emit db_updated();
      }
+    QString hash = getHashByID(dbid);
+    QString callsign = ui->CalsignlineEdit->text();
+
+    QString api_date = qsoDate.toString("yyyy-MM-dd");
+    QString api_qsoTimeOn = api_date + "T" + qsoTimeOn.toString("hh:mm:ss");
+    QString api_qsoTimeEnd = api_date + "T" + qsoTimeEnd.toString("hh:mm:ss");
+
+    QVariantList data;
+    data << hash << operator_id << callsign_id << callsign << ui->name_lineEdit->text() << ui->qth_lineEdit->text() << ui->qthloc_lineEdit->text();
+    data << ui->rsts_lineEdit->text() << ui->rstr_lineEdit->text() << ui->cqzlineEdit->text() << ui->ituzlineEdit->text() << api_qsoTimeOn << api_qsoTimeEnd;
+    api->updateByHashLog(data);
     close();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -239,4 +283,95 @@ void Qsoedit::setVisible(bool set)
         if(settings->useCallbook) api->getCallbook(ui->CalsignlineEdit->text());
     }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void Qsoedit::getCallsigns()
+{
+  ui->StationComboBox->clear();
+  ui->OperatorComboBox->clear();
+
+  QSqlQuery query(db);
+  query.exec("SELECT qsosu_id, type, name FROM callsigns");
+  while(query.next()) {
+      qsosu_id = query.value(0).toInt();
+      type = query.value(1).toInt();
+      QString name = query.value(2).toString();
+      ui->StationComboBox->addItem(name);
+      if(type == 0) ui->OperatorComboBox->addItem(name);
+  }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+QString Qsoedit::getCallsignName(int id)
+{
+    QString value;
+    QSqlQuery query(db);
+    query.exec(QString("SELECT name FROM callsigns WHERE qsosu_id = %1").arg(id));
+
+    while(query.next()){
+        value = query.value(0).toString();
+    }
+    return value;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+int Qsoedit::getCallsignID(QString callsign)
+{
+    int value = 0;
+    QSqlQuery query(db);
+    query.exec(QString("SELECT qsosu_id FROM callsigns WHERE name = '%1'").arg(callsign));
+
+    while(query.next()){
+        value = query.value(0).toInt();
+    }
+    return value;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+QString Qsoedit::getHashByID(int db_id)
+{
+    QString hash;
+    QSqlQuery query(db);
+    query.exec(QString("SELECT HASH FROM records WHERE id = '%1'").arg(db_id));
+
+    while(query.next()){
+        hash = query.value(0).toString();
+    }
+    return hash;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void Qsoedit::updateQSOData(QString hash)
+{
+    QSqlQuery query(db);
+    query.prepare("UPDATE records SET HASH = :hash WHERE id=:id");
+    query.bindValue(":id", dbid);
+    query.bindValue(":hash", hash);
+
+    if(!query.exec()){
+        qDebug() << "ERROR update HASH for record: " << dbid << query.lastError().text();
+    } else {
+        qDebug() << "HASH for record " << dbid << " updated.";
+        QMessageBox::information(0, "Обновление QSO", "QSO успешно обновлено.", QMessageBox::Ok);
+        emit db_updated();
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void Qsoedit::errorUpdateQSOData(QString error)
+{
+    QMessageBox::critical(0, "Ошибка", error, QMessageBox::Ok);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+//void Qsoedit::onQSOConfirmed()
+//{
+//    qDebug() << "Test confirm slot!!";
+
+//}
+////------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 

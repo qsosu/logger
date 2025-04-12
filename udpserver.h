@@ -1,5 +1,5 @@
-#ifndef UDPRECEIVER_H
-#define UDPRECEIVER_H
+#ifndef UDPSERVER_H
+#define UDPSERVER_H
 
 #include <QObject>
 #include <QUdpSocket>
@@ -26,12 +26,16 @@ enum MessageType {
     maximum_message_type
 };
 
-class UdpReceiver : public QObject
+class UdpServer : public QObject
 {
     Q_OBJECT
 public:
-    explicit UdpReceiver(QObject *parent = nullptr);
+    explicit UdpServer(QObject *parent = nullptr);
     bool start(uint16_t port);
+    bool send(QByteArray data);
+    void setRetransl(bool retransl);
+    void setRetranslPort(uint16_t port);
+    bool retransl;
 
     /* Message data header */
     quint32 magic;
@@ -63,18 +67,18 @@ public:
 
 private:
     QUdpSocket *socket;
+    QUdpSocket *clientSocket;
     uint16_t port;
-
-    QUdpSocket *retransmit_socket;
-    uint16_t retransmit_port;
+    uint16_t retransl_port;
 
 private slots:
     void onReadyRead();
     void process(QByteArray data);
+
 
 signals:
     void heartbeat();
     void logged();
 };
 
-#endif // UDPRECEIVER_H
+#endif // UDPSERVER_H

@@ -38,6 +38,7 @@ public:
   void deleteByHashLog(QString hash); //Удаление QSO из радиолюбительского журнала
   void getCallbook(QString callsign);
   void getPing();
+  void updateByHashLog(QVariantList data);
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;
@@ -45,6 +46,7 @@ public:
   QStringList bands;
   QStringList callsignInfo;
   QByteArray XMLdata;
+  QVector<QVariantMap> cnfrQSOs;
 
   typedef struct userData {
       int id;
@@ -77,12 +79,12 @@ private:
   QNetworkAccessManager m_manager;
   QStringList userDataList;
 
-private slots:
 
 signals:
   void emptyToken();
   void available();
   void unavailable();
+  void confirmQSOs();
   void accountDataUpdated();
   void callsignsUpdated();
   void callsignStatus(int);
@@ -95,6 +97,8 @@ signals:
   void HamDefsError();
   void userDataUpdated();
   void getUserInfo(QStringList);
+  void QSODataUpdated(QString);
+  void errorQSODataUpdated(QString);
 };
 
 #endif // HTTPAPI_H
