@@ -193,11 +193,15 @@ void Qsoedit::on_saveButton_clicked()
 {
     int callsign_id = getCallsignID(ui->StationComboBox->currentText());
     int operator_id = getCallsignID(ui->OperatorComboBox->currentText());
+    int local_callsign_id = getLocalCallsignID(ui->StationComboBox->currentText());
+
+    qDebug() << "Local Callsign ID= " << local_callsign_id;
     QSqlQuery query(db);
-    query.prepare("UPDATE records SET CALL = :call, QSOSU_CALLSIGN_ID = :callsign_id, QSOSU_OPERATOR_ID = :operator_id, NAME = :name, COUNTRY = :country, CONT = :cont, QSO_DATE = :qso_date, "
+    query.prepare("UPDATE records SET CALL = :call, CALLSIGN_ID = :local_callsign_id, QSOSU_CALLSIGN_ID = :callsign_id, QSOSU_OPERATOR_ID = :operator_id, NAME = :name, COUNTRY = :country, CONT = :cont, QSO_DATE = :qso_date, "
                   "TIME_ON = :time_on, TIME_OFF = :time_off, QTH = :qth, GRIDSQUARE = :grid, CNTY = :rda, RST_SENT = :rsts, RST_RCVD = :rstr, ITUZ = :ituz, CQZ = :cqz WHERE id=:id");
     query.bindValue(":id", dbid);
     query.bindValue(":call", ui->CalsignlineEdit->text());
+    query.bindValue(":local_callsign_id", local_callsign_id);
     query.bindValue(":callsign_id", callsign_id);
     query.bindValue(":operator_id", operator_id);
     query.bindValue(":name",  ui->name_lineEdit->text());
@@ -313,6 +317,19 @@ QString Qsoedit::getCallsignName(int id)
 
     while(query.next()){
         value = query.value(0).toString();
+    }
+    return value;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+int Qsoedit::getLocalCallsignID(QString callsign)
+{
+    int value = 0;
+    QSqlQuery query(db);
+    query.exec(QString("SELECT id FROM callsigns WHERE name = '%1'").arg(callsign));
+
+    while(query.next()){
+        value = query.value(0).toInt();
     }
     return value;
 }

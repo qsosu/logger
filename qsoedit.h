@@ -25,6 +25,7 @@ public:
     QString getHashByID(int db_id);
     QString getCallsignName(int id);
     int getCallsignID(QString callsign);
+    int getLocalCallsignID(QString callsign);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;

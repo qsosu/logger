@@ -93,10 +93,31 @@ void APILogRadio::SendQso(QVariantList data) {
     QSO_Obj["callsign_s"] = data.value(16).toString();
     QSO_Obj["callsign_r"] = data.value(3).toString();
     QSO_Obj["frequency"] = data.value(6).toLongLong();
-    if(data.value(5).toString()=="LSB" || data.value(5).toString()=="USB") QSO_Obj["mode"] = "SSB";
-        else QSO_Obj["mode"] = data.value(5).toString();
-    if(data.value(5).toString()=="FT8") QSO_Obj["submode"] = "";
-        else QSO_Obj["submode"] = data.value(5).toString();
+
+    QSO_Obj["mode"] = data.value(5).toString();
+    QSO_Obj["submode"] = "";
+
+    if(data.value(5).toString()=="LSB") {
+        QSO_Obj["mode"] = "SSB";
+        QSO_Obj["submode"] = "LSB";
+    } else
+    if(data.value(5).toString()=="USB") {
+        QSO_Obj["mode"] = "SSB";
+        QSO_Obj["submode"] = "USB";
+    } else
+    if(data.value(5).toString()=="CW") {
+        QSO_Obj["mode"] = "CW";
+        QSO_Obj["submode"] = "PCW";
+    } else
+    if(data.value(5).toString()=="FT4") {
+        QSO_Obj["mode"] = "MFSK";
+        QSO_Obj["submode"] = "FT4";
+    } else
+    if(data.value(5).toString()=="FT8") {
+        QSO_Obj["mode"] = "FT8";
+        QSO_Obj["submode"] = "";
+    }
+
     QSO_Obj["band"] = data.value(4).toString();
     QSO_Obj["rst_s"] = data.value(9).toString();
     QSO_Obj["rst_r"] = data.value(10).toString();
