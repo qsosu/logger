@@ -372,6 +372,7 @@ void MainWindow::CreateDatabase() {
              "\"CQZ\" INTEGER,"
              "\"SYNC_QSO\" INTEGER,"
              "\"COUNTRY\" TEXT,"
+             "\"CONT\" TEXT,"
              "PRIMARY KEY(\"id\" AUTOINCREMENT))");
   qInfo() << "Creating DELRECORDS table";
   query.exec("CREATE TABLE \"delrecords\" (\"id\" INTEGER NOT NULL, \"HASH\" TEXT, PRIMARY KEY(\"id\" AUTOINCREMENT))");
@@ -460,6 +461,7 @@ void MainWindow::InitRecordsTable() {
   ui->tableView->setColumnHidden(23, true);
   ui->tableView->setColumnHidden(26, true);
   ui->tableView->setColumnHidden(27, true);
+  ui->tableView->setColumnHidden(28, true);
 
   ui->tableView->setItemDelegateForColumn(8, new FormatCallsign(ui->tableView));
   ui->tableView->setItemDelegateForColumn(9, new FormatDate(ui->tableView));
@@ -560,6 +562,7 @@ void MainWindow::SaveQso()
   data.append(api->callsignInfo);
   if(data.count() > 11) {
     newRecord.setValue("COUNTRY", data.at(8));
+    newRecord.setValue("CONT", data.at(9));
     newRecord.setValue("ITUZ", data.at(10));
     newRecord.setValue("CQZ", data.at(11));
   }
@@ -1275,11 +1278,12 @@ void MainWindow::EditQSO(QModelIndex index)
     QString ituz = RecordsModel->data(RecordsModel->index(idx, 24)).toString();
     QString cqz = RecordsModel->data(RecordsModel->index(idx, 25)).toString();
     QString country = RecordsModel->data(RecordsModel->index(idx, 27)).toString();
+    QString country_code = RecordsModel->data(RecordsModel->index(idx, 28)).toString();
 
     QVariantList data;
     data.clear();
     data << dbid << qsosu_callsign_id << qsosu_operator_id << call << date << time_start << time_stop << band
-         << mode << freq << name << qth << rstr << rsts << locator << rda << ituz << cqz << comment << country;
+         << mode << freq << name << qth << rstr << rsts << locator << rda << ituz << cqz << comment << country << country_code;
     qsoedit->ShowQSOParams(data);
     qsoedit->show();
 }

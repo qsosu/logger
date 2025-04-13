@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
-   m_log.reset(new QFile(QCoreApplication::applicationDirPath() + "/log.txt"));
+   m_log.reset(new QFile(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/log.txt"));
    m_log.data()->open(QFile::Append | QFile::Text);
 
 #ifdef Q_OS_WIN32

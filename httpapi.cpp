@@ -603,12 +603,15 @@ void HttpApi::updateByHashLog(QVariantList data)
     body["name"] = data.value(4).toString();
     body["qth"] = data.value(5).toString();
     body["cnty"] = data.value(6).toString();
-    body["rsts"] = data.value(7).toString();
-    body["rstr"] = data.value(8).toString();
-    body["cqz"] = data.value(9).toInt();
-    body["ituz"] = data.value(10).toInt();
-    body["datetime"] = data.value(11).toString();
-    body["datetime_off"] = data.value(12).toString();
+    body["gridsquare"] = data.value(7).toString();
+    body["rsts"] = data.value(8).toString();
+    body["rstr"] = data.value(9).toString();
+    body["cqz"] = data.value(10).toInt();
+    body["ituz"] = data.value(11).toInt();
+    body["datetime"] = data.value(12).toString();
+    body["datetime_off"] = data.value(13).toString();
+    body["country"] = data.value(14).toString();
+    body["cont"] = data.value(15).toString();
 
     QJsonDocument doc(body);
     QByteArray jsonBA = doc.toJson();

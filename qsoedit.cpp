@@ -84,6 +84,7 @@ void Qsoedit::ShowQSOParams(QVariantList data)
     ui->cqzlineEdit->setText(data.at(17).toString());
     ui->comment_lineEdit->setText(data.at(18).toString());
     ui->countrylineEdit->setText(data.at(19).toString());
+    ui->countryCodelineEdit->setText(data.at(20).toString());
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -98,6 +99,7 @@ void Qsoedit::on_QRZUpdateButton_clicked()
             ui->qthloc_lineEdit->setText((userData.at(2).length() > 0) ? userData.at(2).toUpper() : "");
             ui->rda_lineEdit->setText((userData.at(3).length() > 0) ? userData.at(3).toUpper() : "");
             ui->countrylineEdit->setText((userData.at(8).length() > 0) ? userData.at(8).toUpper() : "");
+            ui->countryCodelineEdit->setText((userData.at(9).length() > 0) ? userData.at(9).toUpper() : "");
             ui->ituzlineEdit->setText((userData.at(10).length() > 0) ? userData.at(10).toUpper() : "");
             ui->cqzlineEdit->setText((userData.at(11).length() > 0) ? userData.at(11).toUpper() : "");
         }
@@ -200,6 +202,9 @@ void Qsoedit::on_saveButton_clicked()
     query.bindValue(":operator_id", operator_id);
     query.bindValue(":name",  ui->name_lineEdit->text());
     query.bindValue(":country",  ui->countrylineEdit->text());
+
+    query.bindValue(":cont",  ui->countrylineEdit->text());
+
     QDate qsoDate = ui->dateEdit->date();
     query.bindValue(":qso_date",  qsoDate.toString("yyyyMMdd"));
     QTime qsoTimeOn = ui->qso_timeStartEdit->time();
@@ -230,8 +235,8 @@ void Qsoedit::on_saveButton_clicked()
     QString api_qsoTimeEnd = api_date + "T" + qsoTimeEnd.toString("hh:mm:ss");
 
     QVariantList data;
-    data << hash << operator_id << callsign_id << callsign << ui->name_lineEdit->text() << ui->qth_lineEdit->text() << ui->qthloc_lineEdit->text();
-    data << ui->rsts_lineEdit->text() << ui->rstr_lineEdit->text() << ui->cqzlineEdit->text() << ui->ituzlineEdit->text() << api_qsoTimeOn << api_qsoTimeEnd;
+    data << hash << operator_id << callsign_id << callsign << ui->name_lineEdit->text() << ui->qth_lineEdit->text() << ui->rda_lineEdit->text() << ui->qthloc_lineEdit->text();
+    data << ui->rsts_lineEdit->text() << ui->rstr_lineEdit->text() << ui->cqzlineEdit->text() << ui->ituzlineEdit->text() << api_qsoTimeOn << api_qsoTimeEnd << ui->countrylineEdit->text() << ui->countryCodelineEdit->text();
     api->updateByHashLog(data);
     close();
 }
