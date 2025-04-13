@@ -150,7 +150,6 @@ private slots:
   void setMode(int mode);
   void setUserData();
   void onQSOConfirmed();
-
   void onSettingsChanged();
   void onCallsignsUpdated();
   void onStationCallsignChanged();

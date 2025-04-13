@@ -17,7 +17,7 @@ class Qsoedit : public QDialog
     Q_OBJECT
 
 public:
-    explicit Qsoedit(QSqlDatabase db, QWidget *parent = nullptr);
+    explicit Qsoedit(QSqlDatabase db, Settings *settings, QWidget *parent = nullptr);
     ~Qsoedit();
     void ShowQSOParams(QVariantList data);
     void noneImage();

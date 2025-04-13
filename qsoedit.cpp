@@ -6,17 +6,18 @@
 #include <QList>
 
 
-Qsoedit::Qsoedit(QSqlDatabase db, QWidget *parent) :
+Qsoedit::Qsoedit(QSqlDatabase db, Settings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Qsoedit)
 {
     this->db = db;
+    this->settings = settings;
     ui->setupUi(this);
     setWindowTitle("Редактирование QSO");
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     load_flag = false;
 
-    settings = new Settings();
+    //settings = new Settings();
     qrz = new QrzruCallbook(settings->QrzruLogin, settings->QrzruPassword);
     connect(qrz, &QrzruCallbook::error404, this, [=]() {
         QMessageBox::information(this, "Ответ QRZ.RU", tr("Позывной не найден!"));
@@ -34,7 +35,6 @@ Qsoedit::Qsoedit(QSqlDatabase db, QWidget *parent) :
     connect(api, SIGNAL(errorQSODataUpdated(QString)), this, SLOT(errorUpdateQSOData(QString)));
     //connect(api, SIGNAL(confirmQSOs()), this, SLOT(onQSOConfirmed()));
 
-
     resizeTimer = new QTimer(this);
     resizeTimer->setSingleShot(true); // Выполнить только один раз
     connect(resizeTimer, &QTimer::timeout, this, &Qsoedit::onResizeFinished);
@@ -46,7 +46,6 @@ Qsoedit::Qsoedit(QSqlDatabase db, QWidget *parent) :
     ui->countrylineEdit->setText("");
     ui->cqzlineEdit->setText("");
     ui->ituzlineEdit->setText("");
-
     ui->ituzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-8][0-9]|90)$"), this));
     ui->cqzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-3][0-9]|40)$"), this));
     ui->rstr_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
@@ -84,7 +83,7 @@ void Qsoedit::ShowQSOParams(QVariantList data)
     ui->ituzlineEdit->setText(data.at(16).toString());
     ui->cqzlineEdit->setText(data.at(17).toString());
     ui->comment_lineEdit->setText(data.at(18).toString());
-    ui->countrylineEdit->setText("");
+    ui->countrylineEdit->setText(data.at(19).toString());
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -193,13 +192,14 @@ void Qsoedit::on_saveButton_clicked()
     int callsign_id = getCallsignID(ui->StationComboBox->currentText());
     int operator_id = getCallsignID(ui->OperatorComboBox->currentText());
     QSqlQuery query(db);
-    query.prepare("UPDATE records SET CALL = :call, QSOSU_CALLSIGN_ID = :callsign_id, QSOSU_OPERATOR_ID = :operator_id, NAME = :name, QSO_DATE = :qso_date, TIME_ON = :time_on, "
-                  "TIME_OFF = :time_off, QTH = :qth, GRIDSQUARE = :grid, CNTY = :rda, RST_SENT = :rsts, RST_RCVD = :rstr, ITUZ = :ituz, CQZ = :cqz WHERE id=:id");
+    query.prepare("UPDATE records SET CALL = :call, QSOSU_CALLSIGN_ID = :callsign_id, QSOSU_OPERATOR_ID = :operator_id, NAME = :name, COUNTRY = :country, QSO_DATE = :qso_date, "
+                  "TIME_ON = :time_on, TIME_OFF = :time_off, QTH = :qth, GRIDSQUARE = :grid, CNTY = :rda, RST_SENT = :rsts, RST_RCVD = :rstr, ITUZ = :ituz, CQZ = :cqz WHERE id=:id");
     query.bindValue(":id", dbid);
     query.bindValue(":call", ui->CalsignlineEdit->text());
     query.bindValue(":callsign_id", callsign_id);
     query.bindValue(":operator_id", operator_id);
     query.bindValue(":name",  ui->name_lineEdit->text());
+    query.bindValue(":country",  ui->countrylineEdit->text());
     QDate qsoDate = ui->dateEdit->date();
     query.bindValue(":qso_date",  qsoDate.toString("yyyyMMdd"));
     QTime qsoTimeOn = ui->qso_timeStartEdit->time();

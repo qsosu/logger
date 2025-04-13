@@ -73,6 +73,8 @@ class ColorSqlTableModel : public QSqlTableModel
 {
     Q_OBJECT
 public:
+    int services = 0;
+
     ColorSqlTableModel(QObject * parent = 0, QSqlDatabase db = QSqlDatabase())
         : QSqlTableModel(parent,db) {;}
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const
@@ -83,10 +85,17 @@ public:
             {
                 return QColor(239,81,81);
             }
-            if((QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 1)||(QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 2))
+
+            if((services == 2)&&((QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 1)||(QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 2)))
             {
                 return QColor(239,153,81);
             }
+
+            if((services == 1)&&((QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 1)||(QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 2)))
+            {
+                return QSqlTableModel::data(index);
+            }
+
             else if(role == Qt::DisplayRole)
             {
                 return QSqlTableModel::data(index);

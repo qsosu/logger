@@ -27,8 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
   ui->rstsInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^[+-]?[0-9]*$"), this));
   ui->gridsquareInput->setValidator(new QRegularExpressionValidator(QRegularExpression("^([a-zA-Z]{2})([0-9]{2})(((([a-zA-Z]{2}?)?)([0-9]{2}?)?)([a-zA-Z]{2}?)?)$/"), this));
 
-
-
   ui->bandCombo->blockSignals(true);
   ui->modeCombo->blockSignals(true);
   ui->actionSync->setEnabled(false);
@@ -63,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
   });
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-  qsoedit = new Qsoedit(db);
+  qsoedit = new Qsoedit(db, settings);
   connect(qsoedit, SIGNAL(db_updated()), this, SLOT(RefreshRecords()));
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -127,6 +125,7 @@ MainWindow::MainWindow(QWidget *parent)
 //------------------------------------------------------------------------------------------------------------------------------------------
   flrig = new Flrig(settings->flrigHost, settings->flrigPort, 500, this);
   flrigLabel->setText("Отключен");
+  flrigLabel->setStyleSheet("QLabel { color: red; }");
   connect(flrig, &Flrig::connected, this, [=]() {
     flrigLabel->setText("Подключен");
     flrigLabel->setStyleSheet("QLabel { color: green; }");
@@ -134,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent)
   });
   connect(flrig, &Flrig::disconnected, this, [=]() {
     flrigLabel->setText("Отключен");
-    flrigLabel->setStyleSheet("");
+    flrigLabel->setStyleSheet("QLabel { color: red; }");
     ui->statusbar->showMessage("Отключен от FLRIG", 1000);
   });
   connect(flrig, &Flrig::updated, this, [=]() {
@@ -181,17 +180,17 @@ MainWindow::MainWindow(QWidget *parent)
   connect(api, &HttpApi::synced, this, &MainWindow::onQSOSUSynced);
   connect(api, SIGNAL(getUserInfo(QStringList)), settings, SLOT(getUserInfo(QStringList)));
 
-
-
   if(settings->accessToken.length() != 0)
   {
+      PingQsoSu();
       QsoSuPingTimer = new QTimer(this);
-      QsoSuPingTimer->setInterval(5000); //5 секунд
+      QsoSuPingTimer->setInterval(2000); //5 секунд
       connect(QsoSuPingTimer, &QTimer::timeout, this, [=]() {
           PingQsoSu();
       });
       QsoSuPingTimer->start();
   }
+
 //------------------------------------------------------------------------------------------------------------------------------------------
   callsigns = new Callsigns(db, api, this);
   callsigns->setAttribute(Qt::WA_QuitOnClose, false);
@@ -230,7 +229,6 @@ MainWindow::MainWindow(QWidget *parent)
       about->exec();
       return;
   });
-  connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
   connect(ui->actionQsosuLink, &QAction::triggered, this, [=]() {
       QDesktopServices::openUrl(QUrl("https://qso.su/"));
   });
@@ -284,6 +282,7 @@ MainWindow::MainWindow(QWidget *parent)
        //ui->actionCAT->setChecked(true);
        bool portAvailable = CAT->openSerial(settings->serialPort);
        if(portAvailable) {
+           CAT->setInterval(settings->catInterval);
            CAT->catSetBaudRate(settings->serialPortBaud.toInt());
            CAT->catSetDataBits(settings->serialPortDataBits.toInt());
            CAT->catSetStopBit(settings->serialPortStopBit.toInt());
@@ -291,8 +290,7 @@ MainWindow::MainWindow(QWidget *parent)
            CAT->catSetFlowControl(settings->serialPortFlowControl);
            connect(CAT, SIGNAL(cat_freq(long)), this, SLOT(setFreq(long)));
            connect(CAT, SIGNAL(cat_band(int)), this, SLOT(setBand(int)));
-           connect(CAT, SIGNAL(cat_mode(int)), this, SLOT(setMode(int)));
-           CAT->setInterval(settings->catInterval);
+           connect(CAT, SIGNAL(cat_mode(int)), this, SLOT(setMode(int)));           
        }
    }
 }
@@ -306,6 +304,10 @@ MainWindow::~MainWindow() {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::InitDatabase(QString dbFile) {
+
+    if(!QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).exists())
+        QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+
     database_file = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/" + dbFile;
     if (!CheckDatabase()) {
         qWarning() << "Database file does not exist. Creating new.";
@@ -315,7 +317,7 @@ void MainWindow::InitDatabase(QString dbFile) {
         ui->statusbar->showMessage("Файл БД открыт", 3000);
     } else {
         qWarning() << "Error while open database file";
-        QMessageBox::critical(0, "Ошибка", "Ошибка открытия файла БД", QMessageBox::Ok);
+        //QMessageBox::critical(0, "Ошибка", "Ошибка открытия файла БД", QMessageBox::Ok);
         return;
     }
 }
@@ -369,6 +371,7 @@ void MainWindow::CreateDatabase() {
              "\"ITUZ\" INTEGER,"
              "\"CQZ\" INTEGER,"
              "\"SYNC_QSO\" INTEGER,"
+             "\"COUNTRY\" TEXT,"
              "PRIMARY KEY(\"id\" AUTOINCREMENT))");
   qInfo() << "Creating DELRECORDS table";
   query.exec("CREATE TABLE \"delrecords\" (\"id\" INTEGER NOT NULL, \"HASH\" TEXT, PRIMARY KEY(\"id\" AUTOINCREMENT))");
@@ -441,6 +444,9 @@ void MainWindow::InitRecordsTable() {
   RecordsModel->setHeaderData(21, Qt::Horizontal, tr("Коммент."));
   RecordsModel->setHeaderData(22, Qt::Horizontal, tr("Синхр."));
 
+  if(settings->logRadioAccessToken.length() != 0) RecordsModel->services = 2;
+  else RecordsModel->services = 1;
+
   ui->tableView->setModel(RecordsModel);
   ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
   ui->tableView->setColumnHidden(0, true);
@@ -453,6 +459,7 @@ void MainWindow::InitRecordsTable() {
   ui->tableView->setColumnHidden(7, true);
   ui->tableView->setColumnHidden(23, true);
   ui->tableView->setColumnHidden(26, true);
+  ui->tableView->setColumnHidden(27, true);
 
   ui->tableView->setItemDelegateForColumn(8, new FormatCallsign(ui->tableView));
   ui->tableView->setItemDelegateForColumn(9, new FormatDate(ui->tableView));
@@ -505,16 +512,16 @@ void MainWindow::customMenuRequested(QPoint pos) {
         RemoveQSOs(indexes);
     });
 
-    QAction *exportAction = new QAction((indexes.count() > 1) ? "Экспорт выбранных в ADIF" : "Экспорт в ADIF", this);
-    connect(exportAction, &QAction::triggered, this, [=]() {
-        QList<int> items;
-        for (int i = indexes.count(); i > 0; i--) {
-            int index = indexes.at(i-1).row();
-            int id = RecordsModel->data(RecordsModel->index(index, 0)).toInt();
-            items.append(id);
-        }
-        adif->ExportPartial(items);
-    });
+//    QAction *exportAction = new QAction((indexes.count() > 1) ? "Экспорт выбранных в ADIF" : "Экспорт в ADIF", this);
+//    connect(exportAction, &QAction::triggered, this, [=]() {
+//        QList<int> items;
+//        for (int i = indexes.count(); i > 0; i--) {
+//            int index = indexes.at(i-1).row();
+//            int id = RecordsModel->data(RecordsModel->index(index, 0)).toInt();
+//            items.append(id);
+//        }
+//        adif->ExportPartial(items);
+//    });
 
     QAction *syncAction = new QAction((indexes.count() > 1) ? "Синхронизировать выбранные" : "Синхронизировать", this);
     connect(syncAction, &QAction::triggered, this, [=]() {
@@ -527,7 +534,7 @@ void MainWindow::customMenuRequested(QPoint pos) {
     });
 
     menu->addAction(deleteAction);
-    menu->addAction(exportAction);
+    //menu->addAction(exportAction);
     menu->addAction(syncAction);
     menu->addAction(qsoEditAction);
     menu->popup(ui->tableView->viewport()->mapToGlobal(pos));
@@ -548,6 +555,15 @@ void MainWindow::SaveQso()
   newRecord.setValue("qsosu_operator_id", userData.qsosu_operator_id);
   newRecord.setValue("STATION_CALLSIGN", userData.callsign);
   newRecord.setValue("OPERATOR", userData.oper);
+
+  QStringList data;
+  data.append(api->callsignInfo);
+  if(data.count() > 11) {
+    newRecord.setValue("COUNTRY", data.at(8));
+    newRecord.setValue("ITUZ", data.at(10));
+    newRecord.setValue("CQZ", data.at(11));
+  }
+
   QString call = ui->callInput->text();
   newRecord.setValue("CALL", call);
 
@@ -619,7 +635,6 @@ void MainWindow::ClearQso() {
   ui->qthInput->clear();
   ui->nameInput->clear();
   ui->commentInput->clear();
-
   ui->SRRIcon->setVisible(false);
   ui->SRRLabel->setVisible(false);
   ui->QSOSUUserIcon->setVisible(false);
@@ -781,6 +796,10 @@ void MainWindow::FindCallData() {
   QString callsign = ui->callInput->text().trimmed();
   if (callsign.isEmpty()) {
       ClearCallbookFields();
+      ui->QSOSUUserIcon->setVisible(false);
+      ui->QSOSUUserLabel->setVisible(false);
+      ui->SRRIcon->setVisible(false);
+      ui->SRRLabel->setVisible(false);
       return;
   }
 
@@ -889,7 +908,7 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
         data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
         api->SendQso(data);
         data << userData.callsign;
-        logradio->SendQso(data);
+        if(settings->logRadioAccessToken.count() > 0) logradio->SendQso(data);
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -986,12 +1005,14 @@ void MainWindow::readXmlfile()
             modeList.append(mData);
             ui->modeCombo->addItem(Mode.attribute("mode_name"));
         }
-    }
+    }    
+
     ui->bandCombo->blockSignals(false);
     ui->modeCombo->blockSignals(false);
     ui->stationCallsignCombo->blockSignals(false);
     ui->bandCombo->setCurrentText(settings->lastBand);
-    ui->modeCombo->setCurrentText(settings->lastMode);
+    if(settings->lastMode == "") ui->modeCombo->setCurrentText("CW");
+    else ui->modeCombo->setCurrentText(settings->lastMode);
     ui->qthlocEdit->setText(settings->lastLocator);
     ui->rdaEdit->setText(settings->lastRDA);
     ui->freqInput->setText(settings->lastFrequence);
@@ -1253,10 +1274,12 @@ void MainWindow::EditQSO(QModelIndex index)
     QString comment = RecordsModel->data(RecordsModel->index(idx, 21)).toString();
     QString ituz = RecordsModel->data(RecordsModel->index(idx, 24)).toString();
     QString cqz = RecordsModel->data(RecordsModel->index(idx, 25)).toString();
+    QString country = RecordsModel->data(RecordsModel->index(idx, 27)).toString();
 
     QVariantList data;
     data.clear();
-    data << dbid << qsosu_callsign_id << qsosu_operator_id << call << date << time_start << time_stop << band << mode << freq << name << qth << rstr << rsts << locator << rda << ituz << cqz << comment;
+    data << dbid << qsosu_callsign_id << qsosu_operator_id << call << date << time_start << time_stop << band
+         << mode << freq << name << qth << rstr << rsts << locator << rda << ituz << cqz << comment << country;
     qsoedit->ShowQSOParams(data);
     qsoedit->show();
 }
@@ -1265,7 +1288,6 @@ void MainWindow::EditQSO(QModelIndex index)
 void MainWindow::doubleClickedQSO(QModelIndex idx)
 {
     EditQSO(idx);
-    api->getConfirmedLogs();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

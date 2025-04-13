@@ -255,8 +255,11 @@
            <property name="inputMethodHints">
             <set>Qt::ImhNone</set>
            </property>
+           <property name="currentText">
+            <string/>
+           </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>-1</number>
            </property>
            <property name="maxVisibleItems">
             <number>50</number>
@@ -589,7 +592,20 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="stationCallsignCombo"/>
+          <widget class="QComboBox" name="stationCallsignCombo">
+           <property name="minimumSize">
+            <size>
+             <width>90</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_13">
@@ -599,7 +615,20 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="operatorCombo"/>
+          <widget class="QComboBox" name="operatorCombo">
+           <property name="minimumSize">
+            <size>
+             <width>90</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_14">
@@ -724,7 +753,6 @@
     <addaction name="actionQsosuLink"/>
     <addaction name="actionQsosuFaqLink"/>
     <addaction name="separator"/>
-    <addaction name="actionAboutQt"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menu"/>
@@ -787,11 +815,6 @@
    </property>
    <property name="text">
     <string>Подключить CAT</string>
-   </property>
-  </action>
-  <action name="actionAboutQt">
-   <property name="text">
-    <string>O Qt</string>
    </property>
   </action>
  </widget>
