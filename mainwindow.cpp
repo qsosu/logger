@@ -1193,6 +1193,7 @@ void MainWindow::darkTheime()
     // Создаём палитру для тёмной темы оформления
     QPalette darkPalette;
 
+    QApplication::setStyle("Fusion");
     // Настраиваем палитру для цветовых ролей элементов интерфейса
     darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
     darkPalette.setColor(QPalette::WindowText, Qt::white);
@@ -1207,6 +1208,11 @@ void MainWindow::darkTheime()
     darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+    darkPalette.setColor(QPalette::Active, QPalette::Button, QColor(53, 53, 53));
+    darkPalette.setColor(QPalette::Disabled, QPalette::ButtonText, Qt::darkGray);
+    darkPalette.setColor(QPalette::Disabled, QPalette::WindowText, Qt::darkGray);
+    darkPalette.setColor(QPalette::Disabled, QPalette::Text, Qt::darkGray);
+    darkPalette.setColor(QPalette::Disabled, QPalette::Light, QColor(53, 53, 53));
 
     // Устанавливаем данную палитру
     qApp->setPalette(darkPalette);
