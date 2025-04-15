@@ -690,18 +690,6 @@
     </item>
     <item row="2" column="0">
      <widget class="QTableView" name="tableView">
-      <property name="styleSheet">
-       <string notr="true">QTableView {
-    border: 2px solid #3873d9;
-    border-top-color: #4287ff;
-    border-radius: 4px;
-    background-color: #fff;
-    gridline-color: #777;
-    selection-background-color: #ccdfff;
-    color:#333;
-    font-size:12px;
- }</string>
-      </property>
       <property name="sortingEnabled">
        <bool>false</bool>
       </property>
