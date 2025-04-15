@@ -1207,6 +1207,7 @@ void MainWindow::darkTheime()
     darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+    darkPalette.setColor(QPalette::Background, QColor(53, 53, 53));
 
     // Устанавливаем данную палитру
     qApp->setPalette(darkPalette);
