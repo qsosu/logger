@@ -110,13 +110,13 @@ MainWindow::MainWindow(QWidget *parent)
           });
 
           connect(udpServer, &UdpServer::logged, this, &MainWindow::onUdpLogged);
+          connect(udpServer, &UdpServer::loggedADIF, this, &MainWindow::onUdpLoggedADIF);
           ui->statusbar->showMessage("UDP сервер запущен на порту " + QString::number(settings->udpServerPort), 3000);
           udpserverLabel->setText("Запущен");
           udpserverLabel->setStyleSheet("QLabel { color: green }");
       } else {
           udpserverLabel->setText("Ошибка");
           udpserverLabel->setStyleSheet("QLabel { color: red }");
-          //QMessageBox::critical(nullptr, "Ошибка", "Ошибка запуска UDP сервера");
       }
   }
   if (settings->udpClientEnable) {
@@ -181,16 +181,13 @@ MainWindow::MainWindow(QWidget *parent)
   connect(api, &HttpApi::synced, this, &MainWindow::onQSOSUSynced);
   connect(api, SIGNAL(getUserInfo(QStringList)), settings, SLOT(getUserInfo(QStringList)));
 
-  if(settings->accessToken.length() != 0)
-  {
+  QsoSuPingTimer = new QTimer(this);
+  QsoSuPingTimer->setInterval(5000); //5 секунд
+  connect(QsoSuPingTimer, &QTimer::timeout, this, [=]() {
       PingQsoSu();
-      QsoSuPingTimer = new QTimer(this);
-      QsoSuPingTimer->setInterval(2000); //5 секунд
-      connect(QsoSuPingTimer, &QTimer::timeout, this, [=]() {
-          PingQsoSu();
-      });
-      QsoSuPingTimer->start();
-  }
+  });
+  QsoSuPingTimer->start();
+  PingQsoSu();
 
 //------------------------------------------------------------------------------------------------------------------------------------------
   callsigns = new Callsigns(db, api, this);
@@ -223,6 +220,10 @@ MainWindow::MainWindow(QWidget *parent)
 
   logradio = new APILogRadio(settings->logRadioAccessToken);
   connect(logradio, &APILogRadio::synced, this, &MainWindow::onLogRadioSynced);
+  connect(logradio, &APILogRadio::errorGetToken, this, [=]() {
+      QMessageBox::critical(0, "Ошибка", "Не удалось получить токен!", QMessageBox::Ok);
+      return;
+  });
 //------------------------------------------------------------------------------------------------------------------------------------------
   connect(ui->actionAbout, &QAction::triggered, this, [=]() {
       about = new About(this);
@@ -796,6 +797,59 @@ void MainWindow::onUdpLogged() {
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void MainWindow::onUdpLoggedADIF()
+{
+  qDebug() << "Creating database record for UDP ADIF message";
+  QSqlRecord newRecord = RecordsModel->record();
+  newRecord.remove(newRecord.indexOf("id"));
+  newRecord.setValue("callsign_id", userData.callsign_id);
+  newRecord.setValue("qsosu_callsign_id", userData.qsosu_callsign_id);
+  newRecord.setValue("qsosu_operator_id", userData.qsosu_operator_id);
+  newRecord.setValue("STATION_CALLSIGN", userData.callsign);
+  newRecord.setValue("OPERATOR", userData.oper);
+  newRecord.setValue("MY_GRIDSQUARE", userData.gridsquare);
+  newRecord.setValue("MY_CNTY", userData.cnty);
+
+  QDate qso_date = QDate::fromString(udpServer->adifData.value("QSO_DATE"), "yyyyMMdd");
+  newRecord.setValue("QSO_DATE", udpServer->adifData.value("QSO_DATE"));
+  newRecord.setValue("TIME_OFF", udpServer->adifData.value("TIME_OFF"));
+  QTime time_on = QTime::fromString(udpServer->adifData.value("TIME_ON"), "hhmmss");
+  newRecord.setValue("TIME_ON", udpServer->adifData.value("TIME_ON"));
+  newRecord.setValue("CALL", udpServer->adifData.value("CALL"));
+  newRecord.setValue("BAND", udpServer->adifData.value("BAND"));
+
+  unsigned long long freqHz = static_cast<unsigned long long>(udpServer->adifData.value("FREQ").toDouble() * 1000000);
+  newRecord.setValue("FREQ", freqHz);
+  newRecord.setValue("MODE", udpServer->adifData.value("MODE"));
+  newRecord.setValue("NAME", "");
+  newRecord.setValue("QTH", "");
+  newRecord.setValue("GRIDSQUARE", udpServer->adifData.value("GRIDSQUARE"));
+  newRecord.setValue("RST_SENT", udpServer->adifData.value("RST_SENT"));
+  newRecord.setValue("RST_RCVD", udpServer->adifData.value("RST_RCVD"));
+  newRecord.setValue("COMMENT", udpServer->adifData.value("COMMENT"));
+  newRecord.setValue("sync_state", 0);
+
+  if(RecordsModel->insertRecord(-1, newRecord)) {
+      if (RecordsModel->submitAll()) {
+        qDebug() << "New record submited to database";
+
+        int LastID = RecordsModel->query().lastInsertId().toInt();
+        QVariantList data;
+        QString datetime = qso_date.toString("yyyy-MM-dd") + "T" + time_on.toString("hh:mm:00");
+        data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
+        data << udpServer->adifData.value("CALL") << udpServer->adifData.value("BAND") << udpServer->adifData.value("MODE") << freqHz;
+        data << datetime << "" << udpServer->adifData.value("RST_SENT") << udpServer->adifData.value("RST_RCVD") << "" << "" << udpServer->adifData.value("GRIDSQUARE");
+        api->SendQso(data);
+        data << userData.gridsquare << "" << userData.callsign;
+        logradio->SendQso(data);
+        RefreshRecords();
+        ScrollRecordsToTop();
+        ClearQso();
+      }
+  }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void MainWindow::FindCallData() {
   QString callsign = ui->callInput->text().trimmed();
   if (callsign.isEmpty()) {
@@ -1212,8 +1266,6 @@ void MainWindow::darkTheime()
 
     // Устанавливаем данную палитру
     qApp->setPalette(darkPalette);
-
-    ui->tableView->setStyleSheet("color: #ffffff; background-color: QColor(25, 25, 25);");
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

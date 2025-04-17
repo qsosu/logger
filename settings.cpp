@@ -316,18 +316,21 @@ void Settings::getUserInfo(QStringList data)
 
 void Settings::checked(int code, QString message)
 {
-    QMessageBox::information(0, "LogRadio.ru", "Код ответа: " + QString::number(code) +
-                             "\n"+message, QMessageBox::Ok);
+    QMessageBox::information(0, "LogRadio.ru", message + "\nКод ответа: " + QString::number(code), QMessageBox::Ok);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::received(QString access_token, QString confirmation_key, QString confirmation_after, QString confirmation_before, QString valid_after, QString valid_before)
 {
+    if(access_token.length() > 0) {
     QMessageBox::information(0, "LogRadio.ru",
                                 "Введите ключ подтверждения в разделе Токены API на LogRadio.ru\nКлюч подтверждения: " + confirmation_key + "\n" +
                                 "Интервал подтверждения: от " + confirmation_after + " до " + confirmation_before + "\n" +
                                 "Срок действия токена: от " + valid_after + " до " + valid_before, QMessageBox::Ok);
     ui->LogRadioAccessToken->setText(access_token);
+    } else {
+        QMessageBox::critical(0, "LogRadio.ru", "Не удалось получить токен.", QMessageBox::Ok);
+    }
 
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

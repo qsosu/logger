@@ -64,6 +64,7 @@ void HttpApi::SendQso(QVariantList data) {
         QJsonObject response = jsonDocument["response"].toObject();
         QJsonValue hash = response["hash"].toString();
         qDebug() << "QSO.SU Network reply finished. Code:" << status_code.toInt() << " Loaded hash: " << hash.toString();
+        //qDebug() << "Body:" << data;
 
         switch(status_code.toInt()) {
             case 201:
@@ -553,21 +554,11 @@ void HttpApi::getCallbook(QString callsign)
 
 void HttpApi::getPing()
 {
-    if (accessToken.length() == 0) {
-        //emit emptyToken();
-        return;
-    }
-
-    QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getUser")));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
-    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
-    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
-    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
-    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+    QNetworkRequest request((QUrl("https://qso.su/ru")));
 
     QNetworkReply *reply = m_manager.get(request);
     connect(reply, &QNetworkReply::finished, this, [=]() {
+
         if (reply->error() == QNetworkReply::NoError) {
             serviceAvailable = true;
         } else {

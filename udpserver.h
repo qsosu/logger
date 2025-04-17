@@ -36,6 +36,7 @@ public:
     void setRetransl(bool retransl);
     void setRetranslPort(uint16_t port);
     bool retransl;
+    void parseAdifQSO(const QString &line);
 
     /* Message data header */
     quint32 magic;
@@ -64,21 +65,26 @@ public:
     QByteArray exchange_sent;
     QByteArray exchange_rcvd;
     QByteArray propmode;
+    /* QSOLoggedADIF data*/
+    QMap<QString, QString> adifData;
 
 private:
     QUdpSocket *socket;
     QUdpSocket *clientSocket;
     uint16_t port;
     uint16_t retransl_port;
+    bool isASCII(char c);
 
 private slots:
     void onReadyRead();
     void process(QByteArray data);
-
+    void prosessAscii(QByteArray data);
+    bool determinePacketType(const QByteArray& packet);
 
 signals:
     void heartbeat();
     void logged();
+    void loggedADIF();
 };
 
 #endif // UDPSERVER_H

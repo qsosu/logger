@@ -28,16 +28,25 @@ void APILogRadio::getToken()
         QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         qDebug() << "API LogRadio Ansver сode: " << status_code.toInt();
 
-        QByteArray data = reply->readAll();
-        QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
-        QJsonValue access_token = jsonDocument["access_token"].toString();
-        QJsonValue confirmation_key = jsonDocument["confirmation_key"].toString();
-        QJsonValue confirmation_after = jsonDocument["confirmation_after"].toString();
-        QJsonValue confirmation_before = jsonDocument["confirmation_before"].toString();
-        QJsonValue valid_after = jsonDocument["valid_after"].toString();
-        QJsonValue valid_before = jsonDocument["valid_before"].toString();
-
-        emit received(access_token.toString(), confirmation_key.toString(), confirmation_after.toString(), confirmation_before.toString(), valid_after.toString(), valid_before.toString());
+        switch(status_code.toInt()) {
+        case 200: {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+            QJsonValue access_token = jsonDocument["access_token"].toString();
+            QJsonValue confirmation_key = jsonDocument["confirmation_key"].toString();
+            QJsonValue confirmation_after = jsonDocument["confirmation_after"].toString();
+            QJsonValue confirmation_before = jsonDocument["confirmation_before"].toString();
+            QJsonValue valid_after = jsonDocument["valid_after"].toString();
+            QJsonValue valid_before = jsonDocument["valid_before"].toString();
+            emit received(access_token.toString(), confirmation_key.toString(), confirmation_after.toString(), confirmation_before.toString(), valid_after.toString(), valid_before.toString());
+            break;
+        };
+        default: {
+            qDebug() << "Error get token from LogRadio.ru. " << status_code.toInt();
+            emit errorGetToken();
+            break;
+        }
+        }
         reply->deleteLater();
     });
 }
@@ -59,15 +68,15 @@ bool APILogRadio::checkToken()
         switch(status_code.toInt()) {
              case 204:
                 qDebug() << "The token is correct. " << status_code.toInt();
-                emit checked(status_code.toInt(), "The token is correct.");
+                emit checked(status_code.toInt(), "Токен активен.");
                 break;
              case 401:
                 qDebug() << "The token is not linked to the user. " << status_code.toInt();
-                emit checked(status_code.toInt(), "The token is not linked to the user.");
+                emit checked(status_code.toInt(), "Токен не привязан к пользователю.");
                 break;
              default:
                 qDebug() << "The token is incorrect." << status_code.toInt();
-                emit checked(status_code.toInt(), "The token is incorrect.");
+                emit checked(status_code.toInt(), "Токен не корректный.");
          }
         QByteArray data = reply->readAll();
         reply->deleteLater();

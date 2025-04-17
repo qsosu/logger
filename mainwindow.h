@@ -28,7 +28,7 @@
 #include "qsoedit.h"
 #include "cat_interface.h"
 
-#define VERSION "2.0"
+#define VERSION "2.0.3"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -125,12 +125,12 @@ private:
   QString getModeValue(QString mode);
   QString getRepotValueFromMode(QString mode);
   int getSynchroStatus(int id);
+  void PingQsoSu();
 
 protected:
   void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
-  void PingQsoSu();
   void CallsignToUppercase(const QString &arg);
   void RefreshRecords();
   void SaveQso();
@@ -155,6 +155,7 @@ private slots:
   void onStationCallsignChanged();
   void onOperatorChanged();
   void onUdpLogged();
+  void onUdpLoggedADIF();
   void on_bandCombo_currentTextChanged(const QString &arg1);
   void on_modeCombo_currentTextChanged(const QString &arg1);
   void on_freqInput_textChanged(const QString &arg1);
