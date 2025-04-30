@@ -24,6 +24,8 @@ public:
     int old_band;
     int mode;
     int old_mode;
+    int res;
+    bool VFO;
 
     bool openSerial(QString port);
     void convertMode(int mode);

@@ -28,7 +28,7 @@
 #include "qsoedit.h"
 #include "cat_interface.h"
 
-#define VERSION "2.0.3"
+#define VERSION "2.1.0"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -158,7 +158,7 @@ private slots:
   void onUdpLoggedADIF();
   void on_bandCombo_currentTextChanged(const QString &arg1);
   void on_modeCombo_currentTextChanged(const QString &arg1);
-  void on_freqInput_textChanged(const QString &arg1);
+  //void on_freqInput_textChanged(const QString &arg1);
   void on_freqInput_editingFinished();
   void on_rstrInput_editingFinished();
   void on_rstsInput_editingFinished();

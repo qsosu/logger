@@ -13,10 +13,10 @@ cat_Interface::cat_Interface(bool catEnable, QObject *parent)
     this->catEnable = catEnable;
     serialPort = new QSerialPort;
     catTimer = new QTimer(this);
+    res = 0;
 
     connect(catTimer, &QTimer::timeout, this, [=]() {
-        sendCommand("FA;");
-        sendCommand("MD;");
+        sendCommand("IF;");
     });
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,32 +65,40 @@ void cat_Interface::sendCommand(const char *cmd)
 void cat_Interface::portRead()
 {
     QByteArray responseData = serialPort->readAll();
-    while (serialPort->waitForReadyRead(TIMEOUT)) /*qDebug() << "Trx answer:" << QString::fromUtf8(responseData)*/;
+    //qDebug(responseData);
+    if (responseData.count()==38) // если байты в середине потеряются (но длина=38), а начало будет IF, начало всех след
+    // ответов будет записываться сюда и удаляться (частоту не прочитать)
+    {
+        if (responseData.mid(0, 2)=="IF") //&& responseData.mid(37, 1)==";" ?
+        {
+            freq = responseData.mid(2, 11).toLong();
+            //qDebug() << freq;
+            mode = responseData.mid(29, 1).toInt();
+            band = freqToBand(freq);
 
-    if(((responseData[0] == 'F')&&(responseData[1] == 'A'))||((responseData[0] == 'I')&&(responseData[1] == 'F'))) {
-        sscanf(responseData, "FA%11lu;", &freq);
-        band = freqToBand(freq);
+            if (responseData.mid(30, 1)=="1") VFO = false; // VFO B
 
-        if(freq != old_freq) {
-            emit cat_freq(freq);
-            //qDebug() << "Freq: " << freq;
-            old_freq = freq;
-        }
-        if(band != old_band) {
-            emit cat_band(band);
-            //qDebug() << "Band: " << band;
-            old_band = band;
+            else VFO = true; // VFO A or Memory
+
+            if(freq != old_freq) {
+                emit cat_freq(freq);
+                //qDebug() << "Freq: " << freq;
+                old_freq = freq;
+            }
+
+            if(band != old_band) {
+                emit cat_band(band);
+                //qDebug() << "Band: " << band;
+                old_band = band;
+            }
+
+            if(mode != old_mode) {
+                convertMode(mode);
+                //qDebug() << "Mode: " << mode;
+                old_mode = mode;
+            }
         }
     }
-    if((responseData[0] == 'M')&&(responseData[1] == 'D')) {
-        sscanf(responseData, "MD%2d;", &mode);
-        if(mode != old_mode) {
-            convertMode(mode);
-            //qDebug() << "Mode: " << mode;
-            old_mode = mode;
-        }
-    }
-    //responseData.clear();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -173,7 +181,8 @@ void cat_Interface::setFreq(long freq)
 
    if((freq > 1810000)&&(freq < 52000000))
    {
-       sprintf(fr, "FA%11d;", freq);
+       if (VFO) sprintf(fr, "FA%011lu;", freq);
+       else sprintf(fr, "FB%011lu;", freq);
        sendCommand(fr);
    }
 }
@@ -198,7 +207,7 @@ int cat_Interface::freqToBand(long freq)
 
 void cat_Interface::convertMode(int mode)
 {
-    int res;
+    //int res;
 
     if(mode == 0) { res = 0; }       //None (setting failure)
     else if(mode == 1) { res = 0; }  //LSB
