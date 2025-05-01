@@ -207,7 +207,6 @@ int cat_Interface::freqToBand(long freq)
 
 void cat_Interface::convertMode(int mode)
 {
-    //int res;
 
     if(mode == 0) { res = 0; }       //None (setting failure)
     else if(mode == 1) { res = 0; }  //LSB

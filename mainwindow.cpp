@@ -265,6 +265,7 @@ MainWindow::MainWindow(QWidget *parent)
   catLabel->setStyleSheet("QLabel { color: red; }");
 
   CAT = new cat_Interface(settings->catEnable);
+  CAT->band = ui->bandCombo->findText(settings->lastBand);
 
   connect(ui->actionCAT, &QAction::toggled, this, [=](bool state) {
      if(state) {
@@ -1179,7 +1180,7 @@ void MainWindow::on_bandCombo_currentTextChanged(const QString &arg1)
     settings->lastBand = arg1;
     freqCat = static_cast<long>(ui->freqInput->text().toDouble() * 1000000);
 
-    if(settings->catEnable)
+    if(settings->catEnable && ui->bandCombo->findText(arg1) != CAT->band)
     {
         CAT->setBand(ui->bandCombo->currentIndex());
         CAT->setMode(ui->modeCombo->findText(settings->lastMode));
@@ -1400,6 +1401,7 @@ void MainWindow::setBand(int band)
 {
     settings->lastBand = bandList[band].band_name;
     ui->bandCombo->setCurrentText(bandList[band].band_name);
+    if(settings->catEnable) setFreq(CAT->freq);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

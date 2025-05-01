@@ -97,7 +97,8 @@
 Версия ПО: 2.0.3, версия API: 1.0
 Авторы: Alexey.K (R2SI)
 Ильдар.М (R9JAU)
-Артём.С (R4CAT)</string>
+Артём.С (R4CAT)
+Роман.С (RN1QM)</string>
    </property>
    <property name="textFormat">
     <enum>Qt::PlainText</enum>
