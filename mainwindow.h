@@ -158,7 +158,7 @@ private slots:
   void onUdpLoggedADIF();
   void on_bandCombo_currentTextChanged(const QString &arg1);
   void on_modeCombo_currentTextChanged(const QString &arg1);
-  void on_freqInput_textChanged(const QString &arg1);
+  //void on_freqInput_textChanged(const QString &arg1);
   void on_freqInput_editingFinished();
   void on_rstrInput_editingFinished();
   void on_rstsInput_editingFinished();

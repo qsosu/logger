@@ -265,6 +265,7 @@ MainWindow::MainWindow(QWidget *parent)
   catLabel->setStyleSheet("QLabel { color: red; }");
 
   CAT = new cat_Interface(settings->catEnable);
+  CAT->band = ui->bandCombo->findText(settings->lastBand);
 
   connect(ui->actionCAT, &QAction::toggled, this, [=](bool state) {
      if(state) {
@@ -1179,11 +1180,15 @@ void MainWindow::on_bandCombo_currentTextChanged(const QString &arg1)
     settings->lastBand = arg1;
     freqCat = static_cast<long>(ui->freqInput->text().toDouble() * 1000000);
 
-    if(settings->catEnable)
+    if(settings->catEnable && ui->bandCombo->findText(arg1) != CAT->band)
     {
         CAT->setBand(ui->bandCombo->currentIndex());
         CAT->setMode(ui->modeCombo->findText(settings->lastMode));
         CAT->setFreq(freqCat);
+        // если не поменяется на трансивере
+        CAT->old_band = ui->bandCombo->currentIndex();
+        CAT->old_mode = ui->modeCombo->findText(settings->lastMode);
+        CAT->old_freq = freqCat;
     }
     SaveFormData();
 }
@@ -1200,7 +1205,11 @@ void MainWindow::on_modeCombo_currentTextChanged(const QString &arg1)
         ui->rstsInput->setText(report);
     }
 
-    if(settings->catEnable) CAT->setMode(ui->modeCombo->findText(arg1));
+    if(settings->catEnable && ui->modeCombo->findText(arg1) != CAT->res) { // установим модуляцию, если это не текущаяя модуляция
+        CAT->old_mode = ui->modeCombo->findText(arg1);
+        CAT->setMode(ui->modeCombo->findText(arg1));   // (чтобы эта строка не исполнялась при смене модуляции с помощью кнопок на трансивере)
+        //CAT->old_mode = ui->modeCombo->findText(arg1);
+    }
     SaveFormData();
     //qDebug() << "Mode changed " << settings->lastMode;
 }
@@ -1227,6 +1236,12 @@ void MainWindow::SaveCallsignState()
 
 void MainWindow::on_freqInput_editingFinished()
 {
+    if(settings->catEnable) {
+        freqCat = static_cast<long>(ui->freqInput->text().toDouble() * 1000000);
+        CAT->setFreq(freqCat);
+        // если не поменяется на трансивере, то в окне снова будет частота трансивера
+        CAT->old_freq = freqCat;
+    }
     SaveFormData();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1364,13 +1379,15 @@ void MainWindow::PingQsoSu()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::on_freqInput_textChanged(const QString &arg1)
+/*void MainWindow::on_freqInput_textChanged(const QString &arg1)
 {
     if(settings->catEnable) {
         freqCat = static_cast<long>(ui->freqInput->text().toDouble() * 1000000);
         CAT->setFreq(freqCat);
+        // если не поменяется на трансивере
+        CAT->old_freq = freqCat;
     }
-}
+}*/
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::setFreq(long freq)
@@ -1384,6 +1401,7 @@ void MainWindow::setBand(int band)
 {
     settings->lastBand = bandList[band].band_name;
     ui->bandCombo->setCurrentText(bandList[band].band_name);
+    if(settings->catEnable) setFreq(CAT->freq);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

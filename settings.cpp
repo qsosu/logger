@@ -210,7 +210,8 @@ void Settings::save() {
     qs->endGroup();
     qs->beginGroup("CAT");
     qs->setValue("enable", ui->EnableCATcheckBox->isChecked() ? 1 : 0);
-    qs->setValue("interval", ui->IntervalSpinBox->value());
+    if (ui->IntervalSpinBox->value() >= 20) qs->setValue("interval", ui->IntervalSpinBox->value());
+    else qs->setValue("interval", 20); // при интервале <20 команда будет отправляться в порт, пока прошлая еще не отправилась полностью
     qs->setValue("trx", ui->TRXTypeComboBox->currentText());
     qs->setValue("port", ui->SerialPortComboBox->currentText());
     qs->setValue("baud", ui->SerialPortBaudComboBox->currentText());
