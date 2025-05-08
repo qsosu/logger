@@ -148,10 +148,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusbar->showMessage(QString("Ошибка XML-RPC: %1 %2").arg(QString::number(flrig->getErrorCode()), flrig->getErrorString()), 300);
   });
 //------------------------------------------------------------------------------------------------------------------------------------------
-  adif = new Adif(db);
-  connect(ui->actionExportAdif, &QAction::triggered, this, [=]() {
-      if (userData.callsign_id > 0) adif->Export(userData.callsign_id);
-  });
+//  adif = new Adif(db);
+//  connect(ui->actionExportAdif, &QAction::triggered, this, [=]() {
+//      if (userData.callsign_id > 0) adif->Export(userData.callsign_id);
+//  });
 
   qrz = new QrzruCallbook(settings->QrzruLogin, settings->QrzruPassword);
   connect(qrz, &QrzruCallbook::error404, this, [=]() {
@@ -243,8 +243,6 @@ MainWindow::MainWindow(QWidget *parent)
   connect(api, SIGNAL(userDataUpdated()), this, SLOT(setUserData()));
   connect(api, SIGNAL(confirmQSOs()), this, SLOT(onQSOConfirmed()));
 
-  qInfo() << "QSOLogger v." << VERSION << " started.";
-  qInfo() << "Product Name: " << QSysInfo::prettyProductName();
   LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
   InitRecordsTable();
   getCallsigns();
@@ -295,6 +293,9 @@ MainWindow::MainWindow(QWidget *parent)
            connect(CAT, SIGNAL(cat_mode(int)), this, SLOT(setMode(int)));           
        }
    }
+   //api->getGeocodeByLocator("MP61QG");
+   qInfo() << "QSOLogger v." << VERSION << " started.";
+   qInfo() << "Product Name: " << QSysInfo::prettyProductName();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -619,7 +620,7 @@ void MainWindow::SaveQso()
       data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
       data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
       api->SendQso(data);
-      data << userData.callsign;
+      data << userData.callsign << userData.oper;
       logradio->SendQso(data);
       RefreshRecords();
       ScrollRecordsToTop();
@@ -787,7 +788,7 @@ void MainWindow::onUdpLogged() {
         data << QString::fromUtf8(udpServer->dx_call) << Helpers::GetBandByFreqHz(udpServer->tx_frequency_hz) << QString::fromUtf8(udpServer->mode);
         data << udpServer->tx_frequency_hz << datetime << QString::fromUtf8(udpServer->name) << QString::fromUtf8(udpServer->report_sent) << QString::fromUtf8(udpServer->report_received) << "" << "" << QString::fromUtf8(udpServer->dx_grid);
         api->SendQso(data);
-        data << userData.gridsquare << "" << userData.callsign;
+        data << userData.gridsquare << "" << userData.callsign << userData.oper;
         logradio->SendQso(data);
         RefreshRecords();
         ScrollRecordsToTop();
@@ -840,7 +841,7 @@ void MainWindow::onUdpLoggedADIF()
         data << udpServer->adifData.value("CALL") << udpServer->adifData.value("BAND") << udpServer->adifData.value("MODE") << freqHz;
         data << datetime << "" << udpServer->adifData.value("RST_SENT") << udpServer->adifData.value("RST_RCVD") << "" << "" << udpServer->adifData.value("GRIDSQUARE");
         api->SendQso(data);
-        data << userData.gridsquare << "" << userData.callsign;
+        data << userData.gridsquare << "" << userData.callsign << userData.oper;
         logradio->SendQso(data);
         RefreshRecords();
         ScrollRecordsToTop();
@@ -965,7 +966,7 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
         data << dbid << userData.qsosu_callsign_id << userData.qsosu_operator_id;
         data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
         api->SendQso(data);
-        data << userData.callsign;
+        data << userData.callsign << userData.oper;
         if(settings->logRadioAccessToken.count() > 0) logradio->SendQso(data);
     }
 }

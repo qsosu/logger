@@ -28,7 +28,7 @@
 #include "qsoedit.h"
 #include "cat_interface.h"
 
-#define VERSION "2.0.3"
+#define VERSION "2.1.3"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

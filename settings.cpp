@@ -61,6 +61,7 @@ void Settings::read() {
     qs->beginGroup("APILOGRADIORU");
     str = qs->value("token", "").toString();
     logRadioAccessToken = EncryptToken(str);
+    logradio->APILogRadioAccessToken = logRadioAccessToken;
     qs->endGroup();
     qs->beginGroup("UDP");
     udpServerEnable = qs->value("enable", true).toBool();
@@ -328,6 +329,7 @@ void Settings::received(QString access_token, QString confirmation_key, QString 
                                 "Интервал подтверждения: от " + confirmation_after + " до " + confirmation_before + "\n" +
                                 "Срок действия токена: от " + valid_after + " до " + valid_before, QMessageBox::Ok);
     ui->LogRadioAccessToken->setText(access_token);
+    logradio->APILogRadioAccessToken = access_token;
     } else {
         QMessageBox::critical(0, "LogRadio.ru", "Не удалось получить токен.", QMessageBox::Ok);
     }

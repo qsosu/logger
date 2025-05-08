@@ -98,11 +98,11 @@ void APILogRadio::SendQso(QVariantList data) {
     QJsonObject QSO_Obj;
     int dbid = data.value(0).toInt();
     QSO_Obj["id"] = data.value(0).toInt();
-    QSO_Obj["comm_datetime_at"] = data.value(7).toString();
+    QSO_Obj["comm_datetime_at"] = data.value(7).toString()+"+00";
     QSO_Obj["callsign_s"] = data.value(16).toString();
     QSO_Obj["callsign_r"] = data.value(3).toString();
+    QSO_Obj["operator_s"] = data.value(17).toString();
     QSO_Obj["frequency"] = data.value(6).toLongLong();
-
     QSO_Obj["mode"] = data.value(5).toString();
     QSO_Obj["submode"] = "";
 
@@ -137,7 +137,7 @@ void APILogRadio::SendQso(QVariantList data) {
     QSO_Obj["cnty_r"] = data.value(12).toString();
     QSO_Obj["region_r"] =  data.value(13).toString();
     QSO_Obj["qth_r"] = data.value(11).toString();
-    QSO_Obj["qthloc_r"] = data.value(17).toString();
+    QSO_Obj["qthloc_r"] = data.value(13).toString();
     QSO_Obj["rda_r"] = data.value(12).toString();
     QSO_Obj["comment"] = "QSO.SU";
 
@@ -145,12 +145,12 @@ void APILogRadio::SendQso(QVariantList data) {
     QSO_Data["number"] = data.value(0).toInt();
     QSO_Data["data"] = QSO_Obj;
 
+    qDebug() << data;
+
     QJsonArray QSO_Array;
     QSO_Array.append(QSO_Data);
-
     QJsonDocument doc(QSO_Array);
     QByteArray jsonBA = doc.toJson();
-
     qDebug().noquote() << "Sending QSO data to LogRadio.ru." << jsonBA;
 
     QNetworkReply *reply = m_manager.post(request, jsonBA);
@@ -161,6 +161,8 @@ void APILogRadio::SendQso(QVariantList data) {
         QJsonArray jsonArray = jsonDocument.array();
         QJsonObject jo = jsonArray.at(0).toObject();
 
+        qDebug() << data;
+
         bool error = jo.value("error").toBool();
         int number = jo.value("number").toInt();
 
@@ -169,11 +171,11 @@ void APILogRadio::SendQso(QVariantList data) {
                 qDebug() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
                 if(error == 0) {
                     emit synced(dbid);
-                    qDebug() << "QSO №" << number << " sended to LogRadio.ru service.";
+                    qDebug() << "LogRadio.ru " << "QSO №" << number << " sended to LogRadio.ru service.";
                 }
                 else {
                     qDebug() << "LogRadio.ru Error! QSO №" << number << " not sended to LogRadio.ru service.";
-                    qDebug() << jsonDocument;
+                    qDebug() << "LogRadio.ru " << jsonDocument;
                 }
                 emit QSOStatus(error);
                 break;

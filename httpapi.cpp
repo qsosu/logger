@@ -381,11 +381,16 @@ void HttpApi::getGeocodeByLocator(QString Locator)
     buff->setParent(reply);
 
     connect(reply, &QNetworkReply::finished, this, [=]() {
-        QByteArray data = reply->readAll();
-        qDebug() << data;
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qDebug() << "Status code: " << status_code.toInt();
 
-        if (reply->error() == QNetworkReply::NoError) {
-            qDebug() << data;
+        QByteArray data = reply->readAll();
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+
+        if (jsonDocument.object().contains("error")) {
+          QJsonObject errorObject = jsonDocument["error"].toObject();
+          qDebug() << "ERROR:" << errorObject["name"].toString() << errorObject["message"].toString();
+          return;
         }
         reply->deleteLater();
     });
