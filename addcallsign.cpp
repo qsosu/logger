@@ -9,7 +9,7 @@ Addcallsign::Addcallsign(QWidget *parent)
     ui->setupUi(this);
     ui->addCallsignEdit->setStyleSheet("color: black; font-weight: bold");
     ui->addCallsignEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^[a-zA-Z0-9/]*$"), this));
-    ui->addITU->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-8][0-9]|90)$"), this));
+    ui->addITU->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-8][0-9]|90)$"), this))
     ui->addCQ->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-3][0-9]|40)$"), this));
 }
 
