@@ -35,21 +35,22 @@ jobs:
           cd "$BUILD_DIR"
           qmake ../QSOSU-desktop-app.pro CONFIG+=release
           make -j"$(nproc)"
-          test -x "$BUILD_DIR/$BIN_NAME" || test -x "release/$BIN_NAME" || (echo "Binary not found" && exit 1)
+          cd ..
+          if [ -x "$BUILD_DIR/$BIN_NAME" ]; then
+            echo "Found binary at $BUILD_DIR/$BIN_NAME"
+          elif [ -x "$BUILD_DIR/release/$BIN_NAME" ]; then
+            echo "Found binary at $BUILD_DIR/release/$BIN_NAME"
+          else
+            echo "Binary not found" && exit 1
+          fi
 
       - name: Stage files for .deb
         run: |
           set -e
           ROOT="$PWD/pkgroot"
-          mkdir -p "$ROOT/DEBIAN"
-          mkdir -p "$ROOT/usr/bin"
-          mkdir -p "$ROOT/usr/share/applications"
-          mkdir -p "$ROOT/usr/share/doc/${APP_ID}"
-          # куда положили бинарь
+          mkdir -p "$ROOT/DEBIAN" "$ROOT/usr/bin" "$ROOT/usr/share/applications" "$ROOT/usr/share/doc/${APP_ID}"
           if [ -x "${BUILD_DIR}/${BIN_NAME}" ]; then BIN="${BUILD_DIR}/${BIN_NAME}"; else BIN="${BUILD_DIR}/release/${BIN_NAME}"; fi
-          # бинарь -> /usr/bin (имя оставим оригинальным)
           install -m 0755 "$BIN" "$ROOT/usr/bin/${BIN_NAME}"
-          # .desktop (лаунчер)
           cat > "$ROOT/usr/share/applications/${APP_ID}.desktop" <<EOF
           [Desktop Entry]
           Name=${APP_NAME}
@@ -60,7 +61,6 @@ jobs:
           Type=Application
           Categories=Utility;
           EOF
-          # control (минимально достаточные зависимости на Ubuntu 22.04+)
           cat > "$ROOT/DEBIAN/control" <<EOF
           Package: ${APP_ID}
           Version: ${VERSION}
@@ -72,8 +72,11 @@ jobs:
           Description: ${APP_NAME} (Qt-based logger)
            QSO Logger built from qsosu/logger repository.
           EOF
-          # changelog.gz (чтобы dpkg не ругался)
-          echo "${APP_NAME} (${VERSION}) stable; urgency=low\n\n  * Automated build.\n\n -- CI <ci@example.com>  $(date -R)" > CHANGELOG
+          echo "${APP_NAME} (${VERSION}) stable; urgency=low
+
+            * Automated build.
+
+           -- CI <ci@example.com>  $(date -R)" > CHANGELOG
           gzip -9 < CHANGELOG > "$ROOT/usr/share/doc/${APP_ID}/changelog.gz"
 
       - name: Build .deb
@@ -85,7 +88,7 @@ jobs:
       - name: Upload .deb
         uses: actions/upload-artifact@v4
         with:
-          name: ${APP_ID}-ubuntu-deb
+          name: qsosu-logger-ubuntu-deb
           path: ${{ env.DEB }}
 
   # ===================== Windows (exe) =====================
@@ -212,5 +215,5 @@ jobs:
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
         with:
-          name: ${% raw %}QSOSU-logger-installer-windows{% endraw %}
+          name: QSOSU-logger-installer-windows
           path: ${{ env.APP_NAME }}-installer.exe
