@@ -32,3 +32,4 @@ make -j <кол-во ядер CPU>
 ```console
 ./QSOSU-desktop-app
 ```
+"# QSOLogger-v.3.0" 
