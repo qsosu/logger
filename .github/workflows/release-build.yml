@@ -11,13 +11,29 @@ permissions:
 env:
   APP_NAME: QSOSU-desktop-app
   HUMAN_NAME: "QSO Logger"
-  VERSION: ${{ github.ref_name }} # например v1.2.3
-  VERSION_STRIPPED: ${{ startsWith(github.ref_name, 'v') && replace(github.ref_name, 'v', '') || github.ref_name }}
 
 jobs:
+  # Подготовка: вычисляем версию из тега и "обрезанную" от префикса v
+  prep:
+    runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      version_stripped: ${{ steps.v.outputs.version_stripped }}
+    steps:
+      - id: v
+        run: |
+          v="${GITHUB_REF_NAME}"        # например v1.2.3
+          vs="${v#v}"                   # убираем префикс v, если он есть
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "version_stripped=$vs" >> "$GITHUB_OUTPUT"
+
   # ===================== Ubuntu (.deb) =====================
   ubuntu-deb:
     runs-on: ubuntu-22.04
+    needs: [prep]
+    env:
+      VERSION: ${{ needs.prep.outputs.version }}
+      VERSION_STRIPPED: ${{ needs.prep.outputs.version_stripped }}
     steps:
       - uses: actions/checkout@v4
 
@@ -62,13 +78,13 @@ jobs:
           EOF
           cat > "$ROOT/DEBIAN/control" <<EOF
           Package: ${APP_ID}
-          Version: ${{ env.VERSION_STRIPPED }}
+          Version: ${VERSION_STRIPPED}
           Section: utils
           Priority: optional
           Architecture: amd64
           Maintainer: Unknown <noreply@example.com>
           Depends: libqt5widgets5 (>= 5.15), libqt5gui5 (>= 5.15), libqt5core5a (>= 5.15), libqt5serialport5 (>= 5.15), libc6 (>= 2.31), libstdc++6 (>= 11)
-          Description: ${{ env.HUMAN_NAME }} (Qt-based logger)
+          Description: ${HUMAN_NAME} (Qt-based logger)
            Built from qsosu/logger.
           EOF
 
@@ -87,6 +103,10 @@ jobs:
   # ===================== Windows (NSIS .exe) =====================
   windows-exe:
     runs-on: windows-2022
+    needs: [prep]
+    env:
+      VERSION: ${{ needs.prep.outputs.version }}
+      VERSION_STRIPPED: ${{ needs.prep.outputs.version_stripped }}
     steps:
       - uses: actions/checkout@v4
       - uses: ilammy/msvc-dev-cmd@v1
@@ -136,7 +156,7 @@ jobs:
           !define INSTALL_DIR "$PROGRAMFILES64\${APP_NAME}"
 
           Name "${APP_NAME}"
-          OutFile "QSOSU-desktop-app-installer.exe"
+          OutFile "QSOSU-desktop-app-${{ env.VERSION_STRIPPED }}-win64.exe"
           InstallDir "${INSTALL_DIR}"
           RequestExecutionLevel admin
           SetCompress auto
@@ -166,14 +186,12 @@ jobs:
           '@
           Set-Content -LiteralPath installer.nsi -Value $nsi -Encoding ASCII
 
-      - name: Build installer and rename with version
+      - name: Build installer and expose path
         shell: pwsh
         run: |
           makensis installer.nsi
-          if (!(Test-Path "QSOSU-desktop-app-installer.exe")) { throw "NSIS output not found" }
-          $ver = "${{ env.VERSION_STRIPPED }}"
-          Rename-Item "QSOSU-desktop-app-installer.exe" "QSOSU-desktop-app-$ver-win64.exe"
-          "WIN_EXE=QSOSU-desktop-app-$ver-win64.exe" | Out-File -FilePath $env:GITHUB_ENV -Append
+          if (!(Test-Path "QSOSU-desktop-app-${{ env.VERSION_STRIPPED }}-win64.exe")) { throw "NSIS output not found" }
+          "WIN_EXE=QSOSU-desktop-app-${{ env.VERSION_STRIPPED }}-win64.exe" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -184,7 +202,7 @@ jobs:
   # ===================== Publish to Release =====================
   publish:
     runs-on: ubuntu-22.04
-    needs: [ubuntu-deb, windows-exe]
+    needs: [prep, ubuntu-deb, windows-exe]
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -199,6 +217,6 @@ jobs:
         with:
           files: |
             dist/**/*
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ needs.prep.outputs.version }}
           append_body: true
           fail_on_unmatched_files: false
