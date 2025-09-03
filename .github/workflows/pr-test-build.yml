@@ -1,0 +1,276 @@
+name: PR Build & Test Artifacts (Ubuntu .deb + Windows x64/x86)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+# Отменять предыдущие запуски для того же PR
+concurrency:
+  group: pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ===================== Ubuntu (.deb) =====================
+  ubuntu-deb:
+    name: Ubuntu .deb (PR)
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-22.04
+    env:
+      APP_ID: qsosu-logger
+      APP_NAME: "QSO Logger"
+      BIN_NAME: QSOSU-desktop-app
+      BUILD_DIR: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt5 toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools \
+            libqt5serialport5-dev libgl1-mesa-dev fakeroot
+          qmake -v
+
+      - name: Build (qmake + make)
+        run: |
+          mkdir -p "$BUILD_DIR"
+          cd "$BUILD_DIR"
+          qmake ../QSOSU-desktop-app.pro CONFIG+=release
+          make -j"$(nproc)"
+          cd ..
+          if [ -x "$BUILD_DIR/$BIN_NAME" ]; then
+            echo "BIN=$BUILD_DIR/$BIN_NAME" >> $GITHUB_ENV
+          elif [ -x "$BUILD_DIR/release/$BIN_NAME" ]; then
+            echo "BIN=$BUILD_DIR/release/$BIN_NAME" >> $GITHUB_ENV
+          else
+            echo "Binary not found" && exit 1
+          fi
+
+      - name: Package .deb
+        run: |
+          set -e
+          ROOT="$PWD/pkgroot"
+          mkdir -p "$ROOT/DEBIAN" "$ROOT/usr/bin" "$ROOT/usr/share/applications" "$ROOT/usr/share/doc/${APP_ID}"
+          install -m 0755 "${BIN}" "$ROOT/usr/bin/${BIN_NAME}"
+
+          cat > "$ROOT/usr/share/applications/${APP_ID}.desktop" <<'EOF'
+          [Desktop Entry]
+          Name=QSO Logger
+          Comment=QSOSU Logger (Qt)
+          Exec=/usr/bin/QSOSU-desktop-app
+          Icon=utilities-terminal
+          Terminal=false
+          Type=Application
+          Categories=Utility;
+          EOF
+
+          cat > "$ROOT/DEBIAN/control" <<EOF
+          Package: ${APP_ID}
+          Version: 0.0.0-pr
+          Section: utils
+          Priority: optional
+          Architecture: amd64
+          Maintainer: Unknown <noreply@example.com>
+          Depends: libqt5widgets5 (>= 5.15), libqt5gui5 (>= 5.15), libqt5core5a (>= 5.15), libqt5serialport5 (>= 5.15), libc6 (>= 2.31), libstdc++6 (>= 11)
+          Description: ${APP_NAME} (Qt-based logger) - PR build
+           Built from PR for testing.
+          EOF
+
+          # Имя с префиксом TEST_
+          DEB="TEST_QSO_Logger_PR_${{ github.event.pull_request.number || 'manual' }}_ubuntu_amd64.deb"
+          fakeroot dpkg-deb --build pkgroot "$DEB"
+          echo "DEB=$DEB" >> $GITHUB_ENV
+
+      - name: Upload .deb (retained 7 days)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-ubuntu-deb
+          path: ${{ env.DEB }}
+          retention-days: 7
+
+  # ===================== Windows x64 =====================
+  windows-x64:
+    name: Windows x64 (PR)
+    if: github.event.pull_request.draft == false
+    runs-on: windows-2022
+    env:
+      APP_NAME: QSOSU-desktop-app
+      BUILD_DIR: build
+      QT_ROOT: C:\Qt\5.15.2\msvc2019_64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Qt + NSIS
+        shell: pwsh
+        run: |
+          pip install aqtinstall
+          aqt install-qt windows desktop 5.15.2 win64_msvc2019_64 --outputdir C:/Qt
+          choco install nsis -y
+          "$env:QT_ROOT\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Build (qmake + nmake)
+        shell: cmd
+        run: |
+          mkdir %BUILD_DIR%
+          cd %BUILD_DIR%
+          "%QT_ROOT%\bin\qmake.exe" ..\QSOSU-desktop-app.pro CONFIG+=release
+          nmake /S
+
+      - name: Deploy runtime
+        shell: cmd
+        run: |
+          cd %BUILD_DIR%
+          if not exist release\%APP_NAME%.exe ( echo Release EXE not found & dir /s /b & exit /b 1 )
+          "%QT_ROOT%\bin\windeployqt.exe" release\%APP_NAME%.exe --compiler-runtime --release
+
+      - name: Make NSIS installer (x64)
+        shell: pwsh
+        run: |
+          $OUT = "TEST_QSO_Logger_PR_${{ github.event.pull_request.number || 'manual' }}_win64.exe"
+          $nsi = @'
+          !include "MUI2.nsh"
+          !define APP_NAME "QSO Logger"
+          !define EXE_NAME "QSOSU-desktop-app.exe"
+          !define INSTALL_DIR "$PROGRAMFILES64\${APP_NAME}"
+
+          Name "${APP_NAME}"
+          OutFile "__OUT__"
+          InstallDir "${INSTALL_DIR}"
+          RequestExecutionLevel admin
+          SetCompress auto
+          SetCompressor /SOLID lzma
+
+          !insertmacro MUI_PAGE_WELCOME
+          !insertmacro MUI_PAGE_DIRECTORY
+          !insertmacro MUI_PAGE_INSTFILES
+          !insertmacro MUI_PAGE_FINISH
+          !insertmacro MUI_LANGUAGE "English"
+
+          Section "Install"
+            SetOutPath "${INSTALL_DIR}"
+            File /r "build\release\*.*"
+            CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+            CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            WriteUninstaller "${INSTALL_DIR}\Uninstall.exe"
+          SectionEnd
+
+          Section "Uninstall"
+            Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+            RMDir  "$SMPROGRAMS\${APP_NAME}"
+            Delete "$DESKTOP\${APP_NAME}.lnk"
+            RMDir /r "${INSTALL_DIR}"
+          SectionEnd
+          '@
+          $nsi = $nsi -replace '__OUT__',[Regex]::Escape($OUT)
+          Set-Content installer_x64.nsi $nsi -Encoding ASCII
+          makensis installer_x64.nsi
+          if (!(Test-Path $OUT)) { throw "NSIS output not found: $OUT" }
+          "OUT_X64=$OUT" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Upload x64 installer (retained 7 days)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-windows-x64
+          path: ${{ env.OUT_X64 }}
+          retention-days: 7
+
+  # ===================== Windows x86 =====================
+  windows-x86:
+    name: Windows x86 (PR)
+    if: github.event.pull_request.draft == false
+    runs-on: windows-2022
+    env:
+      APP_NAME: QSOSU-desktop-app
+      BUILD_DIR: build
+      QT_ROOT: C:\Qt\5.15.2\msvc2019
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x86
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Qt + NSIS
+        shell: pwsh
+        run: |
+          pip install aqtinstall
+          aqt install-qt windows desktop 5.15.2 win32_msvc2019 --outputdir C:/Qt
+          choco install nsis -y
+          "$env:QT_ROOT\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Build (qmake + nmake)
+        shell: cmd
+        run: |
+          mkdir %BUILD_DIR%
+          cd %BUILD_DIR%
+          "%QT_ROOT%\bin\qmake.exe" ..\QSOSU-desktop-app.pro CONFIG+=release
+          nmake /S
+
+      - name: Deploy runtime
+        shell: cmd
+        run: |
+          cd %BUILD_DIR%
+          if not exist release\%APP_NAME%.exe ( echo Release EXE not found & dir /s /b & exit /b 1 )
+          "%QT_ROOT%\bin\windeployqt.exe" release\%APP_NAME%.exe --compiler-runtime --release
+
+      - name: Make NSIS installer (x86)
+        shell: pwsh
+        run: |
+          $OUT = "TEST_QSO_Logger_PR_${{ github.event.pull_request.number || 'manual' }}_win32.exe"
+          $nsi = @'
+          !include "MUI2.nsh"
+          !define APP_NAME "QSO Logger"
+          !define EXE_NAME "QSOSU-desktop-app.exe"
+          !define INSTALL_DIR "$PROGRAMFILES\${APP_NAME}"
+
+          Name "${APP_NAME}"
+          OutFile "__OUT__"
+          InstallDir "${INSTALL_DIR}"
+          RequestExecutionLevel admin
+          SetCompress auto
+          SetCompressor /SOLID lzma
+
+          !insertmacro MUI_PAGE_WELCOME
+          !insertmacro MUI_PAGE_DIRECTORY
+          !insertmacro MUI_PAGE_INSTFILES
+          !insertmacro MUI_PAGE_FINISH
+          !insertmacro MUI_LANGUAGE "English"
+
+          Section "Install"
+            SetOutPath "${INSTALL_DIR}"
+            File /r "build\release\*.*"
+            CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+            CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            WriteUninstaller "${INSTALL_DIR}\Uninstall.exe"
+          SectionEnd
+
+          Section "Uninstall"
+            Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+            RMDir  "$SMPROGRAMS\${APP_NAME}"
+            Delete "$DESKTOP\${APP_NAME}.lnk"
+            RMDir /r "${INSTALL_DIR}"
+          SectionEnd
+          '@
+          $nsi = $nsi -replace '__OUT__',[Regex]::Escape($OUT)
+          Set-Content installer_x86.nsi $nsi -Encoding ASCII
+          makensis installer_x86.nsi
+          if (!(Test-Path $OUT)) { throw "NSIS output not found: $OUT" }
+          "OUT_X86=$OUT" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Upload x86 installer (retained 7 days)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-windows-x86
+          path: ${{ env.OUT_X86 }}
+          retention-days: 7
