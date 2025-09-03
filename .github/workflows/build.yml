@@ -1,4 +1,4 @@
-name: Ubuntu .deb + Windows .exe installers
+name: Ubuntu .deb + Windows .exe
 
 on:
   push:
@@ -7,16 +7,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  # ===================== Ubuntu (deb) =====================
   ubuntu-deb:
     runs-on: ubuntu-22.04
     env:
       APP_ID: qsosu-logger
-      APP_NAME: QSO Logger
+      APP_NAME: "QSO Logger"
       BIN_NAME: QSOSU-desktop-app
       VERSION: 1.0.0
       BUILD_DIR: build
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,9 +35,9 @@ jobs:
           make -j"$(nproc)"
           cd ..
           if [ -x "$BUILD_DIR/$BIN_NAME" ]; then
-            echo "Found binary at $BUILD_DIR/$BIN_NAME"
+            echo "BIN=$BUILD_DIR/$BIN_NAME" >> $GITHUB_ENV
           elif [ -x "$BUILD_DIR/release/$BIN_NAME" ]; then
-            echo "Found binary at $BUILD_DIR/release/$BIN_NAME"
+            echo "BIN=$BUILD_DIR/release/$BIN_NAME" >> $GITHUB_ENV
           else
             echo "Binary not found" && exit 1
           fi
@@ -49,13 +47,12 @@ jobs:
           set -e
           ROOT="$PWD/pkgroot"
           mkdir -p "$ROOT/DEBIAN" "$ROOT/usr/bin" "$ROOT/usr/share/applications" "$ROOT/usr/share/doc/${APP_ID}"
-          if [ -x "${BUILD_DIR}/${BIN_NAME}" ]; then BIN="${BUILD_DIR}/${BIN_NAME}"; else BIN="${BUILD_DIR}/release/${BIN_NAME}"; fi
-          install -m 0755 "$BIN" "$ROOT/usr/bin/${BIN_NAME}"
-          cat > "$ROOT/usr/share/applications/${APP_ID}.desktop" <<EOF
+          install -m 0755 "${BIN}" "$ROOT/usr/bin/${BIN_NAME}"
+          cat > "$ROOT/usr/share/applications/${APP_ID}.desktop" <<'EOF'
           [Desktop Entry]
-          Name=${APP_NAME}
+          Name=QSO Logger
           Comment=QSOSU Logger (Qt)
-          Exec=/usr/bin/${BIN_NAME}
+          Exec=/usr/bin/QSOSU-desktop-app
           Icon=utilities-terminal
           Terminal=false
           Type=Application
@@ -91,14 +88,12 @@ jobs:
           name: qsosu-logger-ubuntu-deb
           path: ${{ env.DEB }}
 
-  # ===================== Windows (exe) =====================
   windows-exe:
     runs-on: windows-2022
     env:
       APP_NAME: QSOSU-desktop-app
       BUILD_DIR: build
-      INSTALL_DIR_NAME: QSO Logger
-
+      INSTALL_DIR_NAME: "QSO Logger"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -198,22 +193,8 @@ jobs:
             echo NSIS output not found & exit /b 1
           )
 
-      # (Опционально) Подпись, если дадите PFX в секретах
-      - name: (Optional) Code sign EXE and installer
-        if: ${{ secrets.WIN_CERT_BASE64 && secrets.WIN_CERT_PASSWORD }}
-        shell: pwsh
-        run: |
-          $pfxPath = "$env:RUNNER_TEMP\codesign.pfx"
-          [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String("${{ secrets.WIN_CERT_BASE64 }}"))
-          & certutil -f -p "${{ secrets.WIN_CERT_PASSWORD }}" -importpfx -user $pfxPath NoRoot
-          $exe = ".\${{ env.BUILD_DIR }}\release\${{ env.APP_NAME }}.exe"
-          $inst = ".\${{ env.APP_NAME }}-installer.exe"
-          $signtool = "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
-          & $signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a $exe
-          & $signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a $inst
-
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
         with:
-          name: QSOSU-logger-installer-windows
+          name: qsosu-logger-installer-windows
           path: ${{ env.APP_NAME }}-installer.exe
