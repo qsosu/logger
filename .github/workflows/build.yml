@@ -93,7 +93,6 @@ jobs:
     env:
       APP_NAME: QSOSU-desktop-app
       BUILD_DIR: build
-      INSTALL_DIR_NAME: "QSO Logger"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -107,16 +106,17 @@ jobs:
           python-version: "3.11"
 
       - name: Install aqtinstall and NSIS
+        shell: pwsh
         run: |
           pip install aqtinstall
           choco install nsis -y
 
       - name: Install Qt 5.15.2 (msvc2019_64) via aqt
-        shell: bash
+        shell: pwsh
         run: |
           aqt install-qt windows desktop 5.15.2 win64_msvc2019_64 --outputdir C:/Qt
-          echo "QT_DIR=C:/Qt/5.15.2/msvc2019_64" >> $GITHUB_ENV
-          echo "C:/Qt/5.15.2/msvc2019_64/bin" >> $GITHUB_PATH
+          "QT_DIR=C:/Qt/5.15.2/msvc2019_64" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "C:/Qt/5.15.2/msvc2019_64/bin"  | Out-File -FilePath $env:GITHUB_PATH -Append
 
       - name: Configure (qmake, release)
         shell: cmd
@@ -141,22 +141,18 @@ jobs:
           )
           windeployqt release\%APP_NAME%.exe --compiler-runtime --release
 
-      - name: Create NSIS installer
+      - name: Create NSIS installer (write .nsi)
         shell: pwsh
         run: |
-          $AppName = "${{ env.APP_NAME }}"
-          $BuildDir = "${{ env.BUILD_DIR }}"
-          $InstName = "${{ env.INSTALL_DIR_NAME }}"
-          $OutFile  = "$AppName-installer.exe"
-          $nsi = @"
+          $nsi = @'
           !include "MUI2.nsh"
-          !define APP_NAME "$InstName"
-          !define EXE_NAME "$AppName.exe"
-          !define INSTALL_DIR "\$PROGRAMFILES64\${APP_NAME}"
+          !define APP_NAME "QSO Logger"
+          !define EXE_NAME "QSOSU-desktop-app.exe"
+          !define INSTALL_DIR "$PROGRAMFILES64\${APP_NAME}"
 
-          Name "\${APP_NAME}"
-          OutFile "$OutFile"
-          InstallDir "\${INSTALL_DIR}"
+          Name "${APP_NAME}"
+          OutFile "QSOSU-desktop-app-installer.exe"
+          InstallDir "${INSTALL_DIR}"
           RequestExecutionLevel admin
           SetCompress auto
           SetCompressor /SOLID lzma
@@ -168,28 +164,28 @@ jobs:
           !insertmacro MUI_LANGUAGE "English"
 
           Section "Install"
-            SetOutPath "\${INSTALL_DIR}"
-            File /r "$BuildDir\release\*.*"
+            SetOutPath "${INSTALL_DIR}"
+            File /r "build\release\*.*"
             CreateDirectory "$SMPROGRAMS\${APP_NAME}"
-            CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "\${INSTALL_DIR}\${EXE_NAME}"
-            CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "\${INSTALL_DIR}\${EXE_NAME}"
-            WriteUninstaller "\${INSTALL_DIR}\Uninstall.exe"
+            CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            WriteUninstaller "${INSTALL_DIR}\Uninstall.exe"
           SectionEnd
 
           Section "Uninstall"
             Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
             RMDir  "$SMPROGRAMS\${APP_NAME}"
             Delete "$DESKTOP\${APP_NAME}.lnk"
-            RMDir /r "\${INSTALL_DIR}"
+            RMDir /r "${INSTALL_DIR}"
           SectionEnd
-"@
+          '@
           Set-Content -LiteralPath installer.nsi -Value $nsi -Encoding ASCII
 
       - name: Build installer (makensis)
         shell: cmd
         run: |
           makensis installer.nsi
-          if not exist %APP_NAME%-installer.exe (
+          if not exist QSOSU-desktop-app-installer.exe (
             echo NSIS output not found & exit /b 1
           )
 
@@ -197,4 +193,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: qsosu-logger-installer-windows
-          path: ${{ env.APP_NAME }}-installer.exe
+          path: QSOSU-desktop-app-installer.exe
