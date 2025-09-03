@@ -8,20 +8,28 @@ on:
 
 jobs:
   build-macos-arm64:
-    runs-on: macos-14  # arm64 runner
+    runs-on: macos-14
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       HOMEBREW_NO_INSTALL_CLEANUP: 1
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install Qt 5 (qmake) and tools
+        id: qt
         run: |
-          brew install qt@5 pkg-config
-          echo "/opt/homebrew/opt/qt@5/bin" >> "$GITHUB_PATH"
-          echo "PKG_CONFIG_PATH=/opt/homebrew/opt/qt@5/lib/pkgconfig" >> "$GITHUB_ENV"
-          qmake -v
+          brew install qt@5 pkgconf
+          QT_PREFIX="$(brew --prefix qt@5)"
+          # Сохраняем для следующих шагов
+          echo "QT_PREFIX=$QT_PREFIX" >> "$GITHUB_ENV"
+          echo "$QT_PREFIX/bin" >> "$GITHUB_PATH"
+          echo "PKG_CONFIG_PATH=$QT_PREFIX/lib/pkgconfig" >> "$GITHUB_ENV"
+          echo "LDFLAGS=-L$QT_PREFIX/lib" >> "$GITHUB_ENV"
+          echo "CPPFLAGS=-I$QT_PREFIX/include" >> "$GITHUB_ENV"
+          # Вызываем qmake прямо по абсолютному пути в этом шаге
+          "$QT_PREFIX/bin/qmake" -v
 
       - name: Configure (qmake, release, arm64)
         run: |
@@ -53,7 +61,6 @@ jobs:
             ditto -c -k --keepParent "$APP" QSOSU-logger-macOS-arm64.zip
             echo "artifact=build/QSOSU-logger-macOS-arm64.zip" >> "$GITHUB_OUTPUT"
           else
-            # имя бинарника в README: QSOSU-desktop-app
             BIN="$(find . -type f -perm -111 -name 'QSOSU-desktop-app' -print -quit || true)"
             if [ -z "$BIN" ]; then
               echo "Could not find .app or QSOSU-desktop-app binary" >&2
