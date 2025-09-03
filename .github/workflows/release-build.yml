@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # нужно для загрузки ассетов в релиз
+  contents: write
 
 env:
   APP_NAME: QSOSU-desktop-app
@@ -15,7 +15,7 @@ env:
 jobs:
   # -------- Подготовка: получаем версии из тега --------
   prep:
-    name: Start ()
+    name: Build start
     runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.v.outputs.version }}
@@ -163,7 +163,7 @@ jobs:
           !define INSTALL_DIR "$PROGRAMFILES64\${APP_NAME}"
 
           Name "${APP_NAME}"
-          OutFile "QSO_Logger_${{ env.VERSION_STRIPPED }}-win64.exe"
+          OutFile "QSO_Logger_${{ env.VERSION_STRIPPED }}_win64.exe"
           InstallDir "${INSTALL_DIR}"
           RequestExecutionLevel admin
           SetCompress auto
@@ -197,13 +197,13 @@ jobs:
         shell: cmd
         run: |
           makensis installer.nsi
-          if not exist QSOSU-desktop-app-%VERSION_STRIPPED%-win64.exe ( echo NSIS output not found & exit /b 1 )
+          if not exist QSO_Logger_%VERSION_STRIPPED%_win64.exe ( echo NSIS output not found & exit /b 1 )
 
       - name: Upload Windows x64 artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-exe-64
-          path: QSOSU-desktop-app-${{ env.VERSION_STRIPPED }}-win64.exe
+          path: QSO_Logger_${{ env.VERSION_STRIPPED }}_win64.exe
 
   # ===================== Windows x86 (MSVC 2019, Qt 5.15.2) =====================
   windows-exe-32:
@@ -267,7 +267,7 @@ jobs:
           !define INSTALL_DIR "$PROGRAMFILES\${APP_NAME}"
 
           Name "${APP_NAME}"
-          OutFile "QSO_Looger_${{ env.VERSION_STRIPPED }}-win32.exe"
+          OutFile "QSO_Logger_${{ env.VERSION_STRIPPED }}_win32.exe"
           InstallDir "${INSTALL_DIR}"
           RequestExecutionLevel admin
           SetCompress auto
@@ -301,17 +301,17 @@ jobs:
         shell: cmd
         run: |
           makensis installer.nsi
-          if not exist QSOSU-desktop-app-%VERSION_STRIPPED%-win32.exe ( echo NSIS output not found & exit /b 1 )
+          if not exist QSO_Logger_%VERSION_STRIPPED%_win32.exe ( echo NSIS output not found & exit /b 1 )
 
       - name: Upload Windows x86 artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-exe-32
-          path: QSOSU-desktop-app-${{ env.VERSION_STRIPPED }}-win32.exe
+          path: QSO_Logger_${{ env.VERSION_STRIPPED }}_win32.exe
 
   # ===================== Публикация ассетов в релиз =====================
   publish:
-    name: Finish
+    name: Build finish
     runs-on: ubuntu-22.04
     needs: [prep, ubuntu-deb, windows-exe-64, windows-exe-32]
     steps:
