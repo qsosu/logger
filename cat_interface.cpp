@@ -49,6 +49,14 @@ bool cat_Interface::openSerial(QString port)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+bool cat_Interface::closeSerial()
+{
+    if(serialPort->isOpen()) serialPort->close();
+    return true;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+
 void cat_Interface::sendCommand(const char *cmd)
 {
     if(serialPort->isOpen())
@@ -167,32 +175,76 @@ void cat_Interface::setMode(int mode)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void cat_Interface::setFreq(long freq)
+void cat_Interface::setFreq(long f)
 {
    char fr[15];
 
-   if((freq > 1810000)&&(freq < 52000000))
+   if((f > 1810000)&&(f < 52000000))
    {
-       sprintf(fr, "FA%11d;", freq);
+       sprintf(fr, "FA%11d;", f);
        sendCommand(fr);
    }
+   freq = f;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-int cat_Interface::freqToBand(long freq)
+int cat_Interface::freqToBand(long f)
 {
-    if (freq >=   1810000 && freq <=   2000000)  { band = 2;}         // 160m
-    else if (freq >=   3500000 && freq <=   3800000)  { band = 3; }   // 80m
-    else if (freq >=   7000000 && freq <=   7200000)  { band = 5; }   // 40m
-    else if (freq >=  10100000 && freq <=  10150000)  { band = 6; }   // 30m
-    else if (freq >=  14000000 && freq <=  14350000)  { band = 7; }   // 20m
-    else if (freq >=  18068000 && freq <=  18168000)  { band = 8; }   // 17m
-    else if (freq >=  21000000 && freq <=  21450000)  { band = 9; }   // 15m
-    else if (freq >=  24890000 && freq <=  24990000)  { band = 10; }  // 12m
-    else if (freq >=  28000000 && freq <=  29700000)  { band = 11; }  // 10m
-    else if (freq >=  50000000 && freq <=  52000000)  { band = 12; }  // 6m
-    else { band = 0; }                                                // out of range
+    if (f >=   1810000 && f <=   2000000)  { band = 2;}         // 160m
+    else if (f >=   3500000 && f <=   3800000)  { band = 3; }   // 80m
+    else if (f >=   7000000 && f <=   7200000)  { band = 5; }   // 40m
+    else if (f >=  10100000 && f <=  10150000)  { band = 6; }   // 30m
+    else if (f >=  14000000 && f <=  14350000)  { band = 7; }   // 20m
+    else if (f >=  18068000 && f <=  18168000)  { band = 8; }   // 17m
+    else if (f >=  21000000 && f <=  21450000)  { band = 9; }   // 15m
+    else if (f >=  24890000 && f <=  24990000)  { band = 10; }  // 12m
+    else if (f >=  28000000 && f <=  29700000)  { band = 11; }  // 10m
+    else if (f >=  50000000 && f <=  52000000)  { band = 12; }  // 6m
+    else { band = 0; }                                          // out of range
+    freq = f;
     return band;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void cat_Interface::modeNameToMode(QString mode)
+{
+    QString md = mode.trimmed().toUpper(); // нормализуем строку
+
+    if (md.isEmpty()) {
+            return;
+    }
+
+    if (md == "SSB") {
+        if (freq < 7300000) {
+            sendCommand("MD1;"); // LSB
+        } else {
+            sendCommand("MD2;"); // USB
+        }
+    }
+    else if (md == "LSB") {
+        sendCommand("MD1;");
+    }
+    else if (md == "USB") {
+        sendCommand("MD2;");
+    }
+    else if (md == "CW") {
+        sendCommand("MD3;");
+    }
+    else if (md == "FSK" || md == "RTTY" || md == "FT8" || md == "FT4" || md == "MFSK") {
+        sendCommand("MD9;");
+    }
+    else if (md == "FSK-R") {
+        sendCommand("MD6;");
+    }
+    else if (md == "FM") {
+        sendCommand("MD4;");
+    }
+    else if (md == "AM") {
+        sendCommand("MD5;");
+    }
+    else {
+        qWarning() << "Неизвестный режим:" << md;
+    }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

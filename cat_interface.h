@@ -26,6 +26,7 @@ public:
     int old_mode;
 
     bool openSerial(QString port);
+    bool closeSerial();
     void convertMode(int mode);
     void catSetBaudRate(int baud);
     void catSetParity(QString parity);
@@ -38,6 +39,7 @@ public:
     void setFreq(long freq);
     int freqToBand(long freq);
     void setInterval(int interval);
+    void modeNameToMode(QString mode);
 
 private slots:
     void portRead();

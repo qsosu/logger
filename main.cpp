@@ -6,6 +6,8 @@
 #include <QScopedPointer>
 #include <QApplication>
 #include <QStyleFactory>
+#include <QTranslator>
+
 
 static QScopedPointer<QFile> m_log;
 
@@ -48,10 +50,10 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
-   m_log.reset(new QFile(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/log.txt"));
-   m_log.data()->open(QFile::Append | QFile::Text);
+  m_log.reset(new QFile(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/log.txt"));
+  m_log.data()->open(QFile::Append | QFile::Text);
 
-#ifdef Q_OS_WIN32
+#if defined(Q_OS_WIN32) || defined(Q_OS_WIN64)
     QApplication::setStyle(QStyleFactory::create("Fusion"));
 #endif
 
@@ -60,8 +62,8 @@ int main(int argc, char *argv[])
 #endif
 
   qInstallMessageHandler(messageHandler);
-
   MainWindow w;
   w.show();
+
   return a.exec();
 }

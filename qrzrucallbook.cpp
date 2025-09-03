@@ -26,12 +26,18 @@ QStringList QrzruCallbook::Get(QString call) {
     }
 
     QByteArray data = Request(QString("https://api.qrz.ru/callsign?id=%1&callsign=%2").arg(session_id, ncall));
+    qDebug().noquote() << data;
+
     QString name = getTagValue(data, "name");
     QString city = getTagValue(data, "city");
     QString qthloc = getTagValue(data, "qthloc");
     QString cnty = getTagValue(data, "state");
     QString photo = getTagValue(data, "file");
-    ret << name << city << qthloc << cnty << photo;
+    QString ituz = getTagValue(data, "itu_zone");
+    QString cqz = getTagValue(data, "cq_zone");
+    QString country = getTagValue(data, "country");
+
+    ret << name << city << qthloc << cnty << photo << ituz << cqz << country;
     return ret;
 }
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ChatController</class>
+ <widget class="QDialog" name="ChatController">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>643</width>
+    <height>472</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Радиолюбительские чаты</string>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

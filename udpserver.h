@@ -67,6 +67,8 @@ public:
     QByteArray propmode;
     /* QSOLoggedADIF data*/
     QMap<QString, QString> adifData;
+    QString call_name;
+    QString call_qth;
 
 private:
     QUdpSocket *socket;
