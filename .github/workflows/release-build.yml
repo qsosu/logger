@@ -15,6 +15,7 @@ env:
 jobs:
   # -------- Подготовка: получаем версии из тега --------
   prep:
+    name: Start ()
     runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.v.outputs.version }}
@@ -22,13 +23,14 @@ jobs:
     steps:
       - id: v
         run: |
-          v="${GITHUB_REF_NAME}"   # например: v2.1.3.1
-          vs="${v#v}"              # убираем префикс v, если есть
+          v="${GITHUB_REF_NAME}"
+          vs="${v#v}"
           echo "version=$v" >> "$GITHUB_OUTPUT"
           echo "version_stripped=$vs" >> "$GITHUB_OUTPUT"
 
   # ===================== Ubuntu (.deb) =====================
   ubuntu-deb:
+    name: Ubunut (AMD 64)
     runs-on: ubuntu-22.04
     needs: [prep]
     env:
@@ -89,7 +91,7 @@ jobs:
 
       - name: Build .deb
         run: |
-          DEB="qsosu-logger_${{ env.VERSION_STRIPPED }}_amd64.deb"
+          DEB="QSO_Logger_${{ env.VERSION_STRIPPED }}_ubuntu_amd64.deb"
           fakeroot dpkg-deb --build pkgroot "$DEB"
           echo "DEB=$DEB" >> $GITHUB_ENV
 
@@ -101,6 +103,7 @@ jobs:
 
   # ===================== Windows x64 (MSVC 2019, Qt 5.15.2) =====================
   windows-exe-64:
+    name: Windows (x64)
     runs-on: windows-2022
     needs: [prep]
     env:
@@ -160,7 +163,7 @@ jobs:
           !define INSTALL_DIR "$PROGRAMFILES64\${APP_NAME}"
 
           Name "${APP_NAME}"
-          OutFile "QSOSU-desktop-app-${{ env.VERSION_STRIPPED }}-win64.exe"
+          OutFile "QSO_Logger_${{ env.VERSION_STRIPPED }}-win64.exe"
           InstallDir "${INSTALL_DIR}"
           RequestExecutionLevel admin
           SetCompress auto
@@ -204,6 +207,7 @@ jobs:
 
   # ===================== Windows x86 (MSVC 2019, Qt 5.15.2) =====================
   windows-exe-32:
+    name: Windows (x32)
     runs-on: windows-2022
     needs: [prep]
     env:
@@ -263,7 +267,7 @@ jobs:
           !define INSTALL_DIR "$PROGRAMFILES\${APP_NAME}"
 
           Name "${APP_NAME}"
-          OutFile "QSOSU-desktop-app-${{ env.VERSION_STRIPPED }}-win32.exe"
+          OutFile "QSO_Looger_${{ env.VERSION_STRIPPED }}-win32.exe"
           InstallDir "${INSTALL_DIR}"
           RequestExecutionLevel admin
           SetCompress auto
@@ -307,6 +311,7 @@ jobs:
 
   # ===================== Публикация ассетов в релиз =====================
   publish:
+    name: Finish
     runs-on: ubuntu-22.04
     needs: [prep, ubuntu-deb, windows-exe-64, windows-exe-32]
     steps:
