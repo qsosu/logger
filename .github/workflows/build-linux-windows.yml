@@ -1,0 +1,216 @@
+name: Ubuntu .deb + Windows .exe installers
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # ===================== Ubuntu (deb) =====================
+  ubuntu-deb:
+    runs-on: ubuntu-22.04
+    env:
+      APP_ID: qsosu-logger
+      APP_NAME: QSO Logger
+      BIN_NAME: QSOSU-desktop-app
+      VERSION: 1.0.0
+      BUILD_DIR: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Qt5 toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools \
+            libgl1-mesa-dev fakeroot
+          qmake -v
+
+      - name: Build (qmake + make)
+        run: |
+          mkdir -p "$BUILD_DIR"
+          cd "$BUILD_DIR"
+          qmake ../QSOSU-desktop-app.pro CONFIG+=release
+          make -j"$(nproc)"
+          test -x "$BUILD_DIR/$BIN_NAME" || test -x "release/$BIN_NAME" || (echo "Binary not found" && exit 1)
+
+      - name: Stage files for .deb
+        run: |
+          set -e
+          ROOT="$PWD/pkgroot"
+          mkdir -p "$ROOT/DEBIAN"
+          mkdir -p "$ROOT/usr/bin"
+          mkdir -p "$ROOT/usr/share/applications"
+          mkdir -p "$ROOT/usr/share/doc/${APP_ID}"
+          # куда положили бинарь
+          if [ -x "${BUILD_DIR}/${BIN_NAME}" ]; then BIN="${BUILD_DIR}/${BIN_NAME}"; else BIN="${BUILD_DIR}/release/${BIN_NAME}"; fi
+          # бинарь -> /usr/bin (имя оставим оригинальным)
+          install -m 0755 "$BIN" "$ROOT/usr/bin/${BIN_NAME}"
+          # .desktop (лаунчер)
+          cat > "$ROOT/usr/share/applications/${APP_ID}.desktop" <<EOF
+          [Desktop Entry]
+          Name=${APP_NAME}
+          Comment=QSOSU Logger (Qt)
+          Exec=/usr/bin/${BIN_NAME}
+          Icon=utilities-terminal
+          Terminal=false
+          Type=Application
+          Categories=Utility;
+          EOF
+          # control (минимально достаточные зависимости на Ubuntu 22.04+)
+          cat > "$ROOT/DEBIAN/control" <<EOF
+          Package: ${APP_ID}
+          Version: ${VERSION}
+          Section: utils
+          Priority: optional
+          Architecture: amd64
+          Maintainer: Unknown <noreply@example.com>
+          Depends: libqt5widgets5 (>= 5.15), libqt5gui5 (>= 5.15), libqt5core5a (>= 5.15), libc6 (>= 2.31), libstdc++6 (>= 11)
+          Description: ${APP_NAME} (Qt-based logger)
+           QSO Logger built from qsosu/logger repository.
+          EOF
+          # changelog.gz (чтобы dpkg не ругался)
+          echo "${APP_NAME} (${VERSION}) stable; urgency=low\n\n  * Automated build.\n\n -- CI <ci@example.com>  $(date -R)" > CHANGELOG
+          gzip -9 < CHANGELOG > "$ROOT/usr/share/doc/${APP_ID}/changelog.gz"
+
+      - name: Build .deb
+        run: |
+          DEB="${APP_ID}_${VERSION}_amd64.deb"
+          fakeroot dpkg-deb --build pkgroot "$DEB"
+          echo "DEB=$DEB" >> $GITHUB_ENV
+
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${APP_ID}-ubuntu-deb
+          path: ${{ env.DEB }}
+
+  # ===================== Windows (exe) =====================
+  windows-exe:
+    runs-on: windows-2022
+    env:
+      APP_NAME: QSOSU-desktop-app
+      BUILD_DIR: build
+      INSTALL_DIR_NAME: QSO Logger
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC dev cmd
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install aqtinstall and NSIS
+        run: |
+          pip install aqtinstall
+          choco install nsis -y
+
+      - name: Install Qt 5.15.2 (msvc2019_64) via aqt
+        shell: bash
+        run: |
+          aqt install-qt windows desktop 5.15.2 win64_msvc2019_64 --outputdir C:/Qt
+          echo "QT_DIR=C:/Qt/5.15.2/msvc2019_64" >> $GITHUB_ENV
+          echo "C:/Qt/5.15.2/msvc2019_64/bin" >> $GITHUB_PATH
+
+      - name: Configure (qmake, release)
+        shell: cmd
+        run: |
+          mkdir %BUILD_DIR%
+          cd %BUILD_DIR%
+          qmake ..\QSOSU-desktop-app.pro CONFIG+=release
+
+      - name: Build (nmake)
+        shell: cmd
+        run: |
+          cd %BUILD_DIR%
+          nmake /S
+
+      - name: Deploy Qt runtime (windeployqt)
+        shell: cmd
+        run: |
+          cd %BUILD_DIR%
+          if not exist release\%APP_NAME%.exe (
+            echo Release EXE not found & dir /s /b
+            exit /b 1
+          )
+          windeployqt release\%APP_NAME%.exe --compiler-runtime --release
+
+      - name: Create NSIS installer
+        shell: pwsh
+        run: |
+          $AppName = "${{ env.APP_NAME }}"
+          $BuildDir = "${{ env.BUILD_DIR }}"
+          $InstName = "${{ env.INSTALL_DIR_NAME }}"
+          $OutFile  = "$AppName-installer.exe"
+          $nsi = @"
+          !include "MUI2.nsh"
+          !define APP_NAME "$InstName"
+          !define EXE_NAME "$AppName.exe"
+          !define INSTALL_DIR "\$PROGRAMFILES64\${APP_NAME}"
+
+          Name "\${APP_NAME}"
+          OutFile "$OutFile"
+          InstallDir "\${INSTALL_DIR}"
+          RequestExecutionLevel admin
+          SetCompress auto
+          SetCompressor /SOLID lzma
+
+          !insertmacro MUI_PAGE_WELCOME
+          !insertmacro MUI_PAGE_DIRECTORY
+          !insertmacro MUI_PAGE_INSTFILES
+          !insertmacro MUI_PAGE_FINISH
+          !insertmacro MUI_LANGUAGE "English"
+
+          Section "Install"
+            SetOutPath "\${INSTALL_DIR}"
+            File /r "$BuildDir\release\*.*"
+            CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+            CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "\${INSTALL_DIR}\${EXE_NAME}"
+            CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "\${INSTALL_DIR}\${EXE_NAME}"
+            WriteUninstaller "\${INSTALL_DIR}\Uninstall.exe"
+          SectionEnd
+
+          Section "Uninstall"
+            Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+            RMDir  "$SMPROGRAMS\${APP_NAME}"
+            Delete "$DESKTOP\${APP_NAME}.lnk"
+            RMDir /r "\${INSTALL_DIR}"
+          SectionEnd
+"@
+          Set-Content -LiteralPath installer.nsi -Value $nsi -Encoding ASCII
+
+      - name: Build installer (makensis)
+        shell: cmd
+        run: |
+          makensis installer.nsi
+          if not exist %APP_NAME%-installer.exe (
+            echo NSIS output not found & exit /b 1
+          )
+
+      # (Опционально) Подпись, если дадите PFX в секретах
+      - name: (Optional) Code sign EXE and installer
+        if: ${{ secrets.WIN_CERT_BASE64 && secrets.WIN_CERT_PASSWORD }}
+        shell: pwsh
+        run: |
+          $pfxPath = "$env:RUNNER_TEMP\codesign.pfx"
+          [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String("${{ secrets.WIN_CERT_BASE64 }}"))
+          & certutil -f -p "${{ secrets.WIN_CERT_PASSWORD }}" -importpfx -user $pfxPath NoRoot
+          $exe = ".\${{ env.BUILD_DIR }}\release\${{ env.APP_NAME }}.exe"
+          $inst = ".\${{ env.APP_NAME }}-installer.exe"
+          $signtool = "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
+          & $signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a $exe
+          & $signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a $inst
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${% raw %}QSOSU-logger-installer-windows{% endraw %}
+          path: ${{ env.APP_NAME }}-installer.exe
