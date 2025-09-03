@@ -169,7 +169,8 @@ jobs:
             RMDir /r "${INSTALL_DIR}"
           SectionEnd
           '@
-          $nsi = $nsi -replace '__OUT__',[Regex]::Escape($OUT)
+          # ВАЖНО: буквалная замена, без regex!
+          $nsi = $nsi.Replace('__OUT__', $OUT)
           Set-Content installer_x64.nsi $nsi -Encoding ASCII
           makensis installer_x64.nsi
           if (!(Test-Path $OUT)) { throw "NSIS output not found: $OUT" }
@@ -258,11 +259,12 @@ jobs:
           Section "Uninstall"
             Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
             RMDir  "$SMPROGRAMS\${APP_NAME}"
-            Delete "$DESKTOP\${APP_NAME}.lnk"
+            Delete "$DESKTOP\${APP_NAME}.lnк"
             RMDir /r "${INSTALL_DIR}"
           SectionEnd
           '@
-          $nsi = $nsi -replace '__OUT__',[Regex]::Escape($OUT)
+          # ВАЖНО: буквалная замена, без regex!
+          $nsi = $nsi.Replace('__OUT__', $OUT)
           Set-Content installer_x86.nsi $nsi -Encoding ASCII
           makensis installer_x86.nsi
           if (!(Test-Path $OUT)) { throw "NSIS output not found: $OUT" }
