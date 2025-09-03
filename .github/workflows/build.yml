@@ -15,6 +15,7 @@ jobs:
       BIN_NAME: QSOSU-desktop-app
       VERSION: 1.0.0
       BUILD_DIR: build
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,7 +25,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools \
-            libgl1-mesa-dev fakeroot
+            libqt5serialport5-dev libgl1-mesa-dev fakeroot
           qmake -v
 
       - name: Build (qmake + make)
@@ -47,7 +48,9 @@ jobs:
           set -e
           ROOT="$PWD/pkgroot"
           mkdir -p "$ROOT/DEBIAN" "$ROOT/usr/bin" "$ROOT/usr/share/applications" "$ROOT/usr/share/doc/${APP_ID}"
+
           install -m 0755 "${BIN}" "$ROOT/usr/bin/${BIN_NAME}"
+
           cat > "$ROOT/usr/share/applications/${APP_ID}.desktop" <<'EOF'
           [Desktop Entry]
           Name=QSO Logger
@@ -58,6 +61,7 @@ jobs:
           Type=Application
           Categories=Utility;
           EOF
+
           cat > "$ROOT/DEBIAN/control" <<EOF
           Package: ${APP_ID}
           Version: ${VERSION}
@@ -65,10 +69,11 @@ jobs:
           Priority: optional
           Architecture: amd64
           Maintainer: Unknown <noreply@example.com>
-          Depends: libqt5widgets5 (>= 5.15), libqt5gui5 (>= 5.15), libqt5core5a (>= 5.15), libc6 (>= 2.31), libstdc++6 (>= 11)
+          Depends: libqt5widgets5 (>= 5.15), libqt5gui5 (>= 5.15), libqt5core5a (>= 5.15), libqt5serialport5 (>= 5.15), libc6 (>= 2.31), libstdc++6 (>= 11)
           Description: ${APP_NAME} (Qt-based logger)
            QSO Logger built from qsosu/logger repository.
           EOF
+
           echo "${APP_NAME} (${VERSION}) stable; urgency=low
 
             * Automated build.
@@ -93,6 +98,8 @@ jobs:
     env:
       APP_NAME: QSOSU-desktop-app
       BUILD_DIR: build
+      INSTALL_DIR_NAME: "QSO Logger"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
