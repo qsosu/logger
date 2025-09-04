@@ -113,11 +113,20 @@ INCLUDEPATH += thirdparty/libmaia
 
 win32:RC_ICONS = $$PWD/resources/images/icon32.ico
 
-# Указываем иконку для macOS
+# macOS
 macx {
     ICON = $$PWD/resources/images/logo.icns
     QMAKE_INFO_PLIST = $$PWD/Info.plist
+
+    prefixes.files = $$PWD/Prefixes.xml
+    prefixes.path  = Contents/MacOS
+
+    hamdefs.files = $$PWD/HamDefs.xml
+    hamdefs.path  = Contents/MacOS
+
+    QMAKE_BUNDLE_DATA += prefixes hamdefs
 }
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -130,7 +139,6 @@ RESOURCES += \
 
 TRANSLATIONS += en_US.ts
 
-DISTFILES +=
 
 
 

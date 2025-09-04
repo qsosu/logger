@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("QSO Logger v.") + QString::fromStdString(VERSION));
+    setWindowTitle(tr("QSO Logger v") + QString::fromStdString(VERSION));
     QFontDatabase::addApplicationFont("://resources/fonts/Roboto-Regular.ttf");
 
 
@@ -1359,7 +1359,7 @@ bool MainWindow::readXmlfile()
 
 #ifdef Q_OS_MAC
     // В macOS: внутри .app → подняться на 3 уровня
-    basePath = QCoreApplication::applicationDirPath() + "/../../../HamDefs.xml";
+    basePath = QCoreApplication::applicationDirPath() + "/HamDefs.xml";
 #elif defined(Q_OS_WIN) || defined(Q_OS_LINUX)
     // В Windows и Linux файл лежит рядом с .exe
     basePath = QCoreApplication::applicationDirPath() + "/HamDefs.xml";
@@ -1983,7 +1983,7 @@ QList<PrefixEntry> MainWindow::loadPrefixDatabase()
 
     #ifdef Q_OS_MAC
         // В macOS: внутри .app → подняться на 3 уровня
-        basePath = QCoreApplication::applicationDirPath() + "/../../../Prefixes.xml";
+        basePath = QCoreApplication::applicationDirPath() + "/Prefixes.xml";
     #elif defined(Q_OS_WIN) || defined(Q_OS_LINUX)
         // В Windows и Linux файл лежит рядом с .exe
         basePath = QCoreApplication::applicationDirPath() + "/Prefixes.xml";
