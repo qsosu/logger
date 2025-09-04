@@ -1,0 +1,60 @@
+name: macOS Catalina build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-macos-x86_64:
+    runs-on: macos-13   # Intel runner, совместимый с Catalina
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Qt 5 (qmake) and tools
+        run: |
+          brew install qt@5 pkgconf
+          QT_PREFIX="$(brew --prefix qt@5)"
+          echo "QT_PREFIX=$QT_PREFIX" >> "$GITHUB_ENV"
+          echo "$QT_PREFIX/bin" >> "$GITHUB_PATH"
+          echo "PKG_CONFIG_PATH=$QT_PREFIX/lib/pkgconfig" >> "$GITHUB_ENV"
+          echo "LDFLAGS=-L$QT_PREFIX/lib" >> "$GITHUB_ENV"
+          echo "CPPFLAGS=-I$QT_PREFIX/include" >> "$GITHUB_ENV"
+          "$QT_PREFIX/bin/qmake" -v
+
+      - name: Configure (qmake, release, x86_64)
+        run: |
+          mkdir -p build
+          cd build
+          qmake ../QSOSU-desktop-app.pro CONFIG+=release QMAKE_APPLE_DEVICE_ARCHS=x86_64
+
+      - name: Build
+        run: |
+          cd build
+          make -j"$(sysctl -n hw.logicalcpu)"
+
+      - name: Deploy Qt frameworks if .app exists
+        run: |
+          cd build
+          APP_PATH="$(find . -name "*.app" -maxdepth 3 -print -quit || true)"
+          if [ -n "$APP_PATH" ]; then
+            macdeployqt "$APP_PATH" -always-overwrite
+            ditto -c -k --keepParent "$APP_PATH" QSOSU-logger-macOS-x86_64.zip
+          else
+            BIN="$(find . -type f -perm -111 -name 'QSOSU-desktop-app' -print -quit || true)"
+            tar -czf QSOSU-logger-macOS-x86_64.tar.gz "$BIN"
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: QSOSU-logger-macOS-x86_64
+          path: |
+            build/QSOSU-logger-macOS-x86_64.zip
+            build/QSOSU-logger-macOS-x86_64.tar.gz
