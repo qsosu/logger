@@ -420,6 +420,7 @@ void HttpApi::getGeocodeByLocator(QString Locator)
     QNetworkReply *reply = m_manager.get(request);
 
     connect(reply, &QNetworkReply::finished, this, [=]() {
+<<<<<<< HEAD
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray data = reply->readAll();
             QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
@@ -440,6 +441,18 @@ void HttpApi::getGeocodeByLocator(QString Locator)
             qDebug() << "getGeocodeByLocator error: " << reply->errorString();
 
             emit LocRecceived();
+=======
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qDebug() << "Status code: " << status_code.toInt();
+
+        QByteArray data = reply->readAll();
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+
+        if (jsonDocument.object().contains("error")) {
+          QJsonObject errorObject = jsonDocument["error"].toObject();
+          qDebug() << "ERROR:" << errorObject["name"].toString() << errorObject["message"].toString();
+          return;
+>>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
         }
       reply->deleteLater();
     });

@@ -1,0 +1,333 @@
+name: Build & attach (Ubuntu .deb + Windows x64/x86 .exe)
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  APP_NAME: QSOSU-desktop-app
+  HUMAN_NAME: "QSO Logger"
+
+jobs:
+  # -------- Подготовка: получаем версии из тега --------
+  prep:
+    name: Build start
+    runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      version_stripped: ${{ steps.v.outputs.version_stripped }}
+    steps:
+      - id: v
+        run: |
+          v="${GITHUB_REF_NAME}"
+          vs="${v#v}"
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "version_stripped=$vs" >> "$GITHUB_OUTPUT"
+
+  # ===================== Ubuntu (.deb) =====================
+  ubuntu-deb:
+    name: Ubunut (AMD 64)
+    runs-on: ubuntu-22.04
+    needs: [prep]
+    env:
+      VERSION_STRIPPED: ${{ needs.prep.outputs.version_stripped }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt5 toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools \
+            libqt5serialport5-dev libgl1-mesa-dev fakeroot
+          qmake -v
+
+      - name: Build (qmake + make)
+        run: |
+          mkdir -p build && cd build
+          qmake ../QSOSU-desktop-app.pro CONFIG+=release
+          make -j"$(nproc)"
+          cd ..
+          if [ -x build/${{ env.APP_NAME }} ]; then
+            echo "BIN=build/${{ env.APP_NAME }}" >> $GITHUB_ENV
+          elif [ -x build/release/${{ env.APP_NAME }} ]; then
+            echo "BIN=build/release/${{ env.APP_NAME }}" >> $GITHUB_ENV
+          else
+            echo "Binary not found" && exit 1
+          fi
+
+      - name: Stage .deb layout
+        run: |
+          set -e
+          APP_ID=qsosu-logger
+          ROOT="$PWD/pkgroot"
+          install -d "$ROOT/DEBIAN" "$ROOT/usr/bin" "$ROOT/usr/share/applications" "$ROOT/usr/share/doc/${APP_ID}"
+          install -m 0755 "${BIN}" "$ROOT/usr/bin/${{ env.APP_NAME }}"
+          cat > "$ROOT/usr/share/applications/${APP_ID}.desktop" <<'EOF'
+          [Desktop Entry]
+          Name=QSO Logger
+          Comment=QSOSU Logger (Qt)
+          Exec=/usr/bin/QSOSU-desktop-app
+          Icon=utilities-terminal
+          Terminal=false
+          Type=Application
+          Categories=Utility;
+          EOF
+          cat > "$ROOT/DEBIAN/control" <<EOF
+          Package: ${APP_ID}
+          Version: ${{ env.VERSION_STRIPPED }}
+          Section: utils
+          Priority: optional
+          Architecture: amd64
+          Maintainer: Unknown <noreply@example.com>
+          Depends: libqt5widgets5 (>= 5.15), libqt5gui5 (>= 5.15), libqt5core5a (>= 5.15), libqt5serialport5 (>= 5.15), libc6 (>= 2.31), libstdc++6 (>= 11)
+          Description: ${HUMAN_NAME} (Qt-based logger)
+           Built from qsosu/logger.
+          EOF
+
+      - name: Build .deb
+        run: |
+          DEB="QSO_Logger_${{ env.VERSION_STRIPPED }}_ubuntu_amd64.deb"
+          fakeroot dpkg-deb --build pkgroot "$DEB"
+          echo "DEB=$DEB" >> $GITHUB_ENV
+
+      - name: Upload Ubuntu artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-deb
+          path: ${{ env.DEB }}
+
+  # ===================== Windows x64 (MSVC 2019, Qt 5.15.2) =====================
+  windows-exe-64:
+    name: Windows (x64)
+    runs-on: windows-2022
+    needs: [prep]
+    env:
+      VERSION_STRIPPED: ${{ needs.prep.outputs.version_stripped }}
+      APP_NAME: QSOSU-desktop-app
+      QT_ROOT: C:\Qt\5.15.2\msvc2019_64
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSVC x64
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Setup Python & NSIS
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - shell: pwsh
+        run: |
+          pip install aqtinstall
+          choco install nsis -y
+
+      - name: Install Qt 5.15.2 (x64)
+        shell: pwsh
+        run: |
+          aqt install-qt windows desktop 5.15.2 win64_msvc2019_64 --outputdir C:/Qt
+          "$env:QT_ROOT\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Configure (qmake, release)
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          "%QT_ROOT%\bin\qmake.exe" ..\QSOSU-desktop-app.pro CONFIG+=release
+
+      - name: Build (nmake)
+        shell: cmd
+        run: |
+          cd build
+          nmake /S
+
+      - name: Deploy Qt runtime
+        shell: cmd
+        run: |
+          cd build
+          if not exist release\%APP_NAME%.exe ( echo Release EXE not found & dir /s /b & exit /b 1 )
+          "%QT_ROOT%\bin\windeployqt.exe" release\%APP_NAME%.exe --compiler-runtime --release
+
+      - name: Write NSIS script
+        shell: pwsh
+        run: |
+          $nsi = @'
+          !include "MUI2.nsh"
+          !define APP_NAME "QSO Logger"
+          !define EXE_NAME "QSOSU-desktop-app.exe"
+          !define INSTALL_DIR "$PROGRAMFILES64\${APP_NAME}"
+
+          Name "${APP_NAME}"
+          OutFile "QSO_Logger_${{ env.VERSION_STRIPPED }}_win64.exe"
+          InstallDir "${INSTALL_DIR}"
+          RequestExecutionLevel admin
+          SetCompress auto
+          SetCompressor /SOLID lzma
+
+          !insertmacro MUI_PAGE_WELCOME
+          !insertmacro MUI_PAGE_DIRECTORY
+          !insertmacro MUI_PAGE_INSTFILES
+          !insertmacro MUI_PAGE_FINISH
+          !insertmacro MUI_LANGUAGE "English"
+
+          Section "Install"
+            SetOutPath "${INSTALL_DIR}"
+            File /r "build\release\*.*"
+            CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+            CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            WriteUninstaller "${INSTALL_DIR}\Uninstall.exe"
+          SectionEnd
+
+          Section "Uninstall"
+            Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+            RMDir  "$SMPROGRAMS\${APP_NAME}"
+            Delete "$DESKTOP\${APP_NAME}.lnk"
+            RMDir /r "${INSTALL_DIR}"
+          SectionEnd
+          '@
+          Set-Content -LiteralPath installer.nsi -Value $nsi -Encoding ASCII
+
+      - name: Build installer
+        shell: cmd
+        run: |
+          makensis installer.nsi
+          if not exist QSO_Logger_%VERSION_STRIPPED%_win64.exe ( echo NSIS output not found & exit /b 1 )
+
+      - name: Upload Windows x64 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-exe-64
+          path: QSO_Logger_${{ env.VERSION_STRIPPED }}_win64.exe
+
+  # ===================== Windows x86 (MSVC 2019, Qt 5.15.2) =====================
+  windows-exe-32:
+    name: Windows (x32)
+    runs-on: windows-2022
+    needs: [prep]
+    env:
+      VERSION_STRIPPED: ${{ needs.prep.outputs.version_stripped }}
+      APP_NAME: QSOSU-desktop-app
+      QT_ROOT: C:\Qt\5.15.2\msvc2019
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSVC x86
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x86
+
+      - name: Setup Python & NSIS
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - shell: pwsh
+        run: |
+          pip install aqtinstall
+          choco install nsis -y
+
+      - name: Install Qt 5.15.2 (x86)
+        shell: pwsh
+        run: |
+          aqt install-qt windows desktop 5.15.2 win32_msvc2019 --outputdir C:/Qt
+          "$env:QT_ROOT\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Configure (qmake, release)
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          "%QT_ROOT%\bin\qmake.exe" ..\QSOSU-desktop-app.pro CONFIG+=release
+
+      - name: Build (nmake)
+        shell: cmd
+        run: |
+          cd build
+          nmake /S
+
+      - name: Deploy Qt runtime
+        shell: cmd
+        run: |
+          cd build
+          if not exist release\%APP_NAME%.exe ( echo Release EXE not found & dir /s /b & exit /b 1 )
+          "%QT_ROOT%\bin\windeployqt.exe" release\%APP_NAME%.exe --compiler-runtime --release
+
+      - name: Write NSIS script
+        shell: pwsh
+        run: |
+          $nsi = @'
+          !include "MUI2.nsh"
+          !define APP_NAME "QSO Logger"
+          !define EXE_NAME "QSOSU-desktop-app.exe"
+          !define INSTALL_DIR "$PROGRAMFILES\${APP_NAME}"
+
+          Name "${APP_NAME}"
+          OutFile "QSO_Logger_${{ env.VERSION_STRIPPED }}_win32.exe"
+          InstallDir "${INSTALL_DIR}"
+          RequestExecutionLevel admin
+          SetCompress auto
+          SetCompressor /SOLID lzma
+
+          !insertmacro MUI_PAGE_WELCOME
+          !insertmacro MUI_PAGE_DIRECTORY
+          !insertmacro MUI_PAGE_INSTFILES
+          !insertmacro MUI_PAGE_FINISH
+          !insertmacro MUI_LANGUAGE "English"
+
+          Section "Install"
+            SetOutPath "${INSTALL_DIR}"
+            File /r "build\release\*.*"
+            CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+            CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "${INSTALL_DIR}\${EXE_NAME}"
+            WriteUninstaller "${INSTALL_DIR}\Uninstall.exe"
+          SectionEnd
+
+          Section "Uninstall"
+            Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+            RMDir  "$SMPROGRAMS\${APP_NAME}"
+            Delete "$DESKTOP\${APP_NAME}.lnk"
+            RMDir /r "${INSTALL_DIR}"
+          SectionEnd
+          '@
+          Set-Content -LiteralPath installer.nsi -Value $nsi -Encoding ASCII
+
+      - name: Build installer
+        shell: cmd
+        run: |
+          makensis installer.nsi
+          if not exist QSO_Logger_%VERSION_STRIPPED%_win32.exe ( echo NSIS output not found & exit /b 1 )
+
+      - name: Upload Windows x86 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-exe-32
+          path: QSO_Logger_${{ env.VERSION_STRIPPED }}_win32.exe
+
+  # ===================== Публикация ассетов в релиз =====================
+  publish:
+    name: Build finish
+    runs-on: ubuntu-22.04
+    needs: [prep, ubuntu-deb, windows-exe-64, windows-exe-32]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: List files
+        run: ls -laR dist
+
+      - name: Attach to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/**/*
+          tag_name: ${{ needs.prep.outputs.version }}
+          append_body: true
+          fail_on_unmatched_files: false

@@ -95,9 +95,14 @@ void APILogRadio::SendQso(QVariantList data) {
 
     // --- Формирование JSON ---
     int dbid = data.value(0).toInt();
+<<<<<<< HEAD
     QJsonObject QSO_Obj;
     QSO_Obj["id"] = dbid;
     QSO_Obj["comm_datetime_at"] = data.value(7).toString() + "+00";
+=======
+    QSO_Obj["id"] = data.value(0).toInt();
+    QSO_Obj["comm_datetime_at"] = data.value(7).toString()+"+00";
+>>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
     QSO_Obj["callsign_s"] = data.value(16).toString();
     QSO_Obj["callsign_r"] = data.value(3).toString();
     QSO_Obj["operator_s"] = data.value(17).toString();
@@ -112,6 +117,7 @@ void APILogRadio::SendQso(QVariantList data) {
     else if (mode == "FT4") { QSO_Obj["mode"] = "MFSK"; QSO_Obj["submode"] = "FT4"; }
     else if (mode == "FT8") { QSO_Obj["mode"] = "FT8"; QSO_Obj["submode"] = ""; }
 
+<<<<<<< HEAD
     QSO_Obj["band"]     = data.value(4).toString();
     QSO_Obj["rst_s"]    = data.value(9).toString();
     QSO_Obj["rst_r"]    = data.value(10).toString();
@@ -124,16 +130,32 @@ void APILogRadio::SendQso(QVariantList data) {
     QSO_Obj["qthloc_r"] = data.value(13).toString();
     QSO_Obj["rda_r"]    = data.value(12).toString();
     QSO_Obj["comment"]  = "QSO.SU";
+=======
+    QSO_Obj["band"] = data.value(4).toString();
+    QSO_Obj["rst_s"] = data.value(9).toString();
+    QSO_Obj["rst_r"] = data.value(10).toString();
+    QSO_Obj["name_r"] = data.value(8).toString();
+    QSO_Obj["cnty_s"] = data.value(14).toString();
+    QSO_Obj["region_s"] = data.value(15).toString();
+    //QSO_Obj["rda_s"] = data.value(14).toString();
+    QSO_Obj["cnty_r"] = data.value(12).toString();
+    QSO_Obj["region_r"] =  data.value(13).toString();
+    QSO_Obj["qth_r"] = data.value(11).toString();
+    QSO_Obj["qthloc_r"] = data.value(13).toString();
+    QSO_Obj["rda_r"] = data.value(12).toString();
+    QSO_Obj["comment"] = "QSO.SU";
+>>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
 
     QJsonObject QSO_Data;
     QSO_Data["number"] = dbid;
     QSO_Data["data"] = QSO_Obj;
 
+    qDebug() << data;
+
     QJsonArray QSO_Array;
     QSO_Array.append(QSO_Data);
     QJsonDocument doc(QSO_Array);
     QByteArray jsonBA = doc.toJson();
-
     qDebug().noquote() << "Sending QSO data to LogRadio.ru." << jsonBA;
 
     // --- Отправка запроса ---
@@ -163,6 +185,7 @@ void APILogRadio::SendQso(QVariantList data) {
         QByteArray data = reply->readAll();
         QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
 
+<<<<<<< HEAD
         if (!jsonDocument.isArray()) {
             qWarning() << "LogRadio.ru Invalid JSON response:" << data;
             emit QSOStatus(true);
@@ -198,6 +221,30 @@ void APILogRadio::SendQso(QVariantList data) {
             qWarning() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
             emit QSOStatus(true);
             break;
+=======
+        qDebug() << data;
+
+        bool error = jo.value("error").toBool();
+        int number = jo.value("number").toInt();
+
+        switch(status_code.toInt()) {
+            case 200: {
+                qDebug() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
+                if(error == 0) {
+                    emit synced(dbid);
+                    qDebug() << "LogRadio.ru " << "QSO №" << number << " sended to LogRadio.ru service.";
+                }
+                else {
+                    qDebug() << "LogRadio.ru Error! QSO №" << number << " not sended to LogRadio.ru service.";
+                    qDebug() << "LogRadio.ru " << jsonDocument;
+                }
+                emit QSOStatus(error);
+                break;
+            };
+            default:
+                qDebug() << "LogRadio.ru Network reply finished. Code:" << status_code.toInt();
+                break;
+>>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
         }
 
         reply->deleteLater();
