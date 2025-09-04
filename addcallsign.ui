@@ -46,9 +46,6 @@
    </item>
    <item row="12" column="0">
     <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>40</width>
@@ -231,6 +228,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>addCallsignEdit</tabstop>
+  <tabstop>addCallsignType</tabstop>
+  <tabstop>validity_start</tabstop>
+  <tabstop>validity_stop</tabstop>
+  <tabstop>addRDA</tabstop>
+  <tabstop>addLOC</tabstop>
+  <tabstop>addITU</tabstop>
+  <tabstop>addCQ</tabstop>
+  <tabstop>OkCallsignBtn</tabstop>
+  <tabstop>CnlCallsignBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="resources.qrc"/>
  </resources>

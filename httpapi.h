@@ -14,11 +14,35 @@
 #include <QSqlQuery>
 #include <QUrlQuery>
 #include <QtNetwork>
+#include <QList>
 
 QT_REQUIRE_CONFIG(ssl);
 
 #define KEEPALIVE_INTERVAL 5000
 #define HTTP_TIMEOUT 3000
+
+struct ServerInfo {
+    QString host;
+    int port;
+    int client;
+};
+
+struct Chat {
+    int id;
+    QString name;
+    bool isTemporary;
+    QString expiresAt;
+};
+
+struct Message {
+    int id;
+    int chatId;
+    QString sender;
+    QString text;
+    QString textColor;
+    QString backgroundColor;
+    QString sentAt;
+};
 
 class HttpApi : public QObject
 {
@@ -26,6 +50,7 @@ class HttpApi : public QObject
 public:
   explicit HttpApi(QSqlDatabase db, QString accessToken, QObject *parent = nullptr);
   void SendQso(QVariantList data);
+  void setAccessToken(QString token);
   void getUser();
   void getCallsign();
   void addCallsign(QVariantList data);
@@ -33,12 +58,19 @@ public:
   void getListSubmodeDropDown();
   void getListBand();
   void getGeocodeByLocator(QString Locator);
-  void getConfirmedLogs();
+  void getConfirmedLogs(QString date, int callsign_id);
   void loadHamDefs();
   void deleteByHashLog(QString hash); //Удаление QSO из радиолюбительского журнала
   void getCallbook(QString callsign);
   void getPing();
   void updateByHashLog(QVariantList data);
+  void configureProxy(int type, QString proxyHost, int proxyPort, QString user, QString password);
+  void getLogs(int operator_id, int station_id, int page, int count);
+  void getMagneticStormInfo(QString date);
+  void getListSpotServers();
+  void getChats();
+  void getChatMessages(int chatId);
+  void sendMessage(int id_chat, int id_callsign, QString message);
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;
@@ -47,6 +79,7 @@ public:
   QStringList callsignInfo;
   QByteArray XMLdata;
   QVector<QVariantMap> cnfrQSOs;
+  QVector<QVariantMap> uploadLogs;
 
   typedef struct userData {
       int id;
@@ -55,6 +88,8 @@ public:
       bool premium;
       QString premium_time;
       QString registered;
+      double lat;
+      double lng;
   } userData_t;
   userData_t userData;
 
@@ -64,6 +99,12 @@ private:
     POST,
     DELETE
   };
+
+  enum ProxyType {
+      Socks5Proxy,
+      HttpProxy
+  };
+
 
   QByteArray request(Method method, QString token, QString url, QByteArray postData = nullptr);
   void errorHandle(QNetworkReply::NetworkError error);
@@ -84,7 +125,8 @@ signals:
   void emptyToken();
   void available();
   void unavailable();
-  void confirmQSOs();
+  void confirmQSOs(int);
+  void uploadQSOs(int);
   void accountDataUpdated();
   void callsignsUpdated();
   void callsignStatus(int);
@@ -99,6 +141,13 @@ signals:
   void getUserInfo(QStringList);
   void QSODataUpdated(QString);
   void errorQSODataUpdated(QString);
+  void LocRecceived();
+  void MagStormUpdated(QJsonArray);
+  void spotServersReceived(const QList<ServerInfo> &servers);
+  void chatsLoaded(const QList<Chat> &chats);
+  void chatWithMessagesLoaded(const Chat &chat, const QList<Message> &messages);
+  void messageSent(int chatId, const Message &message);
+  void errorOccurred(const QString &errorMessage);
 };
 
 #endif // HTTPAPI_H

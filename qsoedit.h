@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "qrzrucallbook.h"
+#include "ham_definitions.h"
 #include "settings.h"
 #include "httpapi.h"
 #include <QtWidgets>
@@ -17,7 +18,7 @@ class Qsoedit : public QDialog
     Q_OBJECT
 
 public:
-    explicit Qsoedit(QSqlDatabase db, Settings *settings, QWidget *parent = nullptr);
+    explicit Qsoedit(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, Settings *settings, QWidget *parent = nullptr);
     ~Qsoedit();
     void ShowQSOParams(QVariantList data);
     void noneImage();
@@ -31,6 +32,7 @@ protected:
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual void setVisible(bool set) override;
     virtual void closeEvent(QCloseEvent *event) override;
+    void changeEvent(QEvent *event) override;
 
 private slots:
     void on_QRZUpdateButton_clicked();
@@ -46,6 +48,8 @@ private slots:
 private:
     Ui::Qsoedit *ui;
     QSqlDatabase db;
+    QList<bandData> bandList;
+    QList<modeData> modeList;
     QTimer *CallTypeTimer;
     QrzruCallbook *qrz;
     Settings *settings;

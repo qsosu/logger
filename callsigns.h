@@ -28,9 +28,11 @@ private:
   QSqlDatabase db;
   HttpApi *api;
   Addcallsign *add_cs;
-
+  QString CallSign;
+  void changeEvent(QEvent *event) override;
   void init();
   void updateTable();
+  void updateStatus(QString status);
 
 public slots:
   void onCallsignsUpdated();
