@@ -275,5 +275,6 @@
         <file>resources/flags/SU.png</file>
         <file>resources/images/notification.png</file>
         <file>resources/images/notification_new.png</file>
+        <file>resources/images/logo.icns</file>
     </qresource>
 </RCC>

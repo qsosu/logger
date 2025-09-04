@@ -61,6 +61,12 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":resources/images/logo_mini.svg"));
 #endif
 
+#ifdef Q_OS_MAC
+    // macOS: Dock-иконка берётся из Info.plist
+    // а это для окон внутри приложения
+    a.setWindowIcon(QIcon(":/resources/images/logo_mini.icns"));
+#endif
+
   qInstallMessageHandler(messageHandler);
   MainWindow w;
   w.show();

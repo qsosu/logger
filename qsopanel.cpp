@@ -332,6 +332,7 @@ void QSOPanel::mousePressEvent(QMouseEvent *event)
             return;
         }
     }
+    left_btn_pressed = true;
     QWidget::mousePressEvent(event);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -373,7 +374,8 @@ void QSOPanel::mouseMoveEvent(QMouseEvent *event)
 
         // Проверяем док-позицию
         DockPosition pos = detectDock();
-        if (pos != None)
+
+        if (pos != None && left_btn_pressed)
             showDockIndicator(pos);
         else
             hideDockIndicator();
@@ -388,6 +390,8 @@ void QSOPanel::mouseReleaseEvent(QMouseEvent *event)
         m_resizing = false;
         m_resizeTop = m_resizeBottom = m_resizeLeft = m_resizeRight = false;
     }
+    left_btn_pressed = false;
+    hideDockIndicator();
     QWidget::mouseReleaseEvent(event);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -603,7 +607,7 @@ QWidget* QSOPanel::makeInputPair(const QString &labelText, QWidget *inputWidget)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-// Создание пары QLabel + input
+// Создание пары Widget1 + Widget2
 QWidget* QSOPanel::makeWidgetPair(QWidget *Widget1, QWidget *Widget2)
 {
     QWidget *pair = new QWidget;
@@ -619,6 +623,7 @@ QWidget* QSOPanel::makeWidgetPair(QWidget *Widget1, QWidget *Widget2)
     return pair;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
+// Создание пары QString + Widget1 + Widget2
 
 QWidget* QSOPanel::makeLabelWidgetPair(const QString &labelText, QWidget *Widget1, QWidget *Widget2)
 {

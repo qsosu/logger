@@ -152,6 +152,7 @@ private:
     Settings *settings;
     bool m_docked;
     bool m_dragging;
+    bool left_btn_pressed;
     QPoint m_dragPosition;
     DockPosition m_dockPos;
 

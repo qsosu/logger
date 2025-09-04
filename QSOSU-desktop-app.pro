@@ -113,6 +113,12 @@ INCLUDEPATH += thirdparty/libmaia
 
 win32:RC_ICONS = $$PWD/resources/images/icon32.ico
 
+# Указываем иконку для macOS
+macx {
+    ICON =
+    QMAKE_INFO_PLIST = $$PWD/Info.plist
+}
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -124,11 +130,7 @@ RESOURCES += \
 
 TRANSLATIONS += en_US.ts
 
-DISTFILES += \
-    resources/images/bell.png \
-    resources/images/bell_new.png \
-    resources/images/notification.png \
-    resources/images/notification_new.png
+DISTFILES +=
 
 
 

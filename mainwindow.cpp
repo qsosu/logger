@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     //Загрузка XML-файла с префиксами
-    entries = loadPrefixDatabase("Prefixes.xml");
+    entries = loadPrefixDatabase();
  //------------------------------------------------------------------------------------------------------------------------------------------
 
     qDebug() << "Инициализация БД.";
@@ -393,7 +393,7 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "Подключаемся к серверу:" << best->host << best->port << "client =" << best->client;
     });
 
-    qInfo() << "QSOLogger v." << VERSION << " started.";
+    qInfo() << "QSOLogger v" << VERSION << " started.";
     qInfo() << "Product Name: " << QSysInfo::prettyProductName();
     RefreshRecords();
 }
@@ -1976,7 +1976,7 @@ void MainWindow::setTableRow()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-QList<PrefixEntry> MainWindow::loadPrefixDatabase(const QString &filePath)
+QList<PrefixEntry> MainWindow::loadPrefixDatabase()
 {
     QList<PrefixEntry> entries;
     QString basePath;

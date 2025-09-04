@@ -75,7 +75,7 @@ public:
   QList<modeData> modeList;
 
   QList<PrefixEntry> entries;
-  QList<PrefixEntry> loadPrefixDatabase(const QString& filePath);
+  QList<PrefixEntry> loadPrefixDatabase();
   PrefixEntry* findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign);
 
 private:
