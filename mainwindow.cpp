@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
   , ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
-  setWindowTitle("QSO Logger v." + QString::fromStdString(VERSION));
+  setWindowTitle("QSO Logger v" + QString::fromStdString(VERSION));
 
   QFontDatabase::addApplicationFont("://resources/fonts/Roboto-Regular.ttf");
 
@@ -294,7 +294,7 @@ MainWindow::MainWindow(QWidget *parent)
        }
    }
    //api->getGeocodeByLocator("MP61QG");
-   qInfo() << "QSOLogger v." << VERSION << " started.";
+   qInfo() << "QSOLogger v" << VERSION << " started.";
    qInfo() << "Product Name: " << QSysInfo::prettyProductName();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
