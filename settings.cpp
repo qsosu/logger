@@ -78,7 +78,6 @@ void Settings::read() {
     str = qs->value("token", "").toString();
     logRadioAccessToken = EncryptToken(str);
     logradio->APILogRadioAccessToken = logRadioAccessToken;
-<<<<<<< HEAD
     qs->endGroup();
     qs->beginGroup("PROXY");
     proxyEnable = qs->value("enable", false).toBool();
@@ -88,8 +87,6 @@ void Settings::read() {
     proxyUserPassword = EncryptToken(pwd);
     proxyHost = QHostAddress(qs->value("proxy_host", "127.0.0.1").toString());
     proxyHTTPSPort = qs->value("proxy_port", 0).toInt();
-=======
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
     qs->endGroup();
     qs->beginGroup("UDP");
     udpServerEnable = qs->value("enable", true).toBool();
@@ -419,21 +416,12 @@ void Settings::checked(int code, QString message)
 void Settings::received(QString access_token, QString confirmation_key, QString confirmation_after, QString confirmation_before, QString valid_after, QString valid_before)
 {
     if(access_token.length() > 0) {
-<<<<<<< HEAD
         QMessageBox::information(0, tr("LogRadio.ru"),
                                     tr("Введите ключ подтверждения в разделе Токены API на LogRadio.ru\nКлюч подтверждения: ") + confirmation_key + "\n" +
                                     tr("Интервал подтверждения: от ") + confirmation_after + tr(" до ") + confirmation_before + "\n" +
                                     tr("Срок действия токена: от ") + valid_after + tr(" до ") + valid_before, QMessageBox::Ok);
         ui->LogRadioAccessToken->setText(access_token);
         logradio->APILogRadioAccessToken = access_token;
-=======
-    QMessageBox::information(0, "LogRadio.ru",
-                                "Введите ключ подтверждения в разделе Токены API на LogRadio.ru\nКлюч подтверждения: " + confirmation_key + "\n" +
-                                "Интервал подтверждения: от " + confirmation_after + " до " + confirmation_before + "\n" +
-                                "Срок действия токена: от " + valid_after + " до " + valid_before, QMessageBox::Ok);
-    ui->LogRadioAccessToken->setText(access_token);
-    logradio->APILogRadioAccessToken = access_token;
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
     } else {
         QMessageBox::critical(0, tr("LogRadio.ru"), tr("Не удалось получить токен."), QMessageBox::Ok);
     }

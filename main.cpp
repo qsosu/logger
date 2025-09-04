@@ -62,8 +62,6 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef Q_OS_MAC
-    // macOS: Dock-иконка берётся из Info.plist
-    // а это для окон внутри приложения
     a.setWindowIcon(QIcon(":/resources/images/logo.icns"));
 #endif
 

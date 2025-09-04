@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("QSO Logger v") + QString::fromStdString(VERSION));
+    setWindowTitle(tr("QSO Logger v.") + QString::fromStdString(VERSION));
     QFontDatabase::addApplicationFont("://resources/fonts/Roboto-Regular.ttf");
 
 
@@ -60,111 +60,9 @@ MainWindow::MainWindow(QWidget *parent)
     setLanguage();
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-<<<<<<< HEAD
     //Загрузка XML-файла с диапазонами и модуляциями
     if (LoadHamDefsSync()) {
         qDebug() << "HamDefs.xml прочитан.";
-=======
-  udpServer = new UdpServer(this);
-  if (settings->udpServerEnable) {
-      if (udpServer->start(settings->udpServerPort)) {
-          connect(udpServer, &UdpServer::heartbeat, this, [=]() {
-              ui->statusbar->showMessage(QString("UDP: получен HEARTBEAT - %1 %2").arg(QString::fromUtf8(udpServer->version), QString::fromUtf8(udpServer->revision)), 1000);
-          });
-
-          connect(udpServer, &UdpServer::logged, this, &MainWindow::onUdpLogged);
-          connect(udpServer, &UdpServer::loggedADIF, this, &MainWindow::onUdpLoggedADIF);
-          ui->statusbar->showMessage("UDP сервер запущен на порту " + QString::number(settings->udpServerPort), 3000);
-          udpserverLabel->setText("Запущен");
-          udpserverLabel->setStyleSheet("QLabel { color: green }");
-      } else {
-          udpserverLabel->setText("Ошибка");
-          udpserverLabel->setStyleSheet("QLabel { color: red }");
-      }
-  }
-  if (settings->udpClientEnable) {
-      udpServer->setRetransl(true);
-      udpServer->setRetranslPort(settings->udpClientPort);
-  }
-//------------------------------------------------------------------------------------------------------------------------------------------
-  flrig = new Flrig(settings->flrigHost, settings->flrigPort, 500, this);
-  flrigLabel->setText("Отключен");
-  flrigLabel->setStyleSheet("QLabel { color: red; }");
-  connect(flrig, &Flrig::connected, this, [=]() {
-    flrigLabel->setText("Подключен");
-    flrigLabel->setStyleSheet("QLabel { color: green; }");
-    ui->statusbar->showMessage("Подключен к FLRIG", 1000);
-  });
-  connect(flrig, &Flrig::disconnected, this, [=]() {
-    flrigLabel->setText("Отключен");
-    flrigLabel->setStyleSheet("QLabel { color: red; }");
-    ui->statusbar->showMessage("Отключен от FLRIG", 1000);
-  });
-  connect(flrig, &Flrig::updated, this, [=]() {
-    if (flrig->getConnState()) {
-      ui->bandCombo->setCurrentText(Helpers::GetBandByFreqHz(flrig->getFrequencyHz()));
-      ui->freqInput->setText(QString::number((double) flrig->getFrequencyHz() / 1000000, 'f', 6));
-      ui->modeCombo->setCurrentText(flrig->getMode());
-    }
-  });
-  connect(flrig, &Flrig::rpcError, this, [=]() {
-    ui->statusbar->showMessage(QString("Ошибка XML-RPC: %1 %2").arg(QString::number(flrig->getErrorCode()), flrig->getErrorString()), 300);
-  });
-//------------------------------------------------------------------------------------------------------------------------------------------
-//  adif = new Adif(db);
-//  connect(ui->actionExportAdif, &QAction::triggered, this, [=]() {
-//      if (userData.callsign_id > 0) adif->Export(userData.callsign_id);
-//  });
-
-  qrz = new QrzruCallbook(settings->QrzruLogin, settings->QrzruPassword);
-  connect(qrz, &QrzruCallbook::error404, this, [=]() {
-      ui->statusbar->showMessage("QRZ API - данные не найдены", 2000);
-  });
-  connect(qrz, &QrzruCallbook::error, this, [=]() {
-      ui->statusbar->showMessage("QRZ API - ошибка запроса", 2000);
-  });
-
-  CallTypeTimer = new QTimer(this);
-  CallTypeTimer->setSingleShot(true);
-  CallTypeTimer->setInterval(1000);
-
-  connect(CallTypeTimer, &QTimer::timeout, this, [=]() {
-     if (settings->enableQrzruCallbook || settings->useCallbook) FindCallData();
-  });
-
-  api = new HttpApi(db, settings->accessToken);
-  connect(api, &HttpApi::emptyToken, this, [=]() {
-      QMessageBox::critical(0, "Ошибка", "Не указан ACCESS TOKEN", QMessageBox::Ok);
-      return;
-  });
-  connect(api, &HttpApi::error, this, [=](QNetworkReply::NetworkError error) {
-      QMessageBox::critical(0, "Ошибка", "Ошибка обращения к API: " + QString::number(error), QMessageBox::Ok);
-      return;
-  });
-  connect(api, &HttpApi::synced, this, &MainWindow::onQSOSUSynced);
-  connect(api, SIGNAL(getUserInfo(QStringList)), settings, SLOT(getUserInfo(QStringList)));
-
-  QsoSuPingTimer = new QTimer(this);
-  QsoSuPingTimer->setInterval(5000); //5 секунд
-  connect(QsoSuPingTimer, &QTimer::timeout, this, [=]() {
-      PingQsoSu();
-  });
-  QsoSuPingTimer->start();
-  PingQsoSu();
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-  callsigns = new Callsigns(db, api, this);
-  callsigns->setAttribute(Qt::WA_QuitOnClose, false);
-  connect(callsigns, &Callsigns::updated, this, &MainWindow::onCallsignsUpdated);
-  connect(ui->actionCallsigns, &QAction::triggered, this, [=]() {
-      callsigns->show();
-  });
-  connect(api, &HttpApi::callsignsUpdated, callsigns, &Callsigns::onCallsignsUpdated);
-
-  connect(ui->actionFlrig, &QAction::toggled, this, [=](bool state) {
-    if (state) {
-      flrig->start();
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
     } else {
         QMessageBox::critical(0, tr("Ошибка"), tr("Файл HamDefs.xml не найден. Завершаю работу."), QMessageBox::Ok);
         qDebug() << "Не удалось загрузить или открыть HamDefs.xml";
@@ -273,7 +171,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-<<<<<<< HEAD
     flrig = new Flrig(settings->flrigHost, settings->flrigPort, 500, this);
     flrigLabel->setText(tr("Отключен"));
     flrigLabel->setStyleSheet("QLabel { color: red; }");
@@ -298,12 +195,6 @@ MainWindow::MainWindow(QWidget *parent)
         ui->statusbar->showMessage(QString(tr("Ошибка XML-RPC: %1 %2")).arg(QString::number(flrig->getErrorCode()), flrig->getErrorString()), 300);
     });
 //------------------------------------------------------------------------------------------------------------------------------------------
-=======
-  LoadHamDefs(); //Загрузка XML-файла с диапазонами и модуляциями
-  InitRecordsTable();
-  getCallsigns();
-  fillDefaultFreq();
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
 
     qrz = new QrzruCallbook(settings->QrzruLogin, settings->QrzruPassword);
     connect(qrz, &QrzruCallbook::error404, this, [=]() {
@@ -338,7 +229,6 @@ MainWindow::MainWindow(QWidget *parent)
     });
     connect(api, &HttpApi::callsignsUpdated, callsigns, &Callsigns::onCallsignsUpdated);
 
-<<<<<<< HEAD
     connect(ui->actionFlrig, &QAction::toggled, this, [=](bool state) {
         if (state) {
             flrig->start();
@@ -506,26 +396,6 @@ MainWindow::MainWindow(QWidget *parent)
     qInfo() << "QSOLogger v" << VERSION << " started.";
     qInfo() << "Product Name: " << QSysInfo::prettyProductName();
     RefreshRecords();
-=======
-   if(settings->catEnable) {
-       //ui->actionCAT->setChecked(true);
-       bool portAvailable = CAT->openSerial(settings->serialPort);
-       if(portAvailable) {
-           CAT->setInterval(settings->catInterval);
-           CAT->catSetBaudRate(settings->serialPortBaud.toInt());
-           CAT->catSetDataBits(settings->serialPortDataBits.toInt());
-           CAT->catSetStopBit(settings->serialPortStopBit.toInt());
-           CAT->catSetParity(settings->serialPortParity);
-           CAT->catSetFlowControl(settings->serialPortFlowControl);
-           connect(CAT, SIGNAL(cat_freq(long)), this, SLOT(setFreq(long)));
-           connect(CAT, SIGNAL(cat_band(int)), this, SLOT(setBand(int)));
-           connect(CAT, SIGNAL(cat_mode(int)), this, SLOT(setMode(int)));           
-       }
-   }
-   //api->getGeocodeByLocator("MP61QG");
-   qInfo() << "QSOLogger v." << VERSION << " started.";
-   qInfo() << "Product Name: " << QSysInfo::prettyProductName();
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1035,32 +905,8 @@ void MainWindow::SaveQso()
     QString my_cnty = qsoPanel->getStationRDA();
     newRecord.setValue("MY_CNTY", my_cnty);
 
-<<<<<<< HEAD
     if (RecordsModel->insertRecord(-1, newRecord)) {
         RecordsModel->submitAll();
-=======
-  if (RecordsModel->insertRecord(-1, newRecord)) {
-      RecordsModel->submitAll();
-      // Здесь надо отправлять QSO на сервис через API
-      int LastID = RecordsModel->query().lastInsertId().toInt();
-      QVariantList data;
-      data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
-      data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
-      api->SendQso(data);
-      data << userData.callsign << userData.oper;
-      logradio->SendQso(data);
-      RefreshRecords();
-      ScrollRecordsToTop();
-      ClearQso();
-      ui->callInput->setFocus();
-      SaveCallsignState();
-  } else {
-      QMessageBox::critical(0, "Ошибка", "Не возможно сохранить QSO. Ошибка базы данных!", QMessageBox::Ok);
-      return;
-  }
-}
-//------------------------------------------------------------------------------------------------------------------------------------------
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
 
         // Здесь надо отправлять QSO на сервис через API
         int LastID = RecordsModel->query().lastInsertId().toInt();
@@ -1225,7 +1071,6 @@ void MainWindow::onUdpLogged()
         data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
         data << QString::fromUtf8(udpServer->dx_call) << Helpers::GetBandByFreqHz(udpServer->tx_frequency_hz) << QString::fromUtf8(udpServer->mode);
         data << udpServer->tx_frequency_hz << datetime << QString::fromUtf8(udpServer->name) << QString::fromUtf8(udpServer->report_sent) << QString::fromUtf8(udpServer->report_received) << "" << "" << QString::fromUtf8(udpServer->dx_grid);
-<<<<<<< HEAD
         if(api->serviceAvailable) {
             api->SendQso(data);
             data << userData.gridsquare << userData.cnty << userData.callsign << userData.oper;
@@ -1237,11 +1082,6 @@ void MainWindow::onUdpLogged()
             Coordinates latlon = osm->locatorToCoordinates(udpServer->dx_grid);
             osm->showQSOMap(udpServer->dx_call, latlon.latitude, latlon.longitude);
         }
-=======
-        api->SendQso(data);
-        data << userData.gridsquare << "" << userData.callsign << userData.oper;
-        logradio->SendQso(data);
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
         RefreshRecords();
         ScrollRecordsToTop();
         qsoPanel->clearQSO();
@@ -1313,7 +1153,6 @@ void MainWindow::onUdpLoggedADIF()
         data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
         data << udpServer->adifData.value("CALL") << udpServer->adifData.value("BAND") << udpServer->adifData.value("MODE") << freqHz;
         data << datetime << "" << udpServer->adifData.value("RST_SENT") << udpServer->adifData.value("RST_RCVD") << "" << "" << udpServer->adifData.value("GRIDSQUARE");
-<<<<<<< HEAD
 
         if(api->serviceAvailable) {
             api->SendQso(data);
@@ -1327,11 +1166,6 @@ void MainWindow::onUdpLoggedADIF()
             Coordinates latlon = osm->locatorToCoordinates(udpServer->adifData.value("GRIDSQUARE"));
             osm->showQSOMap(udpServer->adifData.value("CALL"), latlon.latitude, latlon.longitude);
         }
-=======
-        api->SendQso(data);
-        data << userData.gridsquare << "" << userData.callsign << userData.oper;
-        logradio->SendQso(data);
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
         RefreshRecords();
         ScrollRecordsToTop();
         qsoPanel->clearQSO();
@@ -1468,19 +1302,12 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
 
         QVariantList data;
         data << dbid << userData.qsosu_callsign_id << userData.qsosu_operator_id;
-<<<<<<< HEAD
         data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_gridsquare << my_cnty;
         if(api->serviceAvailable) {
             api->SendQso(data);
             data << userData.callsign << userData.oper;
             if(settings->logRadioAccessToken.count() > 0) logradio->SendQso(data);
         }
-=======
-        data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_cnty << my_gridsquare;
-        api->SendQso(data);
-        data << userData.callsign << userData.oper;
-        if(settings->logRadioAccessToken.count() > 0) logradio->SendQso(data);
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1532,7 +1359,7 @@ bool MainWindow::readXmlfile()
 
 #ifdef Q_OS_MAC
     // В macOS: внутри .app → подняться на 3 уровня
-    basePath = QCoreApplication::applicationDirPath() + "/HamDefs.xml";
+    basePath = QCoreApplication::applicationDirPath() + "/../../../HamDefs.xml";
 #elif defined(Q_OS_WIN) || defined(Q_OS_LINUX)
     // В Windows и Linux файл лежит рядом с .exe
     basePath = QCoreApplication::applicationDirPath() + "/HamDefs.xml";
@@ -1586,7 +1413,7 @@ bool MainWindow::readXmlfile()
             modeList.append(mData);
             qsoPanel->addModeItems(Mode.attribute("mode_name"));
         }
-    }    
+    }
     return true;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -2156,7 +1983,7 @@ QList<PrefixEntry> MainWindow::loadPrefixDatabase()
 
     #ifdef Q_OS_MAC
         // В macOS: внутри .app → подняться на 3 уровня
-        basePath = QCoreApplication::applicationDirPath() + "/Prefixes.xml";
+        basePath = QCoreApplication::applicationDirPath() + "/../../../Prefixes.xml";
     #elif defined(Q_OS_WIN) || defined(Q_OS_LINUX)
         // В Windows и Linux файл лежит рядом с .exe
         basePath = QCoreApplication::applicationDirPath() + "/Prefixes.xml";

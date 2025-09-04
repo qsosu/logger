@@ -43,11 +43,8 @@
 #include "ham_definitions.h"
 #include "chatcontroller.h"
 
-<<<<<<< HEAD
+
 #define VERSION "3.0"
-=======
-#define VERSION "2.1.3"
->>>>>>> 0970747629afdc850f928d686202adb08cbd4a29
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
