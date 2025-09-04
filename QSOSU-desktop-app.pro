@@ -115,7 +115,7 @@ win32:RC_ICONS = $$PWD/resources/images/icon32.ico
 
 # Указываем иконку для macOS
 macx {
-    ICON =
+    ICON = $$PWD/resources/images/logo.icns
     QMAKE_INFO_PLIST = $$PWD/Info.plist
 }
 
