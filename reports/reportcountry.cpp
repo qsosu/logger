@@ -1,6 +1,14 @@
+/**********************************************************************************************************
+Description :  ReportCountry dialog class for displaying and printing a summary of QSO counts per country.
+Version     :  1.0.0
+Date        :  20.08.2025
+Author      :  R9JAU
+Comments    :  - Supports printing with headers, footers, and pagination.
+               - Automatically scales flag images to fit the cell while maintaining aspect ratio.
+**********************************************************************************************************/
+
 #include "reportcountry.h"
 #include "ui_reportcountry.h"
-
 #include <QSqlError>
 #include <QPrinterInfo>
 #include <QDebug>
@@ -17,7 +25,7 @@ ReportCountry::ReportCountry(QSqlDatabase db, QWidget *parent) :
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ColorTableModel *model = new ColorTableModel(this);
-    model->setHorizontalHeaderLabels({"Флаг", "Страна", "Континент", "Количество QSO"});
+    model->setHorizontalHeaderLabels({tr("Флаг"), tr("Страна (территория)"), tr("Континент"), tr("Количество QSO")});
 
     QSqlQuery query(db);
 
@@ -40,7 +48,7 @@ ReportCountry::ReportCountry(QSqlDatabase db, QWidget *parent) :
 
             model->setItem(row, 0, new QStandardItem(country_code));
 
-            if(country == "") model->setItem(row, 1, new QStandardItem("Не определено"));
+            if(country == "") model->setItem(row, 1, new QStandardItem(tr("Не определено")));
             else model->setItem(row, 1, new QStandardItem(country));
 
             model->setItem(row, 2, new QStandardItem(continent));
@@ -138,7 +146,7 @@ void ReportCountry::printTableAdvanced(QTableView *tableView, QWidget *parent)
         titleFont.setBold(true);
         painter.setFont(titleFont);
 
-        QString title = "Отчет по отработанным территориям и странам";
+        QString title = tr("Отчет по отработанным территориям и странам");
         painter.drawText(pageRect.left() + leftMargin + 100, pageRect.top() + 130, title);
         painter.setFont(font);
 
@@ -223,7 +231,7 @@ void ReportCountry::printTableAdvanced(QTableView *tableView, QWidget *parent)
         }
 
         // Подвал
-        QString footer = QString("Страница %1    Дата: %2")
+        QString footer = QString(tr("Страница %1    Дата: %2"))
                 .arg(page)
                 .arg(QDate::currentDate().toString("dd.MM.yyyy"));
 

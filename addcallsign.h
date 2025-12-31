@@ -36,6 +36,9 @@ private slots:
 signals:
     void addCallsign();
 
+protected:
+    void changeEvent(QEvent *event) override;
+
 private:
     Ui::Addcallsign *ui;
 

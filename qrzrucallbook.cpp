@@ -11,23 +11,24 @@ QrzruCallbook::QrzruCallbook(QString username, QString password, QObject *parent
     session_id = "";
     session_time = QDateTime::fromString("01-01-1970 00:00:00", "MM-dd-yyyy hh:mm:ss");
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void QrzruCallbook::GetApiSession() {
     QByteArray data = Request(QString("https://api.qrz.ru/login?u=%1&p=%2&agent=MQL").arg(username, password));
     session_id = getTagValue(data, "session_id");
     session_time = QDateTime::currentDateTime();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 QStringList QrzruCallbook::Get(QString call) {
     QString ncall = call.left(call.indexOf('/'));
     QStringList ret;
+    ret.clear();
     if (session_time.secsTo(QDateTime::currentDateTime()) > 3600) {
         GetApiSession();
     }
 
     QByteArray data = Request(QString("https://api.qrz.ru/callsign?id=%1&callsign=%2").arg(session_id, ncall));
-    qDebug().noquote() << data;
-
     QString name = getTagValue(data, "name");
     QString city = getTagValue(data, "city");
     QString qthloc = getTagValue(data, "qthloc");
@@ -40,6 +41,7 @@ QStringList QrzruCallbook::Get(QString call) {
     ret << name << city << qthloc << cnty << photo << ituz << cqz << country;
     return ret;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void QrzruCallbook::LoadPhoto(QString imageUrl)
 {
@@ -76,6 +78,7 @@ void QrzruCallbook::LoadPhoto(QString imageUrl)
         }
     }
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 QByteArray QrzruCallbook::Request(QString url) {
     QNetworkAccessManager manager;
@@ -109,9 +112,9 @@ QByteArray QrzruCallbook::Request(QString url) {
             reply->deleteLater();
         }
     }
-
     return data;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 QString QrzruCallbook::getTagValue(QByteArray data, QString tag) {
     QString value = "";
@@ -128,7 +131,27 @@ QString QrzruCallbook::getTagValue(QByteArray data, QString tag) {
             }
         }
     }
-
     xml.clear();
     return value;
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+bool QrzruCallbook::pingQrzRu()
+{
+    QNetworkAccessManager manager;
+    QEventLoop loop;
+
+    QNetworkReply *reply = manager.get(QNetworkRequest(QUrl("http://qrz.ru")));
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+
+    loop.exec(); // ждем ответа
+
+    if (reply->error() == QNetworkReply::NoError) {
+        reply->deleteLater();
+        return true;
+    } else {
+        reply->deleteLater();
+        return false;
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------

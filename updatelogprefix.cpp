@@ -1,3 +1,14 @@
+/**********************************************************************************************************
+Description :  UpdateLogPrefix dialog class for batch updating QSO records with DXCC/prefix info.
+Version     :  1.2.0
+Date        :  15.08.2025
+Author      :  R9JAU
+Comments    :
+    - Uses a local cache of PrefixEntry objects containing regex patterns for prefix matching.
+    - Efficiently updates the database using a single transaction for all records.
+***********************************************************************************************************/
+
+
 #include "updatelogprefix.h"
 #include "ui_updatelogprefix.h"
 #include <QDebug>
@@ -5,7 +16,7 @@
 #include "QRegularExpressionValidator"
 
 
-UpdateLogPrefix::UpdateLogPrefix(QSqlDatabase db, QList<PrefixEntry> entries, QWidget *parent) :
+UpdateLogPrefix::UpdateLogPrefix(QSqlDatabase db, QVector<CountryEntry> entries, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UpdateLogPrefix)
 {
@@ -15,6 +26,7 @@ UpdateLogPrefix::UpdateLogPrefix(QSqlDatabase db, QList<PrefixEntry> entries, QW
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->UpdateProgressBar->setValue(0);
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 UpdateLogPrefix::~UpdateLogPrefix()
 {
@@ -71,25 +83,21 @@ void UpdateLogPrefix::on_updateButton_clicked()
         int id = query.value(0).toInt();
         QString Callsign = query.value(1).toString();
 
-        PrefixEntry* result = findPrefixEntry(entries, Callsign);
-        if (!result) {
-            qDebug() << "Страна не найдена для позывного:" << Callsign;
-            continue;
+
+        CountryEntry result = findCountryByCall(Callsign, entries);
+        if(!result.country.isEmpty())
+        {
+            if (ui->country_cb->isChecked()) update.bindValue(":country", result.country);
+            if (ui->country_code_cb->isChecked()) update.bindValue(":country_code", countryToIso.value(result.country, ""));
+            if (ui->continent_cb->isChecked()) update.bindValue(":cont", result.continent);
+            if (ui->cqz_cb->isChecked()) update.bindValue(":cqz", result.cqZone);
+            if (ui->ituz_cb->isChecked()) update.bindValue(":ituz", result.ituZone);
         }
-
-        if (ui->country_cb->isChecked()) update.bindValue(":country", result->country);
-        if (ui->country_code_cb->isChecked()) update.bindValue(":country_code", result->country_code);
-        if (ui->continent_cb->isChecked()) update.bindValue(":cont", result->continent);
-        if (ui->cqz_cb->isChecked()) update.bindValue(":cqz", result->cqzone);
-        if (ui->ituz_cb->isChecked()) update.bindValue(":ituz", result->ituzone);
-
         update.bindValue(":id", id);
 
         if (!update.exec()) {
             qDebug() << "Ошибка обновления записи ID=" << id << ":" << update.lastError().text();
         }
-
-        delete result;
         cnt++;
 
         // Обновление прогресс-бара каждые 50 записей
@@ -107,34 +115,24 @@ void UpdateLogPrefix::on_updateButton_clicked()
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-PrefixEntry* UpdateLogPrefix::findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign)
+CountryEntry UpdateLogPrefix::findCountryByCall(const QString &call, const QVector<CountryEntry> &cty)
 {
-    QString csUpper = callsign.toUpper();
+    QString upperCall = call.toUpper();
+    CountryEntry best;
+    int bestLen = -1;
 
-    for (const auto& entry : entries) {
-        for (const auto& rawPattern : entry.regexList) {
-            QString pattern = rawPattern;
-
-            // Обработка экранирования: \Z => $ (конец строки)
-            pattern.replace("\\Z", "$");
-
-            // Явно указываем, что сравнение с начала строки
-            if (!pattern.startsWith("^")) {
-                pattern = "^" + pattern;
-            }
-
-            QRegularExpression re(pattern);
-            if (!re.isValid()) {
-                qDebug() << "Invalid regex:" << pattern;
-                continue;
-            }
-
-            if (re.match(csUpper).hasMatch()) {
-                return new PrefixEntry(entry);
+    for (const auto &c : cty) {
+        for (const QString &p : c.prefixes) {
+            QString up = p.toUpper();
+            if (upperCall.startsWith(up)) {
+                if (up.length() > bestLen) {
+                    best = c;
+                    bestLen = up.length();
+                }
             }
         }
     }
-    return nullptr;
+    return best;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -142,4 +140,12 @@ void UpdateLogPrefix::on_closeButton_clicked()
 {
     close();
 }
+//------------------------------------------------------------------------------------------------------------------------------------------
 
+void UpdateLogPrefix::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------

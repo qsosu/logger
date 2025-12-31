@@ -1,3 +1,14 @@
+/**********************************************************************************************************
+Description :  ImportADIF dialog class for importing QSOs from ADIF (*.adi) files into the database.
+Version     :  1.2.0
+Date        :  11.07.2025
+Author      :  R9JAU
+Comments    :  - Automatically matches callsigns against prefix entries to determine country, continent,
+            :  and country code.
+            :  - Handles TIME_ON, TIME_OFF, QSO_DATE, FREQ, RST, BAND, MODE, NAME, QTH, GRIDSQUARE,
+            :  COMMENT, ITUZ, CQZ.
+**********************************************************************************************************/
+
 #include "importadif.h"
 #include "ui_importadif.h"
 #include <QRegularExpression>
@@ -7,7 +18,7 @@
 #include <QSqlError>
 #include <QDebug>
 
-ImportADIF::ImportADIF(QSqlDatabase dbconn, QList<PrefixEntry> entries, QWidget *parent) :
+ImportADIF::ImportADIF(QSqlDatabase dbconn, QVector<CountryEntry> entries, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ImportADIF)
 {
@@ -115,18 +126,18 @@ void ImportADIF::on_importButton_clicked()
         //qso.continent = rec.fields.value("CONT");
         qso.comment = rec.fields.value("QSLMSG");
 
-        PrefixEntry* result = findPrefixEntry(entries, qso.call);
-        if (result) {
-            qso.country = result->country;
-            qso.country_code = result->country_code;
-            qso.continent = result->continent;
+        CountryEntry result = findCountryByCall(qso.call, entries);
+        if(!result.country.isEmpty())
+        {
+            qso.country = result.country;
+            qso.country_code = countryToIso.value(result.country, "");
+            qso.continent = result.continent;
         } else {
-            qDebug() << "Страна не определена: " << qso.call;
             qso.country = "";
             qso.country_code = "";
             qso.continent = "";
+            qDebug() << "Страна не определена: " << qso.call;
         }
-        delete result;
 
         InsertQso(qso);
         ui->QSOCountLabel->setText("Загружено QSO: " + QString::number(++cnt));
@@ -135,7 +146,7 @@ void ImportADIF::on_importButton_clicked()
     }
 
     QSqlQuery cpy_query(db);
-    cpy_query.prepare("INSERT INTO RECORDS (callsign_id, qsosu_callsign_id, qsosu_operator_id, STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, "
+    cpy_query.prepare("INSERT  OR IGNORE INTO RECORDS (callsign_id, qsosu_callsign_id, qsosu_operator_id, STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, "
                   "TIME_ON, TIME_OFF, BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COMMENT, sync_state, HASH, ITUZ, CQZ, COUNTRY, COUNTRY_CODE, CONT, SYNC_QSO) "
                   "SELECT callsign_id, qsosu_callsign_id, qsosu_operator_id, STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, "
                   "TIME_ON, TIME_OFF, BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COMMENT, sync_state, HASH, ITUZ, CQZ, COUNTRY, COUNTRY_CODE, CONT, SYNC_QSO "
@@ -151,9 +162,9 @@ void ImportADIF::InsertQso(const QSO &qso)
 {
     QSqlQuery query(db);
     query.prepare("INSERT INTO TEMP_RECORDS (callsign_id, qsosu_callsign_id, qsosu_operator_id, STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, TIME_ON, TIME_OFF,"
-                  "BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COUNTRY_CODE, COUNTRY, CONT, COMMENT, sync_state, HASH, ITUZ, CQZ, COUNTRY, CONT, SYNC_QSO) "
-                  "VALUES (:callsign_id, :qsosu_callsign_id, :qsosu_operator_id, :station_callsign, :operator, :my_gridsquare, :my_cnty, :call, :qso_date, :time_on, :time_off,"
-                  ":band, :freq, :mode, :rst_sent, :rst_rcvd, :name, :qth, :gridsquare, :cnty, :country_code, :country, :cont, :comment, :sync_state, :hash, :ituz, :cqz, :country, :cont, :sync_qso)");
+                  "BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COUNTRY_CODE, COUNTRY, CONT, COMMENT, sync_state, HASH, ITUZ, CQZ, COUNTRY, CONT, SYNC_QSO, QSL_STATUS) "
+                  "VALUES (:callsign_id, :qsosu_callsign_id, :qsosu_operator_id, :station_callsign, :operator, :my_gridsquare, :my_cnty, :call, :qso_date, :time_on, :time_off, :band, :freq, "
+                  ":mode, :rst_sent, :rst_rcvd, :name, :qth, :gridsquare, :cnty, :country_code, :country, :cont, :comment, :sync_state, :hash, :ituz, :cqz, :country, :cont, :sync_qso, :qsl_status)");
     query.bindValue(":callsign_id", getLocalCallsignID(ui->OperatorComboBox->currentText()));
     query.bindValue(":qsosu_callsign_id", getCallsignID(ui->OperatorComboBox->currentText()));
     query.bindValue(":qsosu_operator_id", getCallsignID(qso.oper));
@@ -184,6 +195,7 @@ void ImportADIF::InsertQso(const QSO &qso)
     query.bindValue(":country_code", qso.country_code);
     query.bindValue(":cont", qso.continent.toUpper());
     query.bindValue(":sync_qso", 0);
+    query.bindValue(":qsl_status", 0);
 
     if (!query.exec()) qDebug() << "ERROR Insert into database." << query.lastError() << "\n";
 }
@@ -249,33 +261,23 @@ void ImportADIF::getCallsigns() {
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-PrefixEntry* ImportADIF::findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign)
+CountryEntry ImportADIF::findCountryByCall(const QString &call, const QVector<CountryEntry> &cty)
 {
-    QString csUpper = callsign.toUpper();
+    QString upperCall = call.toUpper();
+    CountryEntry best;
+    int bestLen = -1;
 
-    for (const auto& entry : entries) {
-        for (const auto& rawPattern : entry.regexList) {
-            QString pattern = rawPattern;
-
-            // Обработка экранирования: \Z => $ (конец строки)
-            pattern.replace("\\Z", "$");
-
-            // Явно указываем, что сравнение с начала строки
-            if (!pattern.startsWith("^")) {
-                pattern = "^" + pattern;
-            }
-
-            QRegularExpression re(pattern);
-            if (!re.isValid()) {
-                qDebug() << "Invalid regex:" << pattern;
-                continue;
-            }
-
-            if (re.match(csUpper).hasMatch()) {
-                return new PrefixEntry(entry);
+    for (const auto &c : cty) {
+        for (const QString &p : c.prefixes) {
+            QString up = p.toUpper();
+            if (upperCall.startsWith(up)) {
+                if (up.length() > bestLen) {
+                    best = c;
+                    bestLen = up.length();
+                }
             }
         }
     }
-    return nullptr;
+    return best;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

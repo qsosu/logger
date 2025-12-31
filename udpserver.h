@@ -65,6 +65,7 @@ public:
     QByteArray exchange_sent;
     QByteArray exchange_rcvd;
     QByteArray propmode;
+
     /* QSOLoggedADIF data*/
     QMap<QString, QString> adifData;
     QString call_name;

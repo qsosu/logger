@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>About</class>
  <widget class="QDialog" name="About">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -37,9 +34,6 @@
   <property name="windowIcon">
    <iconset resource="resources.qrc">
     <normaloff>:/resources/images/icon32.ico</normaloff>:/resources/images/icon32.ico</iconset>
-  </property>
-  <property name="whatsThis">
-   <string notr="true"/>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">

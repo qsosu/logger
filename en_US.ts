@@ -36,7 +36,7 @@
 Авторы: Alexey.K (R2SI)
 Ильдар.М (R9JAU)
 Артём.С (R4CAT)</source>
-        <translation>QSO Logger — this is a prototype of a hardware magazine 
+        <translation type="vanished">QSO Logger — this is a prototype of a hardware magazine 
 capable of transmitting data to the QSO.SU and act
 as an agent for interacting with software for digital
 communications.
@@ -45,6 +45,27 @@ Software version: 2.0.3, API version: 1.0
 Authors: Alexey.K (R2SI)
 Ildar.M (R9JAU)
 Artem.S (R4CAT)</translation>
+    </message>
+    <message>
+        <source>QSO Logger — это прототип аппаратного журнала 
+способного передавать данные на QSO.SU и выступать 
+в роли агента для взаимодействия с ПО для цифровых 
+видов связи.
+
+Версия ПО: 3.0, версия API: 2.0
+Авторы: Alexey.K (R2SI)
+Ильдар.М (R9JAU)
+Артём.С (R4CAT)</source>
+        <translation>QSO Logger — this is a prototype of a hardware magazine 
+capable of transmitting data to the QSO.SU and act
+as an agent for interacting with software for digital
+communications.
+
+Software version: 3.0, API version: 2.0
+Authors: Alexey.K (R2SI)
+Ildar.M (R9JAU)
+Artem.S (R4CAT) {3.0,?} {2.0
+?} {2S?} {9J?} {4C?}</translation>
     </message>
 </context>
 <context>
@@ -160,29 +181,41 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <source>QTH локатор не может быть меньше 4 символов.</source>
         <translation>The QTH locator cannot be less than 4 characters long.</translation>
     </message>
+    <message>
+        <source>RDA не может быть меньше 4 символов.</source>
+        <translation>The RDA cannot be less than 4 characters.</translation>
+    </message>
+    <message>
+        <source>ITUZ не может быть меньше 1 символа.</source>
+        <translation>ITUZ must not be less than 1 character.</translation>
+    </message>
+    <message>
+        <source>CQZ не может быть меньше 1 символа.</source>
+        <translation>CQZ cannot be less than 1 character.</translation>
+    </message>
 </context>
 <context>
     <name>Adif</name>
     <message>
         <source>Экспорт в ADIF</source>
-        <translation>Export to ADIF</translation>
+        <translation type="vanished">Export to ADIF</translation>
     </message>
     <message>
         <source>Комментарий к QSO, будет отображен в тэге COMMENT (если отсутствует):</source>
-        <translation>A comment on the QSO will be displayed in the COMMENT tag (if missing):</translation>
+        <translation type="vanished">A comment on the QSO will be displayed in the COMMENT tag (if missing):</translation>
     </message>
     <message>
         <source>Сохранить ADIF файл...</source>
-        <translation>Save the ADIF file...</translation>
+        <translation type="vanished">Save the ADIF file...</translation>
     </message>
     <message>
         <source>Создан файл - %1
 QSO в файле - %2</source>
-        <translation>File created - %1 QSO in file - %2</translation>
+        <translation type="vanished">File created - %1 QSO in file - %2</translation>
     </message>
     <message>
         <source>Информация</source>
-        <translation>Information</translation>
+        <translation type="vanished">Information</translation>
     </message>
 </context>
 <context>
@@ -291,6 +324,33 @@ QSO в файле - %2</source>
         <source>Позывной отклонен!</source>
         <translation>The call sign is rejected!</translation>
     </message>
+    <message>
+        <source>Статус</source>
+        <translation>Status</translation>
+    </message>
+</context>
+<context>
+    <name>ChatController</name>
+    <message>
+        <source>Радиолюбительские чаты</source>
+        <translation>Amateur radio chats</translation>
+    </message>
+    <message>
+        <source>Введите сообщение</source>
+        <translation>Enter a message</translation>
+    </message>
+    <message>
+        <source>Отправить</source>
+        <translation>Send</translation>
+    </message>
+    <message>
+        <source>Осталось: </source>
+        <translation>Remain:</translation>
+    </message>
+    <message>
+        <source> символов</source>
+        <translation>characters</translation>
+    </message>
 </context>
 <context>
     <name>ConfirmQSO</name>
@@ -338,16 +398,59 @@ QSO в файле - %2</source>
         <source>Подтверждение QSO</source>
         <translation>Confirm QSOs</translation>
     </message>
+    <message>
+        <source>Добавлять отсутствующие в базе связи</source>
+        <translation>Add missing links in the database</translation>
+    </message>
+</context>
+<context>
+    <name>ExportADIF</name>
+    <message>
+        <source>Экспорт связей в ADIF</source>
+        <translation>Exporting QSO to ADIF</translation>
+    </message>
+    <message>
+        <source>Параметры экспорта</source>
+        <translation>Export Parameters</translation>
+    </message>
+    <message>
+        <source>Все записи</source>
+        <translation>All entries</translation>
+    </message>
+    <message>
+        <source>В интервале от:</source>
+        <translation>In the range from:</translation>
+    </message>
+    <message>
+        <source>до:</source>
+        <translation>before:</translation>
+    </message>
+    <message>
+        <source>Позывной станции:</source>
+        <translation>Station callsign:</translation>
+    </message>
+    <message>
+        <source>Позывной оператора:</source>
+        <translation>Operator&apos;s callsign:</translation>
+    </message>
+    <message>
+        <source>Экспортировать</source>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
 </context>
 <context>
     <name>Geolocation</name>
     <message>
         <source>Карта связей</source>
-        <translation>A map of connections</translation>
+        <translation>A map of QSO</translation>
     </message>
     <message>
         <source>Расстояние: 0 км. </source>
-        <translation>Distance: 0 km. </translation>
+        <translation type="vanished">Distance: 0 km. </translation>
     </message>
     <message>
         <source>Азимут: 0 град.</source>
@@ -356,6 +459,61 @@ QSO в файле - %2</source>
     <message>
         <source>Широта: 0&apos;N  Долгота: 0&apos;E</source>
         <translation>Latitude: 0&apos;N  Longitude: 0&apos;E</translation>
+    </message>
+    <message>
+        <source>Расстояние: 0 км.</source>
+        <translation>Distance: 0 km. </translation>
+    </message>
+</context>
+<context>
+    <name>ImportADIF</name>
+    <message>
+        <source>Dialog</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Параметры загрузки</source>
+        <translation>Download Parameters</translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Позывной станции:</source>
+        <translation>Station callsign:</translation>
+    </message>
+    <message>
+        <source>Оператор:</source>
+        <translation>Operator:</translation>
+    </message>
+    <message>
+        <source>Загружено QSO:</source>
+        <translation>QSO uploaded:</translation>
+    </message>
+    <message>
+        <source>Всего QSO:</source>
+        <translation>Total QSO:</translation>
+    </message>
+    <message>
+        <source>Импортировать</source>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Загрузка лога из ADIF  файла</source>
+        <translation>Uploading a log from an ADIF file</translation>
+    </message>
+    <message>
+        <source>Ошибка</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Не выбран файл</source>
+        <translation>The file is not selected</translation>
     </message>
 </context>
 <context>
@@ -369,7 +527,7 @@ QSO в файле - %2</source>
     <name>MainWindow</name>
     <message>
         <source>Новое QSO</source>
-        <translation>New QSO</translation>
+        <translation type="vanished">New QSO</translation>
     </message>
     <message>
         <source>Позывной</source>
@@ -381,19 +539,15 @@ QSO в файле - %2</source>
     </message>
     <message>
         <source>Время в UTC</source>
-        <translation>Time in UTC</translation>
-    </message>
-    <message>
-        <source>H:mm:ss</source>
-        <translation></translation>
+        <translation type="vanished">Time in UTC</translation>
     </message>
     <message>
         <source>Текущее время</source>
-        <translation>Current time</translation>
+        <translation type="vanished">Current time</translation>
     </message>
     <message>
         <source>Не пользователь лога</source>
-        <translation>Not a user of the log</translation>
+        <translation type="vanished">Not a user of the log</translation>
     </message>
     <message>
         <source>Член СРР</source>
@@ -405,19 +559,15 @@ QSO в файле - %2</source>
     </message>
     <message>
         <source>Частота, МГц</source>
-        <translation>Frequency, MHz</translation>
+        <translation type="vanished">Frequency, MHz</translation>
     </message>
     <message>
         <source>Модуляция</source>
-        <translation>Modulation</translation>
+        <translation type="vanished">Modulation</translation>
     </message>
     <message>
         <source>RST прин.</source>
         <translation>RST recc.</translation>
-    </message>
-    <message>
-        <source>59</source>
-        <translation></translation>
     </message>
     <message>
         <source>RST отпр.</source>
@@ -433,35 +583,31 @@ QSO в файле - %2</source>
     </message>
     <message>
         <source>QTH локатор</source>
-        <translation>QTH locator</translation>
-    </message>
-    <message>
-        <source>RDA/CNTY</source>
-        <translation></translation>
+        <translation type="vanished">QTH locator</translation>
     </message>
     <message>
         <source>Комментарий</source>
-        <translation>Comment</translation>
+        <translation type="vanished">Comment</translation>
     </message>
     <message>
         <source>Сохранить QSO</source>
-        <translation>Save the QSO</translation>
+        <translation type="vanished">Save the QSO</translation>
     </message>
     <message>
         <source>Очистить</source>
-        <translation>Clear</translation>
+        <translation type="vanished">Clear</translation>
     </message>
     <message>
         <source>Обновить список QSO</source>
-        <translation>Update the QSO list</translation>
+        <translation type="vanished">Update the QSO list</translation>
     </message>
     <message>
         <source>Параметры QSO</source>
-        <translation>QSO Parameters</translation>
+        <translation type="vanished">QSO Parameters</translation>
     </message>
     <message>
         <source>Позывной станции</source>
-        <translation>Station Callsign</translation>
+        <translation type="vanished">Station Callsign</translation>
     </message>
     <message>
         <source>Оператор</source>
@@ -573,7 +719,7 @@ QSO в файле - %2</source>
     </message>
     <message>
         <source>Ошибка обращения к API: </source>
-        <translation>API access error: </translation>
+        <translation type="vanished">API access error: </translation>
     </message>
     <message>
         <source>Не удалось получить токен!</source>
@@ -637,7 +783,7 @@ QSO в файле - %2</source>
     </message>
     <message>
         <source>Не возможно сохранить QSO. Не введен позывной кореспондента!</source>
-        <translation>The QSO cannot be saved. The correspondent&apos;s call sign has not been entered!</translation>
+        <translation type="vanished">The QSO cannot be saved. The correspondent&apos;s call sign has not been entered!</translation>
     </message>
     <message>
         <source>Не возможно сохранить QSO. Ошибка базы данных!</source>
@@ -653,11 +799,11 @@ QSO в файле - %2</source>
     </message>
     <message>
         <source>Сохранение настроек</source>
-        <translation>Saving settings</translation>
+        <translation type="vanished">Saving settings</translation>
     </message>
     <message>
         <source>Для применения настроек необходим перезапуск программы. Выполнить?</source>
-        <translation>To apply the settings, you need to restart the program. Execute?</translation>
+        <translation type="vanished">To apply the settings, you need to restart the program. Execute?</translation>
     </message>
     <message>
         <source>Пользователь QSO.SU</source>
@@ -673,19 +819,259 @@ QSO в файле - %2</source>
     </message>
     <message>
         <source>Экспорт выбранных в ADIF</source>
-        <translation>Exporting the selected ones to ADIF</translation>
-    </message>
-    <message>
-        <source>QSOLogger v.3.0</source>
-        <translation></translation>
+        <translation type="vanished">Exporting the selected ones to ADIF</translation>
     </message>
     <message>
         <source>Показывать предыдущие QSO</source>
         <translation>Show previos QSO</translation>
     </message>
     <message>
-        <source>QSO Logger v.</source>
+        <source>QSOLogger v3.0</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Инструменты</source>
+        <translation>Tools</translation>
+    </message>
+    <message>
+        <source>Отчеты</source>
+        <translation>Reports</translation>
+    </message>
+    <message>
+        <source>Загрузить лог с QSO.SU</source>
+        <translation>Download the log from QSO.SU</translation>
+    </message>
+    <message>
+        <source>Импорт из ADIF</source>
+        <translation>Importing from ADIF</translation>
+    </message>
+    <message>
+        <source>Обновление территорий по позывному</source>
+        <translation>Updating territories by callsign</translation>
+    </message>
+    <message>
+        <source>Проверка территории по позывному</source>
+        <translation>Checking the territory by callsign</translation>
+    </message>
+    <message>
+        <source>Отчет по странам и территориям</source>
+        <translation>Country and Territory report</translation>
+    </message>
+    <message>
+        <source>Отчет по континентам</source>
+        <translation>Report on continents</translation>
+    </message>
+    <message>
+        <source>Геомагнитная обстановка</source>
+        <translation>Geomagnetic situation</translation>
+    </message>
+    <message>
+        <source>Отчет по диапазонам</source>
+        <translation>Bands Report</translation>
+    </message>
+    <message>
+        <source>Отчет по модуляциям</source>
+        <translation>Report on modulations</translation>
+    </message>
+    <message>
+        <source>Показать монитор спотов</source>
+        <translation>Show the spot monitor</translation>
+    </message>
+    <message>
+        <source>Радиолюбительские чаты</source>
+        <translation>Amateur radio chats</translation>
+    </message>
+    <message>
+        <source>Открыть папку с логом</source>
+        <translation>Open the log folder</translation>
+    </message>
+    <message>
+        <source>QSO Logger v</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Нет связи с сервером: </source>
+        <translation>There is no connection to the server:</translation>
+    </message>
+    <message>
+        <source>Файл HamDefs.xml не найден. Завершаю работу.</source>
+        <translation>The file HamDefs.xml not found. I&apos;m finishing my work.</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Станция</source>
+        <translation>Station</translation>
+    </message>
+    <message>
+        <source>Локатор станции</source>
+        <translation>Station Locator</translation>
+    </message>
+    <message>
+        <source>CNTY станции</source>
+        <translation>CNTY stations</translation>
+    </message>
+    <message>
+        <source>ITUZ</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>CQZ</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Территория</source>
+        <translation>Territory</translation>
+    </message>
+    <message>
+        <source>Континент</source>
+        <translation>The continent</translation>
+    </message>
+    <message>
+        <source>Флаг</source>
+        <translation>Flag</translation>
+    </message>
+    <message>
+        <source>Отправить спот</source>
+        <translation>Send a spot</translation>
+    </message>
+    <message>
+        <source>Папка с логами не найдена.</source>
+        <translation>The logs folder was not found.</translation>
+    </message>
+    <message>
+        <source>Нет новых уведомлений</source>
+        <translation>There are no new notifications</translation>
+    </message>
+    <message>
+        <source>Есть новые сообщения в чате</source>
+        <translation>There are new messages in the chat</translation>
+    </message>
+    <message>
+        <source>Уровень ГМА: </source>
+        <translation type="vanished">The GMS level:</translation>
+    </message>
+    <message>
+        <source>Сервис QSO.SU: </source>
+        <translation>Service QSO.SU:</translation>
+    </message>
+    <message>
+        <source>Уровень ГМА: Нет данных</source>
+        <translation type="vanished">GMS Level: No data available</translation>
+    </message>
+    <message>
+        <source>Список серверов пуст!</source>
+        <translation>The server list is empty!</translation>
+    </message>
+    <message>
+        <source>Доступные серверы:</source>
+        <translation>Available servers:</translation>
+    </message>
+    <message>
+        <source>Подключаемся к серверу:</source>
+        <translation>Connecting to the server:</translation>
+    </message>
+    <message>
+        <source>Файл БД открыт</source>
+        <translation>The database file is open</translation>
+    </message>
+    <message>
+        <source>Всего QSO: </source>
+        <translation>Total QSO:</translation>
+    </message>
+    <message>
+        <source>Страна не найдена для позывного </source>
+        <translation>The country was not found for the call sign.</translation>
+    </message>
+    <message>
+        <source>Загрузка файла HamDefs.xml с сервера QSO.SU</source>
+        <translation>Uploading a file HamDefs.xml from the server QSO.SU</translation>
+    </message>
+    <message>
+        <source>Открытие файла HamDefs.xml с диска.</source>
+        <translation>Opening a file HamDefs.xml from yandex. Disk.</translation>
+    </message>
+    <message>
+        <source>Файл перевода найден: </source>
+        <translation>The translation file was found:</translation>
+    </message>
+    <message>
+        <source>Файл перевода не найден.</source>
+        <translation>The translation file was not found.</translation>
+    </message>
+    <message>
+        <source>Ошибка выполнения запроса: </source>
+        <translation>Request execution error:</translation>
+    </message>
+    <message>
+        <source>Введите территории по позывному:</source>
+        <translation type="vanished">Enter the territories by callsign:</translation>
+    </message>
+    <message>
+        <source>Введите позывной:</source>
+        <translation type="vanished">Enter the callsign:</translation>
+    </message>
+    <message>
+        <source>Позывной: </source>
+        <translation>Callsign:</translation>
+    </message>
+    <message>
+        <source>Страна: </source>
+        <translation>A country:</translation>
+    </message>
+    <message>
+        <source>Код страны: </source>
+        <translation>Country code:</translation>
+    </message>
+    <message>
+        <source>Континент: </source>
+        <translation>The continent:</translation>
+    </message>
+    <message>
+        <source>Страна не найдена для позывного: </source>
+        <translation>The country was not found for the callsign.:</translation>
+    </message>
+    <message>
+        <source>Уровень ГМА: %1</source>
+        <translation type="vanished">GMS Level: %1</translation>
+    </message>
+    <message>
+        <source>Есть новые сообщения</source>
+        <translation>There are new messages</translation>
+    </message>
+    <message>
+        <source>Лента новостей</source>
+        <translation>News Feed</translation>
+    </message>
+    <message>
+        <source>Нет новых сообщений в чате</source>
+        <translation>There are no new messages in the chat</translation>
+    </message>
+    <message>
+        <source>Отчет по годам</source>
+        <translation>Report by years</translation>
+    </message>
+    <message>
+        <source>Уровень ГО: </source>
+        <translation>GS level</translation>
+    </message>
+    <message>
+        <source>Уровень ГО: Нет данных</source>
+        <translation>GS level: No data</translation>
+    </message>
+    <message>
+        <source>Уровень ГО: %1</source>
+        <translation>GS level: %1</translation>
+    </message>
+    <message>
+        <source>Ввод комментария:</source>
+        <translation>Enter comment:</translation>
+    </message>
+    <message>
+        <source>Введите комментарий к споту:</source>
+        <translation>Enter a comment for the spot:</translation>
     </message>
 </context>
 <context>
@@ -708,6 +1094,104 @@ QSO в файле - %2</source>
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <source>Определение территории по позывному:</source>
+        <translation>Defining the territory by Callsign:</translation>
+    </message>
+    <message>
+        <source>Введите позывной:</source>
+        <translation>Enter the callsign:</translation>
+    </message>
+    <message>
+        <source>Поиск DX</source>
+        <translation>DX Search</translation>
+    </message>
+</context>
+<context>
+    <name>QSOPanel</name>
+    <message>
+        <source>Позывной станции:</source>
+        <translation>Station callsign:</translation>
+    </message>
+    <message>
+        <source>Позывной оператора:</source>
+        <translation>Operator&apos;s callsign:</translation>
+    </message>
+    <message>
+        <source>Дата:</source>
+        <translation>Date:</translation>
+    </message>
+    <message>
+        <source>Реальное время</source>
+        <translation>Real time</translation>
+    </message>
+    <message>
+        <source>Диапазон:</source>
+        <translation>Band:</translation>
+    </message>
+    <message>
+        <source>Модуляция:</source>
+        <translation>Modulation:</translation>
+    </message>
+    <message>
+        <source>Частота, МГц:</source>
+        <translation>Frequency, MHz:</translation>
+    </message>
+    <message>
+        <source>QTH локатор:</source>
+        <translation>QTH locator:</translation>
+    </message>
+    <message>
+        <source>Позывной:</source>
+        <translation>Callsign:</translation>
+    </message>
+    <message>
+        <source>Имя:</source>
+        <translation>Name:</translation>
+    </message>
+    <message>
+        <source>QTH:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Локатор:</source>
+        <translation>Locator:</translation>
+    </message>
+    <message>
+        <source>RST отпр.:</source>
+        <translation>RST trans.:</translation>
+    </message>
+    <message>
+        <source>RST прин.:</source>
+        <translation>RST receive:</translation>
+    </message>
+    <message>
+        <source>Комментарий:</source>
+        <translation>Comment:</translation>
+    </message>
+    <message>
+        <source>Не пользователь QSO.SU</source>
+        <translation>Not a user QSO.SU</translation>
+    </message>
+    <message>
+        <source>Член СРР</source>
+        <translation>Member of the SRR</translation>
+    </message>
+    <message>
+        <source>Время UTC:</source>
+        <translation>Time UTC:</translation>
+    </message>
+    <message>
+        <source>][</source>
+        <translation>][</translation>
+    </message>
+    <message>
+        <source>[ ]</source>
+        <translation>[ ]</translation>
+    </message>
+</context>
+<context>
     <name>Qsoedit</name>
     <message>
         <source>Параметры QSO</source>
@@ -719,7 +1203,7 @@ QSO в файле - %2</source>
     </message>
     <message>
         <source>Код страны:</source>
-        <translation>Country code:</translation>
+        <translation type="vanished">Country code:</translation>
     </message>
     <message>
         <source>ITUZ:</source>
@@ -845,16 +1329,304 @@ QSO в файле - %2</source>
         <source>Ошибка</source>
         <translation>Error</translation>
     </message>
+    <message>
+        <source>Континент:</source>
+        <translation>The continent:</translation>
+    </message>
+    <message>
+        <source>Диапазон: </source>
+        <translation>Band:</translation>
+    </message>
+    <message>
+        <source>Частота: </source>
+        <translation>Frequency:</translation>
+    </message>
+    <message>
+        <source>Модуляция: </source>
+        <translation>Modulation:</translation>
+    </message>
+    <message>
+        <source>Все</source>
+        <translation>All</translation>
+    </message>
+</context>
+<context>
+    <name>ReportBands</name>
+    <message>
+        <source>Отчет по диапазонам</source>
+        <translation>Bands Report</translation>
+    </message>
+    <message>
+        <source>Печать</source>
+        <translation>Print:</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Диапазон</source>
+        <translation>Band</translation>
+    </message>
+    <message>
+        <source>Количество QSO</source>
+        <translation>Number of QSOs</translation>
+    </message>
+    <message>
+        <source>Отчёт по диапазонам и количеству связей</source>
+        <translation>Report on bands and QSO count</translation>
+    </message>
+    <message>
+        <source>Кол-во</source>
+        <translation>Quantity</translation>
+    </message>
+    <message>
+        <source>Страница %1    Дата: %2</source>
+        <translation>Page %1    Date: %2</translation>
+    </message>
+</context>
+<context>
+    <name>ReportContinent</name>
+    <message>
+        <source>Отчет по отработанным континентам</source>
+        <translation>Report on spent continents</translation>
+    </message>
+    <message>
+        <source>Печать</source>
+        <translation>Print</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Африка</source>
+        <translation>Africa</translation>
+    </message>
+    <message>
+        <source>Антарктида</source>
+        <translation>Antarctica</translation>
+    </message>
+    <message>
+        <source>Азия</source>
+        <translation>Asia</translation>
+    </message>
+    <message>
+        <source>Европа</source>
+        <translation>Europe</translation>
+    </message>
+    <message>
+        <source>Северная Америка</source>
+        <translation>North America</translation>
+    </message>
+    <message>
+        <source>Океания</source>
+        <translation>Oceania</translation>
+    </message>
+    <message>
+        <source>Южная Америка</source>
+        <translation>South America</translation>
+    </message>
+    <message>
+        <source>Не определено</source>
+        <translation>Not defined</translation>
+    </message>
+    <message>
+        <source>Неизвестно</source>
+        <translation>Is unknown</translation>
+    </message>
+    <message>
+        <source>Страница %1    Дата: %2</source>
+        <translation>Page %1    Date: %2</translation>
+    </message>
+    <message>
+        <source>Континент</source>
+        <translation>The continent</translation>
+    </message>
+    <message>
+        <source>Код континента</source>
+        <translation>The code of the continent</translation>
+    </message>
+    <message>
+        <source>Количество QSO</source>
+        <translation>Number of QSOs</translation>
+    </message>
+</context>
+<context>
+    <name>ReportCountry</name>
+    <message>
+        <source>Отчет по отработанным территориям и странам</source>
+        <translation>Report on developed territories and countries</translation>
+    </message>
+    <message>
+        <source>Печать</source>
+        <translation>Print</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Флаг</source>
+        <translation>Flag</translation>
+    </message>
+    <message>
+        <source>Страна</source>
+        <translation type="vanished">A country</translation>
+    </message>
+    <message>
+        <source>Континент</source>
+        <translation>The continent</translation>
+    </message>
+    <message>
+        <source>Количество QSO</source>
+        <translation>Number of QSOs</translation>
+    </message>
+    <message>
+        <source>Не определено</source>
+        <translation>Not defined</translation>
+    </message>
+    <message>
+        <source>Страница %1    Дата: %2</source>
+        <translation>Page %1    Date: %2</translation>
+    </message>
+    <message>
+        <source>Страна (территория)</source>
+        <translation>Country (territory)</translation>
+    </message>
+</context>
+<context>
+    <name>ReportModes</name>
+    <message>
+        <source>Отчет по модуляциям</source>
+        <translation>Report on modulations</translation>
+    </message>
+    <message>
+        <source>Печать</source>
+        <translation>Print</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Модуляция</source>
+        <translation>Modulation</translation>
+    </message>
+    <message>
+        <source>Количество QSO</source>
+        <translation>Number of QSOs</translation>
+    </message>
+    <message>
+        <source>Отчёт по модуляциям и количеству связей</source>
+        <translation>Report on modulations and QSO count</translation>
+    </message>
+    <message>
+        <source>Кол-во</source>
+        <translation>Quantity</translation>
+    </message>
+    <message>
+        <source>Страница %1    Дата: %2</source>
+        <translation>Page %1    Date: %2</translation>
+    </message>
+</context>
+<context>
+    <name>ReportSunChart</name>
+    <message>
+        <source>Геомагнитная обстановка</source>
+        <translation>Geomagnetic situation</translation>
+    </message>
+    <message>
+        <source>Загрузка данных...</source>
+        <translation>Uploading data...</translation>
+    </message>
+    <message>
+        <source>Время: %1
+Уровень: %2</source>
+        <translation>Time: %1
+Level: %2</translation>
+    </message>
+    <message>
+        <source>1 — Нет заметных возмущений.</source>
+        <translation>1 — There are no noticeable disturbances.</translation>
+    </message>
+    <message>
+        <source>2 — Небольшие возмущения.</source>
+        <translation>2 — Small disturbances.</translation>
+    </message>
+    <message>
+        <source>3 — Слабая геомагнитная буря.</source>
+        <translation>3 — Weak geomagnetic storm.</translation>
+    </message>
+    <message>
+        <source>4 — Малая геомагнитная буря.</source>
+        <translation>4 — Small geomagnetic storm.</translation>
+    </message>
+    <message>
+        <source>5 — Умеренная геомагнитная буря.</source>
+        <translation>5 — Moderate geomagnetic storm.</translation>
+    </message>
+    <message>
+        <source>6 — Сильная геомагнитная буря.</source>
+        <translation>6 — Strong geomagnetic storm.</translation>
+    </message>
+    <message>
+        <source>7 — Жесткий геомагнитный шторм.</source>
+        <translation>7 — Severe geomagnetic storm.</translation>
+    </message>
+    <message>
+        <source>8 — Экстремальный шторм.</source>
+        <translation>8 — Extreme storm.</translation>
+    </message>
+    <message>
+        <source>Загрузка данных.</source>
+        <translation>Uploading data.</translation>
+    </message>
+    <message>
+        <source>Пожалуйста, подождите</source>
+        <translation>Please wait.</translation>
+    </message>
+</context>
+<context>
+    <name>ReportYear</name>
+    <message>
+        <source>Статистика QSO по годам</source>
+        <translation>QSO statistics by year</translation>
+    </message>
+    <message>
+        <source>Печать</source>
+        <translation>Print</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Годы</source>
+        <translation>Years</translation>
+    </message>
+    <message>
+        <source>Количество QSO</source>
+        <translation>Number of QSOs</translation>
+    </message>
+    <message>
+        <source>Статистика по годам</source>
+        <translation>QSO statistics by year</translation>
+    </message>
+    <message>
+        <source>Кол-во</source>
+        <translation>Quantity</translation>
+    </message>
+    <message>
+        <source>Страница %1    Дата: %2</source>
+        <translation>Page %1    Date: %2</translation>
+    </message>
 </context>
 <context>
     <name>Settings</name>
     <message>
-        <source>Dialog</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Сохранить настройки</source>
-        <translation>Save Settings</translation>
+        <translation type="vanished">Save Settings</translation>
     </message>
     <message>
         <source>Закрыть</source>
@@ -1237,6 +2009,362 @@ Confirmation key: </translation>
     <message>
         <source>Показывать карту</source>
         <translation>Show map</translation>
+    </message>
+    <message>
+        <source>Вид таблицы</source>
+        <translation>Table view</translation>
+    </message>
+    <message>
+        <source>Включение / отлючение столбцов</source>
+        <translation>Enabling/disabling columns</translation>
+    </message>
+    <message>
+        <source>Рапорт отправленный</source>
+        <translation>Report sent</translation>
+    </message>
+    <message>
+        <source>Континент</source>
+        <translation>The continent</translation>
+    </message>
+    <message>
+        <source>RDA/CNTY</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Страна</source>
+        <translation>A country</translation>
+    </message>
+    <message>
+        <source>ITUZ</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Время начала</source>
+        <translation>Start time</translation>
+    </message>
+    <message>
+        <source>Дата</source>
+        <translation>Date</translation>
+    </message>
+    <message>
+        <source>Оператор</source>
+        <translation>Operator</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>CQZ</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Время окончания</source>
+        <translation>End time</translation>
+    </message>
+    <message>
+        <source>Позывной станции</source>
+        <translation>Station Callsign</translation>
+    </message>
+    <message>
+        <source>Локатор</source>
+        <translation>Locator</translation>
+    </message>
+    <message>
+        <source>Локатор станции</source>
+        <translation>Station Locator</translation>
+    </message>
+    <message>
+        <source>Рапорт принятый</source>
+        <translation>Report accepted</translation>
+    </message>
+    <message>
+        <source>QTH</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Имя</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>RDA/CNTY станции</source>
+        <translation>RDA/CNTY stations</translation>
+    </message>
+    <message>
+        <source>Частота</source>
+        <translation>Frequency</translation>
+    </message>
+    <message>
+        <source>Комментарий</source>
+        <translation>Comment</translation>
+    </message>
+    <message>
+        <source>Геолокация</source>
+        <translation>Geolocation</translation>
+    </message>
+    <message>
+        <source>Локатор: </source>
+        <translation>The locator:</translation>
+    </message>
+    <message>
+        <source>Определить по локатору</source>
+        <translation>Identify by locator</translation>
+    </message>
+    <message>
+        <source>Широта:</source>
+        <translation>Latitude:</translation>
+    </message>
+    <message>
+        <source>Долгота:</source>
+        <translation>Longitude:</translation>
+    </message>
+    <message>
+        <source>Ошибка!</source>
+        <translation>Error!</translation>
+    </message>
+    <message>
+        <source>Локатор не может быть меньше 5 символов.</source>
+        <translation>The locator must not be less than 5 characters long.</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Save</translation>
+    </message>
+</context>
+<context>
+    <name>SpotViewer</name>
+    <message>
+        <source>Монитор спотов</source>
+        <translation>Spot Monitor</translation>
+    </message>
+    <message>
+        <source>Показать фильтры</source>
+        <translation>Show filters</translation>
+    </message>
+    <message>
+        <source>Фильтры</source>
+        <translation>Filters</translation>
+    </message>
+    <message>
+        <source>Диапазон: </source>
+        <translation>Band:</translation>
+    </message>
+    <message>
+        <source>Модуляция: </source>
+        <translation>Modulation:</translation>
+    </message>
+    <message>
+        <source>Континент: </source>
+        <translation>The continent:</translation>
+    </message>
+    <message>
+        <source>Все</source>
+        <translation>All</translation>
+    </message>
+    <message>
+        <source>Африка</source>
+        <translation>Africa</translation>
+    </message>
+    <message>
+        <source>Азия</source>
+        <translation>Asia</translation>
+    </message>
+    <message>
+        <source>Европа</source>
+        <translation>Europe</translation>
+    </message>
+    <message>
+        <source>Океания</source>
+        <translation>Oceania</translation>
+    </message>
+    <message>
+        <source>Южная Америка</source>
+        <translation>South America</translation>
+    </message>
+    <message>
+        <source>Северная Америка</source>
+        <translation>North America</translation>
+    </message>
+    <message>
+        <source>Страна: </source>
+        <translation>A country:</translation>
+    </message>
+    <message>
+        <source>Поиск DX</source>
+        <translation>DX Search</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Скрыть фильтры ▶</source>
+        <translation>Hide filters ▶</translation>
+    </message>
+    <message>
+        <source>Показать фильтры ▼</source>
+        <translation>Show filters ▼</translation>
+    </message>
+    <message>
+        <source>Спотер</source>
+        <translation>Spoter</translation>
+    </message>
+    <message>
+        <source>Позывной DX</source>
+        <translation>Callsign DX</translation>
+    </message>
+    <message>
+        <source>Флаг</source>
+        <translation>Flag</translation>
+    </message>
+    <message>
+        <source>Страна</source>
+        <translation>A country</translation>
+    </message>
+    <message>
+        <source>Континент</source>
+        <translation>The continent</translation>
+    </message>
+    <message>
+        <source>Модуляция</source>
+        <translation>Modulation</translation>
+    </message>
+    <message>
+        <source>Диапазон</source>
+        <translation>Band</translation>
+    </message>
+    <message>
+        <source>Частота</source>
+        <translation>Frequency</translation>
+    </message>
+    <message>
+        <source>Информация</source>
+        <translation>Information</translation>
+    </message>
+    <message>
+        <source>Дата</source>
+        <translation>Date</translation>
+    </message>
+    <message>
+        <source>Введите позывной:</source>
+        <translation type="vanished">Enter the callsign:</translation>
+    </message>
+    <message>
+        <source>Позывной не найден</source>
+        <translation>Callsign not found</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateLogPrefix</name>
+    <message>
+        <source>Обновление территории (страны) по позывному</source>
+        <translation>Updating the territory (country) by callsign</translation>
+    </message>
+    <message>
+        <source>Параметры обновления</source>
+        <translation>Update Parameters</translation>
+    </message>
+    <message>
+        <source>Страна (территория)</source>
+        <translation>Country (territory)</translation>
+    </message>
+    <message>
+        <source>CQZ</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Код страны (территории)</source>
+        <translation>Country (territory) code</translation>
+    </message>
+    <message>
+        <source>ITUZ</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Континент</source>
+        <translation>The continent</translation>
+    </message>
+    <message>
+        <source>Обновить</source>
+        <translation>Refresh</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+</context>
+<context>
+    <name>UploadingLogs</name>
+    <message>
+        <source>Подтверждение QSO</source>
+        <translation>Confirm QSOs</translation>
+    </message>
+    <message>
+        <source>Загрузить</source>
+        <translation>Download</translation>
+    </message>
+    <message>
+        <source>Закрыть</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Параметры загрузки</source>
+        <translation>Download Parameters</translation>
+    </message>
+    <message>
+        <source>Позывной станции:</source>
+        <translation>Station callsign:</translation>
+    </message>
+    <message>
+        <source>Оператор:</source>
+        <translation>Operator:</translation>
+    </message>
+    <message>
+        <source>Всего QSO:</source>
+        <translation>Total QSO:</translation>
+    </message>
+    <message>
+        <source>Загружено QSO:</source>
+        <translation>QSO uploaded:</translation>
+    </message>
+    <message>
+        <source>Загрузка лога с QSO.SU</source>
+        <translation>Download the log from QSO.SU</translation>
+    </message>
+    <message>
+        <source>Всего QSO: </source>
+        <translation>Total QSO:</translation>
+    </message>
+    <message>
+        <source>Загружено QSO: </source>
+        <translation>QSO uploaded:</translation>
+    </message>
+</context>
+<context>
+    <name>qsopanel</name>
+    <message>
+        <source>Новое QSO</source>
+        <translation>New QSO</translation>
+    </message>
+    <message>
+        <source>Панель QSO</source>
+        <translation>QSO Panel</translation>
+    </message>
+    <message>
+        <source>Сохранить</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Очистить</source>
+        <translation>Clear</translation>
+    </message>
+    <message>
+        <source>Обновить</source>
+        <translation>Refresh</translation>
+    </message>
+    <message>
+        <source>][</source>
+        <translation>][</translation>
     </message>
 </context>
 </TS>

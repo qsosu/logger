@@ -1,3 +1,12 @@
+/**********************************************************************************************************
+Description :  ReportModes dialog class for displaying and printing a summary of QSO counts per mode (modulation type).
+Version     :  1.0.0
+Date        :  20.08.2025
+Author      :  R9JAU
+Comments    :  - Supports printing with headers, footers, and pagination.
+               - Dynamically calculates column widths to fit content and page layout.
+**********************************************************************************************************/
+
 #include "reportmodes.h"
 #include "ui_reportmodes.h"
 #include <QSqlError>
@@ -17,7 +26,7 @@ ReportModes::ReportModes(QSqlDatabase db, QWidget *parent) :
 
     QStandardItemModel *model = new QStandardItemModel(this);
     model->setColumnCount(2);
-    model->setHorizontalHeaderLabels({"Модуляция", "Количество QSO"});
+    model->setHorizontalHeaderLabels({tr("Модуляция"), tr("Количество QSO")});
 
     db.commit();
     QSqlQuery query(db);
@@ -129,7 +138,7 @@ void ReportModes::printModesReport(QTableView *tableView, QWidget *parent)
         titleFont.setBold(true);
         painter.setFont(titleFont);
         painter.drawText(pageRect.left() + leftMargin + 100, pageRect.top() + 130,
-                         "Отчёт по модуляциям и количеству связей");
+                         tr("Отчёт по модуляциям и количеству связей"));
         painter.setFont(font);
 
         int x = pageRect.left() + leftMargin;
@@ -143,12 +152,12 @@ void ReportModes::printModesReport(QTableView *tableView, QWidget *parent)
 
         painter.drawRect(x, y, colBandWidth, rowHeight);
         painter.drawText(QRect(x + 5, y, colBandWidth - 10, rowHeight),
-                         Qt::AlignVCenter | Qt::AlignLeft, "Модуляция");
+                         Qt::AlignVCenter | Qt::AlignLeft, tr("Модуляция"));
         x += colBandWidth;
 
         painter.drawRect(x, y, colCountWidth, rowHeight);
         painter.drawText(QRect(x + 5, y, colCountWidth - 10, rowHeight),
-                         Qt::AlignVCenter | Qt::AlignLeft, "Кол-во");
+                         Qt::AlignVCenter | Qt::AlignLeft, tr("Кол-во"));
         y += rowHeight;
 
         // Данные
@@ -179,7 +188,7 @@ void ReportModes::printModesReport(QTableView *tableView, QWidget *parent)
         }
 
         // Футер
-        QString footer = QString("Страница %1    Дата: %2")
+        QString footer = QString(tr("Страница %1    Дата: %2"))
                 .arg(page)
                 .arg(QDate::currentDate().toString("dd.MM.yyyy"));
         QFont footerFont = font;

@@ -1,9 +1,21 @@
+/*******************************************************************************************************************
+Description :  UploadingLogs dialog class for downloading and inserting QSO logs from QSO.SU into local database.
+               Supports paging, temporary storage in TEMP_RECORDS, frequency normalization, prefix/DXCC resolution,
+               and progress tracking in UI.
+Version     :  1.0.0
+Date        :  12.08.2025
+Author      :  R9JAU
+Comments    :  - Uses HttpApi to fetch QSO logs.
+               - Supports country/continent/CQ/ITU zone resolution using PrefixEntry list.
+               - Caches callsign IDs for faster insertion.
+********************************************************************************************************************/
+
 #include "uploadinglogs.h"
 #include "ui_uploadinglogs.h"
 #include <QSqlError>
 
 
-UploadingLogs::UploadingLogs(QSqlDatabase db, Settings *settings, QList<PrefixEntry> entries, QWidget *parent) :
+UploadingLogs::UploadingLogs(QSqlDatabase db, Settings *settings, QVector<CountryEntry> entries, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UploadingLogs)
 {
@@ -41,11 +53,18 @@ void UploadingLogs::on_CloseCloseButton_clicked()
 void UploadingLogs::UploadQSOs(int count)
 {
     ui->QSOCountLabel->setText(tr("Всего QSO: ") + QString::number(count));
-    ui->UploadProgressBar->setMaximum(count);
     totalCount = count;
     bool confirmation = false;
     QString hash;
 
+    if(totalCount == 0) {
+        ui->UploadProgressBar->setValue(totalCount);
+        ui->CurrentQSOCountLabel->setText(tr("Загружено QSO: ") + QString::number(totalCount));
+        QMessageBox::information(0, tr("Загрузка QSO"), tr("Нет QSO для загрузки."), QMessageBox::Ok);
+        return;
+    }
+
+    ui->UploadProgressBar->setMaximum(count);
     dbid = getMaxID();
 
     QSqlQuery query(db);
@@ -95,18 +114,19 @@ void UploadingLogs::UploadQSOs(int count)
         }
 
         QString country_code = "";
-        PrefixEntry* result = findPrefixEntry(entries, call);
-        if (result) {
-            country = result->country;
-            country_code = result->country_code;
-            cont = result->continent;
+
+        CountryEntry result = findCountryByCall(call, entries);
+        if(!result.country.isEmpty())
+        {
+            country = result.country;
+            country_code = countryToIso.value(result.country, "");
+            cont = result.continent;
         } else {
             country = "";
             country_code = "";
             cont = "";
             qDebug() << "Страна не определена: " << call;
         }
-        delete result;
 
         // Биндим значения
         query.bindValue(":callsign_id", callsignToLocalID.value(station_callsign, 0));
@@ -184,15 +204,17 @@ void UploadingLogs::getCashCallsignID()
 
 void UploadingLogs::getCallsigns()
 {
-    QString callsign;
+    int type;
     ui->CallSignComboBox->clear();
+    ui->OperatorComboBox->clear();
 
     QSqlQuery query(db);
-    query.exec("SELECT name FROM callsigns");
+    query.exec("SELECT type, name FROM callsigns");
     while(query.next()) {
-        callsign = query.value(0).toString();
-        ui->CallSignComboBox->addItem(callsign);
-        ui->OperatorComboBox->addItem(callsign);
+        type = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        ui->CallSignComboBox->addItem(name);
+        if(type == 0) ui->OperatorComboBox->addItem(name);
     }
 }
 
@@ -244,11 +266,10 @@ void UploadingLogs::on_UploadButton_clicked()
     qso_count = 0;
 
     getCashCallsignID();
+    int station_id = getCallsignID(ui->CallSignComboBox->currentText());
+    int operator_id = getCallsignID(ui->OperatorComboBox->currentText());
 
-    int callsign_id = getCallsignID(ui->CallSignComboBox->currentText());
-    int operator_id = getCallsignID(ui->CallSignComboBox->currentText());
-
-    api->getLogs(callsign_id, operator_id, page, page_count);
+    api->getLogs(operator_id, station_id, page, page_count);
 
     QEventLoop loop;
     QObject::connect(api, &HttpApi::uploadQSOs, &loop, &QEventLoop::quit);
@@ -258,14 +279,14 @@ void UploadingLogs::on_UploadButton_clicked()
 
     for(int j = 2; j <= pages; j++)
     {
-       api->getLogs(callsign_id, operator_id, j, page_count);
+       api->getLogs(operator_id, station_id, j, page_count);
        QObject::connect(api, &HttpApi::uploadQSOs, &loop, &QEventLoop::quit);
        loop.exec();
     }
 
     db.transaction();
     QSqlQuery cpy(db);
-    if(!cpy.exec("INSERT INTO RECORDS (callsign_id, qsosu_callsign_id, qsosu_operator_id, STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, "
+    if(!cpy.exec("INSERT OR IGNORE INTO RECORDS (callsign_id, qsosu_callsign_id, qsosu_operator_id, STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, "
                  "TIME_ON, TIME_OFF, BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COUNTRY_CODE, COUNTRY, CONT, COMMENT, sync_state, HASH, ITUZ, CQZ, SYNC_QSO) "
                  "SELECT callsign_id, qsosu_callsign_id, qsosu_operator_id, STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, "
                  "TIME_ON, TIME_OFF, BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COUNTRY_CODE, COUNTRY, CONT, COMMENT, sync_state, HASH, ITUZ, CQZ, SYNC_QSO "
@@ -277,9 +298,7 @@ void UploadingLogs::on_UploadButton_clicked()
         qDebug() << "ERROR clearing TEMP_RECORDS:" << cpy.lastError();
     }
     db.commit();
-
     emit db_updated();
-    delete api;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -358,33 +377,23 @@ QString UploadingLogs::normalizeFreq(const QString &freqStr, const QString &band
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-PrefixEntry* UploadingLogs::findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign)
+CountryEntry UploadingLogs::findCountryByCall(const QString &call, const QVector<CountryEntry> &cty)
 {
-    QString csUpper = callsign.toUpper();
+    QString upperCall = call.toUpper();
+    CountryEntry best;
+    int bestLen = -1;
 
-    for (const auto& entry : entries) {
-        for (const auto& rawPattern : entry.regexList) {
-            QString pattern = rawPattern;
-
-            // Обработка экранирования: \Z => $ (конец строки)
-            pattern.replace("\\Z", "$");
-
-            // Явно указываем, что сравнение с начала строки
-            if (!pattern.startsWith("^")) {
-                pattern = "^" + pattern;
-            }
-
-            QRegularExpression re(pattern);
-            if (!re.isValid()) {
-                qDebug() << "Invalid regex:" << pattern;
-                continue;
-            }
-
-            if (re.match(csUpper).hasMatch()) {
-                return new PrefixEntry(entry);
+    for (const auto &c : cty) {
+        for (const QString &p : c.prefixes) {
+            QString up = p.toUpper();
+            if (upperCall.startsWith(up)) {
+                if (up.length() > bestLen) {
+                    best = c;
+                    bestLen = up.length();
+                }
             }
         }
     }
-    return nullptr;
+    return best;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

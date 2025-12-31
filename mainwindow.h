@@ -30,6 +30,7 @@
 #include "qsoedit.h"
 #include "cat_interface.h"
 #include "confirmqso.h"
+#include "localcallbook.h"
 #include "uploadinglogs.h"
 #include "geolocation.h"
 #include "updatelogprefix.h"
@@ -38,10 +39,12 @@
 #include "reports/reportsunchart.h"
 #include "reports/reportbands.h"
 #include "reports/reportmodes.h"
+#include "reports/reportyear.h"
 #include "telnetclient.h"
 #include "spotviewer.h"
 #include "ham_definitions.h"
 #include "chatcontroller.h"
+#include "globe.h"
 
 
 #define VERSION "3.0"
@@ -49,8 +52,6 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
-
 
 
 class MainWindow : public QMainWindow
@@ -75,10 +76,6 @@ public:
   QList<bandData> bandList;
   QList<modeData> modeList;
 
-  QList<PrefixEntry> entries;
-  QList<PrefixEntry> loadPrefixDatabase();
-  PrefixEntry* findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign);
-
 private:
   Ui::MainWindow *ui;
   QSOPanel *qsoPanel;
@@ -94,9 +91,11 @@ private:
   ConfirmQSO *confirmQSO;
   UploadingLogs *uploadLogs;
   Geolocation *osm;
+  Globe *globe;
+  GlobeContainer *gc;
   ChatController *chats;
   bool COMPortAvailable;
-  QMap<QString, PrefixEntry> prefixMap;
+  //QMap<QString, PrefixEntry> prefixMap;
 
   QString database_file;
   QSqlDatabase db;
@@ -104,9 +103,11 @@ private:
   ColorSqlTableModel *PrevRecordsModel;
   QrzruCallbook *qrz;
   QTimer *QsoSuPingTimer;
+  QTimer *QrzRuPingTimer;
   QTimer *MagStormTimer;
   ExportADIF *exp_adif;
   ImportADIF *imp_adif;
+  LocalCallbook *localCallbook;
   About *about;
   long freqCat;
   UpdateLogPrefix *update_prefix;
@@ -115,10 +116,14 @@ private:
   ReportSunChart *reportSunChart;
   ReportBands *reportBands;
   ReportModes *reportModes;
+  ReportYear *reportYear;
   TelnetClient *tclient;
   SpotViewer *spotViewer;
+  bool spotServerConnected = false;
   bool hasNewMessages = false;
   bool hasNewNews = false;
+  QVector<CountryEntry> ctyData;
+  bool serviceWasAvailable = false;
 
   QLabel *qsosuLbl;
   QLabel *qsosuLabel;
@@ -143,17 +148,19 @@ private:
   void InitPreviosQSOModel();
   void ScrollRecordsToBottom();
   void ScrollRecordsToTop();
-  void FindCallData();
+  void FindCallData(QString callsign);
   void RemoveQSOs(QModelIndexList indexes);
   void SetRecordsFilter(int log_id);
   void SyncQSOs(QModelIndexList indexes);
   void SaveFormData();
   void SaveCallsignState();
+  void ShowQSOLocation(QString callsign, QString locator);
   void lightTheme();
   void darkTheme();
   void RemoveDeferredQSOs();
   void insertDataToDeferredQSOs(int idx, QString hash);
   void EditQSO(QModelIndex index);
+  void SendSpotQSO(QModelIndex index);
   bool LoadHamDefsSync();
   bool readXmlfile();
   double BandToDefaultFreq(QString band);
@@ -162,6 +169,7 @@ private:
   QString getRepotValueFromMode(QString mode);
   int getSynchroStatus(int id);
   void PingQsoSu();
+  void PingQrzRu();
   void ShowQSOInMap();
   void showPreviosQSO(QString call);
   void setLanguage();
@@ -171,6 +179,8 @@ private:
   void MagStormUpdate();
   void saveHeaderState(QTableView *tableView);
   void restoreHeaderState(QTableView *tableView);
+  QVector<CountryEntry> loadCtyDatabase(const QString &fileName);
+  CountryEntry findCountryByCall(const QString &call, const QVector<CountryEntry> &cty);
 
 protected:
   void keyPressEvent(QKeyEvent *event) override;
@@ -197,11 +207,11 @@ private slots:
   void onModeChanged(QString mode);
   void onUdpLogged();
   void onUdpLoggedADIF();
-  void UpdateMeasurement(QJsonArray data);
+  void UpdateMeasurement(QJsonObject data);
   void showBellIcon();
   void showNotificationIcon();
   void openNewsWindow();
-  void setSpotQSO(QString call, QString band, double freq, QString mode);
+  void setSpotInfo(QString call, QString band, double freq, QString mode);
   void doubleClickedQSO(QModelIndex idx);
   void doubleClickedPrevQSO(QModelIndex idx);
   void on_actionConfirmQSOs_triggered();
@@ -221,5 +231,7 @@ private slots:
   void on_actionExportADIF_triggered();
   void on_actionChats_triggered();
   void on_actionShowLogLocation_triggered();
+  void on_actionReportYear_triggered();
+  void on_actionGlobe_triggered();
 };
 #endif // MAINWINDOW_H

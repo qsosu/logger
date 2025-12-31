@@ -25,5 +25,4 @@ signals:
     void distanceChanged(QString dist_str);
     void azimuthChanged(QString azimut_str);
     void callLatLonChanged(QString callLatLon_str);
-
 };

@@ -1,11 +1,21 @@
+/**********************************************************************************************************
+Description :  cat_Interface class for CAT (Computer Aided Transceiver) control via serial port.
+            :  Supports reading and setting frequency, band, and mode of the radio.
+            :  Handles serial communication, periodic polling, and converts radio-specific modes to
+            :  internal representation.
+Version     :  1.0.0
+Date        :  10.04.2025
+Author      :  R9JAU
+Comments    :  - Handles common radios with different FA/FB frequency digit lengths.
+**********************************************************************************************************/
+
+
 #include "cat_interface.h"
 #include <QDebug>
 #include <string>
-//#include "QtTest/QTest"
 
 
-#define TIMEOUT 10
-
+#define TIMEOUT 20
 
 cat_Interface::cat_Interface(bool catEnable, QObject *parent)
     : QObject{parent}
@@ -15,8 +25,10 @@ cat_Interface::cat_Interface(bool catEnable, QObject *parent)
     catTimer = new QTimer(this);
 
     connect(catTimer, &QTimer::timeout, this, [=]() {
-        sendCommand("FA;");
-        sendCommand("MD;");
+        if(catEnable) {
+            sendCommand("FA;");
+            sendCommand("MD;");
+        }
     });
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -56,15 +68,14 @@ bool cat_Interface::closeSerial()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-
 void cat_Interface::sendCommand(const char *cmd)
 {
-    if(serialPort->isOpen())
+    if(!catEnable) return;
+    if (serialPort->isOpen())
     {
         serialPort->write(cmd);
-        if(!serialPort->waitForBytesWritten(TIMEOUT)) {
+        if (!serialPort->waitForBytesWritten(TIMEOUT)) {
             qDebug() << "CAT Serial Port Write Error. " << serialPort->errorString();
-            //catTimer->stop();
         }
     }
 }
@@ -72,33 +83,40 @@ void cat_Interface::sendCommand(const char *cmd)
 
 void cat_Interface::portRead()
 {
+    if(!catEnable) return;
     QByteArray responseData = serialPort->readAll();
-    while (serialPort->waitForReadyRead(TIMEOUT)) /*qDebug() << "Trx answer:" << QString::fromUtf8(responseData)*/;
+    while (serialPort->waitForReadyRead(TIMEOUT))
+        responseData += serialPort->readAll();
 
-    if(((responseData[0] == 'F')&&(responseData[1] == 'A'))||((responseData[0] == 'I')&&(responseData[1] == 'F'))) {
+    //qDebug() << "Read Port: " << responseData; //Отладочный вывод
+
+    if (((responseData[0] == 'F') && (responseData[1] == 'A')) ||
+        ((responseData[0] == 'I') && (responseData[1] == 'F')))
+    {
         sscanf(responseData, "FA%11lu;", &freq);
-        band = freqToBand(freq);
 
-        if(freq != old_freq) {
+        if (freq != old_freq) {
             emit cat_freq(freq);
-            //qDebug() << "Freq: " << freq;
             old_freq = freq;
         }
-        if(band != old_band) {
+
+        band = freqToBand(freq);
+
+        if (band != old_band) {
             emit cat_band(band);
-            //qDebug() << "Band: " << band;
             old_band = band;
         }
     }
-    if((responseData[0] == 'M')&&(responseData[1] == 'D')) {
+
+    if ((responseData[0] == 'M') && (responseData[1] == 'D'))
+    {
         sscanf(responseData, "MD%2d;", &mode);
-        if(mode != old_mode) {
+        if (mode != old_mode) {
             convertMode(mode);
-            //qDebug() << "Mode: " << mode;
             old_mode = mode;
         }
     }
-    //responseData.clear();
+    responseData.clear();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -147,30 +165,14 @@ void cat_Interface::setBand(int band)
 void cat_Interface::setMode(int mode)
 {
     switch(mode) {
-        case 0:
-            sendCommand("MD1;"); //LSB
-            break;
-        case 1:
-            sendCommand("MD2;"); //USB
-            break;
-        case 2:
-            sendCommand("MD3;"); //CW
-            break;
-        case 3 :
-            sendCommand("MD9;"); //FSK
-            break;
-        case 4 :
-            sendCommand("MD9;"); //FSK
-            break;
-        case 5:
-            sendCommand("MD4;"); //FM
-            break;
-        case 6:
-            sendCommand("MD5;"); //AM
-            break;
-        default:
-            sendCommand("MD6;"); //FSK-R
-            break;
+        case 0: sendCommand("MD1;"); break; //LSB
+        case 1: sendCommand("MD2;"); break; //USB
+        case 2: sendCommand("MD3;"); break; //CW
+        case 3: sendCommand("MD9;"); break; //FSK
+        case 4: sendCommand("MD9;"); break; //FSK
+        case 5: sendCommand("MD4;"); break; //FM
+        case 6: sendCommand("MD5;"); break; //AM
+        default: sendCommand("MD6;"); break; //FSK-R
     };
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -179,7 +181,7 @@ void cat_Interface::setFreq(long f)
 {
    char fr[15];
 
-   if((f > 1810000)&&(f < 52000000))
+   if((f > 1800000)&&(f < 52000000))
    {
        sprintf(fr, "FA%11d;", f);
        sendCommand(fr);
@@ -190,12 +192,12 @@ void cat_Interface::setFreq(long f)
 
 int cat_Interface::freqToBand(long f)
 {
-    if (f >=   1810000 && f <=   2000000)  { band = 2;}         // 160m
-    else if (f >=   3500000 && f <=   3800000)  { band = 3; }   // 80m
+    if (f >=   1800000 && f <=   2000000)  { band = 2;}         // 160m
+    else if (f >=   3000000 && f <=   3800000)  { band = 3; }   // 80m
     else if (f >=   7000000 && f <=   7200000)  { band = 5; }   // 40m
-    else if (f >=  10100000 && f <=  10150000)  { band = 6; }   // 30m
+    else if (f >=  10000000 && f <=  10150000)  { band = 6; }   // 30m
     else if (f >=  14000000 && f <=  14350000)  { band = 7; }   // 20m
-    else if (f >=  18068000 && f <=  18168000)  { band = 8; }   // 17m
+    else if (f >=  18000000 && f <=  18168000)  { band = 8; }   // 17m
     else if (f >=  21000000 && f <=  21450000)  { band = 9; }   // 15m
     else if (f >=  24890000 && f <=  24990000)  { band = 10; }  // 12m
     else if (f >=  28000000 && f <=  29700000)  { band = 11; }  // 10m
@@ -252,17 +254,20 @@ void cat_Interface::convertMode(int mode)
 {
     int res;
 
-    if(mode == 0) { res = 0; }       //None (setting failure)
-    else if(mode == 1) { res = 0; }  //LSB
-    else if(mode == 2) { res = 1; }  //USB
-    else if(mode == 3) { res = 2; }  //CW
-    else if(mode == 4) { res = 5; }  //FM
-    else if(mode == 5) { res = 6; }  //AM
-    else if(mode == 6) { res = 3; }  //FSK
-    else if(mode == 7) { res = 2; }  //CW-R
-    else if(mode == 8) { res = 0; }  //None (setting failure)
-    else if(mode == 9) { res = 3; }  //FSK-R
-    else { res = 0; }                //out of range
+    switch (mode)
+    {
+        case 0: res = 0; break; //None (setting failure)
+        case 1: res = 0; break; //LSB
+        case 2: res = 1; break; //USB
+        case 3: res = 2; break; //CW
+        case 4: res = 5; break; //FM
+        case 5: res = 6; break; //AM
+        case 6: res = 3; break; //FSK
+        case 7: res = 2; break; //CW-R
+        case 8: res = 0; break; //None (setting failure)
+        case 9: res = 3; break; //FSK-R
+        default: res = 0; break; //out of range
+    };
     emit cat_mode(res);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -379,7 +384,7 @@ byte rig_group = (digitalRead(RIG_JMP_1) * 2) + digitalRead(RIG_JMP_0);
             break;
     }
 */
-
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 
 

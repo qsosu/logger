@@ -6,6 +6,7 @@ About::About(QWidget *parent)
     , ui(new Ui::About)
 {
     ui->setupUi(this);
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->Info->setFont(QFont("Roboto", 9, QFont::Normal, false));
 }
 //--------------------------------------------------------------------------------------------------------------------

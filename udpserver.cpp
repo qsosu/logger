@@ -1,7 +1,19 @@
+/**********************************************************************************************************
+Description :  UdpServer class implementation for receiving and optionally retransmitting UDP packets.
+            :  Handles both structured binary messages and ASCII (ADIF) messages.
+Version     :  1.0.0
+Date        :  07.06.2025
+Author      :  R9JAU
+Comments    :  - Can start a UDP server on any specified port and bind to all network interfaces.
+            :  - Supports optional retransmission of received UDP packets to a local port.
+            :  - Differentiates between structured binary packets and ASCII ADIF packets:
+            :       * Structured packets contain predefined fields: Heartbeat, QSOLogged, etc.
+            :       * ASCII packets are parsed as ADIF lines and stored in a key-value map.
+***********************************************************************************************************/
+
+
 #include <QRegularExpression>
 #include "udpserver.h"
-
-
 
 UdpServer::UdpServer(QObject *parent)
     : QObject{parent}
@@ -77,7 +89,8 @@ void UdpServer::process(QByteArray data)
     case QSOLogged:
         qDebug() << "Received UDP message. Type: LOGGED, Payload size (bytes):" << data.size();
         in >> id >> time_off >> dx_call >> dx_grid >> tx_frequency_hz >> mode >> report_sent >> report_received >> tx_power >> comments >> name >> time_on >> operator_call >> my_call >> my_grid >> exchange_sent >> exchange_rcvd >> propmode;
-        qDebug() << "Structed data [id, time_off, dx_call, dx_grid, tx_frequency_hz, mode, report_sent, report_received, tx_power, comments, name, time_on, operator_call, my_call, my_grid, exchange_sent, exchange_rcvd, propmode]:" << id << time_off << dx_call << dx_grid << tx_frequency_hz << mode << report_sent << report_received << tx_power << comments << name << time_on << operator_call << my_call << my_grid << exchange_sent << exchange_rcvd << propmode;
+        qDebug() << "Structed data [id, time_off, dx_call, dx_grid, tx_frequency_hz, mode, report_sent, report_received, tx_power, comments, name, time_on, operator_call, my_call, my_grid, exchange_sent, exchange_rcvd, propmode]:"
+                 << id << time_off << dx_call << dx_grid << tx_frequency_hz << mode << report_sent << report_received << tx_power << comments << name << time_on << operator_call << my_call << my_grid << exchange_sent << exchange_rcvd << propmode;
         emit logged();
         break;
     }
@@ -97,6 +110,7 @@ void UdpServer::parseAdifQSO(const QString &line)
 {
     // Разбивать строку на части с помощью '<' и '>'
     QStringList parts = line.split('<', Qt::SkipEmptyParts);
+    adifData.clear();
 
     for (const QString &part : parts) {
         // Найти позицию первого символа ':' для извлечения ключа и значения

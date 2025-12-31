@@ -1,3 +1,16 @@
+/**********************************************************************************************************
+Description :  Implementation of the Geolocation class, which provides a dialog window with an interactive
+            :  map for visualizing QSOs. The class allows setting QTH location, displaying markers for
+            :  contacts, drawing connection paths, and calculating distance/azimuth between points.
+            :  Includes conversion from Maidenhead Locator to geographic coordinates.
+Version     :  1.0.0
+Date        :  12.04.2025
+Author      :  R9JAU
+Comments    :  Uses QQuickWidget with MapView QML for rendering the map. Integrates MapController
+            :  to manage markers, polylines, and coordinate calculations.
+***********************************************************************************************************/
+
+
 #include "geolocation.h"
 #include "ui_geolocation.h"
 #include <QQuickItem>
@@ -89,6 +102,9 @@ void Geolocation::setQSOMarker(QString call, double lat, double lng)
 void Geolocation::clearMarkers()
 {
     controller.clearMarkers();
+    m_distance->setText(tr("Расстояние: 0 км."));
+    m_azimuth->setText(tr("Азимут: 0 град."));
+    m_callLatLon->setText(tr("Широта: 0'N  Долгота: 0'E"));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

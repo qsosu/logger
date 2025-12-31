@@ -6,8 +6,10 @@
 #include "ham_definitions.h"
 #include "settings.h"
 #include "httpapi.h"
+#include "waitspinner.h"
 #include <QtWidgets>
 #include <QTimer>
+
 
 namespace Ui {
 class Qsoedit;
@@ -60,6 +62,7 @@ private:
     QGraphicsScene *scene;
     QGraphicsTextItem *textItem;
     QStringList userData;
+    WaitSpinner *spinner;
 
     bool load_flag;
     QTimer *resizeTimer; // Таймер для отслеживания окончания изменения размера

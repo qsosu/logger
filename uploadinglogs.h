@@ -17,7 +17,7 @@ class UploadingLogs : public QDialog
     Q_OBJECT
 
 public:
-    explicit UploadingLogs(QSqlDatabase db, Settings *settings, QList<PrefixEntry> entries, QWidget *parent = nullptr);
+    explicit UploadingLogs(QSqlDatabase db, Settings *settings, QVector<CountryEntry> entries, QWidget *parent = nullptr);
     ~UploadingLogs();
 
     int totalCount;
@@ -44,13 +44,13 @@ private:
     Ui::UploadingLogs *ui;
     QSqlDatabase db;
     Settings *settings;
-    QList<PrefixEntry> entries;
+    QVector<CountryEntry> entries;
     HttpApi *api;
     int dbid;
     QMap<QString,int> callsignToID;
     QMap<QString,int> callsignToLocalID;
     QString normalizeFreq(const QString &freqStr, const QString &band);
-    PrefixEntry* findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign);
+    CountryEntry findCountryByCall(const QString &call, const QVector<CountryEntry> &cty);
 };
 
 #endif // UPLOADINGLOGS_H

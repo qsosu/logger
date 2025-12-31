@@ -49,7 +49,7 @@ class ImportADIF : public QDialog
     Q_OBJECT
 
 public:
-    explicit ImportADIF(QSqlDatabase dbconn, QList<PrefixEntry> entries, QWidget *parent = nullptr);
+    explicit ImportADIF(QSqlDatabase dbconn, QVector<CountryEntry> entries, QWidget *parent = nullptr);
     ~ImportADIF();
     QSqlDatabase db;
     int dbid;
@@ -68,8 +68,8 @@ private slots:
 
 private:
     Ui::ImportADIF *ui;
-    QList<PrefixEntry> entries;
-    PrefixEntry* findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign);
+    QVector<CountryEntry> entries;
+    CountryEntry findCountryByCall(const QString &call, const QVector<CountryEntry> &cty);
     void getCallsigns();
 
 signals:

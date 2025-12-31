@@ -1,3 +1,12 @@
+/**********************************************************************************************************
+Description :  Addcallsign dialog class for adding a new amateur radio callsign.
+Version     :  1.1.0
+Date        :  02.03.2025
+Author      :  R9JAU
+Comments    :  - Validators ensure proper format: alphanumeric callsigns, ITU (1-90), CQ (1-40).
+**********************************************************************************************************/
+
+
 #include "addcallsign.h"
 #include "ui_addcallsign.h"
 #include <QMessageBox>
@@ -95,3 +104,11 @@ void Addcallsign::on_CnlCallsignBtn_clicked()
     close();
 }
 //--------------------------------------------------------------------------------------------------------------------
+
+void Addcallsign::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------

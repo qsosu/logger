@@ -16,7 +16,6 @@
 #include "cat_interface.h"
 
 
-
 class ColorSQLTableModel : public QSqlQueryModel
 {
     Q_OBJECT
@@ -70,7 +69,7 @@ class SpotViewer : public QDialog
     Q_OBJECT
 
 public:
-    explicit SpotViewer(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, QList<PrefixEntry>& entries, cat_Interface *cat, QWidget *parent = nullptr);
+    explicit SpotViewer(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, QVector<CountryEntry>& entries, cat_Interface *cat, QWidget *parent = nullptr);
     ~SpotViewer();
     void loadData();
     void toggleFilters();
@@ -86,13 +85,16 @@ private slots:
 public slots:
     void updateSpots();
 
+protected:
+    void changeEvent(QEvent *event) override;
+
 private:
     Ui::SpotViewer *ui;
     QSqlDatabase db;
     ColorSQLTableModel *model;
     QList<bandData> bandList;
     QList<modeData> modeList;
-    QList<PrefixEntry> entries;
+    QVector<CountryEntry> entries;
 
     // Словарь: отображаемое имя → код континента
     QMap<QString, QString> continentMap = {

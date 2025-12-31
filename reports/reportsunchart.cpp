@@ -1,3 +1,13 @@
+/**********************************************************************************************************
+Description :  ReportSunChart dialog class for visualizing geomagnetic storm data.
+Version     :  1.2.0
+Date        :  13.08.2025
+Author      :  R9JAU
+Comments    :  - Loads geomagnetic storm measurements from the database and plots them on a scrollable chart.
+               - Supports zooming via horizontal scrollbar and resizes dynamically.
+               - Displays a color-coded legend explaining storm levels (1–8).
+**********************************************************************************************************/
+
 #include "reportsunchart.h"
 #include "ui_reportsunchart.h"
 #include <climits>
@@ -51,7 +61,7 @@ void ReportSunChart::showMagneticStormChart()
     QVector<QPair<QDateTime, int>> data;
 
     // Прогресс-бар
-    QProgressDialog progress("Загрузка данных...", "", 0, query.size());
+    QProgressDialog progress(tr("Загрузка данных..."), "", 0, query.size());
     progress.setWindowModality(Qt::ApplicationModal);
     progress.setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     progress.setMinimumDuration(0);
@@ -184,7 +194,7 @@ void ReportSunChart::updateVisibleChart()
             QPen(Qt::NoPen),
             QBrush(levelColors[qBound(0, value - 1, 7)])
         );
-        dot->setToolTip(QString("Время: %1\nУровень: %2")
+        dot->setToolTip(QString(tr("Время: %1\nУровень: %2"))
                         .arg(entry.first.toString("yyyy-MM-dd HH:mm"))
                         .arg(value));
     }
@@ -237,14 +247,14 @@ void ReportSunChart::updateVisibleChart()
     layout->setSpacing(4);
 
     QStringList legendTexts = {
-        "1 — Нет заметных возмущений.",
-        "2 — Небольшие возмущения.",
-        "3 — Слабая геомагнитная буря.",
-        "4 — Малая геомагнитная буря.",
-        "5 — Умеренная геомагнитная буря.",
-        "6 — Сильная геомагнитная буря.",
-        "7 — Жесткий геомагнитный шторм.",
-        "8 — Экстремальный шторм."
+        tr("1 — Нет заметных возмущений."),
+        tr("2 — Небольшие возмущения."),
+        tr("3 — Слабая геомагнитная буря."),
+        tr("4 — Малая геомагнитная буря."),
+        tr("5 — Умеренная геомагнитная буря."),
+        tr("6 — Сильная геомагнитная буря."),
+        tr("7 — Жесткий геомагнитный шторм."),
+        tr("8 — Экстремальный шторм.")
     };
 
     for (int i = 0; i < legendTexts.size(); ++i) {
@@ -284,8 +294,8 @@ void ReportSunChart::InsertMeasurement(QJsonArray data)
     QSqlQuery query(db);
     const int measCount = data.size();
 
-    QProgressDialog progress("Загрузка данных.", "", 0, measCount);
-    progress.setWindowTitle("Пожалуйста, подождите");
+    QProgressDialog progress(tr("Загрузка данных."), "", 0, measCount);
+    progress.setWindowTitle(tr("Пожалуйста, подождите"));
     progress.setWindowModality(Qt::ApplicationModal);
     progress.setMinimumDuration(0);
     progress.setCancelButton(nullptr);
@@ -293,9 +303,10 @@ void ReportSunChart::InsertMeasurement(QJsonArray data)
 
     for (int i = 0; i < measCount; ++i) {
         QJsonObject obj = data[i].toObject();
-        int id = obj["id"].toInt();
-        QString timeStr = obj["measurement_time"].toString();
-        double value = obj["value"].toDouble();
+        int id = i;
+        double value = obj["index"].toDouble();
+        QJsonObject rec = obj.value("recorded_at").toObject();
+        QString timeStr = rec.value("time_st").toString();
 
         query.prepare("INSERT INTO MAGNETIC_STORM (id, measurement_time, value) "
                       "VALUES (:id, :measurement_time, :value)");

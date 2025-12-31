@@ -40,13 +40,7 @@ Settings::Settings(QWidget *parent) :
     QRegularExpressionValidator *validator = new QRegularExpressionValidator(ipRegex, this);
     ui->proxyIPAddresslineEdit->setValidator(validator);
 
-    auto re = QRegularExpression(
-        R"(^(?i)[A-R]{0,2}(?:\d{0,2}(?:[A-X]{0,2}(?:\d{0,2}(?:[A-X]{0,2})?)?)?)$)",
-        QRegularExpression::CaseInsensitiveOption
-    );
-    ui->LocatorEdit->setValidator(new QRegularExpressionValidator(re, ui->LocatorEdit));
-    ui->LocatorEdit->setMaxLength(10);
-
+    loadTranslations();
     premium = "0";
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -72,6 +66,7 @@ void Settings::read() {
     qs->beginGroup("API");
     str = qs->value("token", "").toString();
     useCallbook = qs->value("callbook", false).toBool();
+    useLocalCallbook = qs->value("local_callbook", false).toBool();
     accessToken = EncryptToken(str);
     qs->endGroup();
     qs->beginGroup("APILOGRADIORU");
@@ -133,10 +128,6 @@ void Settings::read() {
     lastRST_SENT = qs->value("rst_send", "").toString();
     lastRST_RCVD = qs->value("rst_rcvd", "").toString();
     qs->endGroup();
-    qs->beginGroup("LOCATION");
-    Latitude = qs->value("latitude", 0.0000).toDouble();
-    Longitude = qs->value("longitude", 0.0000).toDouble();
-    qs->endGroup();
     display();
     ui->saveButton->setEnabled(true);
 }
@@ -166,6 +157,7 @@ void Settings::display() {
     ui->darkTheimeCheckBox->setChecked(darkTheime);
     ui->MapCheckBox->setChecked(showMap);
     ui->CallbookCheckBox->setChecked(useCallbook);
+    ui->LocalCallbookCheckBox->setChecked(useLocalCallbook);
     ui->EnableCATcheckBox->setChecked(catEnable);
     ui->IntervalSpinBox->setValue(catInterval);
     ui->TRXTypeComboBox->setCurrentText(trxType);
@@ -175,8 +167,6 @@ void Settings::display() {
     ui->SerialPortStopBitComboBox->setCurrentText(serialPortStopBit);
     ui->SerialPortParityComboBox->setCurrentText(serialPortParity);
     ui->SerialPortFlowControlComboBox->setCurrentText(serialPortFlowControl);
-    ui->qth_lat_lineEdit->setText(QString::number(Latitude, 'f', 4));
-    ui->qth_lng_lineEdit->setText(QString::number(Longitude, 'f', 4));
     ui->vt_id->setChecked(testbit(table_row_state, 0));
     ui->vt_station_callsign->setChecked(testbit(table_row_state, 4));
     ui->vt_operator->setChecked(testbit(table_row_state, 5));
@@ -196,7 +186,7 @@ void Settings::display() {
     ui->vt_cqz->setChecked(testbit(table_row_state, 24));
     ui->vt_country->setChecked(testbit(table_row_state, 26));
     ui->vt_cont->setChecked(testbit(table_row_state, 27));
-    ui->vt_comment->setChecked(testbit(table_row_state, 28));
+    ui->vt_comment->setChecked(testbit(table_row_state, 29));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -207,6 +197,7 @@ void Settings::createDefaultFile() {
     stream << "[API]" << Qt::endl;
     stream << "token =" << Qt::endl;
     stream << "callbook =" << Qt::endl;
+    stream << "local_callbook =" << Qt::endl;
     stream << Qt::endl;
     stream << "[APILOGRADIORU]" << Qt::endl;
     stream << "token =" << Qt::endl;
@@ -256,7 +247,7 @@ void Settings::createDefaultFile() {
     stream << "[FORM]" << Qt::endl;
     stream << "band = 20M" << Qt::endl;
     stream << "mode = SSB (USB)" << Qt::endl;
-    stream << "freq = " << Qt::endl;
+    stream << "freq = 14.250000" << Qt::endl;
     stream << "callsign = " << Qt::endl;
     stream << "operator = " << Qt::endl;
     stream << "RDA = " << Qt::endl;
@@ -275,6 +266,7 @@ void Settings::save() {
     qs->beginGroup("API");
     qs->setValue("token", EncryptToken(ui->accessToken->text()));
     qs->setValue("callbook", ui->CallbookCheckBox->isChecked() ? 1 : 0);
+    qs->setValue("local_callbook", ui->LocalCallbookCheckBox->isChecked() ? 1 : 0);
     qs->endGroup();
     qs->beginGroup("APILOGRADIORU");
     qs->setValue("token", EncryptToken(ui->LogRadioAccessToken->text()));
@@ -321,12 +313,9 @@ void Settings::save() {
     qs->setValue("showmap", ui->MapCheckBox->isChecked() ? 1 : 0);
     qs->setValue("table_state", saveTableState());
     qs->endGroup();
-    qs->beginGroup("LOCATION");
-    qs->setValue("latitude", ui->qth_lat_lineEdit->text());
-    qs->setValue("longitude", ui->qth_lng_lineEdit->text());
-    qs->endGroup();
     qs->sync();
     ui->saveButton->setEnabled(false);
+
     emit SettingsChanged();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -392,9 +381,9 @@ void Settings::checkLogRadioToken()
 
 void Settings::getUserInfo(QStringList data)
 {
-   QString registered = QDateTime::fromSecsSinceEpoch(data.at(5).toLong()).toString("dd.MM.yyyy");
-   QString last_activity = QDateTime::fromSecsSinceEpoch(data.at(2).toLong()).toString("dd.MM.yyyy в hh:mm");
-   QString premium_time = QDateTime::fromSecsSinceEpoch(data.at(4).toLong()).toString("dd.MM.yyyy");
+   QString registered = QDateTime::fromSecsSinceEpoch(data.at(5).toLongLong()).toString("dd.MM.yyyy");
+   QString last_activity = QDateTime::fromSecsSinceEpoch(data.at(2).toLongLong()).toString("dd.MM.yyyy в hh:mm");
+   QString premium_time = QDateTime::fromSecsSinceEpoch(data.at(4).toLongLong()).toString("dd.MM.yyyy");
    ui->registered_label->setText(tr("Дата регистрации: ") + registered);
    ui->last_activit_label->setText(tr("Последняя активность: ") + last_activity);
    premium = data.at(3);
@@ -430,25 +419,25 @@ void Settings::received(QString access_token, QString confirmation_key, QString 
 
 void Settings::on_CallbookCheckBox_toggled(bool checked)
 {
-    if(checked) {
-        ui->qrzruEnable->setChecked(Qt::Unchecked);
-        useCallbook = true;
-    } else {
-        ui->qrzruEnable->setChecked(Qt::Checked);
-        useCallbook = false;
+    if (checked) {
+        // Включили QSO.SU → выключаем QRZ.RU
+        ui->qrzruEnable->blockSignals(true);
+        ui->qrzruEnable->setChecked(false);
+        ui->qrzruEnable->blockSignals(false);
     }
+    useCallbook = checked || ui->qrzruEnable->isChecked();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void Settings::on_qrzruEnable_toggled(bool checked)
 {
-    if(checked) {
-        ui->CallbookCheckBox->setChecked(Qt::Unchecked);
-        useCallbook = false;
-    } else {
-        ui->CallbookCheckBox->setChecked(Qt::Checked);
-        useCallbook = true;
+    if (checked) {
+        // Включили QRZ.RU → выключаем QSO.SU
+        ui->CallbookCheckBox->blockSignals(true);
+        ui->CallbookCheckBox->setChecked(false);
+        ui->CallbookCheckBox->blockSignals(false);
     }
+    useCallbook = checked || ui->CallbookCheckBox->isChecked();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -460,27 +449,74 @@ void Settings::changeEvent(QEvent *event)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void Settings::loadTranslations()
+{
+    ui->languageComboBox->clear();
+    qmFiles.clear();
+    languageNames.clear();
+
+    // Добавляем русский язык как пункт без файла
+    languageNames << "Русский";
+    ui->languageComboBox->addItem("Русский");
+    qmFiles << ""; // пустой путь для русского
+
+    QString path = QCoreApplication::applicationDirPath() + "/translations";
+    QDir dir(path);
+    if (!dir.exists())
+        return;
+
+    QStringList filters;
+    filters << "*.qm";
+
+    QFileInfoList fileList = dir.entryInfoList(filters, QDir::Files);
+
+    // Словарь красивых названий
+    QMap<QString, QString> langMap;
+    langMap["en"] = "English";
+    langMap["de"] = "Deutsch";
+    langMap["fr"] = "Français";
+    langMap["es"] = "Español";
+
+    for (const QFileInfo &fileInfo : fileList) {
+        QString base = fileInfo.baseName();
+        QString langCode = base.split("_").first();
+        if (langCode == "ru") continue; // русский уже добавлен без файла
+
+        QString prettyName = langMap.value(langCode, langCode);
+        languageNames << prettyName;
+        ui->languageComboBox->addItem(prettyName);
+        qmFiles << fileInfo.absoluteFilePath();
+    }
+    ui->languageComboBox->setCurrentText(language);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void Settings::on_languageComboBox_currentIndexChanged(int index)
 {
-    if(index == 0) {
-        qtLanguageTranslator.load("://translations/ru_Ru.qm");
-        qApp->installTranslator(&qtLanguageTranslator);
+    if (index < 0 || index >= languageNames.size()) return;
+
+    QString selectedLanguage = languageNames.at(index);
+
+    // Удаляем предыдущий переводчик
+    qApp->removeTranslator(&qtLanguageTranslator);
+
+    // Если выбран русский — ничего не грузим
+    if (selectedLanguage == "Русский") {
+        ui->retranslateUi(this);
+        return;
     }
-    if(index == 1) {
-        QString path = QCoreApplication::applicationDirPath() + "/translations";
-        QDir dir(path);
-        QStringList filters;
-        filters << "en_US.qm";
 
-        QStringList results = dir.entryList(filters, QDir::Files);
-        if(!results.isEmpty()) {
-            qDebug() << "Файл найден:" << dir.filePath(results.first());
+    QString qmFile = qmFiles.at(index);
+    if (!qmFile.isEmpty() && QFile::exists(qmFile)) {
+        // Загружаем новый файл в тот же объект
+        if (qtLanguageTranslator.load(qmFile)) {
+            qApp->installTranslator(&qtLanguageTranslator);
+            qDebug() << "Загружен перевод:" << qmFile;
         } else {
-            qDebug() << "Файл не найден.";
+            qDebug() << "Не удалось загрузить файл перевода:" << qmFile;
         }
-
-        qtLanguageTranslator.load(dir.filePath(results.first()));
-        qApp->installTranslator(&qtLanguageTranslator);
+    } else {
+        qDebug() << "Файл перевода не найден для языка:" << selectedLanguage;
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -525,24 +561,11 @@ uint Settings::saveTableState()
     else bitoff(table_row_state, 26);
     if(ui->vt_cont->isChecked()) biton(table_row_state, 27);
     else bitoff(table_row_state, 27);
-    if(ui->vt_comment->isChecked()) biton(table_row_state, 28);
-    else bitoff(table_row_state, 28);
+    if(ui->vt_comment->isChecked()) biton(table_row_state, 29);
+    else bitoff(table_row_state, 29);
     return table_row_state;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-
-void Settings::on_locationBtn_clicked()
-{
-    if (ui->LocatorEdit->text().length() < 5) {
-        QMessageBox::critical(0, tr("Ошибка!"), tr("Локатор не может быть меньше 5 символов."), QMessageBox::Ok);
-        return;
-    }
-    Coordinates latlon = locatorToCoordinates(ui->LocatorEdit->text());
-    ui->qth_lat_lineEdit->setText(QString::number(latlon.latitude));
-    ui->qth_lng_lineEdit->setText(QString::number(latlon.longitude));
-}
-//------------------------------------------------------------------------------------------------------------------------------------------
-
 // Функция для преобразования Maidenhead Locator в географические координаты
 Coordinates Settings::locatorToCoordinates(const QString& locator)
 {

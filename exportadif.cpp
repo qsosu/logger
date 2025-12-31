@@ -1,3 +1,13 @@
+/**********************************************************************************************************
+Description :  ExportADIF dialog class for exporting QSO records to ADIF files.
+Version     :  1.0.0
+Date        :  11.07.2025
+Author      :  R9JAU
+Comments    :  - Allows exporting QSO data for selected station/operator to ADIF format.
+               - Supports exporting all QSOs or QSOs within a date range.
+               - Automatically formats QSO_DATE, TIME_ON, TIME_OFF, FREQ according to ADIF 3.1.0 standard.
+**********************************************************************************************************/
+
 #include "exportadif.h"
 #include "ui_exportadif.h"
 
@@ -15,6 +25,9 @@ ExportADIF::ExportADIF(QSqlDatabase dbconn, QWidget *parent) :
     ui->setupUi(this);
     db = dbconn;
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    QDateTime date_now = QDateTime::currentDateTime();
+    ui->FromDateEdit->setDateTime(date_now);
+    ui->ToDateEdit->setDateTime(date_now);
     getCallsigns();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,7 +78,7 @@ void ExportADIF::WriteFile(QSqlQuery query, QString suffix)
     QString export_date_formated = export_date.toString("yyyyMMdd_hhmmss");
     QString fileName = QString("/%1_%2_QSOSU_export.adi").arg(export_date_formated, suffix);
 
-    QString outFile = QFileDialog::getSaveFileName(0, "Сохранить ADIF файл...", QDir::homePath() + fileName, ".adi");
+    QString outFile = QFileDialog::getSaveFileName(0, "Сохранить ADIF файл...", QDir::homePath() + fileName, "*.adi");
     if (outFile.length() == 0) return;
 
     QFile ADIFFile(outFile);
