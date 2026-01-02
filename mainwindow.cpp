@@ -20,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle(tr("QSO Logger v.") + QString::fromStdString(VERSION));
     QFontDatabase::addApplicationFont("://resources/fonts/Roboto-Regular.ttf");
 
-
     //Проверка использования и версий SSL
     qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
 
@@ -152,7 +151,23 @@ MainWindow::MainWindow(QWidget *parent)
     if (settings->udpServerEnable) {
         if (udpServer->start(settings->udpServerPort)) {
             connect(udpServer, &UdpServer::heartbeat, this, [=]() {
-                ui->statusbar->showMessage(QString(tr("UDP: получен HEARTBEAT - %1 %2")).arg(QString::fromUtf8(udpServer->version), QString::fromUtf8(udpServer->revision)), 1000);
+                if(!udpServer->dx_call.isEmpty()) {
+                    //qInfo() << QString("UDP: Received HEARTBEAT - %1 %2").arg(QString::fromUtf8(udpServer->version), QString::fromUtf8(udpServer->revision));
+                }
+            });
+
+            connect(udpServer, &UdpServer::status, this, [=]() {
+                if(!udpServer->dx_call.isEmpty()) {
+                    const QString call = QString::fromUtf8(udpServer->dx_call).trimmed();
+                    // если пришёл тот же позывной — игнорируем
+                    if (call.compare(lastDxCall, Qt::CaseInsensitive) == 0) return;
+                    lastDxCall = call;
+
+                    qInfo() << tr("UDP: Received STATUS") << "dx_call:" << udpServer->dx_call << " dx_grid:" << udpServer->dx_grid;
+                    qsoPanel->ClearCallbookFields();
+                    qsoPanel->setCallsign(QString::fromUtf8(udpServer->dx_call));
+                    FindCallData(QString::fromUtf8(udpServer->dx_call));
+                }
             });
 
             connect(udpServer, &UdpServer::logged, this, &MainWindow::onUdpLogged);
@@ -460,6 +475,10 @@ void MainWindow::ReinitSettings()
             connect(CAT, SIGNAL(cat_mode(int)), this, SLOT(setMode(int)));
         }
     }
+
+    udpServer->stop();
+    udpServer->start(settings->udpServerPort);
+
     qApp->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
     ui->tableView->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
     ui->prevQSOtableView->setFont(QFont("Roboto", settings->fontSize, QFont::Normal, false));
@@ -908,7 +927,7 @@ void MainWindow::SaveQso()
     if (RecordsModel->insertRecord(-1, newRecord)) {
         RecordsModel->submitAll();
 
-        // Здесь надо отправлять QSO на сервис через API
+        // Отправляем QSO на сервис через API
         int LastID = RecordsModel->query().lastInsertId().toInt();
         QVariantList data;
         data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
@@ -965,6 +984,14 @@ void MainWindow::onSettingsChanged()
 {
     ReinitSettings();
     setTableRow();
+<<<<<<< Updated upstream
+=======
+    if(api->serviceAvailable && settings->accessToken.length() != 0 && !tclient->TelnetConnected) {
+        api->getUser();
+        api->getListSpotServers();
+        QApplication::processEvents();
+    }
+>>>>>>> Stashed changes
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1024,6 +1051,7 @@ void MainWindow::onOperatorChanged()
 
 void MainWindow::onUdpLogged()
 {
+<<<<<<< Updated upstream
   qDebug() << "Creating database record for UDP message";
   QSqlRecord newRecord = RecordsModel->record();
   newRecord.remove(newRecord.indexOf("id"));
@@ -1060,6 +1088,43 @@ void MainWindow::onUdpLogged()
   } else {
       qDebug() << "Страна не найдена для позывного" << udpServer->dx_call;
   }
+=======
+    qInfo() << "Creating database record for UDP message";
+    if(udpServer->dx_call.length() == 0) {
+        qDebug() << "UPD: Empty CallSign was received.";
+        return;
+    }
+    qsoPanel->clearQSO();
+    FindCallData(udpServer->dx_call);
+    ShowQSOLocation(udpServer->dx_call, udpServer->dx_grid);
+
+    QSqlRecord newRecord = RecordsModel->record();
+    newRecord.remove(newRecord.indexOf("id"));
+    newRecord.setValue("callsign_id", userData.callsign_id);
+    newRecord.setValue("qsosu_callsign_id", userData.qsosu_callsign_id);
+    newRecord.setValue("qsosu_operator_id", userData.qsosu_operator_id);
+    newRecord.setValue("STATION_CALLSIGN", userData.callsign);
+    newRecord.setValue("OPERATOR", userData.oper);
+    newRecord.setValue("MY_GRIDSQUARE", qsoPanel->getStationQTHLocator());
+    newRecord.setValue("MY_CNTY", qsoPanel->getStationRDA());
+    newRecord.setValue("QSO_DATE", udpServer->time_off.date().toString("yyyyMMdd"));
+    newRecord.setValue("TIME_OFF", udpServer->time_off.time().toString("hhmm") + "00");
+    newRecord.setValue("TIME_ON", udpServer->time_on.time().toString("hhmm") + "00");
+    newRecord.setValue("CALL", QString::fromUtf8(udpServer->dx_call));
+    newRecord.setValue("BAND", Helpers::GetBandByFreqHz(udpServer->tx_frequency_hz).toUpper());
+    newRecord.setValue("FREQ", udpServer->tx_frequency_hz);
+    newRecord.setValue("MODE", QString::fromUtf8(udpServer->mode));
+    newRecord.setValue("NAME", qsoPanel->getName());
+    newRecord.setValue("QTH", qsoPanel->getQTH());
+    if(QString::fromUtf8(udpServer->dx_grid) != "")
+        newRecord.setValue("GRIDSQUARE", QString::fromUtf8(udpServer->dx_grid));
+    else newRecord.setValue("GRIDSQUARE", qsoPanel->getQTHLocator());
+    newRecord.setValue("RST_SENT", QString::fromUtf8(udpServer->report_sent));
+    newRecord.setValue("RST_RCVD", QString::fromUtf8(udpServer->report_received));
+    newRecord.setValue("COMMENT", QString::fromUtf8(udpServer->comments));
+    newRecord.setValue("QSL_STATUS", 0);
+    newRecord.setValue("sync_state", 0);
+>>>>>>> Stashed changes
 
   if(RecordsModel->insertRecord(-1, newRecord)) {
       if (RecordsModel->submitAll()) {
@@ -1092,6 +1157,7 @@ void MainWindow::onUdpLogged()
 
 void MainWindow::onUdpLoggedADIF()
 {
+<<<<<<< Updated upstream
   qDebug() << "Creating database record for UDP ADIF message";
   QSqlRecord newRecord = RecordsModel->record();
   newRecord.remove(newRecord.indexOf("id"));
@@ -1110,6 +1176,47 @@ void MainWindow::onUdpLoggedADIF()
   newRecord.setValue("TIME_ON", udpServer->adifData.value("TIME_ON"));
   newRecord.setValue("CALL", udpServer->adifData.value("CALL"));
   newRecord.setValue("BAND", udpServer->adifData.value("BAND"));
+=======
+    qInfo() << "Creating database record for UDP ADIF message";
+    if(udpServer->adifData.value("CALL") == 0) {
+        qDebug() << "UPD ADIF: Empty CallSign was received.";
+        return;
+    }
+    qsoPanel->clearQSO();
+    FindCallData(udpServer->adifData.value("CALL"));
+    if(udpServer->adifData.value("GRIDSQUARE").length() > 3)
+        ShowQSOLocation(udpServer->adifData.value("CALL"), udpServer->adifData.value("GRIDSQUARE"));
+
+    QSqlRecord newRecord = RecordsModel->record();
+    newRecord.remove(newRecord.indexOf("id"));
+    newRecord.setValue("callsign_id", userData.callsign_id);
+    newRecord.setValue("qsosu_callsign_id", userData.qsosu_callsign_id);
+    newRecord.setValue("qsosu_operator_id", userData.qsosu_operator_id);
+    newRecord.setValue("STATION_CALLSIGN", userData.callsign);
+    newRecord.setValue("OPERATOR", userData.oper);
+    newRecord.setValue("MY_GRIDSQUARE", qsoPanel->getStationQTHLocator());
+    newRecord.setValue("MY_CNTY", qsoPanel->getStationRDA());
+    QDate qso_date = QDate::fromString(udpServer->adifData.value("QSO_DATE"), "yyyyMMdd");
+    newRecord.setValue("QSO_DATE", udpServer->adifData.value("QSO_DATE"));
+    newRecord.setValue("TIME_OFF", udpServer->adifData.value("TIME_OFF"));
+    QTime time_on = QTime::fromString(udpServer->adifData.value("TIME_ON"), "hhmmss");
+    newRecord.setValue("TIME_ON", udpServer->adifData.value("TIME_ON"));
+    newRecord.setValue("CALL", udpServer->adifData.value("CALL"));
+    newRecord.setValue("BAND", udpServer->adifData.value("BAND").toUpper());
+    unsigned long long freqHz = static_cast<unsigned long long>(udpServer->adifData.value("FREQ").toDouble() * 1000000);
+    newRecord.setValue("FREQ", freqHz);
+    newRecord.setValue("MODE", udpServer->adifData.value("MODE"));
+    newRecord.setValue("NAME", qsoPanel->getName());
+    newRecord.setValue("QTH", qsoPanel->getQTH());
+    if(QString::fromUtf8(udpServer->dx_grid) != "")
+        newRecord.setValue("GRIDSQUARE", udpServer->adifData.value("GRIDSQUARE"));
+    else newRecord.setValue("GRIDSQUARE", qsoPanel->getQTHLocator());
+    newRecord.setValue("RST_SENT", udpServer->adifData.value("RST_SENT"));
+    newRecord.setValue("RST_RCVD", udpServer->adifData.value("RST_RCVD"));
+    newRecord.setValue("COMMENT", udpServer->adifData.value("COMMENT"));
+    newRecord.setValue("QSL_STATUS", 0);
+    newRecord.setValue("sync_state", 0);
+>>>>>>> Stashed changes
 
   unsigned long long freqHz = static_cast<unsigned long long>(udpServer->adifData.value("FREQ").toDouble() * 1000000);
   newRecord.setValue("FREQ", freqHz);
@@ -1174,16 +1281,117 @@ void MainWindow::onUdpLoggedADIF()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+<<<<<<< Updated upstream
 void MainWindow::FindCallData() {
     QString callsign = qsoPanel->getCallsign();
 
     if (callsign.isEmpty() && callsign.count() > 3) {
         qDebug() << "Need find callbook: " << callsign;
+=======
+//void MainWindow::FindCallData(QString callsign)
+//{
+//    // Очищаем поля, если позывной пустой или слишком короткий
+//    if (callsign.isEmpty() || callsign.count() < 3) {
+//        qsoPanel->ClearCallbookFields();
+//        qsoPanel->setQSOSUserVisible(false);
+//        qsoPanel->setQSOSUserLabelVisible(false);
+//        qsoPanel->setUserSRRVisible(false);
+//        qsoPanel->setUserSRRLabelVisible(false);
+//        qsoPanel->setFlagVisible(false);
+//        qsoPanel->setCountryVisible(false);
+//        showPreviosQSO("");
+//        osm->clearMarkers();
+//        osm->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
+//        if (gc->globe->isVisible()) {
+//            gc->clearMarkers();
+//            gc->globe->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
+//        }
+//        return;
+//    }
+//    bool foundLocal = false;
+
+//    // Если включен локальный справочник — ищем сначала там
+//    if (settings->useLocalCallbook) {
+//        QStringList localdata = localCallbook->searchCall(callsign);
+//        foundLocal = !localdata.isEmpty() && !localdata.value(0).isEmpty();
+
+//        if (foundLocal) {
+//            qsoPanel->setName(localdata.value(1));
+//            qsoPanel->setQTH(localdata.value(2));
+//            qsoPanel->setQTHLocator(localdata.value(3).toUpper());
+//            qsoPanel->setRDA(localdata.value(4).toUpper());
+//            ShowQSOLocation(callsign, localdata.value(3).toUpper());
+
+//            qInfo() << "Use Local Callbook."
+//                    << "CallSign:" << localdata.value(0)
+//                    << "Name:" << localdata.value(1)
+//                    << "QTH:" << localdata.value(2)
+//                    << "Locator:" << localdata.value(3)
+//                    << "RDA:" << localdata.value(4);
+//        } else {
+//            qInfo() << "Call" << callsign << "not found in local callbook.";
+//        }
+//    }
+
+//    // Если не найдено локально или локальный справочник выключен —
+//    // ищем во внешних источниках (QSO.SU → QRZ.RU)
+//    if (!foundLocal) {
+//        qInfo() << "Querying external callbook sources for" << callsign << "...";
+
+//        // QSO.SU
+//        if (api->serviceAvailable && settings->useCallbook) {
+//            QEventLoop loop;
+//            QObject::connect(api, &HttpApi::userDataUpdated, &loop, &QEventLoop::quit);
+//            api->getCallbook(callsign);
+//            loop.exec();
+//        }
+
+//        // QRZ.RU
+//        else if (settings->enableQrzruCallbook) {
+//            QStringList data = qrz->Get(callsign);
+
+//            qsoPanel->setName((!data.at(0).isEmpty()) ? data.at(0) : "");
+//            qsoPanel->setQTH((!data.at(1).isEmpty()) ? data.at(1) : "");
+//            qsoPanel->setQTHLocator((!data.at(2).isEmpty()) ? data.at(2).toUpper() : "");
+//            qsoPanel->setRDA((!data.at(3).isEmpty()) ? data.at(3).toUpper() : "");
+
+//            qInfo() << "Use QRZ.RU callbook."
+//                    << "CallSign:" << callsign
+//                    << "Name:" << data.at(0)
+//                    << "QTH:" << data.at(1)
+//                    << "Locator:" << data.at(2)
+//                    << "RDA:" << data.at(3);
+
+//            ShowQSOLocation(callsign, data.at(2).toUpper());
+//        }
+//    }
+
+//    CountryEntry result = findCountryByCall(callsign, ctyData);
+//    if(!result.country.isEmpty())
+//    {
+//        qsoPanel->setFlagVisible(true);
+//        qsoPanel->setCountryVisible(true);
+//        qsoPanel->setFlag(countryToIso.value(result.country, ""));
+//        qsoPanel->setCountry(result.country);
+//    }
+//    // Показать предыдущие QSO
+//    showPreviosQSO(callsign);
+//}
+
+
+void MainWindow::FindCallData(QString callsign)
+{
+    QStringList data;
+
+    // Очистка, если позывной пустой или короткий
+    if (callsign.isEmpty() || callsign.count() < 3) {
+>>>>>>> Stashed changes
         qsoPanel->ClearCallbookFields();
         qsoPanel->setQSOSUserVisible(false);
         qsoPanel->setQSOSUserLabelVisible(false);
         qsoPanel->setUserSRRVisible(false);
         qsoPanel->setUserSRRLabelVisible(false);
+<<<<<<< Updated upstream
         osm->clearMarkers();
         osm->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
         return;
@@ -1206,6 +1414,76 @@ void MainWindow::FindCallData() {
             qsoPanel->setRDA((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
             qDebug() << "Use QRZ.RU callbook.";
         }
+=======
+        qsoPanel->setFlagVisible(false);
+        qsoPanel->setCountryVisible(false);
+
+        showPreviosQSO("");
+        osm->clearMarkers();
+        osm->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
+
+        if (gc->globe->isVisible()) {
+            gc->clearMarkers();
+            gc->globe->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
+        }
+        return;
+    }
+
+    bool found = false;
+
+    if (api->serviceAvailable)
+    {
+        // QSO.SU
+        if (settings->useCallbook) {
+            QEventLoop loop;
+            QObject::connect(api, &HttpApi::userDataUpdated, &loop, &QEventLoop::quit);
+            api->getCallbook(callsign);
+            loop.exec();
+            data.append(api->callsignInfo);
+            if(data.at(2).length() > 0) found = true;
+            else found = false;
+        }
+        // QRZ.RU
+        else if (settings->enableQrzruCallbook) {
+            QStringList data = qrz->Get(callsign);
+
+            if (!data.isEmpty()) {
+                qsoPanel->setName(data.value(0));
+                qsoPanel->setQTH(data.value(1));
+                qsoPanel->setQTHLocator(data.value(2).toUpper());
+                qsoPanel->setRDA(data.value(3).toUpper());
+                ShowQSOLocation(callsign, data.value(2).toUpper());
+                qInfo() << "Use QRZ.RU callbook. " << "Call" << callsign << "Name:" << data.value(0) << "QTH:" << data.value(1) << " Locator:" << data.value(2).toUpper() << "RDA:" << data.value(3).toUpper();
+                found = true;
+            }
+        }
+    }
+
+    //Local Callbook
+    if (!found || !api->serviceAvailable) {
+        QStringList localData = localCallbook->searchCall(callsign);
+
+        if (!localData.isEmpty() && !localData.value(0).isEmpty()) {
+            qsoPanel->setName(localData.value(1));
+            qsoPanel->setQTH(localData.value(2));
+            qsoPanel->setQTHLocator(localData.value(3).toUpper());
+            qsoPanel->setRDA(localData.value(4).toUpper());
+
+            ShowQSOLocation(callsign, localData.value(3).toUpper());
+            qInfo() << "Use Local callbook. " << "Call" << callsign << "Name:" << localData.value(1) << "QTH:" << localData.value(2) << " Locator:" << localData.value(3).toUpper() << "RDA:" << localData.value(4).toUpper();
+            found = true;
+        } else {
+            qInfo() << "Local callbook. " << "Call" << callsign << "not found.";
+        }
+    }
+
+    CountryEntry result = findCountryByCall(callsign, ctyData);
+    if (!result.country.isEmpty()) {
+        qsoPanel->setFlagVisible(true);
+        qsoPanel->setCountryVisible(true);
+        qsoPanel->setFlag(countryToIso.value(result.country));
+        qsoPanel->setCountry(result.country);
+>>>>>>> Stashed changes
     }
     showPreviosQSO(callsign);
 }
@@ -1738,8 +2016,23 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
 
 void MainWindow::showPreviosQSO(QString call)
 {
+<<<<<<< Updated upstream
     QString filterString = QString("CALL = '%1'").arg(call);
+=======
+    if (call.trimmed().isEmpty()) {
+        PrevRecordsModel->setFilter("1=0");
+        PrevRecordsModel->select();
+        return;
+    }
+
+    QStringList filters;
+    filters << QString("CALL = '%1'").arg(call.replace("'", "''"));
+    filters << QString("OPERATOR = '%1'").arg(qsoPanel->getStationOperator().replace("'", "''"));
+    QString filterString = filters.join(" AND ");
+>>>>>>> Stashed changes
     PrevRecordsModel->setFilter(filterString);
+
+    PrevRecordsModel->setSort(PrevRecordsModel->fieldIndex("QSO_DATE"), Qt::DescendingOrder);
     PrevRecordsModel->select();
 
     QHeaderView *horizontalHeader = ui->prevQSOtableView->horizontalHeader();

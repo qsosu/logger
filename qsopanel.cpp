@@ -62,9 +62,17 @@ QSOPanel::QSOPanel(QMainWindow *mainWindow, Settings *settings, QWidget *parent)
 
     // Заполнение GroupBox1
     stationCallsign = new QComboBox;
+<<<<<<< Updated upstream
     flowLayout1->addWidget(makeInputPair("Позывной станции:", stationCallsign));
     operatorCallsign = new QComboBox;
     flowLayout1->addWidget(makeInputPair("Позывной оператора:", operatorCallsign));
+=======
+    stationCallsign->setMinimumWidth(30);
+    flowLayout1->addWidget(makeInputPair(tr("Позывной станции:"), stationCallsign));
+    operatorCallsign = new QComboBox;
+    operatorCallsign->setMinimumWidth(30);
+    flowLayout1->addWidget(makeInputPair(tr("Позывной оператора:"), operatorCallsign));
+>>>>>>> Stashed changes
     DateEdit = new QDateEdit;
     DateEdit->setCalendarPopup(true);
     flowLayout1->addWidget(makeInputPair("Дата:", DateEdit));
@@ -999,14 +1007,13 @@ void QSOPanel::clearQSO()
     GridSquareInput->clear();
     CNTYInput->clear();
     CommentInput->clear();
-    RstrInput->clear();
-    RstsInput->clear();
     QSOSUserIcon->setVisible(false);
     QSOSUserLabel->setVisible(false);
     UserSRRIcon->setVisible(false);
     UserSRRLabel->setVisible(false);
+    countryFlag->setVisible(false);
+    countryName->setVisible(false);
 }
-
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void QSOPanel::setQSOSUserVisible(bool visible)
@@ -1239,3 +1246,71 @@ void QSOPanel::setStationOperatorCurrentIndex(int idx)
     operatorCallsign->setCurrentIndex(idx);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
+<<<<<<< Updated upstream
+=======
+
+int QSOPanel::getBandCurrentIndex()
+{
+    return BandCombo->currentIndex();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+int QSOPanel::getModeTextIndex()
+{
+    return ModeCombo->findText(settings->lastMode);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void QSOPanel::setFlag(const QString &countryCode)
+{
+    // Загружаем флаг, если существует
+    QString iconPath = QString(":resources/flags/%1.png").arg(countryCode);
+    if (QFile::exists(iconPath)) {
+        QPixmap pix(iconPath);
+        QPixmap scaled = pix.scaled(30, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        countryFlag->setPixmap(QPixmap(scaled));
+        countryFlag->setVisible(true);
+    } else {
+        countryFlag->setVisible(false);
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void QSOPanel::setCountry(const QString &country)
+{
+    if(country != "")
+    {
+        countryName->setText(country);
+        countryName->setVisible(true);
+    } else {
+        countryName->setText("");
+        countryName->setVisible(false);
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void QSOPanel::setFlagVisible(bool visible)
+{
+    countryFlag->setVisible(visible);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void QSOPanel::setCountryVisible(bool visible)
+{
+    countryName->setVisible(visible);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> Stashed changes

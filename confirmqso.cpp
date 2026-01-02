@@ -103,6 +103,7 @@ void ConfirmQSO::ConfirmQSOs(int count)
     }
     qDebug() << "Confirmed: " << cnfrm_count << " QSOs";
     emit db_updated();
+    QMessageBox::information(this, tr("Подтверждение связей с QSO.SU"), tr("Подтверждено QSO: ") + QString::number(cnfrm_count));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

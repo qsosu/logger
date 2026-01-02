@@ -49,6 +49,11 @@ public:
     QString getComment();
 
     bool setCallsign(const QString &call);
+<<<<<<< Updated upstream
+=======
+    void setFlag(const QString &countryCode);
+    void setCountry(const QString &country);
+>>>>>>> Stashed changes
     bool setName(const QString &name);
     bool setQTH(const QString &qth);
     bool setRSTR(const QString &rstr);
@@ -65,6 +70,8 @@ public:
     bool setDate(const QDate &date);
     bool setTime(const QTime &time);
     void clearQSO();
+    void setFlagVisible(bool visible);
+    void setCountryVisible(bool visible);
     void setQSOSUserVisible(bool visible);
     void setUserSRRVisible(bool visible);
     void setQSOSUserLabelVisible(bool visible);

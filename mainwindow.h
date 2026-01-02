@@ -107,6 +107,11 @@ private:
   QTimer *MagStormTimer;
   ExportADIF *exp_adif;
   ImportADIF *imp_adif;
+<<<<<<< Updated upstream
+=======
+  LocalCallbook *localCallbook;
+  QString lastDxCall;
+>>>>>>> Stashed changes
   About *about;
   long freqCat;
   UpdateLogPrefix *update_prefix;

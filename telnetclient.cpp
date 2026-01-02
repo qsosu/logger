@@ -17,13 +17,20 @@ TelnetClient::TelnetClient(QSqlDatabase db, const QString &host, quint16 port, Q
     this->db = db;
     socket = new QTcpSocket(this);
 
+<<<<<<< Updated upstream
     connect(socket, &QTcpSocket::connected, this, []() {
         qDebug() << "Connected to Telnet server.";
+=======
+    connect(socket, &QTcpSocket::connected, this, [this]() {
+        TelnetConnected = true;
+        qInfo() << "Подключились к Telnet серверу.";
+>>>>>>> Stashed changes
     });
 
     connect(socket, &QTcpSocket::readyRead, this, &TelnetClient::onReadyRead);
 
     connect(socket, &QTcpSocket::disconnected, this, [this]() {
+        TelnetConnected = false;
         qDebug() << "Telnet client disconnected. Reconnecting in 10 seconds...";
         QTimer::singleShot(10000, this, &TelnetClient::connectToServer);
     });

@@ -61,8 +61,17 @@ Qsoedit::Qsoedit(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, 
     ui->ituzlineEdit->setText("");
     ui->ituzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-8][0-9]|90)$"), this));
     ui->cqzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-3][0-9]|40)$"), this));
+<<<<<<< Updated upstream
     ui->rstr_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
     ui->rsts_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
+=======
+
+    QRegularExpression rstRegex(R"(^(?:[+-]?(?:0\d?|[1-9]\d{0,2}))$)");
+    ui->rstr_lineEdit->setValidator(new QRegularExpressionValidator(rstRegex, this));
+    ui->rsts_lineEdit->setValidator(new QRegularExpressionValidator(rstRegex, this));
+    spinner = new WaitSpinner(this);
+    spinner->hide();
+>>>>>>> Stashed changes
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

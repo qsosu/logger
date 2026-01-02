@@ -32,6 +32,7 @@ class UdpServer : public QObject
 public:
     explicit UdpServer(QObject *parent = nullptr);
     bool start(uint16_t port);
+    void stop();
     bool send(QByteArray data);
     void setRetransl(bool retransl);
     void setRetranslPort(uint16_t port);
@@ -65,6 +66,19 @@ public:
     QByteArray exchange_sent;
     QByteArray exchange_rcvd;
     QByteArray propmode;
+<<<<<<< Updated upstream
+=======
+
+    QString dx_report;
+    QString tx_mode;
+    bool tx_enabled;
+    bool transmitting;
+    QString rx_tx_period;
+    quint32 tx_df;
+    quint32 tx_df_auto;
+    quint16 flags;
+
+>>>>>>> Stashed changes
     /* QSOLoggedADIF data*/
     QMap<QString, QString> adifData;
     QString call_name;
@@ -85,6 +99,7 @@ private slots:
 
 signals:
     void heartbeat();
+    void status();
     void logged();
     void loggedADIF();
 };

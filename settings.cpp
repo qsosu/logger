@@ -530,6 +530,7 @@ uint Settings::saveTableState()
     return table_row_state;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
+<<<<<<< Updated upstream
 
 void Settings::on_locationBtn_clicked()
 {
@@ -620,5 +621,7 @@ Coordinates Settings::locatorToCoordinates(const QString& locator)
 
 
 
+=======
+>>>>>>> Stashed changes
 
 

@@ -50,6 +50,17 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
+  QString lockPath = QDir::temp().absoluteFilePath("QSOLogger.lock");
+  QLockFile lockFile(lockPath);
+
+  // Защита от залипших lock-файлов (если приложение упало)
+  lockFile.setStaleLockTime(0);
+
+  if (!lockFile.tryLock()) {
+      QMessageBox::warning(nullptr, QObject::tr("Ошибка"), QObject::tr("QSOLogger уже запущен."));
+      return 0;
+  }
+
   m_log.reset(new QFile(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/log.txt"));
   m_log.data()->open(QFile::Append | QFile::Text);
 

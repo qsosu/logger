@@ -20,6 +20,7 @@ class TelnetClient : public QObject
 public:
     TelnetClient(QSqlDatabase db, const QString &host, quint16 port, QObject *parent = nullptr);
     void disconnectFromServer();
+    bool TelnetConnected = false;
 
 private slots:
     void connectToServer();

@@ -91,9 +91,24 @@ Rectangle {
         }
 
         function addLine(path, color, width) {
-            var polyline = Qt.createQmlObject('import QtLocation 5.15; MapPolyline {}', map);
-            polyline.path = [];
-            polyline.path = path;
+            if (path.length < 2) return;
+            let geoPath = [];
+            for (let i = 0; i < path.length - 1; i++) {
+                let segment = greatCirclePath(
+                    path[i],
+                    path[i + 1],
+                    64   // чем больше — тем плавнее дуга
+                );
+                if (i > 0) segment.shift(); // убираем дублирующуюся точку
+                geoPath = geoPath.concat(segment);
+            }
+
+            var polyline = Qt.createQmlObject(
+                'import QtLocation 5.15; MapPolyline {}',
+                map
+            );
+
+            polyline.path = geoPath;
             polyline.line.color = color;
             polyline.line.width = width;
             map.addMapItem(polyline);
@@ -112,6 +127,48 @@ Rectangle {
             var theta = Math.atan2(y, x);
             var azimuth = (theta * toDegrees + 360) % 360;
             return azimuth;
+        }
+
+
+        function greatCirclePath(coord1, coord2, segments) {
+            let path = [];
+
+            let lat1 = coord1.latitude * Math.PI / 180;
+            let lon1 = coord1.longitude * Math.PI / 180;
+            let lat2 = coord2.latitude * Math.PI / 180;
+            let lon2 = coord2.longitude * Math.PI / 180;
+
+            let d = 2 * Math.asin(Math.sqrt(
+                Math.pow(Math.sin((lat2 - lat1) / 2), 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                Math.pow(Math.sin((lon2 - lon1) / 2), 2)
+            ));
+
+            if (d === 0) {
+                return [coord1, coord2];
+            }
+
+            for (let i = 0; i <= segments; i++) {
+                let f = i / segments;
+
+                let A = Math.sin((1 - f) * d) / Math.sin(d);
+                let B = Math.sin(f * d) / Math.sin(d);
+
+                let x = A * Math.cos(lat1) * Math.cos(lon1) +
+                        B * Math.cos(lat2) * Math.cos(lon2);
+                let y = A * Math.cos(lat1) * Math.sin(lon1) +
+                        B * Math.cos(lat2) * Math.sin(lon2);
+                let z = A * Math.sin(lat1) + B * Math.sin(lat2);
+
+                let lat = Math.atan2(z, Math.sqrt(x * x + y * y));
+                let lon = Math.atan2(y, x);
+
+                path.push(QtPositioning.coordinate(
+                    lat * 180 / Math.PI,
+                    lon * 180 / Math.PI
+                ));
+            }
+            return path;
         }
     }
 }
