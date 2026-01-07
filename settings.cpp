@@ -315,7 +315,6 @@ void Settings::save() {
     qs->endGroup();
     qs->sync();
     ui->saveButton->setEnabled(false);
-
     emit SettingsChanged();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -566,82 +565,5 @@ uint Settings::saveTableState()
     return table_row_state;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-// Функция для преобразования Maidenhead Locator в географические координаты
-Coordinates Settings::locatorToCoordinates(const QString& locator)
-{
-    QString l = locator.toUpper();
-    int len = l.length();
-    if (len < 2 || len % 2 != 0 || len > 12)
-        return {0.0, 0.0};
-
-    double lon = -180.0;
-    double lat = -90.0;
-
-    int pairs = len / 2;
-
-    for (int i = 0; i < pairs; ++i) {
-        QChar lonChar = l[i * 2];
-        QChar latChar = l[i * 2 + 1];
-
-        int lonVal = 0;
-        int latVal = 0;
-        double lonStep = 0.0;
-        double latStep = 0.0;
-
-        switch (i) {
-        case 0: // Field (A-R)
-            lonVal = lonChar.toLatin1() - 'A';
-            latVal = latChar.toLatin1() - 'A';
-            lonStep = 20.0;
-            latStep = 10.0;
-            break;
-        case 1: // Square (0-9)
-            lonVal = lonChar.toLatin1() - '0';
-            latVal = latChar.toLatin1() - '0';
-            lonStep = 2.0;
-            latStep = 1.0;
-            break;
-        case 2: // Subsquare (A-X)
-            lonVal = lonChar.toLatin1() - 'A';
-            latVal = latChar.toLatin1() - 'A';
-            lonStep = 2.0 / 24.0;    // 0.083333...
-            latStep = 1.0 / 24.0;    // 0.041666...
-            break;
-        case 3: // Extended square (0–9)
-            lonVal = lonChar.toLatin1() - '0';
-            latVal = latChar.toLatin1() - '0';
-            lonStep = 2.0 / 240.0;   // 0.008333...
-            latStep = 1.0 / 240.0;   // 0.004166...
-            break;
-        case 4: // Extended subsquare (A–X)
-            lonVal = lonChar.toLatin1() - 'A';
-            latVal = latChar.toLatin1() - 'A';
-            lonStep = 2.0 / 5760.0;  // 0.0003472...
-            latStep = 1.0 / 5760.0;  // 0.0001736...
-            break;
-        case 5: // Microsquare (0–9)
-            lonVal = lonChar.toLatin1() - '0';
-            latVal = latChar.toLatin1() - '0';
-            lonStep = 2.0 / 57600.0; // 0.00003472...
-            latStep = 1.0 / 57600.0; // 0.00001736...
-            break;
-        default:
-            break;
-        }
-        lon += lonVal * lonStep;
-        lat += latVal * latStep;
-
-        // На последнем уровне — добавляем половину размера ячейки, чтобы попасть в центр
-        if (i == pairs - 1) {
-            lon += lonStep / 2.0;
-            lat += latStep / 2.0;
-        }
-    }
-    return {lat, lon};
-}
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
 
 

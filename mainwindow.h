@@ -95,6 +95,7 @@ private:
   GlobeContainer *gc;
   ChatController *chats;
   bool COMPortAvailable;
+  QString lastCallsign;
   //QMap<QString, PrefixEntry> prefixMap;
 
   QString database_file;
@@ -108,6 +109,7 @@ private:
   ExportADIF *exp_adif;
   ImportADIF *imp_adif;
   LocalCallbook *localCallbook;
+  QString lastDxCall;
   About *about;
   long freqCat;
   UpdateLogPrefix *update_prefix;
@@ -148,7 +150,10 @@ private:
   void InitPreviosQSOModel();
   void ScrollRecordsToBottom();
   void ScrollRecordsToTop();
-  void FindCallData(QString callsign);
+  void FindCallData(const QString &callsign);
+  bool findInLocal(const QString &callsign);
+  bool findInQrz(const QString &callsign);
+  void setUserData();
   void RemoveQSOs(QModelIndexList indexes);
   void SetRecordsFilter(int log_id);
   void SyncQSOs(QModelIndexList indexes);
@@ -199,7 +204,7 @@ private slots:
   void setFreq(long freq);
   void setBand(int band);
   void setMode(int mode);
-  void setUserData();
+  void onQsoSuResult(bool found);
   void onSettingsChanged();
   void onCallsignsUpdated();
   void onStationCallsignChanged();

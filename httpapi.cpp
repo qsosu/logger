@@ -626,7 +626,7 @@ void HttpApi::getCallbook(QString callsign)
             callsignInfo.clear();
             callsignInfo << name << qth << gridsquare << cnty << QString::number(user) << QString::number(srr) << prefix << prefix_dxcc << countryName << countryCode;
             callsignInfo << QString::number(ituz) << QString::number(cqz) << photo << QString::number(centerLat) << QString::number(centerLon);
-            emit userDataUpdated();
+            emit userDataUpdated(!callsignInfo.isEmpty() && !callsignInfo.at(0).isEmpty());
         } else {
             qDebug() << "Error getCallbook: " << reply->errorString();
         }

@@ -1,19 +1,7 @@
-/**********************************************************************************************************
-Description :  UdpServer class implementation for receiving and optionally retransmitting UDP packets.
-            :  Handles both structured binary messages and ASCII (ADIF) messages.
-Version     :  1.0.0
-Date        :  07.06.2025
-Author      :  R9JAU
-Comments    :  - Can start a UDP server on any specified port and bind to all network interfaces.
-            :  - Supports optional retransmission of received UDP packets to a local port.
-            :  - Differentiates between structured binary packets and ASCII ADIF packets:
-            :       * Structured packets contain predefined fields: Heartbeat, QSOLogged, etc.
-            :       * ASCII packets are parsed as ADIF lines and stored in a key-value map.
-***********************************************************************************************************/
-
-
 #include <QRegularExpression>
 #include "udpserver.h"
+#include <QTimer>
+
 
 UdpServer::UdpServer(QObject *parent)
     : QObject{parent}
@@ -33,32 +21,84 @@ void UdpServer::setRetranslPort(uint16_t port)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-bool UdpServer::start(uint16_t port) {
+bool UdpServer::start(uint16_t port)
+{
     this->port = port;
-    clientSocket = new QUdpSocket(this);
+    qDebug() << "[UDP] Starting server on port" << port;
+    stop(); // гарантированно чистый старт
+
     socket = new QUdpSocket(this);
-    if (!socket->bind(QHostAddress::Any, port)) {
+    clientSocket = new QUdpSocket(this);
+
+    if (!socket->bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint)) {
+        qCritical() << "[UDP] Bind failed:" << socket->errorString();
+        socket->deleteLater();
+        socket = nullptr;
         return false;
     }
     connect(socket, &QUdpSocket::readyRead, this, &UdpServer::onReadyRead);
+    connect(socket, &QUdpSocket::errorOccurred, this, &UdpServer::onSocketError);
     return true;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void UdpServer::stop()
+{
+    if (socket) {
+        disconnect(socket, nullptr, this, nullptr);
+        socket->close();
+        socket->deleteLater();
+        socket = nullptr;
+    }
+
+    if (clientSocket) {
+        clientSocket->close();
+        clientSocket->deleteLater();
+        clientSocket = nullptr;
+    }
+    port = 0;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void UdpServer::onSocketError(QAbstractSocket::SocketError error)
+{
+    qCritical() << "[UDP] Socket error:" << error << socket->errorString();
+    // Перезапуск с задержкой
+    QTimer::singleShot(1000, this, &UdpServer::restartSocket);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void UdpServer::restartSocket()
+{
+    qWarning() << "[UDP] Restarting socket on port" << port;
+    stop();
+    start(port);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void UdpServer::onReadyRead()
 {
-    while (socket->hasPendingDatagrams()) {
+    if (!socket) return;
+
+    while (socket->hasPendingDatagrams())
+    {
         QByteArray data;
-        int datagramSize = socket->pendingDatagramSize();
-        data.resize(datagramSize);
+        data.resize(int(socket->pendingDatagramSize()));
 
-        qint64 readLen = socket->readDatagram(data.data(), data.size());
-        if (readLen == -1) return;
+        QHostAddress sender;
+        quint16 senderPort;
+        qint64 readLen = socket->readDatagram(data.data(), data.size(), &sender, &senderPort);
 
-        if(retransl) send(data);
-        if(determinePacketType(data)) {
+        if (readLen < 0) {
+            qCritical() << "[UDP] readDatagram failed:" << socket->errorString();
+            restartSocket();
+            return;
+        }
+        if (retransl) send(data);
+
+        if (determinePacketType(data))
             prosessAscii(data);
-        } else
+        else
             process(data);
     }
 }
@@ -86,11 +126,29 @@ void UdpServer::process(QByteArray data)
         emit heartbeat();
         break;
 
+    case Status:
+        in >> id;
+        in >> tx_frequency_hz;
+        in >> mode;
+        in >> dx_call;
+        in >> dx_report;
+        in >> tx_mode;
+        in >> tx_enabled;
+        in >> transmitting;
+        in >> rx_tx_period;
+        in >> tx_df;
+        in >> my_call;
+        in >> my_grid;
+        in >> dx_grid;
+        in >> tx_df_auto;
+        in >> flags;
+        emit status();
+        break;
+
     case QSOLogged:
         qDebug() << "Received UDP message. Type: LOGGED, Payload size (bytes):" << data.size();
         in >> id >> time_off >> dx_call >> dx_grid >> tx_frequency_hz >> mode >> report_sent >> report_received >> tx_power >> comments >> name >> time_on >> operator_call >> my_call >> my_grid >> exchange_sent >> exchange_rcvd >> propmode;
-        qDebug() << "Structed data [id, time_off, dx_call, dx_grid, tx_frequency_hz, mode, report_sent, report_received, tx_power, comments, name, time_on, operator_call, my_call, my_grid, exchange_sent, exchange_rcvd, propmode]:"
-                 << id << time_off << dx_call << dx_grid << tx_frequency_hz << mode << report_sent << report_received << tx_power << comments << name << time_on << operator_call << my_call << my_grid << exchange_sent << exchange_rcvd << propmode;
+        qDebug() << "Structed data [id, time_off, dx_call, dx_grid, tx_frequency_hz, mode, report_sent, report_received, tx_power, comments, name, time_on, operator_call, my_call, my_grid, exchange_sent, exchange_rcvd, propmode]:" << id << time_off << dx_call << dx_grid << tx_frequency_hz << mode << report_sent << report_received << tx_power << comments << name << time_on << operator_call << my_call << my_grid << exchange_sent << exchange_rcvd << propmode;
         emit logged();
         break;
     }
@@ -110,7 +168,6 @@ void UdpServer::parseAdifQSO(const QString &line)
 {
     // Разбивать строку на части с помощью '<' и '>'
     QStringList parts = line.split('<', Qt::SkipEmptyParts);
-    adifData.clear();
 
     for (const QString &part : parts) {
         // Найти позицию первого символа ':' для извлечения ключа и значения
@@ -148,3 +205,7 @@ bool UdpServer::determinePacketType(const QByteArray& packet)
     return true;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+

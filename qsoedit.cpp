@@ -58,7 +58,7 @@ Qsoedit::Qsoedit(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, 
     connect(qrz, SIGNAL(loaded(QPixmap)), this, SLOT(loadImage(QPixmap)));
 
     api = new HttpApi(db, settings->accessToken);
-    connect(api, SIGNAL(userDataUpdated()), this, SLOT(setUserData()));
+    connect(api, SIGNAL(userDataUpdated(bool)), this, SLOT(setUserData(bool)));
     connect(api, SIGNAL(QSODataUpdated(QString)), this, SLOT(updateQSOData(QString)));
     connect(api, SIGNAL(errorQSODataUpdated(QString)), this, SLOT(errorUpdateQSOData(QString)));
 
@@ -75,8 +75,10 @@ Qsoedit::Qsoedit(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, 
     ui->ituzlineEdit->setText("");
     ui->ituzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-8][0-9]|90)$"), this));
     ui->cqzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-3][0-9]|40)$"), this));
-    ui->rstr_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
-    ui->rsts_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
+
+    QRegularExpression rstRegex(R"(^(?:[+-]?(?:0\d?|[1-9]\d{0,2}))$)");
+    ui->rstr_lineEdit->setValidator(new QRegularExpressionValidator(rstRegex, this));
+    ui->rsts_lineEdit->setValidator(new QRegularExpressionValidator(rstRegex, this));
 
     spinner = new WaitSpinner(this);
     spinner->hide();
@@ -163,7 +165,7 @@ void Qsoedit::on_QRZUpdateButton_clicked()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void Qsoedit::setUserData()
+void Qsoedit::setUserData(bool found)
 {
     spinner->stop();
     userData.clear();

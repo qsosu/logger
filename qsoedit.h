@@ -42,7 +42,7 @@ private slots:
     void on_cancelButton_clicked();
     void loadImage(QPixmap pix);
     void onResizeFinished();
-    void setUserData();
+    void setUserData(bool found);
     void updateQSOData(QString hash);
     void errorUpdateQSOData(QString error);
     //void onQSOConfirmed();

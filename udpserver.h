@@ -32,11 +32,13 @@ class UdpServer : public QObject
 public:
     explicit UdpServer(QObject *parent = nullptr);
     bool start(uint16_t port);
+    void stop();
     bool send(QByteArray data);
     void setRetransl(bool retransl);
     void setRetranslPort(uint16_t port);
     bool retransl;
     void parseAdifQSO(const QString &line);
+    void sendCommand(const QString &cmd);
 
     /* Message data header */
     quint32 magic;
@@ -65,6 +67,14 @@ public:
     QByteArray exchange_sent;
     QByteArray exchange_rcvd;
     QByteArray propmode;
+    QString dx_report;
+    QString tx_mode;
+    bool tx_enabled;
+    bool transmitting;
+    QString rx_tx_period;
+    quint32 tx_df;
+    quint32 tx_df_auto;
+    quint16 flags;
 
     /* QSOLoggedADIF data*/
     QMap<QString, QString> adifData;
@@ -83,9 +93,13 @@ private slots:
     void process(QByteArray data);
     void prosessAscii(QByteArray data);
     bool determinePacketType(const QByteArray& packet);
+    void onSocketError(QAbstractSocket::SocketError error);
+    void restartSocket();
+
 
 signals:
     void heartbeat();
+    void status();
     void logged();
     void loggedADIF();
 };

@@ -59,7 +59,7 @@ void ExportADIF::Export(QString callsign, QString oper, QString data_from, QStri
 
     qDebug() << callsign << " " << oper << " " << data_from << " " << data_to;
 
-    query.prepare("SELECT STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, TIME_ON, TIME_OFF, BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COMMENT FROM records "
+    query.prepare("SELECT STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, TIME_ON, TIME_OFF, BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COMMENT, CQZ, ITUZ, CONT FROM records "
                   "WHERE STATION_CALLSIGN=:call AND OPERATOR=:operator AND QSO_DATE >= :dfrom AND QSO_DATE <= :dto");
     query.bindValue(":call", callsign);
     query.bindValue(":operator", oper);
@@ -86,9 +86,9 @@ void ExportADIF::WriteFile(QSqlQuery query, QString suffix)
 
     if (ADIFFile.open(QIODevice::ReadWrite)) {
         QTextStream ADIFLine(&ADIFFile);
-        ADIFLine << "<ADIF_VER:5>3.1.0" << Qt::endl;
         ADIFLine << "<PROGRAMID:19>QSOLogger" << Qt::endl;
         ADIFLine << "<PROGRAMVERSION:3>3.0" << Qt::endl;
+        ADIFLine << "<ADIF_VER:3>2.0" << Qt::endl;
         ADIFLine << "<EOH>" << Qt::endl;
 
         while (query.next()) {
@@ -98,11 +98,11 @@ void ExportADIF::WriteFile(QSqlQuery query, QString suffix)
             QString my_cnty = query.value(3).toString();
             QString call = query.value(4).toString();
             QString qso_date = query.value(5).toString().remove("-");
-            QString time_on = query.value(6).toString().remove(":");
-            QString time_off = query.value(7).toString().remove(":");
+            QString time_on = query.value(6).toString().remove(":").left(4);
             QString band = query.value(8).toString();
-            //QString freq = query.value(9).toString();
             QString freq = QString::number((double) query.value(9).toInt() / 1000000);
+            double f = freq.toDouble();
+            QString freq3 = QString::number(f, 'f', 3);
             QString mode = query.value(10).toString();
             QString rst_sent = query.value(11).toString();
             QString rst_rcvd = query.value(12).toString();
@@ -111,38 +111,55 @@ void ExportADIF::WriteFile(QSqlQuery query, QString suffix)
             QString gridsquare = query.value(15).toString();
             QString cnty = query.value(16).toString();
             QString comment = query.value(17).toString();
+            QString cqz = query.value(18).toString();
+            QString ituz = query.value(19).toString();
+            QString cont = query.value(20).toString();
 
             QTextStream QSOLine(&ADIFFile);
-            QSOLine << QStringLiteral("<STATION_CALLSIGN:%1>%2").arg(station_callsign.length()).arg(station_callsign);
+            QSOLine.setCodec("Windows-1251");
+            QSOLine.setGenerateByteOrderMark(false);
+            QSOLine << Qt::endl;
+            QSOLine.flush();
+
+            const QString EOL = "\r\n";
             QSOLine << QStringLiteral("<OPERATOR:%1>%2").arg(op.length()).arg(op);
-            QSOLine << QStringLiteral("<MY_GRIDSQUARE:%1>%2").arg(my_gridsquare.length()).arg(my_gridsquare);
-            QSOLine << QStringLiteral("<MY_CNTY:%1>%2").arg(my_cnty.length()).arg(my_cnty);
             QSOLine << QStringLiteral("<CALL:%1>%2").arg(call.length()).arg(call);
-            QSOLine << QStringLiteral("<GRIDSQUARE:%1>%2").arg(gridsquare.length()).arg(gridsquare);
-            QSOLine << QStringLiteral("<MODE:%1>%2").arg(mode.length()).arg(mode);
-            QSOLine << QStringLiteral("<RST_SENT:%1>%2").arg(rst_sent.length()).arg(rst_sent);
-            QSOLine << QStringLiteral("<RST_RCVD:%1>%2").arg(rst_rcvd.length()).arg(rst_rcvd);
             QSOLine << QStringLiteral("<QSO_DATE:%1>%2").arg(qso_date.length()).arg(qso_date);
             QSOLine << QStringLiteral("<TIME_ON:%1>%2").arg(time_on.length()).arg(time_on);
-            QSOLine << QStringLiteral("<TIME_OFF:%1>%2").arg(time_off.length()).arg(time_off);
+            QSOLine << QStringLiteral("<FREQ:%1>%2").arg(freq3.length()).arg(freq3);
+            QSOLine << QStringLiteral("<MODE:%1>%2").arg(mode.length()).arg(mode);
+
+            QString rstSentClean = rst_sent;
+            rstSentClean.remove(QRegularExpression("[^0-9]"));
+            QString rstRcvdClean = rst_rcvd;
+            rstRcvdClean.remove(QRegularExpression("[^0-9]"));
+            QSOLine << QStringLiteral("<RST_SENT:%1>%2").arg(rstSentClean.length()).arg(rstSentClean);
+            QSOLine << QStringLiteral("<STX:0>");
+            QSOLine << QStringLiteral("<RST_RCVD:%1>%2").arg(rstRcvdClean.length()).arg(rstRcvdClean);
+            QSOLine << QStringLiteral("<SRX:0>");
+            if(gridsquare.length() > 0) QSOLine << QStringLiteral("<GRIDSQUARE:%1>%2").arg(gridsquare.length()).arg(gridsquare);
+            //<PFX:>
+            //<DXCC_PREF:>
+            QSOLine << QStringLiteral("<CQZ:%1>%2").arg(cqz.length()).arg(cqz);
+            QSOLine << QStringLiteral("<ITUZ:%1>%2").arg(ituz.length()).arg(ituz);
             QSOLine << QStringLiteral("<BAND:%1>%2").arg(band.length()).arg(band);
-            QSOLine << QStringLiteral("<FREQ:%1>%2").arg(freq.length()).arg(freq);
+            QSOLine << QStringLiteral("<CONT:%1>%2").arg(cont.length()).arg(cont);
+
             QSOLine << QStringLiteral("<NAME:%1>%2").arg(name.length()).arg(name);
             QSOLine << QStringLiteral("<QTH:%1>%2").arg(qth.length()).arg(qth);
             QSOLine << QStringLiteral("<CNTY:%1>%2").arg(cnty.length()).arg(cnty);
             if (comment.length() > 0) {
-                QSOLine << QStringLiteral("<COMMENT:%1>%2").arg(comment.length()).arg(comment);
+                QSOLine << QStringLiteral("<QSLMSG:%1>%2").arg(comment.length()).arg(comment);
             }
-            QSOLine << "<EOR>" << Qt::endl;
+            //<DXCC:>
+            QSOLine << "<EOR>" << EOL;
             counter++;
         }
-
         QString outInfo;
         outInfo = QString("Создан файл - %1\nQSO в файле - %2").arg(outFile).arg(counter);
         QMessageBox::information(0, "Информация", outInfo);
     }
 }
-
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void ExportADIF::getCallsigns()
@@ -168,7 +185,6 @@ void ExportADIF::on_BetweenRadioButton_toggled(bool checked)
         ui->AllRadioButton->setChecked(false);
         ui->FromDateEdit->setEnabled(true);
         ui->ToDateEdit->setEnabled(true);
-
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

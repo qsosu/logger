@@ -155,6 +155,7 @@ void ImportADIF::on_importButton_clicked()
     cpy_query.prepare("DELETE FROM TEMP_RECORDS");
     if(!cpy_query.exec()) qDebug() << "ERROR CLEAR TEMP_RECORDS TABLE. " << cpy_query.lastError() << "\n";
     emit db_updated();
+    QMessageBox::information(this, tr("Загрузка QSO из ADIF файла"), tr("Загружено QSO: ") + QString::number(cnt));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -139,7 +139,7 @@ signals:
   void bandsUpdated();
   void HamDefsUploaded();
   void HamDefsError();
-  void userDataUpdated();
+  void userDataUpdated(bool);
   void getUserInfo(QStringList);
   void QSODataUpdated(QString);
   void errorQSODataUpdated(QString);

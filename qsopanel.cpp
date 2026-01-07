@@ -76,8 +76,10 @@ QSOPanel::QSOPanel(QMainWindow *mainWindow, Settings *settings, cat_Interface *c
 
     // Заполнение GroupBox1
     stationCallsign = new QComboBox;
+    stationCallsign->setMinimumWidth(50);
     flowLayout1->addWidget(makeInputPair(tr("Позывной станции:"), stationCallsign));
     operatorCallsign = new QComboBox;
+    operatorCallsign->setMinimumWidth(50);
     flowLayout1->addWidget(makeInputPair(tr("Позывной оператора:"), operatorCallsign));
     DateEdit = new QDateEdit;
     DateEdit->setCalendarPopup(true);
@@ -1065,8 +1067,9 @@ void QSOPanel::clearQSO()
     QSOSUserLabel->setVisible(false);
     UserSRRIcon->setVisible(false);
     UserSRRLabel->setVisible(false);
+    countryFlag->setVisible(false);
+    countryName->setVisible(false);
 }
-
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void QSOPanel::setQSOSUserVisible(bool visible)
@@ -1317,7 +1320,7 @@ int QSOPanel::getModeTextIndex()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-bool QSOPanel::setFlag(const QString &countryCode)
+void QSOPanel::setFlag(const QString &countryCode)
 {
     // Загружаем флаг, если существует
     QString iconPath = QString(":resources/flags/%1.png").arg(countryCode);
@@ -1332,7 +1335,7 @@ bool QSOPanel::setFlag(const QString &countryCode)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-bool QSOPanel::setCountry(const QString &country)
+void QSOPanel::setCountry(const QString &country)
 {
     if(country != "")
     {
@@ -1345,7 +1348,17 @@ bool QSOPanel::setCountry(const QString &country)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void QSOPanel::setFlagVisible(bool visible)
+{
+    countryFlag->setVisible(visible);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
+void QSOPanel::setCountryVisible(bool visible)
+{
+    countryName->setVisible(visible);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 
 

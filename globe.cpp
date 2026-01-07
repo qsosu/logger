@@ -216,21 +216,21 @@ void Globe::mouseReleaseEvent(QMouseEvent *e)
         if(!countryVisible) continue; // Страна за горизонтом — пропускаем
 
         bool clicked = false;
-        for(const auto &ring : c.contours){
-            QPolygon poly2D;
-            for(const auto &v : ring){
-                QVector4D clip = proj*view*model*QVector4D(v,1.0f);
-                if(clip.w() == 0) continue;
-                QVector3D ndc = clip.toVector3DAffine();
-                int x = (ndc.x()*0.5f + 0.5f) * width();
-                int y = (-ndc.y()*0.5f + 0.5f) * height();
-                poly2D << QPoint(x,y);
-            }
-            if(poly2D.containsPoint(pos, Qt::OddEvenFill)){
-                clicked = true;
-                break;
-            }
-        }
+//        for(const auto &ring : c.contours){
+//            QPolygon poly2D;
+//            for(const auto &v : ring){
+//                QVector4D clip = proj*view*model*QVector4D(v,1.0f);
+//                if(clip.w() == 0) continue;
+//                QVector3D ndc = clip.toVector3DAffine();
+//                int x = (ndc.x()*0.5f + 0.5f) * width();
+//                int y = (-ndc.y()*0.5f + 0.5f) * height();
+//                poly2D << QPoint(x,y);
+//            }
+//            if(poly2D.containsPoint(pos, Qt::OddEvenFill)){
+//                clicked = true;
+//                break;
+//            }
+//        }
 
         if(clicked){
             highlightedCountry = ci;

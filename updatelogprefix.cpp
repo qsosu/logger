@@ -13,6 +13,7 @@ Comments    :
 #include "ui_updatelogprefix.h"
 #include <QDebug>
 #include <QSqlError>
+#include <QMessageBox>
 #include "QRegularExpressionValidator"
 
 
@@ -111,6 +112,7 @@ void UpdateLogPrefix::on_updateButton_clicked()
 
     qDebug() << "Обновлено записей:" << cnt;
     emit db_updated();
+    QMessageBox::information(this, tr("Обновление территорий"), tr("Обновлено QSO: ") + QString::number(cnt));
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------

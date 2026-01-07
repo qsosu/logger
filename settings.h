@@ -91,14 +91,12 @@ private:
     QStringList qmFiles;        // Список файлов переводов
     QStringList languageNames;  // Список названий языков
 
-
     void openPath(QString path);
     void createDefaultFile();
     uint saveTableState();
     QString EncryptToken(QString data);
     QString DecryptToken(QString data);
     QString genSalt(QString data);
-    Coordinates locatorToCoordinates(const QString& locator);
     void loadTranslations();
 
 protected:
