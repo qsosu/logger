@@ -6,18 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
+    <width>1100</width>
     <height>680</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
+    <width>1100</width>
     <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>QSOLogger v3.0</string>
+   <string>QSO Logger v3.0.1</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
@@ -107,7 +107,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1100</width>
      <height>22</height>
     </rect>
    </property>
@@ -151,13 +151,14 @@
     <property name="title">
      <string>Инструменты</string>
     </property>
-    <addaction name="actionShowMap"/>
     <addaction name="actionPreviosQSO"/>
+    <addaction name="actionShowMap"/>
+    <addaction name="actionGlobe"/>
+    <addaction name="actionShowSpots"/>
     <addaction name="separator"/>
     <addaction name="actionUpdatePrefix"/>
     <addaction name="actionCheckCountry"/>
     <addaction name="separator"/>
-    <addaction name="actionShowSpots"/>
     <addaction name="actionReportSun"/>
     <addaction name="separator"/>
     <addaction name="actionChats"/>
@@ -170,6 +171,7 @@
     <addaction name="actionReportContinent"/>
     <addaction name="actionReportBands"/>
     <addaction name="actionReportModes"/>
+    <addaction name="actionReportYear"/>
     <addaction name="separator"/>
    </widget>
    <addaction name="menu"/>
@@ -310,6 +312,16 @@
   <action name="actionShowLogLocation">
    <property name="text">
     <string>Открыть папку с логом</string>
+   </property>
+  </action>
+  <action name="actionReportYear">
+   <property name="text">
+    <string>Отчет по годам</string>
+   </property>
+  </action>
+  <action name="actionGlobe">
+   <property name="text">
+    <string>Показать глобус</string>
    </property>
   </action>
  </widget>

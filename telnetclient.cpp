@@ -1,4 +1,18 @@
-#include "telnetclient.h"
+/**********************************************************************************************************
+Description :  Implementation of the TelnetClient class, which provides connection to a Telnet server
+            :  (e.g., QSO.SU) for receiving real-time events such as spots, news, and chat messages.
+            :  The class parses incoming Telnet stream, filters service bytes, extracts JSON payloads,
+            :  and stores structured data into the local SQLite database.
+Version     :  1.3.0
+Date        :  03.08.2025
+Author      :  R9JAU
+Comments    :  - Uses QTcpSocket for async Telnet communication with automatic reconnection (10 sec delay).
+            :  - Implements JSON stream parsing with buffer handling and Telnet IAC (255) command filtering.
+            :  - Handles multiple event types:
+            :       * "spot"    – saves DX cluster spot into SPOTS table (with DXCC metadata).
+            :       * "news"    – saves news message into NEWS table.
+            :       * "message" – emits chat message object and stores in memory/DB.
+***********************************************************************************************************/
 
 #include <QTcpSocket>
 #include <QCoreApplication>
@@ -9,6 +23,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QApplication>
+#include "telnetclient.h"
 
 
 TelnetClient::TelnetClient(QSqlDatabase db, const QString &host, quint16 port, QObject *parent)
@@ -17,14 +32,9 @@ TelnetClient::TelnetClient(QSqlDatabase db, const QString &host, quint16 port, Q
     this->db = db;
     socket = new QTcpSocket(this);
 
-<<<<<<< Updated upstream
-    connect(socket, &QTcpSocket::connected, this, []() {
-        qDebug() << "Connected to Telnet server.";
-=======
     connect(socket, &QTcpSocket::connected, this, [this]() {
-        TelnetConnected = true;
-        qInfo() << "Подключились к Telnet серверу.";
->>>>>>> Stashed changes
+            TelnetConnected = true;
+            qInfo() << "Connected to Telnet server.";
     });
 
     connect(socket, &QTcpSocket::readyRead, this, &TelnetClient::onReadyRead);
@@ -49,7 +59,6 @@ void TelnetClient::connectToServer()
     if (socket->state() != QAbstractSocket::ConnectedState &&
             socket->state() != QAbstractSocket::ConnectingState)
     {
-        qDebug() << "Connecting to" << host << ":" << port;
         socket->abort();
         socket->connectToHost(host, port);
     }
@@ -157,7 +166,7 @@ void TelnetClient::onReadyRead()
 
                     emit chatMessageReceived(msg);
                     emit newChatReseived();
-                    qDebug() << "Receive chat message." << msg.text;
+                    qInfo() << "Receive chat message.";
                     QApplication::processEvents();
                 }
             }
@@ -173,7 +182,7 @@ void TelnetClient::insertSpot(const QJsonObject &data)
     QSqlQuery query;
 
     query.prepare(R"(
-        INSERT INTO spots (
+        INSERT OR IGNORE INTO spots (
             spotter, callsign, frequency, message, message_raw,
             mode, submode, band, wave_type,
             event_at,

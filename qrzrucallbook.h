@@ -15,7 +15,9 @@ public:
     explicit QrzruCallbook(QString username, QString password, QObject *parent = nullptr);
     QStringList Get(QString call);
     void LoadPhoto(QString imageUrl);
+    bool pingQrzRu();
     QPixmap pixmap;
+    bool serviceAvailable;
 
 private:
     QString username;

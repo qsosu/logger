@@ -1,4 +1,4 @@
-QT       += core gui network sql xml
+QT       += core gui network sql xml opengl
 QT       += quickwidgets positioning qml quick
 QT       += serialport printsupport charts
 
@@ -23,8 +23,10 @@ SOURCES += \
     flowlayout.cpp \
     flrig.cpp \
     geolocation.cpp \
+    globe.cpp \
     httpapi.cpp \
     importadif.cpp \
+    localcallbook.cpp \
     main.cpp \
     mainwindow.cpp \
     mapcontroller.cpp \
@@ -36,6 +38,7 @@ SOURCES += \
     reports/reportcountry.cpp \
     reports/reportmodes.cpp \
     reports/reportsunchart.cpp \
+    reports/reportyear.cpp \
     settings.cpp \
     spotviewer.cpp \
     telnetclient.cpp \
@@ -46,7 +49,8 @@ SOURCES += \
     thirdparty/libmaia/maia/maiaXmlRpcServerConnection.cpp \
     udpserver.cpp \
     updatelogprefix.cpp \
-    uploadinglogs.cpp
+    uploadinglogs.cpp \
+    waitspinner.cpp
 
 HEADERS += \
     about.h \
@@ -61,10 +65,12 @@ HEADERS += \
     flowlayout.h \
     flrig.h \
     geolocation.h \
+    globe.h \
     ham_definitions.h \
     helpers.h \
     httpapi.h \
     importadif.h \
+    localcallbook.h \
     mainwindow.h \
     mapcontroller.h \
     qrzrucallbook.h \
@@ -75,6 +81,7 @@ HEADERS += \
     reports/reportcountry.h \
     reports/reportmodes.h \
     reports/reportsunchart.h \
+    reports/reportyear.h \
     settings.h \
     spotviewer.h \
     telnetclient.h \
@@ -85,7 +92,8 @@ HEADERS += \
     thirdparty/libmaia/maia/maiaXmlRpcServerConnection.h \
     udpserver.h \
     updatelogprefix.h \
-    uploadinglogs.h
+    uploadinglogs.h \
+    waitspinner.h
 
 FORMS += \
     about.ui \
@@ -104,6 +112,7 @@ FORMS += \
     reports/reportcountry.ui \
     reports/reportmodes.ui \
     reports/reportsunchart.ui \
+    reports/reportyear.ui \
     settings.ui \
     spotviewer.ui \
     updatelogprefix.ui \
@@ -117,16 +126,12 @@ win32:RC_ICONS = $$PWD/resources/images/icon32.ico
 macx {
     ICON = $$PWD/resources/images/logo.icns
     QMAKE_INFO_PLIST = $$PWD/Info.plist
-
     prefixes.files = $$PWD/Prefixes.xml
     prefixes.path  = Contents/MacOS
-
     hamdefs.files = $$PWD/HamDefs.xml
     hamdefs.path  = Contents/MacOS
-
     QMAKE_BUNDLE_DATA += prefixes hamdefs
 }
-
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -134,6 +139,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    offline_tiles_1.qrc \
+    offline_tiles_2.qrc \
     resources.qrc \
     qml.qrc
 

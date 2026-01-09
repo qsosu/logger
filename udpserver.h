@@ -66,9 +66,6 @@ public:
     QByteArray exchange_sent;
     QByteArray exchange_rcvd;
     QByteArray propmode;
-<<<<<<< Updated upstream
-=======
-
     QString dx_report;
     QString tx_mode;
     bool tx_enabled;
@@ -78,7 +75,6 @@ public:
     quint32 tx_df_auto;
     quint16 flags;
 
->>>>>>> Stashed changes
     /* QSOLoggedADIF data*/
     QMap<QString, QString> adifData;
     QString call_name;
@@ -96,6 +92,9 @@ private slots:
     void process(QByteArray data);
     void prosessAscii(QByteArray data);
     bool determinePacketType(const QByteArray& packet);
+    void onSocketError(QAbstractSocket::SocketError error);
+    void restartSocket();
+
 
 signals:
     void heartbeat();

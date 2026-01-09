@@ -1,6 +1,14 @@
+/**********************************************************************************************************
+Description :  ReportBands dialog class for displaying and printing a summary of QSO counts per band.
+Version     :  1.0.0
+Date        :  20.08.2025
+Author      :  R9JAU
+Comments    :  - Supports printing with headers, footers, and pagination.
+               - Automatically adjusts column widths based on content.
+**********************************************************************************************************/
+
 #include "reportbands.h"
 #include "ui_reportbands.h"
-
 #include <QSqlError>
 #include <QPrinterInfo>
 #include <QDebug>
@@ -17,7 +25,7 @@ ReportBands::ReportBands(QSqlDatabase db, QWidget *parent) :
 
     QStandardItemModel *model = new QStandardItemModel(this);
     model->setColumnCount(2);
-    model->setHorizontalHeaderLabels({"Диапазон", "Количество QSO"});
+    model->setHorizontalHeaderLabels({tr("Диапазон"), tr("Количество QSO")});
 
     db.commit();
     QSqlQuery query(db);
@@ -53,6 +61,7 @@ void ReportBands::on_CloseButton_clicked()
 {
     close();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void ReportBands::printBandsReport(QTableView *tableView, QWidget *parent)
 {
@@ -128,7 +137,7 @@ void ReportBands::printBandsReport(QTableView *tableView, QWidget *parent)
         titleFont.setBold(true);
         painter.setFont(titleFont);
         painter.drawText(pageRect.left() + leftMargin + 100, pageRect.top() + 130,
-                         "Отчёт по диапазонам и количеству связей");
+                         tr("Отчёт по диапазонам и количеству связей"));
         painter.setFont(font);
 
         int x = pageRect.left() + leftMargin;
@@ -142,12 +151,12 @@ void ReportBands::printBandsReport(QTableView *tableView, QWidget *parent)
 
         painter.drawRect(x, y, colBandWidth, rowHeight);
         painter.drawText(QRect(x + 5, y, colBandWidth - 10, rowHeight),
-                         Qt::AlignVCenter | Qt::AlignLeft, "Диапазон");
+                         Qt::AlignVCenter | Qt::AlignLeft, tr("Диапазон"));
         x += colBandWidth;
 
         painter.drawRect(x, y, colCountWidth, rowHeight);
         painter.drawText(QRect(x + 5, y, colCountWidth - 10, rowHeight),
-                         Qt::AlignVCenter | Qt::AlignLeft, "Кол-во");
+                         Qt::AlignVCenter | Qt::AlignLeft, tr("Кол-во"));
         y += rowHeight;
 
         // Данные
@@ -178,7 +187,7 @@ void ReportBands::printBandsReport(QTableView *tableView, QWidget *parent)
         }
 
         // Футер
-        QString footer = QString("Страница %1    Дата: %2")
+        QString footer = QString(tr("Страница %1    Дата: %2"))
                 .arg(page)
                 .arg(QDate::currentDate().toString("dd.MM.yyyy"));
         QFont footerFont = font;

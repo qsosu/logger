@@ -48,21 +48,22 @@ void messageHandler(QtMsgType type, const QMessageLogContext& context, const QSt
 
 int main(int argc, char *argv[])
 {
-  QApplication a(argc, argv);
+    //qputenv("QT_FATAL_WARNINGS", "1");
+    QApplication a(argc, argv);
 
-  QString lockPath = QDir::temp().absoluteFilePath("QSOLogger.lock");
-  QLockFile lockFile(lockPath);
+    QString lockPath = QDir::temp().absoluteFilePath("QSOLogger.lock");
+    QLockFile lockFile(lockPath);
 
-  // Защита от залипших lock-файлов (если приложение упало)
-  lockFile.setStaleLockTime(0);
+    // Защита от залипших lock-файлов (если приложение упало)
+    lockFile.setStaleLockTime(0);
 
-  if (!lockFile.tryLock()) {
-      QMessageBox::warning(nullptr, QObject::tr("Ошибка"), QObject::tr("QSOLogger уже запущен."));
-      return 0;
-  }
+    if (!lockFile.tryLock()) {
+        QMessageBox::warning(nullptr, QObject::tr("Ошибка"), QObject::tr("QSOLogger уже запущен."));
+        return 0;
+    }
 
-  m_log.reset(new QFile(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/log.txt"));
-  m_log.data()->open(QFile::Append | QFile::Text);
+    m_log.reset(new QFile(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/log.txt"));
+    m_log.data()->open(QFile::Append | QFile::Text);
 
 #if defined(Q_OS_WIN32) || defined(Q_OS_WIN64)
     QApplication::setStyle(QStyleFactory::create("Fusion"));
@@ -76,9 +77,9 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/resources/images/logo.icns"));
 #endif
 
-  qInstallMessageHandler(messageHandler);
-  MainWindow w;
-  w.show();
+    qInstallMessageHandler(messageHandler);
+    MainWindow w;
+    w.show();
 
-  return a.exec();
+    return a.exec();
 }

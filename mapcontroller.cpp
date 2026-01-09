@@ -1,3 +1,17 @@
+/**********************************************************************************************************
+Description :  Implementation of the MapController class, which acts as a bridge between the C++ backend
+            :  and the QML map object. Provides methods to add/remove markers, clear map objects,
+            :  draw polylines (routes), and handle measurement data (distance, azimuth, coordinates).
+Version     :  1.5.0
+Date        :  05.03.2025
+Author      :  R9JAU
+Comments    :  - Uses QMetaObject::invokeMethod to call QML-side map functions dynamically.
+            :  - Supports adding markers with custom labels and icons.
+            :  - Supports drawing polyline paths with configurable color and width.
+            :  - Provides formatted text signals for displaying distance, azimuth, and coordinates.
+***********************************************************************************************************/
+
+
 #include "mapcontroller.h"
 #include <QMetaObject>
 #include <QDebug>
@@ -75,3 +89,4 @@ void MapController::receiveCallLatLon(QGeoCoordinate callLatLon)
     emit callLatLonChanged(text);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
+

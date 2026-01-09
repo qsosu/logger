@@ -202,20 +202,20 @@ void Globe::mouseReleaseEvent(QMouseEvent *e)
         return QVector3D::dotProduct(posWorld.normalized(), toCamera) > 0;
     };
 
-//    for(int ci=0; ci<countries.size(); ++ci){
-//        const auto &c = countries[ci];
+    for(int ci=0; ci<countries.size(); ++ci){
+        const auto &c = countries[ci];
 
-//        // Проверяем, видна ли хотя бы одна точка страны
-//        bool countryVisible = false;
-//        for(const auto &ring : c.contours){
-//            for(const auto &v : ring){
-//                if(isVisible(v)){ countryVisible = true; break; }
-//            }
-//            if(countryVisible) break;
-//        }
-//        if(!countryVisible) continue; // Страна за горизонтом — пропускаем
+        // Проверяем, видна ли хотя бы одна точка страны
+        bool countryVisible = false;
+        for(const auto &ring : c.contours){
+            for(const auto &v : ring){
+                if(isVisible(v)){ countryVisible = true; break; }
+            }
+            if(countryVisible) break;
+        }
+        if(!countryVisible) continue; // Страна за горизонтом — пропускаем
 
-//        bool clicked = false;
+        bool clicked = false;
 //        for(const auto &ring : c.contours){
 //            QPolygon poly2D;
 //            for(const auto &v : ring){
@@ -232,12 +232,12 @@ void Globe::mouseReleaseEvent(QMouseEvent *e)
 //            }
 //        }
 
-//        if(clicked){
-//            highlightedCountry = ci;
-//            QToolTip::showText(e->globalPos(), c.name, this);
-//            break;
-//        }
-//    }
+        if(clicked){
+            highlightedCountry = ci;
+            QToolTip::showText(e->globalPos(), c.name, this);
+            break;
+        }
+    }
     update();
 }
 //----------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,16 @@
+/**********************************************************************************************************
+Description :  Implementation of the FlowLayout class, which arranges child widgets in a flowing
+            :  layout, similar to text flow. Widgets are placed next to each other until the
+            :  available space is filled, then wrapped onto the next line.
+Version     :  1.0.3
+Date        :  01.09.2025
+Author      :  R9JAU
+Comments    :  Useful for dynamic interfaces where the number and size of widgets may vary.
+            :  Adapted example based on Qt documentation and customized for project needs.
+***********************************************************************************************************/
+
 #include "flowlayout.h"
 #include <QWidget>
-
 
 FlowLayout::FlowLayout(QWidget *parent, int margin, int hSpacing, int vSpacing)
     : QLayout(parent), m_hSpace(hSpacing), m_vSpace(vSpacing)

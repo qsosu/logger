@@ -1,6 +1,6 @@
 #include <QRegularExpression>
 #include "udpserver.h"
-
+#include <QTimer>
 
 
 UdpServer::UdpServer(QObject *parent)
@@ -21,29 +21,49 @@ void UdpServer::setRetranslPort(uint16_t port)
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-bool UdpServer::start(uint16_t port) {
+bool UdpServer::start(uint16_t port)
+{
     this->port = port;
-    clientSocket = new QUdpSocket(this);
+    qDebug() << "[UDP] Starting server on port" << port;
+    //stop(); // гарантированно чистый старт
+
     socket = new QUdpSocket(this);
-    if (!socket->bind(QHostAddress::Any, port)) {
+    clientSocket = new QUdpSocket(this);
+
+    if (!socket->bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint)) {
+        qCritical() << "[UDP] Bind failed:" << socket->errorString();
+        socket->deleteLater();
+        socket = nullptr;
         return false;
     }
     connect(socket, &QUdpSocket::readyRead, this, &UdpServer::onReadyRead);
+    connect(socket, &QUdpSocket::errorOccurred, this, &UdpServer::onSocketError);
     return true;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void UdpServer::stop()
 {
-    if (socket) {
-        disconnect(socket, nullptr, this, nullptr);
-        socket->close();
+    // Остановка серверного сокета
+    if (socket)
+    {
+        if (socket->state() == QAbstractSocket::BoundState ||
+            socket->state() == QAbstractSocket::ConnectedState)
+        {
+            disconnect(socket, nullptr, this, nullptr);
+            socket->close();
+        }
         socket->deleteLater();
         socket = nullptr;
     }
 
-    if (clientSocket) {
-        clientSocket->close();
+    // Остановка клиентского сокета
+    if (clientSocket)
+    {
+        if (clientSocket->state() == QAbstractSocket::ConnectedState)
+        {
+            clientSocket->close();
+        }
         clientSocket->deleteLater();
         clientSocket = nullptr;
     }
@@ -51,20 +71,45 @@ void UdpServer::stop()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void UdpServer::onSocketError(QAbstractSocket::SocketError error)
+{
+    qCritical() << "[UDP] Socket error:" << error << socket->errorString();
+    // Перезапуск с задержкой
+    QTimer::singleShot(1000, this, &UdpServer::restartSocket);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void UdpServer::restartSocket()
+{
+    qWarning() << "[UDP] Restarting socket on port" << port;
+    stop();
+    start(port);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void UdpServer::onReadyRead()
 {
-    while (socket->hasPendingDatagrams()) {
+    if (!socket) return;
+
+    while (socket->hasPendingDatagrams())
+    {
         QByteArray data;
-        int datagramSize = socket->pendingDatagramSize();
-        data.resize(datagramSize);
+        data.resize(int(socket->pendingDatagramSize()));
 
-        qint64 readLen = socket->readDatagram(data.data(), data.size());
-        if (readLen == -1) return;
+        QHostAddress sender;
+        quint16 senderPort;
+        qint64 readLen = socket->readDatagram(data.data(), data.size(), &sender, &senderPort);
 
-        if(retransl) send(data);
-        if(determinePacketType(data)) {
+        if (readLen < 0) {
+            qCritical() << "[UDP] readDatagram failed:" << socket->errorString();
+            restartSocket();
+            return;
+        }
+        if (retransl) send(data);
+
+        if (determinePacketType(data))
             prosessAscii(data);
-        } else
+        else
             process(data);
     }
 }
@@ -171,3 +216,6 @@ bool UdpServer::determinePacketType(const QByteArray& packet)
     return true;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
+
+
+

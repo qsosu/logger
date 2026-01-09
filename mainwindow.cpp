@@ -17,11 +17,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("QSO Logger v.") + QString::fromStdString(VERSION));
+    setWindowTitle(tr("QSO Logger v") + QString::fromStdString(VERSION));
     QFontDatabase::addApplicationFont("://resources/fonts/Roboto-Regular.ttf");
 
     //Проверка использования и версий SSL
-    qDebug() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
+    qInfo() << "Support SSL: " << QSslSocket::supportsSsl() << " SSL Build Library: " << QSslSocket::sslLibraryBuildVersionString() << " SSL Library Version: " << QSslSocket::sslLibraryVersionString();
 
 //------------------------------------------------------------------------------------------------------------------------------------------
     settings = new Settings();
@@ -48,8 +48,12 @@ MainWindow::MainWindow(QWidget *parent)
     if(settings->proxyEnable) api->configureProxy(settings->proxyType, settings->proxyHost.toString(), settings->proxyHTTPSPort, settings->proxyUserName, settings->proxyUserPassword);
 
 //------------------------------------------------------------------------------------------------------------------------------------------
+    //Локальный Callbook
+    localCallbook = new LocalCallbook();
+//------------------------------------------------------------------------------------------------------------------------------------------
+    CAT = new cat_Interface(settings->catEnable);
 
-    qsoPanel = new QSOPanel(this, settings);
+    qsoPanel = new QSOPanel(this, settings, CAT);
     ui->verticalLayout->insertWidget(0, qsoPanel);
     qsoPanel->dock(); // при запуске сразу в док
     ui->actionSync->setEnabled(false);
@@ -61,18 +65,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Загрузка XML-файла с диапазонами и модуляциями
     if (LoadHamDefsSync()) {
-        qDebug() << "HamDefs.xml прочитан.";
+        qInfo() << "HamDefs.xml прочитан.";
     } else {
         QMessageBox::critical(0, tr("Ошибка"), tr("Файл HamDefs.xml не найден. Завершаю работу."), QMessageBox::Ok);
         qDebug() << "Не удалось загрузить или открыть HamDefs.xml";
         close();
     }
 
-    //Загрузка XML-файла с префиксами
-    entries = loadPrefixDatabase();
  //------------------------------------------------------------------------------------------------------------------------------------------
 
-    qDebug() << "Инициализация БД.";
+    qInfo() << "Инициализация БД.";
     InitDatabase("data.db");
 
     //Настройка интерфейса
@@ -84,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
     bellBtn->setIcon(QIcon(":/resources/images/bell.png"));
     bellBtn->setIconSize(QSize(16, 16));
     bellBtn->setFlat(true);
-    bellBtn->setToolTip("Нет новых уведомлений");
+    bellBtn->setToolTip(tr("Нет новых уведомлений"));
 
     connect(bellBtn, &QPushButton::clicked, this, &MainWindow::openNewsWindow);
     statusBar()->insertPermanentWidget(0, bellBtn, 0);
@@ -94,7 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
     notificationBtn->setIcon(QIcon(":/resources/images/notification.png"));
     notificationBtn->setIconSize(QSize(16, 16));
     notificationBtn->setFlat(true);
-    notificationBtn->setToolTip("Есть новые сообщения в чате");
+    notificationBtn->setToolTip(tr("Есть новые сообщения в чате"));
 
     connect(notificationBtn, &QPushButton::clicked, this, &MainWindow::on_actionChats_triggered);
     statusBar()->insertPermanentWidget(1, notificationBtn, 0);
@@ -136,54 +138,54 @@ MainWindow::MainWindow(QWidget *parent)
     catLabel = new QLabel(this);
     statusBar()->addPermanentWidget(catLabel);
 
-    magStormLabel->setText("Уровень ГМА: ");
+    magStormLabel->setText(tr("Уровень МБ: "));
     udpserverLbl->setText("UDP: ");
     flrigLbl->setText("FLRIG: ");
-    qsosuLbl->setText("Сервис QSO.SU: ");
+    qsosuLbl->setText(tr("Сервис QSO.SU: "));
     qsosuLabel->setText("Offline");
     qsosuLabel->setStyleSheet("QLabel { color: red }");
     catLbl->setText("CAT: ");
-    magStormLabel->setText("Уровень ГМА: Нет данных");
+    magStormLabel->setText(tr("Уровень МБ: Нет данных"));
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     udpServer = new UdpServer(this);
-    if (settings->udpServerEnable) {
-        if (udpServer->start(settings->udpServerPort)) {
-            connect(udpServer, &UdpServer::heartbeat, this, [=]() {
-                if(!udpServer->dx_call.isEmpty()) {
-                    //qInfo() << QString("UDP: Received HEARTBEAT - %1 %2").arg(QString::fromUtf8(udpServer->version), QString::fromUtf8(udpServer->revision));
-                }
-            });
+        if (settings->udpServerEnable) {
+            if (udpServer->start(settings->udpServerPort)) {
+                connect(udpServer, &UdpServer::heartbeat, this, [=]() {
+                    if(!udpServer->dx_call.isEmpty()) {
+                        //qInfo() << QString("UDP: Received HEARTBEAT - %1 %2").arg(QString::fromUtf8(udpServer->version), QString::fromUtf8(udpServer->revision));
+                    }
+                });
 
-            connect(udpServer, &UdpServer::status, this, [=]() {
-                if(!udpServer->dx_call.isEmpty()) {
-                    const QString call = QString::fromUtf8(udpServer->dx_call).trimmed();
-                    // если пришёл тот же позывной — игнорируем
-                    if (call.compare(lastDxCall, Qt::CaseInsensitive) == 0) return;
-                    lastDxCall = call;
+                connect(udpServer, &UdpServer::status, this, [=]() {
+                    if(!udpServer->dx_call.isEmpty()) {
+                        const QString call = QString::fromUtf8(udpServer->dx_call).trimmed();
+                        // если пришёл тот же позывной — игнорируем
+                        if (call.compare(lastDxCall, Qt::CaseInsensitive) == 0) return;
+                        lastDxCall = call;
 
-                    qInfo() << tr("UDP: Received STATUS") << "dx_call:" << udpServer->dx_call << " dx_grid:" << udpServer->dx_grid;
-                    qsoPanel->ClearCallbookFields();
-                    qsoPanel->setCallsign(QString::fromUtf8(udpServer->dx_call));
-                    FindCallData(QString::fromUtf8(udpServer->dx_call));
-                }
-            });
+                        qInfo() << tr("UDP: Received STATUS") << "dx_call:" << udpServer->dx_call;
+                        qsoPanel->ClearCallbookFields();
+                        qsoPanel->setCallsign(QString::fromUtf8(udpServer->dx_call));
+                        FindCallData(QString::fromUtf8(udpServer->dx_call));
+                    }
+                });
 
-            connect(udpServer, &UdpServer::logged, this, &MainWindow::onUdpLogged);
-            connect(udpServer, &UdpServer::loggedADIF, this, &MainWindow::onUdpLoggedADIF);
-            ui->statusbar->showMessage(tr("UDP сервер запущен на порту ") + QString::number(settings->udpServerPort), 3000);
-            udpserverLabel->setText(tr("Запущен"));
-            udpserverLabel->setStyleSheet("QLabel { color: green }");
-        } else {
-            udpserverLabel->setText(tr("Ошибка"));
-            udpserverLabel->setStyleSheet("QLabel { color: red }");
+                connect(udpServer, &UdpServer::logged, this, &MainWindow::onUdpLogged);
+                connect(udpServer, &UdpServer::loggedADIF, this, &MainWindow::onUdpLoggedADIF);
+                ui->statusbar->showMessage(tr("UDP сервер запущен на порту ") + QString::number(settings->udpServerPort), 3000);
+                udpserverLabel->setText(tr("Запущен"));
+                udpserverLabel->setStyleSheet("QLabel { color: green }");
+            } else {
+                udpserverLabel->setText(tr("Ошибка"));
+                udpserverLabel->setStyleSheet("QLabel { color: red }");
+            }
         }
-    }
-    if (settings->udpClientEnable) {
-        udpServer->setRetransl(true);
-        udpServer->setRetranslPort(settings->udpClientPort);
-    }
+        if (settings->udpClientEnable) {
+            udpServer->setRetransl(true);
+            udpServer->setRetranslPort(settings->udpClientPort);
+        }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     flrig = new Flrig(settings->flrigHost, settings->flrigPort, 500, this);
@@ -195,7 +197,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->statusbar->showMessage(tr("Подключен к FLRIG"), 1000);
     });
     connect(flrig, &Flrig::disconnected, this, [=]() {
-        flrigLabel->setText("Отключен");
+        flrigLabel->setText(tr("Отключен"));
         flrigLabel->setStyleSheet("QLabel { color: red; }");
         ui->statusbar->showMessage(tr("Отключен от FLRIG"), 1000);
     });
@@ -208,103 +210,9 @@ MainWindow::MainWindow(QWidget *parent)
     });
     connect(flrig, &Flrig::rpcError, this, [=]() {
         ui->statusbar->showMessage(QString(tr("Ошибка XML-RPC: %1 %2")).arg(QString::number(flrig->getErrorCode()), flrig->getErrorString()), 300);
+        qDebug() << QString(tr("Ошибка XML-RPC: %1 %2")).arg(QString::number(flrig->getErrorCode()), flrig->getErrorString());
     });
 //------------------------------------------------------------------------------------------------------------------------------------------
-
-    qrz = new QrzruCallbook(settings->QrzruLogin, settings->QrzruPassword);
-    connect(qrz, &QrzruCallbook::error404, this, [=]() {
-        ui->statusbar->showMessage(tr("QRZ API - данные не найдены"), 2000);
-    });
-    connect(qrz, &QrzruCallbook::error, this, [=]() {
-        ui->statusbar->showMessage(tr("QRZ API - ошибка запроса"), 2000);
-    });
-
-    connect(qsoPanel, &QSOPanel::findCallTimer, this, [=]() {
-        if (settings->enableQrzruCallbook || settings->useCallbook)
-            FindCallData();
-    });
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-    QsoSuPingTimer = new QTimer(this);
-    QsoSuPingTimer->setInterval(5000); //5 секунд
-    connect(QsoSuPingTimer, &QTimer::timeout, this, [=]() {
-        PingQsoSu();
-    });
-    QsoSuPingTimer->start();
-    PingQsoSu();
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-    callsigns = new Callsigns(db, api, this);
-    callsigns->setAttribute(Qt::WA_QuitOnClose, false);
-    connect(callsigns, &Callsigns::updated, this, &MainWindow::onCallsignsUpdated);
-    connect(ui->actionCallsigns, &QAction::triggered, this, [=]() {
-        callsigns->show();
-    });
-    connect(api, &HttpApi::callsignsUpdated, callsigns, &Callsigns::onCallsignsUpdated);
-
-    connect(ui->actionFlrig, &QAction::toggled, this, [=](bool state) {
-        if (state) {
-            flrig->start();
-        } else {
-            flrig->stop();
-        }
-    });
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-    osm = new Geolocation();
-    osm->qth_lat = settings->Latitude;
-    osm->qth_lng = settings->Longitude;
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-    connect(qsoPanel, SIGNAL(stationCallsignIndexChanged(int)), this, SLOT(onStationCallsignChanged()));
-    connect(qsoPanel, SIGNAL(operatorCallsignIndexChanged(int)), this, SLOT(onOperatorChanged()));
-    connect(qsoPanel, SIGNAL(modeTextChanged(QString)), this, SLOT(onModeChanged(QString)));
-
-    connect(qsoPanel, SIGNAL(bandIndexChanged(int)), this, SLOT(fillDefaultFreq()));
-    connect(qsoPanel, SIGNAL(saveQSO()), this, SLOT(SaveQso()));
-    connect(qsoPanel, &QSOPanel::updateDB, this, [=] {
-        RefreshRecords();
-        ScrollRecordsToTop();
-    });
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-    connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customMenuRequested(QPoint)));
-    connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClickedQSO(QModelIndex)));
-    connect(ui->prevQSOtableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClickedPrevQSO(QModelIndex)));
-    connect(ui->prevQSOtableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(prevMenuRequested(QPoint)));
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-    logradio = new APILogRadio(settings->logRadioAccessToken);
-    connect(logradio, &APILogRadio::synced, this, &MainWindow::onLogRadioSynced);
-    connect(logradio, &APILogRadio::errorGetToken, this, [=]() {
-        QMessageBox::critical(0, tr("Ошибка"), tr("Не удалось получить токен!"), QMessageBox::Ok);
-        return;
-    });
-//------------------------------------------------------------------------------------------------------------------------------------------
-    connect(ui->actionAbout, &QAction::triggered, this, [=]() {
-        about = new About(this);
-        about->setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-        about->exec();
-        return;
-    });
-    connect(ui->actionQsosuLink, &QAction::triggered, this, [=]() {
-        QDesktopServices::openUrl(QUrl("https://qso.su/"));
-    });
-    connect(ui->actionQsosuFaqLink, &QAction::triggered, this, [=]() {
-        QDesktopServices::openUrl(QUrl("https://qso.su/ru/faq"));
-    });
-//------------------------------------------------------------------------------------------------------------------------------------------
-    connect(api, SIGNAL(userDataUpdated()), this, SLOT(setUserData()));
-
-    InitRecordsTable();
-    InitPreviosQSOModel();
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-    CAT = new cat_Interface(settings->catEnable);
 
     connect(ui->actionCAT, &QAction::toggled, this, [=](bool state) {
         if(state) {
@@ -334,6 +242,113 @@ MainWindow::MainWindow(QWidget *parent)
             connect(CAT, SIGNAL(cat_mode(int)), this, SLOT(setMode(int)));
         }
     }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+    qrz = new QrzruCallbook(settings->QrzruLogin, settings->QrzruPassword);
+    connect(qrz, &QrzruCallbook::error404, this, [=]() {
+        ui->statusbar->showMessage(tr("QRZ API - данные не найдены"), 2000);
+    });
+    connect(qrz, &QrzruCallbook::error, this, [=]() {
+        ui->statusbar->showMessage(tr("QRZ API - ошибка запроса"), 2000);
+    });
+    connect(qsoPanel, &QSOPanel::findCallTimer, this, [=]() {
+        if (settings->enableQrzruCallbook || settings->useCallbook || settings->useLocalCallbook)
+            FindCallData(qsoPanel->getCallsign());
+    });
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+    QsoSuPingTimer = new QTimer(this);
+    QsoSuPingTimer->setInterval(5000); //5 секунд
+    connect(QsoSuPingTimer, &QTimer::timeout, this, [=]() {
+        PingQsoSu();
+    });
+    QsoSuPingTimer->start();
+    PingQsoSu();
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+    QrzRuPingTimer = new QTimer(this);
+    QrzRuPingTimer->setInterval(5000); //5 секунд
+    connect(QrzRuPingTimer, &QTimer::timeout, this, [=]() {
+        PingQrzRu();
+    });
+    QrzRuPingTimer->start();
+    PingQrzRu();
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+    callsigns = new Callsigns(db, api, this);
+    callsigns->setAttribute(Qt::WA_QuitOnClose, false);
+    connect(callsigns, &Callsigns::updated, this, &MainWindow::onCallsignsUpdated);
+    connect(ui->actionCallsigns, &QAction::triggered, this, [=]() {
+        callsigns->show();
+    });
+    connect(api, &HttpApi::callsignsUpdated, callsigns, &Callsigns::onCallsignsUpdated);
+
+    connect(ui->actionFlrig, &QAction::toggled, this, [=](bool state) {
+        if (state) {
+            flrig->start();
+        } else {
+            flrig->stop();
+        }
+    });
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+    connect(qsoPanel, SIGNAL(stationCallsignIndexChanged(int)), this, SLOT(onStationCallsignChanged()));
+    connect(qsoPanel, SIGNAL(operatorCallsignIndexChanged(int)), this, SLOT(onOperatorChanged()));
+    connect(qsoPanel, SIGNAL(modeTextChanged(QString)), this, SLOT(onModeChanged(QString)));
+    connect(qsoPanel, SIGNAL(bandIndexChanged(int)), this, SLOT(fillDefaultFreq()));
+    connect(qsoPanel, SIGNAL(saveQSO()), this, SLOT(SaveQso()));
+    connect(qsoPanel, &QSOPanel::updateDB, this, [=] {
+        RefreshRecords();
+        ScrollRecordsToTop();
+    });
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+    osm = new Geolocation();
+
+    Coordinates latlon;
+    latlon = osm->locatorToCoordinates(userData.gridsquare);
+    settings->Latitude = latlon.latitude;
+    settings->Longitude = latlon.latitude;
+    osm->qth_lat = latlon.latitude;
+    osm->qth_lng = latlon.longitude;
+
+    gc = new GlobeContainer(":/resources/images/earth.jpg");
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+    connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customMenuRequested(QPoint)));
+    connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClickedQSO(QModelIndex)));
+    connect(ui->prevQSOtableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClickedPrevQSO(QModelIndex)));
+    connect(ui->prevQSOtableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(prevMenuRequested(QPoint)));
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+    logradio = new APILogRadio(settings->logRadioAccessToken);
+    connect(logradio, &APILogRadio::synced, this, &MainWindow::onLogRadioSynced);
+    connect(logradio, &APILogRadio::errorGetToken, this, [=]() {
+        QMessageBox::critical(0, tr("Ошибка"), tr("Не удалось получить токен!"), QMessageBox::Ok);
+        return;
+    });
+//------------------------------------------------------------------------------------------------------------------------------------------
+    connect(ui->actionAbout, &QAction::triggered, this, [=]() {
+        about = new About(this);
+        about->exec();
+        return;
+    });
+    connect(ui->actionQsosuLink, &QAction::triggered, this, [=]() {
+        QDesktopServices::openUrl(QUrl("https://qso.su/"));
+    });
+    connect(ui->actionQsosuFaqLink, &QAction::triggered, this, [=]() {
+        QDesktopServices::openUrl(QUrl("https://qso.su/ru/faq"));
+    });
+//------------------------------------------------------------------------------------------------------------------------------------------
+    connect(api, SIGNAL(userDataUpdated(bool)), this, SLOT(onQsoSuResult(bool)));
+
+    InitRecordsTable();
+    InitPreviosQSOModel();
+
 //------------------------------------------------------------------------------------------------------------------------------------------
     getCallsigns();
     fillDefaultFreq();
@@ -345,15 +360,22 @@ MainWindow::MainWindow(QWidget *parent)
     catLabel->setStyleSheet("QLabel { color: red; }");
 
 //------------------------------------------------------------------------------------------------------------------------------------------
-    update_prefix = new UpdateLogPrefix(db, entries);
+
+    qInfo() << tr("Загрузка файлов с префиксами.");
+    ctyData = loadCtyDatabase("cty.dat"); //Загружаем файл с префиксами ARRL
+    if(ctyData.count() > 0) qInfo() << tr("Файл с префиксами cty.dat загружен.");
+    else qInfo() << tr("Не удалось загрузить файл с префиксами.");
+    update_prefix = new UpdateLogPrefix(db, ctyData);
     connect(update_prefix, SIGNAL(db_updated()), this, SLOT(RefreshRecords()));
+
 //------------------------------------------------------------------------------------------------------------------------------------------
+
     reportSunChart = new ReportSunChart(db);
     connect(api, SIGNAL(MagStormUpdated(QJsonArray)), reportSunChart, SLOT(InsertMeasurement(QJsonArray)));
-    connect(api, SIGNAL(MagStormUpdated(QJsonArray)), this, SLOT(UpdateMeasurement(QJsonArray)));
+    connect(api, SIGNAL(MagStormCurrentUpdated(QJsonObject)), this, SLOT(UpdateMeasurement(QJsonObject)));
+
 //------------------------------------------------------------------------------------------------------------------------------------------
     if(settings->showMap) on_actionShowMap_triggered();
-    if(api->serviceAvailable) RemoveDeferredQSOs(); //Удаляем с QSO.SU ранее не удаленные QSO
     loadCallList();
 //------------------------------------------------------------------------------------------------------------------------------------------
     MagStormTimer = new QTimer(this);
@@ -379,33 +401,45 @@ MainWindow::MainWindow(QWidget *parent)
     qsoedit = new Qsoedit(db, bandList, modeList, settings);
     connect(qsoedit, SIGNAL(db_updated()), this, SLOT(RefreshRecords()));
 //------------------------------------------------------------------------------------------------------------------------------------------
-    spotViewer = new SpotViewer(db, bandList, modeList, entries, CAT);
-    connect(spotViewer, SIGNAL(setNewQSO(QString, QString, double, QString)), this, SLOT(setSpotQSO(QString, QString, double, QString)));
-//------------------------------------------------------------------------------------------------------------------------------------------
-    chats = new ChatController(db, api);
 
     api->getListSpotServers();
     connect(api, &HttpApi::spotServersReceived, this, [=](const QList<ServerInfo> &servers){
         if (servers.isEmpty()) {
-            qWarning() << "Список серверов пуст!";
+            qWarning() << tr("Список серверов пуст!");
             return;
         }
-        qDebug() << "Доступные серверы:";
+        qInfo() << tr("Доступные серверы:");
         // Ищем сервер с минимальным client
         const ServerInfo *best = &servers.first();
         for (const auto &s : servers) {
             if (s.client < best->client) {
                 best = &s;
             }
-            qDebug() << best->host << best->port << "client =" << best->client;
+            qInfo() << best->host << best->port << "client =" << best->client;
         }
 
         tclient = new TelnetClient(db, best->host, best->port, this);
+
+        spotViewer = new SpotViewer(db, bandList, modeList, ctyData, CAT);
+        connect(spotViewer, SIGNAL(setNewQSO(QString, QString, double, QString)), this, SLOT(setSpotInfo(QString, QString, double, QString)));
+
+        chats = new ChatController(db, api);
         connect(tclient, SIGNAL(newsMessageReceived()), this, SLOT(showBellIcon()));
         connect(tclient, SIGNAL(newChatReseived()), this, SLOT(showNotificationIcon()));
         connect(tclient, &TelnetClient::chatMessageReceived, chats, &ChatController::onMessageReceived);
         connect(tclient, SIGNAL(newSpotReseived()), spotViewer, SLOT(updateSpots()));
-        qDebug() << "Подключаемся к серверу:" << best->host << best->port << "client =" << best->client;
+        qInfo() << tr("Подключаемся к серверу:") << best->host << best->port << "client =" << best->client;
+        spotServerConnected = true;
+    });
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+    connect(api, &HttpApi::serviceAvailableChanged, this, [this](bool available)
+    {
+        if (available && !serviceWasAvailable) {
+            serviceWasAvailable = true;
+            RemoveDeferredQSOs(); //Удаляем с QSO.SU ранее не удаленные QSO
+            api->getMagneticStormCurrent();
+        }
     });
 
     qInfo() << "QSOLogger v" << VERSION << " started.";
@@ -426,8 +460,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (osm->isVisible()) osm->close();
     if (spotViewer->isVisible()) spotViewer->close();
     if (chats->isVisible()) chats->close();
-    if(reportSunChart->isVisible()) reportSunChart->close();
-    if(qsoPanel->isVisible()) qsoPanel->close();
+    if (reportSunChart->isVisible()) reportSunChart->close();
+    if (qsoPanel->isVisible()) qsoPanel->close();
+    if (gc->globe->isVisible()) gc->globe->close();
+    if (gc->isVisible()) gc->close();
 
     saveHeaderState(ui->tableView);
     QMainWindow::closeEvent(event);
@@ -488,8 +524,8 @@ void MainWindow::ReinitSettings()
 //------------------------------------------------------------------------------------------------------------------------------------------
 /* Database section */
 
-void MainWindow::InitDatabase(QString dbFile) {
-
+void MainWindow::InitDatabase(QString dbFile)
+{
     if(!QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).exists())
         QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
 
@@ -499,7 +535,7 @@ void MainWindow::InitDatabase(QString dbFile) {
         CreateDatabase();
     }
     if (ConnectDatabase()) {
-        ui->statusbar->showMessage("Файл БД открыт", 3000);
+        ui->statusbar->showMessage(tr("Файл БД открыт"), 3000);
     } else {
         qWarning() << "Error while open database file";
         //QMessageBox::critical(0, tr("Ошибка"), tr("Ошибка открытия файла БД"), QMessageBox::Ok);
@@ -515,7 +551,8 @@ bool MainWindow::CheckDatabase() {
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::CreateDatabase() {
+void MainWindow::CreateDatabase()
+{
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "CreateConnection");
   qInfo() << "Database path:" << database_file;
   db.setDatabaseName(database_file);
@@ -560,9 +597,11 @@ void MainWindow::CreateDatabase() {
              "\"CONT\" TEXT,"
              "\"COUNTRY_CODE\" TEXT,"
              "\"COMMENT\" TEXT,"
+             "\"QSL_STATUS\" INTEGER DEFAULT 0,"
              "PRIMARY KEY(\"id\" AUTOINCREMENT))");
   qInfo() << "Creating UNIQUE INDEX";
-  query.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_records_hash ON RECORDS(HASH) WHERE HASH IS NOT NULL AND HASH <> ''");
+  query.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_records_hash ON RECORDS (HASH) WHERE HASH IS NOT NULL AND HASH <> ''");
+  query.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_records_unique ON RECORDS (CALL, QSO_DATE, TIME_ON, BAND, MODE);");
   qInfo() << "Creating DELRECORDS table";
   query.exec("CREATE TABLE \"delrecords\" (\"id\" INTEGER NOT NULL, \"HASH\" TEXT, PRIMARY KEY(\"id\" AUTOINCREMENT))");
   qInfo() << "Creating SYNCHRONIZATION table";
@@ -600,7 +639,10 @@ void MainWindow::CreateDatabase() {
              "\"COUNTRY\" TEXT,"
              "\"CONT\" TEXT,"
              "\"COUNTRY_CODE\" TEXT,"
-             "\"COMMENT\" TEXT)");
+             "\"COMMENT\" TEXT,"
+             "\"QSL_STATUS\" INTEGER DEFAULT 0)");
+  qInfo() << "Creating UNIQUE INDEX";
+  query.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_temp_records_unique ON temp_records (CALL, QSO_DATE, TIME_ON, BAND, MODE);");
   qInfo() << "Creating MAGNETIC_STORM table";
   query.exec("CREATE TABLE \"magnetic_storm\" ("
              "\"id\" INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -632,22 +674,30 @@ void MainWindow::CreateDatabase() {
              "\"dxcc_cqz\" TEXT, "
              "\"dxcc_ituz\" TEXT"
              ")");
+  qInfo() << "Creating UNIQUE INDEX";
+  query.exec(
+      "CREATE UNIQUE INDEX IF NOT EXISTS idx_spots_unique "
+      "ON spots(spotter, callsign, event_at)"
+  );
   qInfo() << "Creating triggers";
-  query.exec("CREATE TRIGGER \"limit_spots\" "
-             "AFTER INSERT ON \"spots\" "
-             "BEGIN "
-             "DELETE FROM \"spots\" "
-             "WHERE \"id\" NOT IN ("
-             "SELECT \"id\" FROM \"spots\" "
-             "ORDER BY \"id\" DESC LIMIT 1000"
-             "); "
-             "END;");
+  query.exec(
+      "CREATE TRIGGER \"limit_spots\" "
+      "AFTER INSERT ON \"spots\" "
+      "BEGIN "
+      "DELETE FROM \"spots\" "
+      "WHERE \"id\" < ("
+          "SELECT \"id\" FROM \"spots\" "
+          "ORDER BY \"id\" DESC "
+          "LIMIT 1 OFFSET 1000"
+      "); "
+      "END;");
   query.finish();
   db.close();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-bool MainWindow::ConnectDatabase() {
+bool MainWindow::ConnectDatabase()
+{
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(database_file);
     if (!db.open()) return false;
@@ -670,7 +720,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (event->modifiers() & Qt::ALT && event->key() == Qt::Key_S)
     {
         //qDebug() << "Alt+S нажаты одновременно!";
-        api->sendMessage(1, 102, "Тестовое сообщение");
+
     }
     else
     {
@@ -729,15 +779,14 @@ void MainWindow::InitRecordsTable()
   RecordsModel->setHeaderData(27, Qt::Horizontal, tr("Континент"));
   RecordsModel->setHeaderData(28, Qt::Horizontal, tr("Флаг"));
   RecordsModel->setHeaderData(29, Qt::Horizontal, tr("Коммент."));
+  RecordsModel->setHeaderData(30, Qt::Horizontal, tr("Статус отправки"));
 
   if(settings->logRadioAccessToken.length() != 0) RecordsModel->services = 2;
   else RecordsModel->services = 1;
-
   ui->tableView->setModel(RecordsModel);
   ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
   setTableRow();
-
   ui->tableView->setItemDelegateForColumn(8, new FormatCallsign(ui->tableView));
   ui->tableView->setItemDelegateForColumn(9, new FormatDate(ui->tableView));
   ui->tableView->setItemDelegateForColumn(10, new FormatTime(ui->tableView));
@@ -746,7 +795,6 @@ void MainWindow::InitRecordsTable()
   ui->tableView->setItemDelegateForColumn(21, new FormatSyncState(ui->tableView));
   ui->tableView->horizontalHeader()->moveSection(21, 0);
   ui->tableView->horizontalHeader()->moveSection(28, 9);
-
   ui->tableView->setStyleSheet("selection-background-color: rgb(201, 217, 233); selection-color: rgb(0, 0, 0);");
   ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -776,22 +824,25 @@ void MainWindow::InitRecordsTable()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::SetRecordsFilter(int log_id) {
+void MainWindow::SetRecordsFilter(int log_id)
+{
     RecordsModel->setFilter(QString("callsign_id=%1").arg(log_id));
     RecordsModel->setSort(0, Qt::DescendingOrder); // Sort by ID
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::RefreshRecords() {
+void MainWindow::RefreshRecords()
+{
     RecordsModel->select();
     while (RecordsModel->canFetchMore()) // FIX. Fetch more than 256 records!!!
         RecordsModel->fetchMore();
     ScrollRecordsToTop();
-    countQSO->setText("Всего QSO: " + QString::number(RecordsModel->rowCount()));
+    countQSO->setText(tr("Всего QSO: ") + QString::number(RecordsModel->rowCount()));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::customMenuRequested(QPoint pos) {
+void MainWindow::customMenuRequested(QPoint pos)
+{
     QModelIndexList indexes = ui->tableView->selectionModel()->selectedRows();
     if (indexes.count() == 0) return;
 
@@ -801,22 +852,18 @@ void MainWindow::customMenuRequested(QPoint pos) {
     connect(deleteAction, &QAction::triggered, this, [=]() {
         RemoveQSOs(indexes);
     });
-
     QAction *syncAction = new QAction((indexes.count() > 1) ? tr("Синхронизировать выбранные") : tr("Синхронизировать"), this);
     connect(syncAction, &QAction::triggered, this, [=]() {
         SyncQSOs(indexes);
     });
-
     QAction *qsoEditAction = new QAction(tr("Редактировать QSO"), this);
     connect(qsoEditAction, &QAction::triggered, this, [=]() {
         EditQSO(indexes.at(0));
     });
-
     QAction *sendSpotAction = new QAction(tr("Отправить спот"), this);
     connect(sendSpotAction, &QAction::triggered, this, [=]() {
-        //
+        SendSpotQSO(indexes.at(0));
     });
-
     menu->addAction(deleteAction);
     menu->addAction(syncAction);
     menu->addAction(qsoEditAction);
@@ -854,6 +901,14 @@ void MainWindow::prevMenuRequested(QPoint pos)
 
 void MainWindow::SaveQso()
 {
+    if(qsoPanel->getCallsign() == "") {
+        QMessageBox::critical(0, tr("Ошибка"), tr("Введите позывной кореспондента!"), QMessageBox::Ok);
+        return;
+    }
+    if(qsoPanel->getRSTR() == "" && qsoPanel->getRSTS() == "") {
+        QMessageBox::critical(0, tr("Ошибка"), tr("Введите рапорта QSO!"), QMessageBox::Ok);
+        return;
+    }
     QSqlRecord newRecord = RecordsModel->record();
     newRecord.remove(newRecord.indexOf("id"));
     newRecord.setValue("callsign_id", userData.callsign_id);
@@ -862,49 +917,34 @@ void MainWindow::SaveQso()
     newRecord.setValue("STATION_CALLSIGN", userData.callsign);
     newRecord.setValue("OPERATOR", userData.oper);
 
-    QStringList data;
-    data.append(api->callsignInfo);
-    if(data.count() > 11) {
-        newRecord.setValue("COUNTRY", data.at(8));
-        newRecord.setValue("CONT", data.at(9));
-        newRecord.setValue("ITUZ", data.at(10));
-        newRecord.setValue("CQZ", data.at(11));
-    }
-
     QString call = qsoPanel->getCallsign();
     newRecord.setValue("CALL", call);
 
-    PrefixEntry* result = findPrefixEntry(entries, call);
-    if (result) {
-        newRecord.setValue("COUNTRY", result->country);
-        newRecord.setValue("COUNTRY_CODE", result->country_code);
-        newRecord.setValue("CONT", result->continent);
-        newRecord.setValue("ITUZ", result->ituzone);
-        newRecord.setValue("CQZ", result->cqzone);
-        delete result;
-    } else {
-        qDebug() << "Страна не найдена для позывного" << call;
+    CountryEntry result = findCountryByCall(call, ctyData);
+    if(!result.country.isEmpty())
+    {
+        newRecord.setValue("COUNTRY", result.country);
+        newRecord.setValue("COUNTRY_CODE", countryToIso.value(result.country, ""));
+        newRecord.setValue("CONT", result.continent);
+        newRecord.setValue("ITUZ", result.ituZone);
+        newRecord.setValue("CQZ", result.cqZone);
     }
 
     QDate qsoDate = qsoPanel->getDate();
     newRecord.setValue("QSO_DATE", qsoDate.toString("yyyyMMdd"));
     QTime qsoTime = qsoPanel->getTime();
-
     QString date = qsoDate.toString("yyyy-MM-dd");
     QString time = qsoTime.toString("hh:mm:ss");
     QString datetime = date + "T" + time;
-
     QString qsoTimeFormated = qsoTime.toString("hhmmss");
     newRecord.setValue("TIME_ON", qsoTimeFormated);
     newRecord.setValue("TIME_OFF", qsoTimeFormated);
-
     QString band = qsoPanel->getBand();
     newRecord.setValue("BAND", band);
-
     unsigned long long freqHz = static_cast<unsigned long long>(qsoPanel->getFrequence().toDouble() * 1000000);
     newRecord.setValue("FREQ", freqHz);
     QString mode = getModeValue(qsoPanel->getMode());
-    newRecord.setValue("MODE", mode);
+    newRecord.setValue("MODE", mode.toUpper());
     QString rsts = qsoPanel->getRSTS();
     newRecord.setValue("RST_SENT", rsts);
     QString rstr = qsoPanel->getRSTR();
@@ -923,25 +963,26 @@ void MainWindow::SaveQso()
     newRecord.setValue("MY_GRIDSQUARE", my_gridsquare);
     QString my_cnty = qsoPanel->getStationRDA();
     newRecord.setValue("MY_CNTY", my_cnty);
+    newRecord.setValue("QSL_STATUS", 0);
 
     if (RecordsModel->insertRecord(-1, newRecord)) {
         RecordsModel->submitAll();
 
-        // Отправляем QSO на сервис через API
+        // Здесь надо отправлять QSO на сервис через API
         int LastID = RecordsModel->query().lastInsertId().toInt();
         QVariantList data;
         data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
         data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_gridsquare << my_cnty;
-        if(api->serviceAvailable) {
-            api->SendQso(data);
+
+        if(api->serviceAvailable) api->SendQso(data);
+        if(qrz->serviceAvailable) {
             data << userData.callsign << userData.oper;
             logradio->SendQso(data);
         }
         RefreshRecords();
         ScrollRecordsToTop();
-        qsoPanel->clearQSO();
-        //ui->CallInput->setFocus();
         qsoPanel->SaveCallsignState();
+        qsoPanel->clearQSO();
     } else {
         QMessageBox::critical(0, tr("Ошибка"), tr("Не возможно сохранить QSO. Ошибка базы данных!"), QMessageBox::Ok);
         qDebug() << "Ошибка: " << RecordsModel->lastError();
@@ -950,7 +991,8 @@ void MainWindow::SaveQso()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::RemoveQSOs(QModelIndexList indexes) {
+void MainWindow::RemoveQSOs(QModelIndexList indexes)
+{
     int countRow = indexes.count();
     if (countRow == 0) return;
 
@@ -984,18 +1026,16 @@ void MainWindow::onSettingsChanged()
 {
     ReinitSettings();
     setTableRow();
-<<<<<<< Updated upstream
-=======
     if(api->serviceAvailable && settings->accessToken.length() != 0 && !tclient->TelnetConnected) {
         api->getUser();
         api->getListSpotServers();
         QApplication::processEvents();
     }
->>>>>>> Stashed changes
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::ScrollRecordsToBottom() {
+void MainWindow::ScrollRecordsToBottom()
+{
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->selectRow(RecordsModel->rowCount() - 1);
@@ -1003,7 +1043,8 @@ void MainWindow::ScrollRecordsToBottom() {
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::ScrollRecordsToTop() {
+void MainWindow::ScrollRecordsToTop()
+{
     ui->tableView->resizeColumnsToContents();
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->selectRow(0);
@@ -1011,8 +1052,15 @@ void MainWindow::ScrollRecordsToTop() {
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::onCallsignsUpdated() {
+void MainWindow::onCallsignsUpdated()
+{
   getCallsigns();
+
+  if (chats) {
+      delete chats;
+      chats = nullptr;
+  }
+  chats = new ChatController(db, api);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1032,11 +1080,21 @@ void MainWindow::onStationCallsignChanged()
     RefreshRecords();
     ScrollRecordsToTop();
 
+    showPreviosQSO("");
+
     if(qsoPanel->getStationCallsign() != "")
     {
         Coordinates latlon = osm->locatorToCoordinates(userData.gridsquare);
+        settings->Latitude = latlon.latitude;
+        settings->Longitude = latlon.longitude;
+
         osm->clearMarkers();
-        osm->setQTHLocation(userData.callsign, latlon.latitude, latlon.longitude);
+        osm->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
+
+        if(gc->globe->isVisible()) {
+            gc->clearMarkers();
+            gc->globe->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
+        }
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1051,52 +1109,20 @@ void MainWindow::onOperatorChanged()
 
 void MainWindow::onUdpLogged()
 {
-<<<<<<< Updated upstream
-  qDebug() << "Creating database record for UDP message";
-  QSqlRecord newRecord = RecordsModel->record();
-  newRecord.remove(newRecord.indexOf("id"));
-  newRecord.setValue("callsign_id", userData.callsign_id);
-  newRecord.setValue("qsosu_callsign_id", userData.qsosu_callsign_id);
-  newRecord.setValue("qsosu_operator_id", userData.qsosu_operator_id);
-  newRecord.setValue("STATION_CALLSIGN", userData.callsign);
-  newRecord.setValue("OPERATOR", userData.oper);
-  newRecord.setValue("MY_GRIDSQUARE", userData.gridsquare);
-  newRecord.setValue("MY_CNTY", userData.cnty);
-  newRecord.setValue("QSO_DATE", udpServer->time_off.date().toString("yyyyMMdd"));
-  newRecord.setValue("TIME_OFF", udpServer->time_off.time().toString("hhmm") + "00");
-  newRecord.setValue("TIME_ON", udpServer->time_on.time().toString("hhmm") + "00");
-  newRecord.setValue("CALL", QString::fromUtf8(udpServer->dx_call));
-  newRecord.setValue("BAND", Helpers::GetBandByFreqHz(udpServer->tx_frequency_hz));
-  newRecord.setValue("FREQ", udpServer->tx_frequency_hz);
-  newRecord.setValue("MODE", QString::fromUtf8(udpServer->mode));
-  newRecord.setValue("NAME", udpServer->call_name);
-  newRecord.setValue("QTH", udpServer->call_qth);
-  newRecord.setValue("GRIDSQUARE", QString::fromUtf8(udpServer->dx_grid));
-  newRecord.setValue("RST_SENT", QString::fromUtf8(udpServer->report_sent));
-  newRecord.setValue("RST_RCVD", QString::fromUtf8(udpServer->report_received));
-  newRecord.setValue("COMMENT", QString::fromUtf8(udpServer->comments));
-  newRecord.setValue("sync_state", 0);
+    QString Locator;
 
-  PrefixEntry* result = findPrefixEntry(entries, udpServer->dx_call);
-  if (result) {
-      newRecord.setValue("COUNTRY", result->country);
-      newRecord.setValue("COUNTRY_CODE", result->country_code);
-      newRecord.setValue("CONT", result->continent);
-      newRecord.setValue("ITUZ", result->ituzone);
-      newRecord.setValue("CQZ", result->cqzone);
-      delete result;
-  } else {
-      qDebug() << "Страна не найдена для позывного" << udpServer->dx_call;
-  }
-=======
     qInfo() << "Creating database record for UDP message";
+
     if(udpServer->dx_call.length() == 0) {
         qDebug() << "UPD: Empty CallSign was received.";
         return;
     }
-    qsoPanel->clearQSO();
-    FindCallData(udpServer->dx_call);
-    ShowQSOLocation(udpServer->dx_call, udpServer->dx_grid);
+
+    if (udpServer->dx_grid.isEmpty())
+        Locator = qsoPanel->getQTHLocator();
+    else
+        Locator = QString::fromUtf8(udpServer->dx_grid);
+        ShowQSOLocation(udpServer->dx_call, Locator);
 
     QSqlRecord newRecord = RecordsModel->record();
     newRecord.remove(newRecord.indexOf("id"));
@@ -1116,76 +1142,71 @@ void MainWindow::onUdpLogged()
     newRecord.setValue("MODE", QString::fromUtf8(udpServer->mode));
     newRecord.setValue("NAME", qsoPanel->getName());
     newRecord.setValue("QTH", qsoPanel->getQTH());
-    if(QString::fromUtf8(udpServer->dx_grid) != "")
-        newRecord.setValue("GRIDSQUARE", QString::fromUtf8(udpServer->dx_grid));
-    else newRecord.setValue("GRIDSQUARE", qsoPanel->getQTHLocator());
+    newRecord.setValue("GRIDSQUARE", Locator);
+    newRecord.setValue("CNTY", qsoPanel->getRDA());
     newRecord.setValue("RST_SENT", QString::fromUtf8(udpServer->report_sent));
     newRecord.setValue("RST_RCVD", QString::fromUtf8(udpServer->report_received));
     newRecord.setValue("COMMENT", QString::fromUtf8(udpServer->comments));
     newRecord.setValue("QSL_STATUS", 0);
     newRecord.setValue("sync_state", 0);
->>>>>>> Stashed changes
 
-  if(RecordsModel->insertRecord(-1, newRecord)) {
-      if (RecordsModel->submitAll()) {
-        qDebug() << "New record submited to database";
+    CountryEntry result = findCountryByCall(udpServer->dx_call, ctyData);
+    if(!result.country.isEmpty())
+    {
+        newRecord.setValue("COUNTRY", result.country);
+        newRecord.setValue("COUNTRY_CODE", countryToIso.value(result.country, ""));
+        newRecord.setValue("CONT", result.continent);
+        newRecord.setValue("ITUZ", result.ituZone);
+        newRecord.setValue("CQZ", result.cqZone);
+    }
 
-        int LastID = RecordsModel->query().lastInsertId().toInt();
-        QVariantList data;
-        QString datetime = udpServer->time_on.date().toString("yyyy-MM-dd") + "T" + udpServer->time_on.time().toString("hh:mm:00");
-        data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
-        data << QString::fromUtf8(udpServer->dx_call) << Helpers::GetBandByFreqHz(udpServer->tx_frequency_hz) << QString::fromUtf8(udpServer->mode);
-        data << udpServer->tx_frequency_hz << datetime << QString::fromUtf8(udpServer->name) << QString::fromUtf8(udpServer->report_sent) << QString::fromUtf8(udpServer->report_received) << "" << "" << QString::fromUtf8(udpServer->dx_grid);
-        if(api->serviceAvailable) {
-            api->SendQso(data);
-            data << userData.gridsquare << userData.cnty << userData.callsign << userData.oper;
-            logradio->SendQso(data);
+    qsoPanel->setCallsign(QString::fromUtf8(udpServer->dx_call));
+    qsoPanel->setRSTR(QString::fromUtf8(udpServer->report_received));
+    qsoPanel->setRSTS(QString::fromUtf8(udpServer->report_sent));
+    qsoPanel->setQTHLocator(QString::fromUtf8(udpServer->dx_grid));
+    qsoPanel->setComment(QString::fromUtf8(udpServer->comments));
+
+    if(RecordsModel->insertRecord(-1, newRecord)) {
+        if (RecordsModel->submitAll()) {
+            qInfo() << "New record submited to database";
+
+            int LastID = RecordsModel->query().lastInsertId().toInt();
+            QVariantList data;
+            QString datetime = udpServer->time_on.date().toString("yyyy-MM-dd") + "T" + udpServer->time_on.time().toString("hh:mm:00");
+            data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
+            data << QString::fromUtf8(udpServer->dx_call) << Helpers::GetBandByFreqHz(udpServer->tx_frequency_hz) << QString::fromUtf8(udpServer->mode);
+            data << udpServer->tx_frequency_hz << datetime << QString::fromUtf8(udpServer->name) << QString::fromUtf8(udpServer->report_sent) << QString::fromUtf8(udpServer->report_received);
+            data << "" << "" << Locator << qsoPanel->getStationQTHLocator() << qsoPanel->getStationRDA();
+
+            if(api->serviceAvailable) api->SendQso(data);
+            if(qrz->serviceAvailable) {
+                data << userData.gridsquare << userData.cnty << userData.callsign << userData.oper;
+                logradio->SendQso(data);
+            }
+            RefreshRecords();
+            ScrollRecordsToTop();
+            qsoPanel->clearQSO();
         }
-
-        if(udpServer->dx_grid.length() >= 3)
-        {
-            Coordinates latlon = osm->locatorToCoordinates(udpServer->dx_grid);
-            osm->showQSOMap(udpServer->dx_call, latlon.latitude, latlon.longitude);
-        }
-        RefreshRecords();
-        ScrollRecordsToTop();
-        qsoPanel->clearQSO();
-      }
-  }
+    }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::onUdpLoggedADIF()
 {
-<<<<<<< Updated upstream
-  qDebug() << "Creating database record for UDP ADIF message";
-  QSqlRecord newRecord = RecordsModel->record();
-  newRecord.remove(newRecord.indexOf("id"));
-  newRecord.setValue("callsign_id", userData.callsign_id);
-  newRecord.setValue("qsosu_callsign_id", userData.qsosu_callsign_id);
-  newRecord.setValue("qsosu_operator_id", userData.qsosu_operator_id);
-  newRecord.setValue("STATION_CALLSIGN", userData.callsign);
-  newRecord.setValue("OPERATOR", userData.oper);
-  newRecord.setValue("MY_GRIDSQUARE", userData.gridsquare);
-  newRecord.setValue("MY_CNTY", userData.cnty);
+    QString Locator;
 
-  QDate qso_date = QDate::fromString(udpServer->adifData.value("QSO_DATE"), "yyyyMMdd");
-  newRecord.setValue("QSO_DATE", udpServer->adifData.value("QSO_DATE"));
-  newRecord.setValue("TIME_OFF", udpServer->adifData.value("TIME_OFF"));
-  QTime time_on = QTime::fromString(udpServer->adifData.value("TIME_ON"), "hhmmss");
-  newRecord.setValue("TIME_ON", udpServer->adifData.value("TIME_ON"));
-  newRecord.setValue("CALL", udpServer->adifData.value("CALL"));
-  newRecord.setValue("BAND", udpServer->adifData.value("BAND"));
-=======
     qInfo() << "Creating database record for UDP ADIF message";
+
     if(udpServer->adifData.value("CALL") == 0) {
-        qDebug() << "UPD ADIF: Empty CallSign was received.";
-        return;
+         qDebug() << "UPD ADIF: Empty CallSign was received.";
+         return;
     }
-    qsoPanel->clearQSO();
-    FindCallData(udpServer->adifData.value("CALL"));
-    if(udpServer->adifData.value("GRIDSQUARE").length() > 3)
-        ShowQSOLocation(udpServer->adifData.value("CALL"), udpServer->adifData.value("GRIDSQUARE"));
+
+    if (udpServer->adifData.value("GRIDSQUARE").isEmpty())
+        Locator = qsoPanel->getQTHLocator();
+    else
+        Locator = udpServer->adifData.value("GRIDSQUARE");
+        ShowQSOLocation(udpServer->adifData.value("CALL"), Locator);
 
     QSqlRecord newRecord = RecordsModel->record();
     newRecord.remove(newRecord.indexOf("id"));
@@ -1208,216 +1229,66 @@ void MainWindow::onUdpLoggedADIF()
     newRecord.setValue("MODE", udpServer->adifData.value("MODE"));
     newRecord.setValue("NAME", qsoPanel->getName());
     newRecord.setValue("QTH", qsoPanel->getQTH());
-    if(QString::fromUtf8(udpServer->dx_grid) != "")
-        newRecord.setValue("GRIDSQUARE", udpServer->adifData.value("GRIDSQUARE"));
-    else newRecord.setValue("GRIDSQUARE", qsoPanel->getQTHLocator());
+    newRecord.setValue("GRIDSQUARE", Locator);
+    newRecord.setValue("CNTY", qsoPanel->getRDA());
     newRecord.setValue("RST_SENT", udpServer->adifData.value("RST_SENT"));
     newRecord.setValue("RST_RCVD", udpServer->adifData.value("RST_RCVD"));
     newRecord.setValue("COMMENT", udpServer->adifData.value("COMMENT"));
     newRecord.setValue("QSL_STATUS", 0);
     newRecord.setValue("sync_state", 0);
->>>>>>> Stashed changes
 
-  unsigned long long freqHz = static_cast<unsigned long long>(udpServer->adifData.value("FREQ").toDouble() * 1000000);
-  newRecord.setValue("FREQ", freqHz);
-  newRecord.setValue("MODE", udpServer->adifData.value("MODE"));
+    CountryEntry result = findCountryByCall(udpServer->adifData.value("CALL"), ctyData);
+    if(!result.country.isEmpty())
+    {
+        newRecord.setValue("COUNTRY", result.country);
+        newRecord.setValue("COUNTRY_CODE", countryToIso.value(result.country, ""));
+        newRecord.setValue("CONT", result.continent);
+        newRecord.setValue("ITUZ", result.ituZone);
+        newRecord.setValue("CQZ", result.cqZone);
+    }
 
-  QEventLoop loop;
-  if(api->serviceAvailable) {
-      if(settings->useCallbook) {
-          api->getCallbook(udpServer->adifData.value("CALL"));
-          QObject::connect(api, &HttpApi::userDataUpdated, &loop, &QEventLoop::quit);
-          loop.exec();
-      }
-  }
-  newRecord.setValue("NAME", udpServer->call_name);
-  newRecord.setValue("QTH", udpServer->call_qth);
-  newRecord.setValue("GRIDSQUARE", udpServer->adifData.value("GRIDSQUARE"));
-  newRecord.setValue("RST_SENT", udpServer->adifData.value("RST_SENT"));
-  newRecord.setValue("RST_RCVD", udpServer->adifData.value("RST_RCVD"));
-  newRecord.setValue("COMMENT", udpServer->adifData.value("COMMENT"));
-  newRecord.setValue("sync_state", 0);
+    qsoPanel->setCallsign(udpServer->adifData.value("CALL"));
+    qsoPanel->setRSTR(udpServer->adifData.value("RST_RCVD"));
+    qsoPanel->setRSTS(udpServer->adifData.value("RST_SENT"));
+    qsoPanel->setQTHLocator(udpServer->adifData.value("GRIDSQUARE"));
+    qsoPanel->setComment(udpServer->adifData.value("COMMENT"));
 
-  PrefixEntry* result = findPrefixEntry(entries, udpServer->adifData.value("CALL"));
-  if (result) {
-      newRecord.setValue("COUNTRY", result->country);
-      newRecord.setValue("COUNTRY_CODE", result->country_code);
-      newRecord.setValue("CONT", result->continent);
-      newRecord.setValue("ITUZ", result->ituzone);
-      newRecord.setValue("CQZ", result->cqzone);
-      delete result;
-  } else {
-      qDebug() << "Страна не найдена для позывного" << udpServer->adifData.value("CALL");
-  }
+    if(RecordsModel->insertRecord(-1, newRecord)) {
+        if (RecordsModel->submitAll()) {
+            qInfo() << "New record submited to database";
 
-  if(RecordsModel->insertRecord(-1, newRecord)) {
-      if (RecordsModel->submitAll()) {
-        qDebug() << "New record submited to database";
+            int LastID = RecordsModel->query().lastInsertId().toInt();
+            QVariantList data;
+            QString datetime = qso_date.toString("yyyy-MM-dd") + "T" + time_on.toString("hh:mm:00");
+            data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
+            data << udpServer->adifData.value("CALL") << udpServer->adifData.value("BAND") << udpServer->adifData.value("MODE") << freqHz;
+            data << datetime << "" << udpServer->adifData.value("RST_SENT") << udpServer->adifData.value("RST_RCVD") << "" << "";
+            data << Locator << qsoPanel->getStationQTHLocator() << qsoPanel->getStationRDA();
 
-        int LastID = RecordsModel->query().lastInsertId().toInt();
-        QVariantList data;
-        QString datetime = qso_date.toString("yyyy-MM-dd") + "T" + time_on.toString("hh:mm:00");
-        data << LastID << userData.qsosu_callsign_id << userData.qsosu_operator_id;
-        data << udpServer->adifData.value("CALL") << udpServer->adifData.value("BAND") << udpServer->adifData.value("MODE") << freqHz;
-        data << datetime << "" << udpServer->adifData.value("RST_SENT") << udpServer->adifData.value("RST_RCVD") << "" << "" << udpServer->adifData.value("GRIDSQUARE");
-
-        if(api->serviceAvailable) {
-            api->SendQso(data);
-            qDebug() << "SendQso " << data;
-            data << userData.gridsquare << userData.cnty << userData.callsign << userData.oper;
-            logradio->SendQso(data);
-         }
-
-        if(udpServer->adifData.value("GRIDSQUARE").length() >= 3)
-        {
-            Coordinates latlon = osm->locatorToCoordinates(udpServer->adifData.value("GRIDSQUARE"));
-            osm->showQSOMap(udpServer->adifData.value("CALL"), latlon.latitude, latlon.longitude);
+            if(api->serviceAvailable) api->SendQso(data);
+            if(qrz->serviceAvailable) {
+                data << userData.gridsquare << userData.cnty << userData.callsign << userData.oper;
+                logradio->SendQso(data);
+            }
+            RefreshRecords();
+            ScrollRecordsToTop();
+            qsoPanel->clearQSO();
         }
-        RefreshRecords();
-        ScrollRecordsToTop();
-        qsoPanel->clearQSO();
-      }
-  }
+    }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-<<<<<<< Updated upstream
-void MainWindow::FindCallData() {
-    QString callsign = qsoPanel->getCallsign();
-
-    if (callsign.isEmpty() && callsign.count() > 3) {
-        qDebug() << "Need find callbook: " << callsign;
-=======
-//void MainWindow::FindCallData(QString callsign)
-//{
-//    // Очищаем поля, если позывной пустой или слишком короткий
-//    if (callsign.isEmpty() || callsign.count() < 3) {
-//        qsoPanel->ClearCallbookFields();
-//        qsoPanel->setQSOSUserVisible(false);
-//        qsoPanel->setQSOSUserLabelVisible(false);
-//        qsoPanel->setUserSRRVisible(false);
-//        qsoPanel->setUserSRRLabelVisible(false);
-//        qsoPanel->setFlagVisible(false);
-//        qsoPanel->setCountryVisible(false);
-//        showPreviosQSO("");
-//        osm->clearMarkers();
-//        osm->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
-//        if (gc->globe->isVisible()) {
-//            gc->clearMarkers();
-//            gc->globe->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
-//        }
-//        return;
-//    }
-//    bool foundLocal = false;
-
-//    // Если включен локальный справочник — ищем сначала там
-//    if (settings->useLocalCallbook) {
-//        QStringList localdata = localCallbook->searchCall(callsign);
-//        foundLocal = !localdata.isEmpty() && !localdata.value(0).isEmpty();
-
-//        if (foundLocal) {
-//            qsoPanel->setName(localdata.value(1));
-//            qsoPanel->setQTH(localdata.value(2));
-//            qsoPanel->setQTHLocator(localdata.value(3).toUpper());
-//            qsoPanel->setRDA(localdata.value(4).toUpper());
-//            ShowQSOLocation(callsign, localdata.value(3).toUpper());
-
-//            qInfo() << "Use Local Callbook."
-//                    << "CallSign:" << localdata.value(0)
-//                    << "Name:" << localdata.value(1)
-//                    << "QTH:" << localdata.value(2)
-//                    << "Locator:" << localdata.value(3)
-//                    << "RDA:" << localdata.value(4);
-//        } else {
-//            qInfo() << "Call" << callsign << "not found in local callbook.";
-//        }
-//    }
-
-//    // Если не найдено локально или локальный справочник выключен —
-//    // ищем во внешних источниках (QSO.SU → QRZ.RU)
-//    if (!foundLocal) {
-//        qInfo() << "Querying external callbook sources for" << callsign << "...";
-
-//        // QSO.SU
-//        if (api->serviceAvailable && settings->useCallbook) {
-//            QEventLoop loop;
-//            QObject::connect(api, &HttpApi::userDataUpdated, &loop, &QEventLoop::quit);
-//            api->getCallbook(callsign);
-//            loop.exec();
-//        }
-
-//        // QRZ.RU
-//        else if (settings->enableQrzruCallbook) {
-//            QStringList data = qrz->Get(callsign);
-
-//            qsoPanel->setName((!data.at(0).isEmpty()) ? data.at(0) : "");
-//            qsoPanel->setQTH((!data.at(1).isEmpty()) ? data.at(1) : "");
-//            qsoPanel->setQTHLocator((!data.at(2).isEmpty()) ? data.at(2).toUpper() : "");
-//            qsoPanel->setRDA((!data.at(3).isEmpty()) ? data.at(3).toUpper() : "");
-
-//            qInfo() << "Use QRZ.RU callbook."
-//                    << "CallSign:" << callsign
-//                    << "Name:" << data.at(0)
-//                    << "QTH:" << data.at(1)
-//                    << "Locator:" << data.at(2)
-//                    << "RDA:" << data.at(3);
-
-//            ShowQSOLocation(callsign, data.at(2).toUpper());
-//        }
-//    }
-
-//    CountryEntry result = findCountryByCall(callsign, ctyData);
-//    if(!result.country.isEmpty())
-//    {
-//        qsoPanel->setFlagVisible(true);
-//        qsoPanel->setCountryVisible(true);
-//        qsoPanel->setFlag(countryToIso.value(result.country, ""));
-//        qsoPanel->setCountry(result.country);
-//    }
-//    // Показать предыдущие QSO
-//    showPreviosQSO(callsign);
-//}
-
-
-void MainWindow::FindCallData(QString callsign)
+void MainWindow::FindCallData(const QString &callsign)
 {
-    QStringList data;
-
     // Очистка, если позывной пустой или короткий
     if (callsign.isEmpty() || callsign.count() < 3) {
->>>>>>> Stashed changes
         qsoPanel->ClearCallbookFields();
         qsoPanel->setQSOSUserVisible(false);
         qsoPanel->setQSOSUserLabelVisible(false);
         qsoPanel->setUserSRRVisible(false);
         qsoPanel->setUserSRRLabelVisible(false);
-<<<<<<< Updated upstream
-        osm->clearMarkers();
-        osm->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
-        return;
-    }
-    if(callsign.length() > 3)
-    {
-        Coordinates latlon = osm->locatorToCoordinates(userData.gridsquare);
-        osm->clearMarkers();
-        osm->setQTHLocation(userData.callsign, latlon.latitude, latlon.longitude);
-
-        if(api->serviceAvailable && settings->useCallbook) {
-            api->getCallbook(callsign);
-            qDebug() << "Use QSO.SU callbook.";
-        }
-        if(settings->enableQrzruCallbook){
-            QStringList data = qrz->Get(callsign);
-            qsoPanel->setName((data.at(0).length() > 0) ? data.at(0) : "");
-            qsoPanel->setQTH((data.at(1).length() > 0) ? data.at(1) : "");
-            qsoPanel->setQTHLocator((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
-            qsoPanel->setRDA((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
-            qDebug() << "Use QRZ.RU callbook.";
-        }
-=======
         qsoPanel->setFlagVisible(false);
         qsoPanel->setCountryVisible(false);
-
         showPreviosQSO("");
         osm->clearMarkers();
         osm->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
@@ -1429,130 +1300,142 @@ void MainWindow::FindCallData(QString callsign)
         return;
     }
 
-    bool found = false;
-
-    if (api->serviceAvailable)
-    {
-        // QSO.SU
-        if (settings->useCallbook) {
-            QEventLoop loop;
-            QObject::connect(api, &HttpApi::userDataUpdated, &loop, &QEventLoop::quit);
-            api->getCallbook(callsign);
-            loop.exec();
-            data.append(api->callsignInfo);
-            if(data.at(2).length() > 0) found = true;
-            else found = false;
-        }
-        // QRZ.RU
-        else if (settings->enableQrzruCallbook) {
-            QStringList data = qrz->Get(callsign);
-
-            if (!data.isEmpty()) {
-                qsoPanel->setName(data.value(0));
-                qsoPanel->setQTH(data.value(1));
-                qsoPanel->setQTHLocator(data.value(2).toUpper());
-                qsoPanel->setRDA(data.value(3).toUpper());
-                ShowQSOLocation(callsign, data.value(2).toUpper());
-                qInfo() << "Use QRZ.RU callbook. " << "Call" << callsign << "Name:" << data.value(0) << "QTH:" << data.value(1) << " Locator:" << data.value(2).toUpper() << "RDA:" << data.value(3).toUpper();
-                found = true;
-            }
-        }
-    }
-
-    //Local Callbook
-    if (!found || !api->serviceAvailable) {
-        QStringList localData = localCallbook->searchCall(callsign);
-
-        if (!localData.isEmpty() && !localData.value(0).isEmpty()) {
-            qsoPanel->setName(localData.value(1));
-            qsoPanel->setQTH(localData.value(2));
-            qsoPanel->setQTHLocator(localData.value(3).toUpper());
-            qsoPanel->setRDA(localData.value(4).toUpper());
-
-            ShowQSOLocation(callsign, localData.value(3).toUpper());
-            qInfo() << "Use Local callbook. " << "Call" << callsign << "Name:" << localData.value(1) << "QTH:" << localData.value(2) << " Locator:" << localData.value(3).toUpper() << "RDA:" << localData.value(4).toUpper();
-            found = true;
-        } else {
-            qInfo() << "Local callbook. " << "Call" << callsign << "not found.";
-        }
-    }
-
     CountryEntry result = findCountryByCall(callsign, ctyData);
     if (!result.country.isEmpty()) {
         qsoPanel->setFlagVisible(true);
         qsoPanel->setCountryVisible(true);
         qsoPanel->setFlag(countryToIso.value(result.country));
         qsoPanel->setCountry(result.country);
->>>>>>> Stashed changes
     }
     showPreviosQSO(callsign);
+
+    lastCallsign = callsign;
+
+    // нет интернета → сразу local
+    if (!api->serviceAvailable && settings->useLocalCallbook) {
+        findInLocal(callsign);
+        return;
+    }
+    // есть интернет
+    if (settings->useCallbook) {
+        api->getCallbook(callsign);
+        return;
+    }
+
+    if (settings->enableQrzruCallbook) {
+        if (!findInQrz(callsign))
+            if(settings->useLocalCallbook) findInLocal(callsign);
+        return;
+    }
+    if(settings->useLocalCallbook) findInLocal(callsign);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::setUserData() {
-  QStringList data;
-  double lat, lng;
+bool MainWindow::findInLocal(const QString &callsign)
+{
+    QStringList data = localCallbook->searchCall(callsign);
+    if (data.isEmpty()) return false;
 
-  data.append(api->callsignInfo);
-  qsoPanel->setName((data.at(0).length() > 0) ? data.at(0) : "");
-  qsoPanel->setQTH((data.at(1).length() > 0) ? data.at(1) : "");
+    qsoPanel->setName(data.value(1));
+    qsoPanel->setQTH(data.value(2));
+    qsoPanel->setQTHLocator(data.value(3).toUpper());
+    qsoPanel->setRDA(data.value(4).toUpper());
+    ShowQSOLocation(callsign, data.value(3));
 
-  udpServer->call_name = qsoPanel->getName();
-  udpServer->call_qth = qsoPanel->getQTH();
+    qInfo() << "Local callbook:" << callsign;
+    return true;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
-  qsoPanel->setQTHLocator((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
-  qsoPanel->setRDA((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
+bool MainWindow::findInQrz(const QString &callsign)
+{
+    QStringList data = qrz->Get(callsign);
+    if (data.isEmpty()) return false;
 
-  if(data.at(4).length() > 0) {
-     if(data.at(4) == "1") {
-         qsoPanel->setQSOSUserPixmap(QPixmap(":resources/images/loguser.png"));
-         qsoPanel->setQSOSUserVisible(true);
-         qsoPanel->setQSOSUserLabelVisible(true);
-         qsoPanel->setQSOSUserLabelText(tr("Пользователь QSO.SU"));
-         qsoPanel->setQSOSUserLabelStyle("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
-     } else {
-         qsoPanel->setQSOSUserPixmap(QPixmap(":resources/images/no_loguser.png"));
-         qsoPanel->setQSOSUserLabelText(tr("Не пользователь QSO.SU"));
-         qsoPanel->setQSOSUserLabelStyle("QLabel { font-weight: bold; color: rgb(220, 53, 69) }");
-     }
-  } else {
-      qsoPanel->setQSOSUserVisible(false);
-      qsoPanel->setQSOSUserLabelVisible(false);
-  }
+    qsoPanel->setName(data.value(0));
+    qsoPanel->setQTH(data.value(1));
+    qsoPanel->setQTHLocator(data.value(2).toUpper());
+    qsoPanel->setRDA(data.value(3).toUpper());
+    ShowQSOLocation(callsign, data.value(2));
 
-  if(data.at(5).length() > 0) {
-     if(data.at(5) == "1") {
-         qsoPanel->setUserSRRPixmap(QPixmap(":resources/images/srr_user.png"));
-         qsoPanel->setUserSRRVisible(true);
-         qsoPanel->setUserSRRLabelVisible(true);
-         qsoPanel->setUserSRRLabelText(tr("Член СРР"));
-         qsoPanel->setUserSRRLabelStyle("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
-     } else {
-         qsoPanel->setUserSRRVisible(false);
-         qsoPanel->setUserSRRLabelVisible(false);
-     }
-  } else {
-      qsoPanel->setUserSRRVisible(false);
-      qsoPanel->setUserSRRLabelVisible(false);
-  }
+    qInfo() << "QRZ.RU:" << callsign;
+    return true;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
-  if(qsoPanel->getQTHLocator().length() > 3)
-  {
-      lat = data.at(13).toDouble();
-      lng = data.at(14).toDouble();
-      osm->showQSOMap(qsoPanel->getCallsign(), lat, lng);
-  }
+void MainWindow::onQsoSuResult(bool found)
+{
+    // пользователь уже ввёл другой позывной
+    if (qsoPanel->getCallsign() != lastCallsign) return;
+
+    if (found) {
+        setUserData();
+        return;
+    }
+    // QSO.SU не дал данных → local
+    if(settings->useLocalCallbook) findInLocal(lastCallsign);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::setUserData()
+{
+    QStringList data;
+    QString callsign, locator;
+
+    data.append(api->callsignInfo);
+    qsoPanel->setName((data.at(0).length() > 0) ? data.at(0) : "");
+    qsoPanel->setQTH((data.at(1).length() > 0) ? data.at(1) : "");
+    qsoPanel->setQTHLocator((data.at(2).length() > 0) ? data.at(2).toUpper() : "");
+    qsoPanel->setRDA((data.at(3).length() > 0) ? data.at(3).toUpper() : "");
+
+    if(data.at(4).length() > 0) {
+        if(data.at(4) == "1") {
+            qsoPanel->setQSOSUserPixmap(QPixmap(":resources/images/loguser.png"));
+            qsoPanel->setQSOSUserVisible(true);
+            qsoPanel->setQSOSUserLabelVisible(true);
+            qsoPanel->setQSOSUserLabelText(tr("Пользователь QSO.SU"));
+            qsoPanel->setQSOSUserLabelStyle("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
+        } else {
+            qsoPanel->setQSOSUserPixmap(QPixmap(":resources/images/no_loguser.png"));
+            qsoPanel->setQSOSUserLabelText(tr("Не пользователь QSO.SU"));
+            qsoPanel->setQSOSUserLabelStyle("QLabel { font-weight: bold; color: rgb(220, 53, 69) }");
+        }
+    } else {
+        qsoPanel->setQSOSUserVisible(false);
+        qsoPanel->setQSOSUserLabelVisible(false);
+    }
+
+    if(data.at(5).length() > 0) {
+        if(data.at(5) == "1") {
+            qsoPanel->setUserSRRPixmap(QPixmap(":resources/images/srr_user.png"));
+            qsoPanel->setUserSRRVisible(true);
+            qsoPanel->setUserSRRLabelVisible(true);
+            qsoPanel->setUserSRRLabelText(tr("Член СРР"));
+            qsoPanel->setUserSRRLabelStyle("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
+        } else {
+            qsoPanel->setUserSRRVisible(false);
+            qsoPanel->setUserSRRLabelVisible(false);
+        }
+    } else {
+        qsoPanel->setUserSRRVisible(false);
+        qsoPanel->setUserSRRLabelVisible(false);
+    }
+    callsign = qsoPanel->getCallsign();
+    qInfo() << "Use QSO.SU callbook. " << "CallSign: " << callsign << " Name: " << data.at(0) << " QTH: " << data.at(1) << " Locator: " << data.at(2) << " RDA:" << data.at(3);
+    if(data.at(2).length() > 0) ShowQSOLocation(callsign, data.at(2));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::fillDefaultFreq()
 {
-  double freqMhz = BandToDefaultFreq(qsoPanel->getBand());
-  qsoPanel->setFrequence(freqMhz);
+    if(settings->catEnable) return; //Если включен CAT, то частоту берем из TRX
+    double freqMhz = BandToDefaultFreq(qsoPanel->getBand()) * 1e6;
+    qsoPanel->setFrequence(freqMhz);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::SyncQSOs(QModelIndexList indexes) {
+void MainWindow::SyncQSOs(QModelIndexList indexes)
+{
     QStringList idstrings;
     for (int i = 0; i < indexes.size(); i++){
         idstrings << indexes[i].data().toString();
@@ -1583,7 +1466,7 @@ void MainWindow::SyncQSOs(QModelIndexList indexes) {
         data << call << band << mode << freqHz << datetime << name << rsts << rstr << qth << cnty << gridsquare << my_gridsquare << my_cnty;
         if(api->serviceAvailable) {
             api->SendQso(data);
-            data << userData.callsign << userData.oper;
+            data << "" << "" << userData.callsign << userData.oper;
             if(settings->logRadioAccessToken.count() > 0) logradio->SendQso(data);
         }
     }
@@ -1637,7 +1520,7 @@ bool MainWindow::readXmlfile()
 
 #ifdef Q_OS_MAC
     // В macOS: внутри .app → подняться на 3 уровня
-    basePath = QCoreApplication::applicationDirPath() + "/../../../HamDefs.xml";
+    basePath = QCoreApplication::applicationDirPath() + "/HamDefs.xml";
 #elif defined(Q_OS_WIN) || defined(Q_OS_LINUX)
     // В Windows и Linux файл лежит рядом с .exe
     basePath = QCoreApplication::applicationDirPath() + "/HamDefs.xml";
@@ -1698,7 +1581,7 @@ bool MainWindow::readXmlfile()
 
 bool MainWindow::LoadHamDefsSync()
 {
-    qDebug() << "Загрузка файла HamDefs.xml с сервера QSO.SU";
+    qInfo() << tr("Загрузка файла HamDefs.xml с сервера QSO.SU");
 
     QEventLoop loop;
     bool success = false;
@@ -1719,7 +1602,7 @@ bool MainWindow::LoadHamDefsSync()
     });
 
     connect(api, &HttpApi::HamDefsError, &loop, [&](){
-        qDebug() << "Открытие файла HamDefs.xml с диска.";
+        qInfo() << tr("Открытие файла HamDefs.xml с диска.");
         success = readXmlfile();
         loop.quit();
     });
@@ -1816,7 +1699,7 @@ void MainWindow::insertDataToDeferredQSOs(int idx, QString hash)
     query.addBindValue(idx);
     query.addBindValue(hash);
 
-    qDebug() << QString::number(idx) << hash;
+    qInfo() << QString::number(idx) << hash;
 
     if(!query.exec()){
         qDebug() << "ERROR insert data into deferred QSOs... " << query.lastError().text();
@@ -1830,7 +1713,7 @@ void MainWindow::RemoveDeferredQSOs()
 {
     int rowcount = 0;
 
-    qDebug() << "Remove Deferred QSOs.";
+    qInfo() << "Remove Deferred QSOs.";
     db.transaction();
     QSqlQuery query(db);
     query.prepare("SELECT COUNT(*) FROM DELRECORDS");
@@ -1842,7 +1725,7 @@ void MainWindow::RemoveDeferredQSOs()
 
     for(int i = rowcount; i > 0; i--) {
         api->deleteByHashLog(query.value(0).toString());
-        qDebug() << "Del QSO: " << query.value(0).toString();
+        qInfo() << "Del QSO: " << query.value(0).toString();
         query.next();
     }
     query.prepare("DELETE FROM DELRECORDS");
@@ -1918,10 +1801,17 @@ void MainWindow::PingQsoSu()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void MainWindow::PingQrzRu()
+{
+    qrz->pingQrzRu();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void MainWindow::setFreq(long freq)
 {
     settings->lastFrequence = QString::number((double) freq / 1000000, 'f', 6);
     qsoPanel->setFrequenceText(settings->lastFrequence);
+    //qDebug() << "CAT Freq:" << settings->lastFrequence;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1929,6 +1819,7 @@ void MainWindow::setBand(int band)
 {
     settings->lastBand = bandList[band].band_name;
     qsoPanel->setBand(bandList[band].band_name);
+    //qDebug() << "CAT Band:" << bandList[band].band_name;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1936,6 +1827,7 @@ void MainWindow::setMode(int mode)
 {
     settings->lastMode = modeList[mode].mode_name;
     qsoPanel->setMode(modeList[mode].mode_name);
+    //qDebug() << "CAT Mode:" << modeList[mode].mode_name;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1990,7 +1882,7 @@ void MainWindow::ShowQSOInMap()
             Coordinates latlon = osm->locatorToCoordinates(gridsquare);
             count++;
             osm->setQSOMarker(call, latlon.latitude, latlon.longitude);
-            qDebug() << "id: " << count << "Call: " << call << " Gridsquare: " << gridsquare << " Lat: " << QString::number(latlon.latitude) << " Lng: " << QString::number(latlon.longitude);
+            qInfo() << "id: " << count << "Call: " << call << " Gridsquare: " << gridsquare << " Lat: " << QString::number(latlon.latitude) << " Lng: " << QString::number(latlon.longitude);
         }
     }
 }
@@ -2016,9 +1908,6 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
 
 void MainWindow::showPreviosQSO(QString call)
 {
-<<<<<<< Updated upstream
-    QString filterString = QString("CALL = '%1'").arg(call);
-=======
     if (call.trimmed().isEmpty()) {
         PrevRecordsModel->setFilter("1=0");
         PrevRecordsModel->select();
@@ -2027,11 +1916,9 @@ void MainWindow::showPreviosQSO(QString call)
 
     QStringList filters;
     filters << QString("CALL = '%1'").arg(call.replace("'", "''"));
-    filters << QString("OPERATOR = '%1'").arg(qsoPanel->getStationOperator().replace("'", "''"));
+    filters << QString("STATION_CALLSIGN = '%1'").arg(qsoPanel->getStationCallsign().replace("'", "''"));
     QString filterString = filters.join(" AND ");
->>>>>>> Stashed changes
     PrevRecordsModel->setFilter(filterString);
-
     PrevRecordsModel->setSort(PrevRecordsModel->fieldIndex("QSO_DATE"), Qt::DescendingOrder);
     PrevRecordsModel->select();
 
@@ -2082,6 +1969,7 @@ void MainWindow::InitPreviosQSOModel()
     ui->prevQSOtableView->setColumnHidden(1, true);
     ui->prevQSOtableView->setColumnHidden(2, true);
     ui->prevQSOtableView->setColumnHidden(3, true);
+    ui->prevQSOtableView->setColumnHidden(30, true);
     if(testbit(settings->table_row_state, 4)) ui->prevQSOtableView->setColumnHidden(4, false); //Station Callsign
     else ui->prevQSOtableView->setColumnHidden(4, true);
     if(testbit(settings->table_row_state, 5)) ui->prevQSOtableView->setColumnHidden(5, false); //Operator
@@ -2167,32 +2055,59 @@ void MainWindow::on_actionPreviosQSO_triggered(bool checked)
 
 void MainWindow::setLanguage()
 {
-    if(settings->language == "Русский") {
-        qtLanguageTranslator.load("://translations/ru_Ru.qm");
-        qApp->installTranslator(&qtLanguageTranslator);
+    // Сначала удаляем предыдущий переводчик
+    qApp->removeTranslator(&qtLanguageTranslator);
+
+    QString lang = settings->language;
+
+    if (lang == "Русский") {
+        ui->retranslateUi(this);
+        return;
     }
+    // Для остальных языков ищем соответствующий .qm файл
+    QString path = QCoreApplication::applicationDirPath() + "/translations";
+    QDir dir(path);
+    if (!dir.exists()) {
+        qDebug() << "Каталог translations не найден";
+        return;
+    }
+    QStringList filters;
+    filters << "*.qm";
+    QFileInfoList fileList = dir.entryInfoList(filters, QDir::Files);
 
-    if(settings->language == "English") {
-        QString path = QCoreApplication::applicationDirPath() + "/translations";
-        QDir dir(path);
-        QStringList filters;
-        filters << "en_US.qm";
+    QString qmFile;
 
-        QStringList results = dir.entryList(filters, QDir::Files);
-        if(!results.isEmpty()) {
-            qDebug() << "Файл перевода найден:" << dir.filePath(results.first());
-        } else {
-            qDebug() << "Файл перевода не найден.";
+    for (const QFileInfo &fi : fileList) {
+        QString base = fi.baseName();           // en_US, de_DE, ...
+        QString langCode = base.split("_").first(); // en, de, fr, ...
+
+        // Сравниваем красивое название с settings->language
+        if ((langCode == "en" && lang == "English") ||
+            (langCode == "de" && lang == "Deutsch") ||
+            (langCode == "fr" && lang == "Français") ||
+            (langCode == "es" && lang == "Español"))
+        {
+            qmFile = fi.absoluteFilePath();
+            break;
         }
-        qtLanguageTranslator.load(dir.filePath(results.first()));
-        qApp->installTranslator(&qtLanguageTranslator);
+    }
+    if (!qmFile.isEmpty() && QFile::exists(qmFile)) {
+        if (qtLanguageTranslator.load(qmFile)) {
+            qApp->installTranslator(&qtLanguageTranslator);
+            qDebug() << "Загружен перевод:" << qmFile;
+            ui->retranslateUi(this);
+        } else {
+            qDebug() << "Не удалось загрузить файл перевода:" << qmFile;
+        }
+    } else {
+        qDebug() << "Файл перевода не найден для языка:" << lang;
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void MainWindow::on_actionUploadQSOs_triggered()
 {
-    uploadLogs = new UploadingLogs(db, settings, entries);
+    uploadLogs = new UploadingLogs(db, settings, ctyData);
     connect(uploadLogs, SIGNAL(db_updated()), this, SLOT(RefreshRecords()));
     uploadLogs->show();
 }
@@ -2209,7 +2124,7 @@ void MainWindow::loadCallList()
             CallList.append(callValue);
         }
     } else {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        qDebug() << tr("Ошибка выполнения запроса: ") << query.lastError().text();
     }
     QCompleter *completer = new QCompleter(CallList, this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -2224,6 +2139,7 @@ void MainWindow::setTableRow()
     ui->tableView->setColumnHidden(1, true);
     ui->tableView->setColumnHidden(2, true);
     ui->tableView->setColumnHidden(3, true);
+    ui->tableView->setColumnHidden(30, true);
     if(testbit(settings->table_row_state, 4)) ui->tableView->setColumnHidden(4, false); //Station Callsign
     else ui->tableView->setColumnHidden(4, true);
     if(testbit(settings->table_row_state, 5)) ui->tableView->setColumnHidden(5, false); //Operator
@@ -2269,81 +2185,6 @@ void MainWindow::setTableRow()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-QList<PrefixEntry> MainWindow::loadPrefixDatabase()
-{
-    QList<PrefixEntry> entries;
-    QString basePath;
-
-    #ifdef Q_OS_MAC
-        // В macOS: внутри .app → подняться на 3 уровня
-        basePath = QCoreApplication::applicationDirPath() + "/../../../Prefixes.xml";
-    #elif defined(Q_OS_WIN) || defined(Q_OS_LINUX)
-        // В Windows и Linux файл лежит рядом с .exe
-        basePath = QCoreApplication::applicationDirPath() + "/Prefixes.xml";
-    #else
-        // fallback
-        basePath = "Prefixes.xml";
-    #endif
-
-    QFile file(basePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open XML file:" << basePath;
-        return entries;
-    }
-
-    QXmlStreamReader xml(&file);
-    while (!xml.atEnd()) {
-        xml.readNext();
-        if (xml.isStartElement() && xml.name() == "PrefixEntry") {
-            auto attrs = xml.attributes();
-            PrefixEntry entry;
-            entry.country = attrs.value("Country").toString();
-            entry.country_code = attrs.value("Country_code").toString();
-            entry.continent = attrs.value("Continent").toString();
-            entry.cqzone = attrs.value("CQZone").toString();
-            entry.ituzone = attrs.value("ITUZone").toString();
-            entry.dxcc = attrs.value("DXCC").toString();
-            entry.latitude = attrs.value("Latitude").toString();
-            entry.longitude = attrs.value("Longitude").toString();
-            QString regexString = attrs.value("PrefixList").toString();
-            entry.regexList = regexString.split("|", Qt::SkipEmptyParts);
-            entries.append(entry);
-        }
-    }
-    file.close();
-    return entries;
-}
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-PrefixEntry* MainWindow::findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign)
-{
-    QString csUpper = callsign.toUpper();
-
-    for (const auto& entry : entries) {
-        for (const auto& rawPattern : entry.regexList) {
-            QString pattern = rawPattern;
-
-            // Обработка экранирования: \Z => $ (конец строки)
-            pattern.replace("\\Z", "$");
-
-            // Явно указываем, что сравнение с начала строки
-            if (!pattern.startsWith("^")) {
-                pattern = "^" + pattern;
-            }
-            QRegularExpression re(pattern);
-            if (!re.isValid()) {
-                qDebug() << "Invalid regex:" << pattern;
-                continue;
-            }
-            if (re.match(csUpper).hasMatch()) {
-                return new PrefixEntry(entry);
-            }
-        }
-    }
-    return nullptr;
-}
-//------------------------------------------------------------------------------------------------------------------------------------------
-
 void MainWindow::on_actionUpdatePrefix_triggered()
 {
     update_prefix->show();
@@ -2352,21 +2193,58 @@ void MainWindow::on_actionUpdatePrefix_triggered()
 
 void MainWindow::on_actionCheckCountry_triggered()
 {
-    bool ok;
-    QString Call = QInputDialog::getText(this, "Введите территории по позывному:", "Введите позывной:", QLineEdit::Normal, "", &ok);
-    PrefixEntry* result = findPrefixEntry(entries, Call);
-    if (result) {
-        QMessageBox::information(this, "Проверка территории по позывному",
-                                 "Позывной: " + Call + "\n" +
-                                 "Страна: " + result->country + "\n" +
-                                 "Код страны: " + result->country_code + "\n" +
-                                 "Континент: " + result->continent + "\n" +
-                                 "CQZ: " + result->cqzone + "\n" +
-                                 "ITUZ :" + result->ituzone);
-        delete result;
-    } else {
-        QMessageBox::information(this, "Проверка территории по позывному", "Страна не найдена для позывного:" + Call);
-        qDebug() << "Страна не найдена для позывного:" << Call;
+    QInputDialog dialog(this);
+    dialog.setWindowTitle(QObject::tr("Определение территории по позывному:"));
+    dialog.setLabelText(QObject::tr("Введите позывной:"));
+    dialog.setTextValue("");
+    dialog.setInputMode(QInputDialog::TextInput);
+
+    // Убираем лишние кнопки в заголовке
+    dialog.setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
+    // Находим QLineEdit внутри диалога и вешаем валидатор
+    if (QLineEdit *lineEdit = dialog.findChild<QLineEdit *>()) {
+        auto *validator = new QRegularExpressionValidator(QRegularExpression("^[A-Za-z0-9/]*$"), lineEdit);
+        lineEdit->setValidator(validator);
+
+        // Автоматический апперкас (для позывных принято в верхнем регистре)
+        QObject::connect(lineEdit, &QLineEdit::textChanged, lineEdit, [lineEdit](const QString &text){
+            QString upper = text.toUpper();
+            if (text != upper) {
+                int pos = lineEdit->cursorPosition();
+                lineEdit->setText(upper);
+                lineEdit->setCursorPosition(pos);
+            }
+        });
+    }
+
+    // запускаем диалог
+    if (dialog.exec() == QDialog::Accepted) {
+        QString Call = dialog.textValue();
+
+        CountryEntry result = findCountryByCall(Call, ctyData);
+
+        if(!result.country.isEmpty())
+        {
+            QMessageBox::information(this, tr("Проверка территории по позывному"),
+                                     tr("Позывной: ") + Call + "\n" +
+                                     tr("Страна: ") + result.country + "\n" +
+                                     tr("Континент: ") + result.continent + "\n" +
+                                     tr("Префикс DXCC: ") + result.mainPrefix + "\n" +
+                                     tr("Разница во времени (UTC):") + QString::number(result.utcOffset) + "\n" +
+                                     tr("CQZ: ") + QString::number(result.cqZone) + "\n" +
+                                     tr("ITUZ: ") + QString::number(result.ituZone));
+
+            QString iso = countryToIso.value(result.country, "");
+            QString path = ":/resources/flags/" + iso + ".png"; // используем ресурсы Qt
+            if (!QFile::exists(path)) {
+                 qDebug() << "Нет файла с флагом " << iso;
+                 return;
+            }
+        } else {
+            QMessageBox::information(this, tr("Проверка территории по позывному"), tr("Страна не найдена для позывного: ") + Call);
+            qDebug() << tr("Страна не найдена для позывного: ") << Call;
+        }
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -2388,57 +2266,39 @@ void MainWindow::on_actionReportContinent_triggered()
 void MainWindow::on_actionReportSun_triggered()
 {
     reportSunChart->show();
-    QString lastTimeStr;
-    QDateTime lastTime;
 
     QSqlQuery query(db);
-    QDateTime currentTimeUtc = QDateTime::currentDateTimeUtc();
 
-    // Проверяем количество записей
-    int rowCount = 0;
-    if (!query.exec("SELECT COUNT(*) FROM magnetic_storm")) {
-        qDebug() << "Ошибка подсчета строк таблицы magnetic_storm:" << query.lastError().text();
-    } else if (query.next()) {
-        rowCount = query.value(0).toInt();
-    }
-
-    if (rowCount == 0) {
-        // Нет записей — берем за 365 дней
-        lastTime = currentTimeUtc.addDays(-365);
-        lastTime.setTimeSpec(Qt::UTC);
-        lastTimeStr = lastTime.toString(Qt::ISODate);
-        qDebug() << "Данных нет. Загружаю за 365 дней: " << lastTimeStr;
-    }
-    else if (rowCount < 100) {
-        // Мало записей — тоже берем 365 дней назад
-        lastTime = currentTimeUtc.addDays(-365);
-        lastTime.setTimeSpec(Qt::UTC);
-        lastTimeStr = lastTime.toString(Qt::ISODate);
-        qDebug() << "Записей меньше 100 (" << rowCount << "). Загружаю остальные: " << lastTimeStr;
-    }
-    else {
-        // Получаем последнее время измерения
-        if (!query.exec("SELECT measurement_time FROM magnetic_storm ORDER BY measurement_time DESC LIMIT 1")) {
-            qDebug() << "Ошибка запроса:" << query.lastError().text();
-        }
-
-        if (query.next()) {
-            lastTimeStr = query.value(0).toString();
-            lastTime = QDateTime::fromString(lastTimeStr, Qt::ISODate);
-            lastTime.setTimeSpec(Qt::UTC);
-            qDebug() << "Последнее время измерения: " << lastTimeStr;
-
-            qint64 diffSecs = lastTime.secsTo(currentTimeUtc);
-            if (diffSecs < 3 * 3600) {
-                qDebug() << "Разница менее 3 часов. Загрузка с сервера не требуется.";
-                reportSunChart->showMagneticStormChart();
-                return;
-            }
-        }
+    // Берём самое новое измерение
+    query.prepare("SELECT MAX(MEASUREMENT_TIME) FROM magnetic_storm");
+    if (!query.exec() || !query.next()) {
+        qWarning() << "Не удалось получить дату последних данных";
+        api->getMagneticStormHistory();
         reportSunChart->showMagneticStormChart();
+        return;
     }
-    // Загружаем данные начиная с lastTime
-    api->getMagneticStormInfo(lastTime.toString("yyyy-MM-dd"));
+
+    QDateTime lastDt;
+    if (!query.value(0).isNull()) {
+        lastDt = QDateTime::fromString(
+            query.value(0).toString(),
+            Qt::ISODate
+        );
+    }
+
+    const QDateTime now = QDateTime::currentDateTimeUtc();
+    const bool needUpdate = !lastDt.isValid() || lastDt.secsTo(now) > 3 * 3600;
+
+    if (needUpdate) {
+        qInfo() << "Данные магнитной бури старше 3 часов — обновляем";
+        query.exec("DELETE FROM magnetic_storm");
+        api->getMagneticStormHistory();
+    } else {
+        qInfo() << "Данные свежие — используем кэш";
+    }
+
+    reportSunChart->showMagneticStormChart();
+    MagStormUpdate();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2460,22 +2320,17 @@ QModelIndex MainWindow::findIndexById(QSqlTableModel *model, int id, int targetC
 void MainWindow::MagStormUpdate()
 {
     if(api->serviceAvailable && settings->accessToken.length() != 0) {
-        QString currentTimeStr;
-        QDateTime currentTimeUtc = QDateTime::currentDateTimeUtc();
-        currentTimeUtc.setTimeSpec(Qt::UTC);
-        currentTimeStr = currentTimeUtc.toString(Qt::ISODate);
-        api->getMagneticStormInfo(currentTimeUtc.toString("yyyy-MM-dd"));
+        api->getMagneticStormCurrent();
     }
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::UpdateMeasurement(QJsonArray data)
+void MainWindow::UpdateMeasurement(QJsonObject data)
 {
     if (!data.isEmpty()) {
-        QJsonObject lastObject = data.first().toObject();
-        int level = lastObject["value"].toInt();
-        magStormLabel->setText(QString("Уровень ГМА: %1").arg(level));
+        int level = data.value("index").toInt();
+        magStormLabel->setText(QString(tr("Уровень МБ: %1")).arg(level));
     }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -2494,10 +2349,17 @@ void MainWindow::on_actionReportModes_triggered()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+void MainWindow::on_actionReportYear_triggered()
+{
+    reportYear = new ReportYear(db);
+    reportYear->show();
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void MainWindow::showBellIcon()
 {
     bellBtn->setIcon(QIcon(":/resources/images/bell_new.png"));
-    bellBtn->setToolTip("Есть новые сообщения");
+    bellBtn->setToolTip(tr("Есть новые сообщения"));
     hasNewNews = true;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -2505,7 +2367,7 @@ void MainWindow::showBellIcon()
 void MainWindow::showNotificationIcon()
 {
     notificationBtn->setIcon(QIcon(":/resources/images/notification_new.png"));
-    notificationBtn->setToolTip("Есть новые сообщения в чате");
+    notificationBtn->setToolTip(tr("Есть новые сообщения в чате"));
     hasNewMessages = true;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -2513,7 +2375,7 @@ void MainWindow::showNotificationIcon()
 void MainWindow::openNewsWindow()
 {
     QDialog dlg(this);
-    dlg.setWindowTitle("Лента новостей");
+    dlg.setWindowTitle(tr("Лента новостей"));
     dlg.setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     dlg.resize(500, 400);
 
@@ -2560,9 +2422,7 @@ void MainWindow::openNewsWindow()
         // Добавляем новость в начало текста
         htmlContent = newsHtml + htmlContent;
     }
-
     textEdit->setHtml(htmlContent);
-
     layout->addWidget(textEdit);
     dlg.setLayout(layout);
     dlg.exec();
@@ -2570,7 +2430,7 @@ void MainWindow::openNewsWindow()
     // После просмотра сбрасываем иконку
     if (hasNewNews) {
         bellBtn->setIcon(QIcon(":/resources/images/bell.png"));
-        bellBtn->setToolTip("Нет новых уведомлений");
+        bellBtn->setToolTip(tr("Нет новых уведомлений"));
         hasNewNews = false;
     }
 }
@@ -2578,17 +2438,19 @@ void MainWindow::openNewsWindow()
 
 void MainWindow::on_actionShowSpots_triggered()
 {
-    spotViewer->show();
+    if(spotServerConnected) spotViewer->show();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void MainWindow::saveHeaderState(QTableView *tableView) {
+void MainWindow::saveHeaderState(QTableView *tableView)
+{
     QSettings settings("QSO.SU", "QSOLogger");
     settings.setValue("headerStateMain", tableView->horizontalHeader()->saveState());
 }
 //-----------------------------------------------------------------------------------------------------
 
-void MainWindow::restoreHeaderState(QTableView *tableView) {
+void MainWindow::restoreHeaderState(QTableView *tableView)
+{
     QSettings settings("QSO.SU", "QSOLogger");
     QByteArray state = settings.value("headerStateMain").toByteArray();
     if (!state.isEmpty()) {
@@ -2597,7 +2459,7 @@ void MainWindow::restoreHeaderState(QTableView *tableView) {
 }
 //-----------------------------------------------------------------------------------------------------
 
-void MainWindow::setSpotQSO(QString call, QString band, double freq, QString mode)
+void MainWindow::setSpotInfo(QString call, QString band, double freq, QString mode)
 {
     qsoPanel->setCallsign(call);
     qsoPanel->setBand(band);
@@ -2608,7 +2470,7 @@ void MainWindow::setSpotQSO(QString call, QString band, double freq, QString mod
 
 void MainWindow::on_actionImportADIF_triggered()
 {
-    imp_adif = new ImportADIF(db, entries);
+    imp_adif = new ImportADIF(db, ctyData);
     connect(imp_adif, SIGNAL(db_updated()), this, SLOT(RefreshRecords()));
     imp_adif->show();
 }
@@ -2623,12 +2485,12 @@ void MainWindow::on_actionExportADIF_triggered()
 
 void MainWindow::on_actionChats_triggered()
 {
-    chats->show();
+    if(spotServerConnected) chats->show();
 
     // После просмотра сбрасываем иконку
     if (hasNewMessages) {
         notificationBtn->setIcon(QIcon(":/resources/images/notification.png"));
-        notificationBtn->setToolTip("Нет новых сообщений в чате");
+        notificationBtn->setToolTip(tr("Нет новых сообщений в чате"));
         hasNewMessages = false;
     }
 }
@@ -2649,6 +2511,210 @@ void MainWindow::on_actionShowLogLocation_triggered()
     }
 }
 //-----------------------------------------------------------------------------------------------------
+
+void MainWindow::SendSpotQSO(QModelIndex index)
+{
+    int idx = index.row();
+    QString hash = RecordsModel->data(RecordsModel->index(idx, 22)).toString();
+
+    // Получаем дату QSO из модели, формат "20251111"
+    QString qsoDateStr = RecordsModel->data(RecordsModel->index(idx, 9)).toString().trimmed();
+    QDate qsoDate = QDate::fromString(qsoDateStr, "yyyyMMdd"); // <- правильный формат!
+
+    // Получаем время QSO из модели, формат "HHmmss"
+    QString qsoTimeStr = RecordsModel->data(RecordsModel->index(idx, 10)).toString().trimmed();
+    QTime qsoTime = QTime::fromString(qsoTimeStr, "HHmmss");
+
+    // Валидация
+    if (!qsoDate.isValid()) {
+        QMessageBox::warning(this, tr("Ошибка"), tr("Некорректный формат даты QSO: %1").arg(qsoDateStr));
+        qWarning() << "Invalid QSO date string:" << qsoDateStr << "at row" << idx;
+        return;
+    }
+
+    if (!qsoTime.isValid()) {
+        QMessageBox::warning(this, tr("Ошибка"), tr("Некорректный формат времени QSO: %1").arg(qsoTimeStr));
+        qWarning() << "Invalid QSO time string:" << qsoTimeStr << "at row" << idx;
+        return;
+    }
+
+    // Построим QDateTime из даты и времени из записи
+    QDateTime qsoDateTime(qsoDate, qsoTime);
+
+    qsoDateTime = QDateTime(qsoDate, qsoTime, Qt::UTC);
+    QDateTime now = QDateTime::currentDateTimeUtc();
+
+    if (qsoDateTime > now && qsoDateTime.secsTo(now) < -60*60*12) {
+        // слишком далеко в будущем — логируем это как подозрительное
+        qWarning() << "QSO datetime is in the future (suspicious):" << qsoDateTime.toString(Qt::ISODate);
+    }
+
+    // Разница в минутах (положительная, если QSO в прошлом)
+    qint64 minutesPassed = qsoDateTime.secsTo(now) / 60;
+
+    // Диагностический лог
+    qInfo() << "Minutes passed since QSO:" << minutesPassed;
+
+    if (minutesPassed > 15) {
+        QMessageBox::warning(this, tr("Ошибка"),
+                             tr("С момента проведения QSO прошло более 15 минут.\nОтправка спота невозможна."));
+        qWarning() << "QSO too old:" << minutesPassed << "минут назад, время QSO:" << qsoTimeStr;
+        return;
+    }
+
+    QInputDialog dialog(this);
+    dialog.setWindowTitle(tr("Ввод комментария:"));
+    dialog.setLabelText(tr("Введите комментарий к споту:"));
+    dialog.setTextValue("");
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        QString message = dialog.textValue();
+        api->sendSpot(hash, message);
+        qInfo() << "Sended Spot: HASH: " << hash << " Message: " << message;
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::ShowQSOLocation(QString callsign, QString locator)
+{
+    Coordinates latlon;
+    double azimuth, rev_azimuth, distance;
+
+    if (locator.length() > 3) {
+        latlon = osm->locatorToCoordinates(locator);
+        osm->clearMarkers();
+        osm->showQSOMap(callsign, latlon.latitude, latlon.longitude);
+        if(gc->globe->isVisible()) {
+            gc->clearMarkers();
+            gc->globe->showQSO(callsign, latlon.latitude, latlon.longitude);
+            gc->setLatLonText(tr("Широта: %1'N  Долгота: %2'E").arg(latlon.latitude, 0, 'f', 2).arg(latlon.longitude, 0, 'f', 2));
+            azimuth = gc->calculateAzimuth(settings->Latitude, settings->Longitude, latlon.latitude, latlon.longitude);
+            rev_azimuth = gc->reverseAzimuth(azimuth);
+            gc->setAzimuthText(tr("Азимут: %1/%2 град").arg(azimuth, 0, 'f', 0).arg(rev_azimuth, 0, 'f', 0));
+            distance = gc->haversineDistance(settings->Latitude, settings->Longitude, latlon.latitude, latlon.longitude);
+            gc->setDistanceText(tr("Расстояние: %1 км.").arg(distance, 0, 'f', 0));
+        }
+        qInfo() << "QTH Coordinates: " << "Callsign: " << callsign <<  "Lattitude: " << QString::number(latlon.latitude) << " longitude: " << latlon.longitude;
+    } else {
+        osm->clearMarkers();
+        osm->showQSOMap(userData.callsign, settings->Latitude, settings->Longitude);
+        if(gc->globe->isVisible()) {
+            gc->clearMarkers();
+            gc->globe->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
+        }
+        qDebug() << "Locator is not found.";
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void MainWindow::on_actionGlobe_triggered()
+{
+    gc->setWindowTitle("Планета Земля");
+    gc->show();
+
+    // Отложим инициализацию, пока initializeGL() не вызовется
+    QTimer::singleShot(0, this, [this]() {
+        if(gc->globe->isVisible()) {
+            gc->globe->resize(400,400);
+            gc->globe->loadCountries(":/resources/countries.geo.json"); // загружаем страны (GeoJSON)
+            gc->clearMarkers();
+            gc->globe->setQTHLocation(userData.callsign, settings->Latitude, settings->Longitude);
+            gc->globe->centerOnBalloons();
+        }
+    });
+    ShowQSOLocation(qsoPanel->getCallsign(), qsoPanel->getQTHLocator());
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+QVector<CountryEntry> MainWindow::loadCtyDatabase(const QString &fileName)
+{
+    QVector<CountryEntry> result;
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return result;
+
+    QTextStream ts(&file);
+
+    while (!ts.atEnd()) {
+        QString line = ts.readLine().trimmed();
+        if (line.isEmpty()) continue;
+        if (!line.contains(':')) continue;
+
+        QStringList parts = line.split(':');
+        if (parts.size() < 8) continue;
+
+        CountryEntry e;
+        e.country    = parts[0].trimmed();
+        e.cqZone     = parts[1].trimmed().toInt();
+        e.ituZone    = parts[2].trimmed().toInt();
+        e.continent  = parts[3].trimmed();
+        e.latitude   = parts[4].trimmed().toDouble();
+        e.longitude  = parts[5].trimmed().toDouble();
+        e.utcOffset  = parts[6].trimmed().toDouble();
+        e.mainPrefix = parts[7].trimmed();
+
+        // собираем все строки с префиксами до ;
+        QString prefixPart;
+        if (parts.size() > 8)
+            prefixPart = parts.mid(8).join(":").trimmed();
+
+        while (!prefixPart.endsWith(';') && !ts.atEnd()) {
+            QString nextLine = ts.readLine().trimmed();
+            prefixPart += nextLine;
+        }
+
+        prefixPart.remove(';');
+        QStringList rawList = prefixPart.split(',', Qt::SkipEmptyParts);
+
+        for (QString p : rawList) {
+            p = p.trimmed();
+            // удаляем скобки и квадратные скобки
+            QRegExp rx("\\(.*?\\)|\\[.*?\\]");
+            p.replace(rx, "");
+            p = p.trimmed();
+            if (!p.isEmpty())
+                e.prefixes.append(p);
+        }
+        result.push_back(e);
+    }
+    return result;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+CountryEntry MainWindow::findCountryByCall(const QString &call, const QVector<CountryEntry> &cty)
+{
+    QString upperCall = call.toUpper();
+    CountryEntry best;
+    int bestLen = -1;
+
+    for (const auto &c : cty) {
+        for (const QString &p : c.prefixes) {
+            QString up = p.toUpper();
+            if (upperCall.startsWith(up)) {
+                if (up.length() > bestLen) {
+                    best = c;
+                    bestLen = up.length();
+                }
+            }
+        }
+    }
+    return best;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

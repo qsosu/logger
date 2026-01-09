@@ -66,11 +66,13 @@ public:
   void updateByHashLog(QVariantList data);
   void configureProxy(int type, QString proxyHost, int proxyPort, QString user, QString password);
   void getLogs(int operator_id, int station_id, int page, int count);
-  void getMagneticStormInfo(QString date);
+  void getMagneticStormHistory();
+  void getMagneticStormCurrent();
   void getListSpotServers();
   void getChats();
   void getChatMessages(int chatId);
   void sendMessage(int id_chat, int id_callsign, QString message);
+  void sendSpot(QString hash, QString comment);
 
   bool serviceAvailable;
   QVector<QVariantMap> callsigns;
@@ -137,17 +139,19 @@ signals:
   void bandsUpdated();
   void HamDefsUploaded();
   void HamDefsError();
-  void userDataUpdated();
+  void userDataUpdated(bool);
   void getUserInfo(QStringList);
   void QSODataUpdated(QString);
   void errorQSODataUpdated(QString);
   void LocRecceived();
   void MagStormUpdated(QJsonArray);
+  void MagStormCurrentUpdated(QJsonObject);
   void spotServersReceived(const QList<ServerInfo> &servers);
   void chatsLoaded(const QList<Chat> &chats);
   void chatWithMessagesLoaded(const Chat &chat, const QList<Message> &messages);
   void messageSent(int chatId, const Message &message);
   void errorOccurred(const QString &errorMessage);
+  void serviceAvailableChanged(bool state);
 };
 
 #endif // HTTPAPI_H

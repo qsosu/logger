@@ -1,3 +1,17 @@
+/**********************************************************************************************************
+Description :  Implementation of the SpotViewer class, which provides an interactive window for browsing,
+            :  filtering, and searching radio spots stored in the local database. The viewer allows
+            :  operators to quickly find active DX stations, control the CAT interface by double-clicking
+            :  on a spot, and manage the table view layout persistently.
+Version     :  1.4.0
+Date        :  20.08.2025
+Author      :  R9JAU
+Comments    :  - Provides filter panel (mode, band, continent, country) with smooth animation toggle.
+            :  - Supports direct CAT control: double-click on a spot sets rig frequency and mode.
+            :  - Implements search dialog with callsign validation and case normalization.
+            :  - Adaptive UI with animated filter visibility.
+**********************************************************************************************************/
+
 #include "spotviewer.h"
 #include "ui_spotviewer.h"
 
@@ -13,7 +27,7 @@
 
 
 
-SpotViewer::SpotViewer(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, QList<PrefixEntry>& entries, cat_Interface *cat, QWidget *parent) :
+SpotViewer::SpotViewer(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, QVector<CountryEntry>& entries, cat_Interface *cat, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SpotViewer)
 {
@@ -34,14 +48,14 @@ SpotViewer::SpotViewer(QSqlDatabase db, QList<bandData> bList, QList<modeData> m
 
     //Заполняем Combobox
     ui->bandCombo->clear();
-    ui->bandCombo->addItem("Все");
+    ui->bandCombo->addItem(tr("Все"));
     for(int j = 0; j < bandList.count(); j++)
     {
         ui->bandCombo->addItem(bandList.at(j).band_name);
     }
 
     ui->modeCombo->clear();
-    ui->modeCombo->addItem("Все");
+    ui->modeCombo->addItem(tr("Все"));
     for(int j = 0; j < modeList.count(); j++)
     {
         ui->modeCombo->addItem(modeList.at(j).mode_value);
@@ -52,7 +66,7 @@ SpotViewer::SpotViewer(QSqlDatabase db, QList<bandData> bList, QList<modeData> m
         QString country = entries.at(j).country;
 
         // Если страна содержит "Russia", то заменяем её на "Russia"
-        if (country.startsWith("Russia")) {
+        if (country.endsWith("Russia")) {
              country = "Russia";
         }
         if (!countries.contains(country))
@@ -64,7 +78,7 @@ SpotViewer::SpotViewer(QSqlDatabase db, QList<bandData> bList, QList<modeData> m
 
     // очищаем и добавляем в combobox
     ui->countryCombo->clear();
-    ui->countryCombo->addItem("Все");
+    ui->countryCombo->addItem(tr("Все"));
     ui->countryCombo->addItems(countries);
 
     // сначала скрываем блок фильтров
@@ -88,6 +102,24 @@ SpotViewer::SpotViewer(QSqlDatabase db, QList<bandData> bList, QList<modeData> m
     // Восстанавливаем порядок столбцов
     restoreHeaderState(ui->tableView);
     QTimer::singleShot(0, this, &SpotViewer::loadData);
+
+
+//    for (int j = 0; j < entries.count(); ++j)
+//    {
+//        QString country = entries.at(j).country;
+//        QString country_code = countryToIso.value(country, "");
+
+//        QString iconPath = QString(":resources/flags/%1.png").arg(country_code);
+
+//        if (QFile::exists(iconPath))
+//        {
+//            qDebug() << entries.at(j).country << " " << country_code << " " << iconPath;
+//        } else {
+//            qDebug() << entries.at(j).country << " " << country_code << " " << "None";
+//        }
+//    }
+//    // сортируем по алфавиту
+//    countries.sort(Qt::CaseInsensitive);
 }
 //-----------------------------------------------------------------------------------------------------
 
@@ -106,7 +138,7 @@ void SpotViewer::toggleFilters()
     ui->filterGroupBox->setVisible(true); // показываем перед анимацией
     connect(anim, &QPropertyAnimation::finished, this, [this, opening]() {
         if (!opening) ui->filterGroupBox->setVisible(false);
-        ui->filterButton->setText(opening ? "Скрыть фильтры ▶" : "Показать фильтры ▼");
+        ui->filterButton->setText(opening ? tr("Скрыть фильтры ▶") : tr("Показать фильтры ▼"));
     });
     anim->start(QAbstractAnimation::DeleteWhenStopped);
 }
@@ -118,15 +150,15 @@ void SpotViewer::loadData()
     QStringList conditions;
 
     QString mode = ui->modeCombo->currentText();
-    if (!mode.isEmpty() && mode != "Все")
+    if (!mode.isEmpty() && mode != tr("Все"))
         conditions << QString("MODE = '%1'").arg(mode);
 
     QString band = ui->bandCombo->currentText();
-    if (!band.isEmpty() && band != "Все")
+    if (!band.isEmpty() && band != tr("Все"))
         conditions << QString("BAND = '%1'").arg(band);
 
     QString cont = ui->contCombo->currentText();
-    if (!cont.isEmpty() && cont != "Все") {
+    if (!cont.isEmpty() && cont != tr("Все")) {
         QString code = continentMap.value(cont, "");
         if (!code.isEmpty()) {
             conditions << QString("DXCC_CONTINENT = '%1'").arg(code);
@@ -134,7 +166,7 @@ void SpotViewer::loadData()
     }
 
     QString country = ui->countryCombo->currentText();
-    if (!country.isEmpty() && country != "Все") {
+    if (!country.isEmpty() && country != tr("Все")) {
         if (country == "Russia") {
             conditions << "DXCC_COUNTRY LIKE 'Russia%'";
         } else {
@@ -151,16 +183,16 @@ void SpotViewer::loadData()
 
     if (model->lastError().isValid()) qWarning() << "SQL error:" << model->lastError().text();
 
-        model->setHeaderData(0, Qt::Horizontal, "Спотер");
-        model->setHeaderData(1, Qt::Horizontal, "Позывной DX");
-        model->setHeaderData(2, Qt::Horizontal, "Флаг");
-        model->setHeaderData(3, Qt::Horizontal, "Страна");
-        model->setHeaderData(4, Qt::Horizontal, "Континент");
-        model->setHeaderData(5, Qt::Horizontal, "Модуляция");
-        model->setHeaderData(6, Qt::Horizontal, "Диапазон");
-        model->setHeaderData(7, Qt::Horizontal, "Частота");
-        model->setHeaderData(8, Qt::Horizontal, "Информация");
-        model->setHeaderData(9, Qt::Horizontal, "Дата");
+        model->setHeaderData(0, Qt::Horizontal, tr("Спотер"));
+        model->setHeaderData(1, Qt::Horizontal, tr("Позывной DX"));
+        model->setHeaderData(2, Qt::Horizontal, tr("Флаг"));
+        model->setHeaderData(3, Qt::Horizontal, tr("Страна"));
+        model->setHeaderData(4, Qt::Horizontal, tr("Континент"));
+        model->setHeaderData(5, Qt::Horizontal, tr("Модуляция"));
+        model->setHeaderData(6, Qt::Horizontal, tr("Диапазон"));
+        model->setHeaderData(7, Qt::Horizontal, tr("Частота"));
+        model->setHeaderData(8, Qt::Horizontal, tr("Информация"));
+        model->setHeaderData(9, Qt::Horizontal, tr("Дата"));
 
         ui->tableView->resizeColumnsToContents();
         ui->tableView->resizeRowsToContents();
@@ -189,6 +221,14 @@ SpotViewer::~SpotViewer()
 }
 //-----------------------------------------------------------------------------------------------------
 
+void SpotViewer::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void SpotViewer::on_pushButton_clicked()
 {
     saveHeaderState(ui->tableView);
@@ -198,31 +238,50 @@ void SpotViewer::on_pushButton_clicked()
 
 void SpotViewer::on_searchButton_clicked()
 {
-    bool ok;
-    QString callSign = QInputDialog::getText(this, "Поиск DX", "Введите позывной:", QLineEdit::Normal, "", &ok);
-    if (!ok || callSign.trimmed().isEmpty())
-        return; // пользователь отменил или ничего не ввёл
+    QInputDialog dialog(this);
+    dialog.setWindowTitle(QObject::tr("Поиск DX"));
+    dialog.setLabelText(QObject::tr("Введите позывной:"));
+    dialog.setTextValue("");
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
-    callSign = callSign.trimmed();
-    QAbstractItemModel *model = ui->tableView->model();
-    if (!model) return;
+    // Находим QLineEdit внутри диалога и вешаем валидатор
+    if (QLineEdit *lineEdit = dialog.findChild<QLineEdit *>()) {
+        auto *validator = new QRegularExpressionValidator(QRegularExpression("^[A-Za-z0-9/]*$"), lineEdit);
+        lineEdit->setValidator(validator);
 
-    int rowCount = model->rowCount();
-    bool found = false;
-
-    for (int row = 0; row < rowCount; ++row) {
-        QModelIndex index = model->index(row, 1); // колонка с позывным
-        QString value = model->data(index).toString();
-        if (value.compare(callSign, Qt::CaseInsensitive) == 0) {
-            ui->tableView->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-            ui->tableView->scrollTo(index, QAbstractItemView::PositionAtCenter);
-            found = true;
-            break;
-        }
+        QObject::connect(lineEdit, &QLineEdit::textChanged, lineEdit, [lineEdit](const QString &text){
+            QString upper = text.toUpper();
+            if (text != upper) {
+                int pos = lineEdit->cursorPosition();
+                lineEdit->setText(upper);
+                lineEdit->setCursorPosition(pos);
+            }
+        });
     }
 
-    if (!found) {
-        QMessageBox::information(this, "Поиск DX", "Позывной не найден");
+    // запускаем диалог
+    if (dialog.exec() == QDialog::Accepted) {
+        QString Call = dialog.textValue();
+        QAbstractItemModel *model = ui->tableView->model();
+
+        if (!model) return;
+        int rowCount = model->rowCount();
+        bool found = false;
+
+        for (int row = 0; row < rowCount; ++row) {
+            QModelIndex index = model->index(row, 1); // колонка с позывным
+            QString value = model->data(index).toString();
+            if (value.compare(Call, Qt::CaseInsensitive) == 0) {
+                ui->tableView->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                ui->tableView->scrollTo(index, QAbstractItemView::PositionAtCenter);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            QMessageBox::information(this, tr("Поиск DX"), tr("Позывной не найден"));
+        }
     }
 }
 //-----------------------------------------------------------------------------------------------------

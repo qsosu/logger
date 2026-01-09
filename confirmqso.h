@@ -20,7 +20,7 @@ public:
 
     int getCallsignID(QString callsign);
     int getLocalCallsignID(QString callsign);
-    void InsertQso(QStringList qso_data);
+    void InsertQso(const QList<QVariantList> &batch);
     int getMaxID();
     void getCallsigns();
     QString getLastConfirmDate();

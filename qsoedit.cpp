@@ -1,10 +1,24 @@
+/**********************************************************************************************************
+Description :  Implementation of the Qsoedit class, which provides a dialog window for editing QSO records
+            :  stored in the local SQLite database. The class integrates with external APIs (QSO.SU, QRZ.RU)
+            :  to update QSO details, retrieve callbook information, and manage synchronization of QSO data.
+Version     :  1.3.7
+Date        :  10.04.2025
+Author      :  R9JAU
+Comments    :  - Allows editing of QSO parameters such as callsign, operator, date/time, frequency,
+            :    band, mode, RST reports, locator, ITU/CQ zones, and comments.
+            :  - Integrates with QRZ.RU API and QSO.SU API for fetching user data and confirming QSO records.
+            :  - Supports displaying operator photos in a QGraphicsView or a placeholder text if no photo exists.
+            :  - Uses QRegularExpressionValidator for input validation (ITU zone, CQ zone, RST values).
+            :  - Updates database records and synchronizes them with the server (via HttpApi).
+***********************************************************************************************************/
+
 #include "qsoedit.h"
 #include "ui_qsoedit.h"
 #include <QDebug>
 #include <QSqlError>
 #include <QPixmap>
 #include <QList>
-
 
 Qsoedit::Qsoedit(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, Settings *settings, QWidget *parent) :
     QDialog(parent),
@@ -21,7 +35,7 @@ Qsoedit::Qsoedit(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, 
 
     //Заполняем Combobox
     ui->bandCombo->clear();
-    ui->bandCombo->addItem("Все");
+    ui->bandCombo->addItem(tr("Все"));
     for(int j = 0; j < bandList.count(); j++)
     {
         ui->bandCombo->addItem(bandList.at(j).band_name);
@@ -44,7 +58,7 @@ Qsoedit::Qsoedit(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, 
     connect(qrz, SIGNAL(loaded(QPixmap)), this, SLOT(loadImage(QPixmap)));
 
     api = new HttpApi(db, settings->accessToken);
-    connect(api, SIGNAL(userDataUpdated()), this, SLOT(setUserData()));
+    connect(api, SIGNAL(userDataUpdated(bool)), this, SLOT(setUserData(bool)));
     connect(api, SIGNAL(QSODataUpdated(QString)), this, SLOT(updateQSOData(QString)));
     connect(api, SIGNAL(errorQSODataUpdated(QString)), this, SLOT(errorUpdateQSOData(QString)));
 
@@ -61,17 +75,13 @@ Qsoedit::Qsoedit(QSqlDatabase db, QList<bandData> bList, QList<modeData> mList, 
     ui->ituzlineEdit->setText("");
     ui->ituzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-8][0-9]|90)$"), this));
     ui->cqzlineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-3][0-9]|40)$"), this));
-<<<<<<< Updated upstream
-    ui->rstr_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
-    ui->rsts_lineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-5][1-9]|[1-5][1-9][1-9])$"), this));
-=======
 
     QRegularExpression rstRegex(R"(^(?:[+-]?(?:0\d?|[1-9]\d{0,2}))$)");
     ui->rstr_lineEdit->setValidator(new QRegularExpressionValidator(rstRegex, this));
     ui->rsts_lineEdit->setValidator(new QRegularExpressionValidator(rstRegex, this));
+
     spinner = new WaitSpinner(this);
     spinner->hide();
->>>>>>> Stashed changes
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -117,16 +127,23 @@ void Qsoedit::on_QRZUpdateButton_clicked()
 {
     if(settings->useCallbook)
     {
+        spinner->start();
         api->getCallbook(ui->CalsignlineEdit->text());
+
+        QEventLoop loop;
+        QObject::connect(api, &HttpApi::userDataUpdated, &loop, &QEventLoop::quit);
+        loop.exec();
+
         if(userData.length() > 10) {
             ui->name_lineEdit->setText((userData.at(0).length() > 0) ? userData.at(0) : "");
             ui->qth_lineEdit->setText((userData.at(1).length() > 0) ? userData.at(1) : "");
             ui->qthloc_lineEdit->setText((userData.at(2).length() > 0) ? userData.at(2).toUpper() : "");
             ui->rda_lineEdit->setText((userData.at(3).length() > 0) ? userData.at(3).toUpper() : "");
-            ui->countrylineEdit->setText((userData.at(8).length() > 0) ? userData.at(8).toUpper() : "");
-            ui->countryCodelineEdit->setText((userData.at(9).length() > 0) ? userData.at(9).toUpper() : "");
+            //ui->countrylineEdit->setText((userData.at(8).length() > 0) ? userData.at(8).toUpper() : "");
+            //ui->countryCodelineEdit->setText((userData.at(9).length() > 0) ? userData.at(9).toUpper() : "");
             ui->ituzlineEdit->setText((userData.at(10).length() > 0) ? userData.at(10).toUpper() : "");
             ui->cqzlineEdit->setText((userData.at(11).length() > 0) ? userData.at(11).toUpper() : "");
+            qDebug() << userData;
         }
     }
     else {
@@ -148,49 +165,50 @@ void Qsoedit::on_QRZUpdateButton_clicked()
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void Qsoedit::setUserData()
+void Qsoedit::setUserData(bool found)
 {
-  userData.clear();
-  userData.append(api->callsignInfo);
+    spinner->stop();
+    userData.clear();
+    userData.append(api->callsignInfo);
 
-  if(userData.at(4).length() > 0) {
-      ui->QSOSUUserIcon->setVisible(true);
-      ui->QSOSUUserLabel->setVisible(true);
-      if(userData.at(4) == "1") {
-         ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/loguser.png"));
-         ui->QSOSUUserLabel->setText(tr("Пользователь QSO.SU"));
-         ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
-     } else {
-         ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/no_loguser.png"));
-         ui->QSOSUUserLabel->setText(tr("Не пользователь QSO.SU"));
-         ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(220, 53, 69) }");
-     }
-  } else {
-      ui->QSOSUUserIcon->setVisible(false);
-      ui->QSOSUUserLabel->setVisible(false);
-  }
+    if(userData.at(4).length() > 0) {
+        ui->QSOSUUserIcon->setVisible(true);
+        ui->QSOSUUserLabel->setVisible(true);
+        if(userData.at(4) == "1") {
+            ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/loguser.png"));
+            ui->QSOSUUserLabel->setText(tr("Пользователь QSO.SU"));
+            ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
+        } else {
+            ui->QSOSUUserIcon->setPixmap(QPixmap(":resources/images/no_loguser.png"));
+            ui->QSOSUUserLabel->setText(tr("Не пользователь QSO.SU"));
+            ui->QSOSUUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(220, 53, 69) }");
+        }
+    } else {
+        ui->QSOSUUserIcon->setVisible(false);
+        ui->QSOSUUserLabel->setVisible(false);
+    }
 
-  if(userData.at(5).length() > 0) {
-      ui->SRRUserIcon->setVisible(true);
-      ui->SRRUserLabel->setVisible(true);
-      if(userData.at(5) == "1") {
-         ui->SRRUserIcon->setPixmap(QPixmap(":resources/images/srr_user.png"));
-         ui->SRRUserLabel->setText("Член СРР");
-         ui->SRRUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
-     } else {
-         ui->SRRUserIcon->setVisible(false);
-         ui->SRRUserLabel->setVisible(false);
-     }
-  } else {
-      ui->SRRUserIcon->setVisible(false);
-      ui->SRRUserLabel->setVisible(false);
-  }
+    if(userData.at(5).length() > 0) {
+        ui->SRRUserIcon->setVisible(true);
+        ui->SRRUserLabel->setVisible(true);
+        if(userData.at(5) == "1") {
+            ui->SRRUserIcon->setPixmap(QPixmap(":resources/images/srr_user.png"));
+            ui->SRRUserLabel->setText(tr("Член СРР"));
+            ui->SRRUserLabel->setStyleSheet("QLabel { font-weight: bold; color: rgb(25, 135, 84) }");
+        } else {
+            ui->SRRUserIcon->setVisible(false);
+            ui->SRRUserLabel->setVisible(false);
+        }
+    } else {
+        ui->SRRUserIcon->setVisible(false);
+        ui->SRRUserLabel->setVisible(false);
+    }
 
-  image = ((userData.at(12).length() > 0) ? userData.at(12) : "");
-  if(image != "") {
-      qrz->LoadPhoto(image);
-      load_flag = true;
-  } else noneImage();
+    image = ((userData.at(12).length() > 0) ? userData.at(12) : "");
+    if(image != "") {
+        qrz->LoadPhoto(image);
+        load_flag = true;
+    } else noneImage();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -305,8 +323,13 @@ void Qsoedit::resizeEvent(QResizeEvent * event)
 {
     QWidget::resizeEvent(event);
     resizeTimer->start(300); // Установить задержку в 300 мс
+
+    if (!spinner) return;
+    const int x = (width()  - spinner->width())  / 2;
+    const int y = (height() - spinner->height()) / 2;
+    spinner->move(x, y);
 }
-//----------------------------------------------------9--------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void Qsoedit::onResizeFinished()
 {
@@ -322,6 +345,8 @@ void Qsoedit::setVisible(bool set)
     QDialog::setVisible( set );
     if( set ) {
         if(settings->useCallbook) {
+            spinner->start();
+            QTimer::singleShot(5000, spinner, &WaitSpinner::stop);
             api->getCallbook(ui->CalsignlineEdit->text());
         }
     }
@@ -416,6 +441,7 @@ void Qsoedit::updateQSOData(QString hash)
 
 void Qsoedit::errorUpdateQSOData(QString error)
 {
+    spinner->stop();
     QMessageBox::critical(0, tr("Ошибка"), error, QMessageBox::Ok);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

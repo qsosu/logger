@@ -119,9 +119,10 @@ void Flrig::rpcResponseMode(QVariant &arg)
     emit connected();
   }
   mode = arg.toString();
-  if (mode == "USB" || mode == "LSB" || mode == "LSB-D" || mode == "USB-D") mode = "SSB";
+  if (mode == "USB" || mode == "USB-D") mode = "SSB (USB)";
+  if (mode == "LSB" || mode == "LSB-D") mode = "SSB (LSB)";
+  if (mode == "FSK" || mode == "FSK-R") mode = "FT8";
   if (mode == "CW-R") mode = "CW";
-  if (mode == "FSK-R") mode = "FSK";
   if (mode == "FM-R") mode = "FM";
 }
 //--------------------------------------------------------------------------------------------------------------------

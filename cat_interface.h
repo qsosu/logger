@@ -24,6 +24,7 @@ public:
     int old_band;
     int mode;
     int old_mode;
+    bool updatingFromCat = false;
 
     bool openSerial(QString port);
     bool closeSerial();
@@ -40,6 +41,8 @@ public:
     int freqToBand(long freq);
     void setInterval(int interval);
     void modeNameToMode(QString mode);
+
+private:
 
 private slots:
     void portRead();

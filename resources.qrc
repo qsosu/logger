@@ -276,5 +276,11 @@
         <file>resources/images/notification.png</file>
         <file>resources/images/notification_new.png</file>
         <file>resources/images/logo.icns</file>
+        <file>resources/images/earth.jpg</file>
+        <file>resources/countries.geo.json</file>
+        <file>resources/flags/BQ.png</file>
+        <file>resources/flags/ITU.png</file>
+        <file>resources/flags/UN.png</file>
+        <file>resources/flags/AQ.png</file>
     </qresource>
 </RCC>

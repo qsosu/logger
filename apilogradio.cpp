@@ -1,3 +1,15 @@
+/**********************************************************************************************************
+Description :  Implementation of the APILogRadio class, which provides interaction with the
+            :  LogRadio.ru API. The class allows obtaining and validating API tokens, as well as
+            :  sending QSO data for synchronization with the remote service.
+Version     :  1.4.2
+Date        :  11.04.2025
+Author      :  R9JAU
+Comments    :  - Uses QNetworkAccessManager for HTTP requests with SSL support.
+            :  - Supports token retrieval and validation (API /user/api-token).
+            :  - Implements QSO data formatting into JSON and sending via /ham/qso endpoint.
+***********************************************************************************************************/
+
 #include "apilogradio.h"
 
 APILogRadio::APILogRadio(QString APILogRadioAccessToken, QObject *parent)
@@ -86,7 +98,8 @@ bool APILogRadio::checkToken()
 
 //--------------------------------------------------------------------------------------------------------------------
 
-void APILogRadio::SendQso(QVariantList data) {
+void APILogRadio::SendQso(QVariantList data)
+{
     QNetworkRequest request(QUrl("https://api.logradio.ru/ham/qso"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + APILogRadioAccessToken).toUtf8());
@@ -99,9 +112,9 @@ void APILogRadio::SendQso(QVariantList data) {
     QJsonObject QSO_Obj;
     QSO_Obj["id"] = dbid;
     QSO_Obj["comm_datetime_at"] = data.value(7).toString() + "+00";
-    QSO_Obj["callsign_s"] = data.value(16).toString();
+    QSO_Obj["callsign_s"] = data.value(18).toString();
     QSO_Obj["callsign_r"] = data.value(3).toString();
-    QSO_Obj["operator_s"] = data.value(17).toString();
+    QSO_Obj["operator_s"] = data.value(19).toString();
     QSO_Obj["frequency"] = data.value(6).toLongLong();
     QSO_Obj["mode"] = data.value(5).toString();
     QSO_Obj["submode"] = "";
@@ -130,7 +143,7 @@ void APILogRadio::SendQso(QVariantList data) {
     QSO_Data["number"] = dbid;
     QSO_Data["data"] = QSO_Obj;
 
-    qDebug() << data;
+    //qDebug() << data;
 
     QJsonArray QSO_Array;
     QSO_Array.append(QSO_Data);
@@ -141,10 +154,10 @@ void APILogRadio::SendQso(QVariantList data) {
     // --- Отправка запроса ---
     QNetworkReply *reply = m_manager.post(request, jsonBA);
 
-    // --- Таймаут (5 секунд) ---
+    // --- Таймаут (10 секунд) ---
     QTimer *timer = new QTimer(reply);
     timer->setSingleShot(true);
-    timer->start(5000); // 5 секунд
+    timer->start(10000); // 10 секунд
     connect(timer, &QTimer::timeout, reply, [reply]() {
         if (reply->isRunning()) {
             qWarning() << "LogRadio.ru request timeout!";

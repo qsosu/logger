@@ -1,7 +1,15 @@
+/**********************************************************************************************************
+Description :  Implementation of the ConfirmQSO class, which accepts and stores confirmed QSOs in the
+            :  database from the QSO.SU server.
+Version     :  1.0.2
+Date        :  04.07.2025
+Author      :  R9JAU
+Comments    :
+***********************************************************************************************************/
+
 #include "confirmqso.h"
 #include "ui_confirmqso.h"
 #include <QSqlError>
-
 
 
 ConfirmQSO::ConfirmQSO(QSqlDatabase db, Settings *settings, QWidget *parent) :
@@ -46,30 +54,35 @@ void ConfirmQSO::ConfirmQSOs(int count)
 
     dbid = getMaxID();
 
-    for(QVariantMap &cnfrm : api->cnfrQSOs)
+    QList<QVariantList> batch;   // список строк для вставки
+    batch.reserve(count);        // чтобы избежать лишних realocations
+
+    for (QVariantMap &cnfrm : api->cnfrQSOs)
     {
-        QString band = cnfrm["band"].toString();
-        QString band_type = cnfrm["band_type"].toString();
-        QString call = cnfrm["call"].toString();
-        QString cnty = cnfrm["cnty"].toString();
-        QString gridsquare = cnfrm["gridsquare"].toString();
-        QString hash = cnfrm["hash"].toString();
-        QString mode = cnfrm["mode"].toString();
-        QString my_cnty = cnfrm["my_cnty"].toString();
-        QString my_gridsquare = cnfrm["my_gridsquare"].toString();
-        QString st_oper = cnfrm["operator"].toString();
-        QString qso_date = cnfrm["qso_date"].toString();
-        QString rst_rcvd = cnfrm["rst_rcvd"].toString();
-        QString rst_sent = cnfrm["rst_sent"].toString();
-        QString station_callsign = cnfrm["station_callsign"].toString();
-        //QString submode = cnfrm["submode"].toString();
-        QString time_off = cnfrm["time_off"].toString();
-        QString time_on = cnfrm["time_on"].toString();
+        QString band            = cnfrm["band"].toString();
+        QString band_type       = cnfrm["band_type"].toString();
+        QString call            = cnfrm["call"].toString();
+        QString cnty            = cnfrm["cnty"].toString();
+        QString gridsquare      = cnfrm["gridsquare"].toString();
+        QString hash            = cnfrm["hash"].toString();
+        QString mode            = cnfrm["mode"].toString();
+        QString my_cnty         = cnfrm["my_cnty"].toString();
+        QString my_gridsquare   = cnfrm["my_gridsquare"].toString();
+        QString st_oper         = cnfrm["operator"].toString();
+        QString qso_date        = cnfrm["qso_date"].toString();
+        QString rst_rcvd        = cnfrm["rst_rcvd"].toString();
+        QString rst_sent        = cnfrm["rst_sent"].toString();
+        QString station_callsign= cnfrm["station_callsign"].toString();
+        QString time_off        = cnfrm["time_off"].toString();
+        QString time_on         = cnfrm["time_on"].toString();
 
         QSqlQuery query(db);
-        query.prepare("UPDATE RECORDS SET BAND=:band, CALL=:call, CNTY=:cnty, MODE=:mode, MY_CNTY=:my_cnty, MY_GRIDSQUARE=:my_gridsquare,"
-                      "OPERATOR=:st_oper, QSO_DATE=:qso_date, RST_RCVD=:rst_rcvd, RST_SENT=:rst_sent, STATION_CALLSIGN=:station_callsign,"
-                      "TIME_OFF=:time_off, TIME_ON=:time_on, sync_state = 1 WHERE HASH=:hash");
+        query.prepare("UPDATE RECORDS SET BAND=:band, CALL=:call, CNTY=:cnty, MODE=:mode, "
+                      "MY_CNTY=:my_cnty, MY_GRIDSQUARE=:my_gridsquare, OPERATOR=:st_oper, "
+                      "QSO_DATE=:qso_date, RST_RCVD=:rst_rcvd, RST_SENT=:rst_sent, "
+                      "STATION_CALLSIGN=:station_callsign, TIME_OFF=:time_off, TIME_ON=:time_on, "
+                      "sync_state = 1 WHERE HASH=:hash");
+
         query.bindValue(":band", band + band_type);
         query.bindValue(":call", call);
         query.bindValue(":cnty", cnty);
@@ -88,61 +101,75 @@ void ConfirmQSO::ConfirmQSOs(int count)
 
         if (!query.exec()) {
             qDebug() << "ERROR Confirmation QSO. " << query.lastError().text();
-        }
-        else {
-            QStringList qso_data;
-            qso_data << call << cnty << gridsquare << band + band_type << mode << station_callsign << st_oper << my_cnty << my_gridsquare << qso_date << time_on << time_off << rst_rcvd << rst_sent << hash;
-            if(query.numRowsAffected() == 0 && ui->insertCheckBox->checkState()) InsertQso(qso_data);
+        } else {
+            if (query.numRowsAffected() == 0 && ui->insertCheckBox->isChecked()) {
+                QVariantList values;
+                values << call << cnty << gridsquare << (band + band_type) << mode
+                       << station_callsign << st_oper << my_cnty << my_gridsquare
+                       << qso_date << time_on << time_off << rst_rcvd << rst_sent << hash;
+
+                batch.append(values); // добавляем в список для последующей вставки
+            }
+
             cnfrm_count++;
             dbid++;
             ui->ConfirmProgressBar->setValue(cnfrm_count);
             ui->CurrentQSOCountLabel->setText(tr("Загружено подтвержденных QSO: ") + QString::number(cnfrm_count));
             QApplication::processEvents();
-            query.clear();
         }
     }
+
+    // если что-то накопилось — вставляем
+    if (!batch.isEmpty()) {
+        InsertQso(batch);
+    }
+
     qDebug() << "Confirmed: " << cnfrm_count << " QSOs";
     emit db_updated();
     QMessageBox::information(this, tr("Подтверждение связей с QSO.SU"), tr("Подтверждено QSO: ") + QString::number(cnfrm_count));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void ConfirmQSO::InsertQso(QStringList qso_data)
+void ConfirmQSO::InsertQso(const QList<QVariantList> &batch)
 {
-    QSqlQuery query(db);
-    query.prepare("INSERT INTO RECORDS (id, callsign_id, qsosu_callsign_id, qsosu_operator_id, STATION_CALLSIGN, OPERATOR, MY_GRIDSQUARE, MY_CNTY, CALL, QSO_DATE, TIME_ON, TIME_OFF,"
-                  "BAND, FREQ, MODE, RST_SENT, RST_RCVD, NAME, QTH, GRIDSQUARE, CNTY, COMMENT, sync_state, HASH, ITUZ, CQZ, SYNC_QSO) "
-                  "VALUES (:id, :callsign_id, :qsosu_callsign_id, :qsosu_operator_id, :station_callsign, :operator, :my_gridsquare, :my_cnty, :call, :qso_date, :time_on, :time_off,"
-                  ":band, :freq, :mode, :rst_sent, :rst_rcvd, :name, :qth, :gridsquare, :cnty, :comment, :sync_state, :hash, :ituz, :cqz, :sync_qso)");
-    query.bindValue(":id", dbid);
-    query.bindValue(":callsign_id", getLocalCallsignID(qso_data.at(5)));
-    query.bindValue(":qsosu_callsign_id", getCallsignID(qso_data.at(5)));
-    query.bindValue(":qsosu_operator_id", getCallsignID(qso_data.at(6)));
-    query.bindValue(":station_callsign", qso_data.at(5));
-    query.bindValue(":operator", qso_data.at(6));
-    query.bindValue(":my_gridsquare", qso_data.at(8));
-    query.bindValue(":my_cnty", qso_data.at(7));
-    query.bindValue(":call", qso_data.at(0));
-    query.bindValue(":qso_date", qso_data.at(9));
-    query.bindValue(":time_on", qso_data.at(10));
-    query.bindValue(":time_off", qso_data.at(11));
-    query.bindValue(":band", qso_data.at(3));
-    query.bindValue(":freq", 0);
-    query.bindValue(":mode", qso_data.at(4));
-    query.bindValue(":rst_sent", qso_data.at(12));
-    query.bindValue(":rst_rcvd", qso_data.at(13));
-    query.bindValue(":name", "");
-    query.bindValue(":qth", "");
-    query.bindValue(":gridsquare", qso_data.at(2));
-    query.bindValue(":cnty", qso_data.at(1));
-    query.bindValue(":comment", "");
-    query.bindValue(":sync_state", 1);
-    query.bindValue(":hash", qso_data.at(14));
-    query.bindValue(":ituz", 0);
-    query.bindValue(":cqz", 0);
-    query.bindValue(":sync_qso", 1);
+    if (batch.isEmpty())
+        return;
 
-    if (!query.exec()) qDebug() << "ERROR Insert into database." << query.lastError() << "\n" << qso_data;
+    QSqlQuery query(db);
+
+    db.transaction();  // начинаем транзакцию
+
+    query.prepare("INSERT INTO RECORDS "
+                  "(CALL, CNTY, GRIDSQUARE, BAND, MODE, STATION_CALLSIGN, OPERATOR, "
+                  "MY_CNTY, MY_GRIDSQUARE, QSO_DATE, TIME_ON, TIME_OFF, "
+                  "RST_RCVD, RST_SENT, HASH, sync_state) "
+                  "VALUES (:call, :cnty, :gridsquare, :band, :mode, :station_callsign, "
+                  ":st_oper, :my_cnty, :my_gridsquare, :qso_date, :time_on, :time_off, "
+                  ":rst_rcvd, :rst_sent, :hash, 1)");
+
+    for (const QVariantList &row : batch) {
+        query.bindValue(":call",            row[0]);
+        query.bindValue(":cnty",            row[1]);
+        query.bindValue(":gridsquare",      row[2]);
+        query.bindValue(":band",            row[3]);
+        query.bindValue(":mode",            row[4]);
+        query.bindValue(":station_callsign",row[5]);
+        query.bindValue(":st_oper",         row[6]);
+        query.bindValue(":my_cnty",         row[7]);
+        query.bindValue(":my_gridsquare",   row[8]);
+        query.bindValue(":qso_date",        row[9]);
+        query.bindValue(":time_on",         row[10]);
+        query.bindValue(":time_off",        row[11]);
+        query.bindValue(":rst_rcvd",        row[12]);
+        query.bindValue(":rst_sent",        row[13]);
+        query.bindValue(":hash",            row[14]);
+
+        if (!query.exec()) {
+            qDebug() << "Insert error: " << query.lastError().text();
+        }
+    }
+
+    db.commit();  // коммитим транзакцию
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

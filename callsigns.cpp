@@ -80,7 +80,6 @@ void Callsigns::addCallsigng()
     CallsignsModel->insertRow(rowCount);
     QModelIndex index = CallsignsModel->index(rowCount, 1);
     ui->callTable->setCurrentIndex(index);
-    //ui->callTable->edit(index);
 
     CallsignsModel->setData(CallsignsModel->index(rowCount, 2), add_cs->add_CallsignType);
     CallsignsModel->setData(CallsignsModel->index(rowCount, 3), add_cs->add_Callsign);
@@ -208,7 +207,7 @@ void Callsigns::onCallsignsUpdated()
       insert.bindValue(":cnty", rda);
       insert.bindValue(":ituz", ituz);
       insert.bindValue(":cqz", cqz);
-      insert.bindValue(":status", 0);
+      insert.bindValue(":status", "Добавлен");
       if (!insert.exec()) qDebug() << "Error while inserting new callsing in DB";
     }
     query.clear();

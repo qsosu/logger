@@ -1,3 +1,16 @@
+/**********************************************************************************************************
+Description :  Implementation of the QSOPanel class, which provides a flexible and dockable user interface
+            :  panel for entering and editing QSO data. The panel can be docked at the top of the main
+            :  window or detached into a floating window with support for manual resizing and drag-and-drop
+            :  docking.
+Version     :  1.2.0
+Date        :  01.09.2025
+Author      :  R9JAU
+Comments    :  - Built using FlowLayout-based containers for adaptive and responsive placement of input fields.
+            :  - Provides validators for input fields (callsigns, RST values, locators).
+            :  - Fully dockable with visual dock indicators (QRubberBand).
+***********************************************************************************************************/
+
 #include "qsopanel.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -13,7 +26,7 @@
 
 
 
-QSOPanel::QSOPanel(QMainWindow *mainWindow, Settings *settings, QWidget *parent)
+QSOPanel::QSOPanel(QMainWindow *mainWindow, Settings *settings, cat_Interface *cat, QWidget *parent)
     : QWidget(parent),
       m_mainWindow(mainWindow),
       m_docked(true),
@@ -27,6 +40,7 @@ QSOPanel::QSOPanel(QMainWindow *mainWindow, Settings *settings, QWidget *parent)
     setMouseTracking(true);
     ui.setupUi(this);
     this->settings = settings;
+    this->CAT = cat;
 
     // Чтобы при запуске не раздувалось
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -62,34 +76,28 @@ QSOPanel::QSOPanel(QMainWindow *mainWindow, Settings *settings, QWidget *parent)
 
     // Заполнение GroupBox1
     stationCallsign = new QComboBox;
-<<<<<<< Updated upstream
-    flowLayout1->addWidget(makeInputPair("Позывной станции:", stationCallsign));
-    operatorCallsign = new QComboBox;
-    flowLayout1->addWidget(makeInputPair("Позывной оператора:", operatorCallsign));
-=======
-    stationCallsign->setMinimumWidth(30);
+    stationCallsign->setMinimumWidth(50);
     flowLayout1->addWidget(makeInputPair(tr("Позывной станции:"), stationCallsign));
     operatorCallsign = new QComboBox;
-    operatorCallsign->setMinimumWidth(30);
+    operatorCallsign->setMinimumWidth(50);
     flowLayout1->addWidget(makeInputPair(tr("Позывной оператора:"), operatorCallsign));
->>>>>>> Stashed changes
     DateEdit = new QDateEdit;
     DateEdit->setCalendarPopup(true);
-    flowLayout1->addWidget(makeInputPair("Дата:", DateEdit));
+    flowLayout1->addWidget(makeInputPair(tr("Дата:"), DateEdit));
     TimeEdit = new QTimeEdit;
     TimeEdit->setDisplayFormat("HH:mm:ss");
-    ShowCurrentTime = new QCheckBox("Реальное время");
-    flowLayout1->addWidget(makeLabelWidgetPair("Время UTC:", TimeEdit, ShowCurrentTime));
+    ShowCurrentTime = new QCheckBox(tr("Реальное время"));
+    flowLayout1->addWidget(makeLabelWidgetPair(tr("Время UTC:"), TimeEdit, ShowCurrentTime));
 
     BandCombo = new QComboBox;
-    flowLayout2->addWidget(makeInputPair("Диапазон:", BandCombo));
+    flowLayout2->addWidget(makeInputPair(tr("Диапазон:"), BandCombo));
     ModeCombo = new QComboBox;
     ModeCombo->setMinimumWidth(100);
-    flowLayout2->addWidget(makeInputPair("Модуляция:", ModeCombo));
+    flowLayout2->addWidget(makeInputPair(tr("Модуляция:"), ModeCombo));
     FreqInput = new QLineEdit;
-    flowLayout2->addWidget(makeInputPair("Частота, МГц:", FreqInput));
+    flowLayout2->addWidget(makeInputPair(tr("Частота, МГц:"), FreqInput));
     QTHLocEdit = new QLineEdit;
-    flowLayout2->addWidget(makeInputPair("QTH локатор:", QTHLocEdit));
+    flowLayout2->addWidget(makeInputPair(tr("QTH локатор:"), QTHLocEdit));
     RDAEdit = new QLineEdit;
     flowLayout2->addWidget(makeInputPair("RDA/CNTY:", RDAEdit));
 
@@ -130,35 +138,52 @@ QSOPanel::QSOPanel(QMainWindow *mainWindow, Settings *settings, QWidget *parent)
     QFont font = CallInput->font();
     font.setPointSize(14); // размер шрифта
     CallInput->setFont(font);
-    flowLayout3->addWidget(makeInputPair("Позывной:", CallInput));
+    flowLayout3->addWidget(makeInputPair(tr("Позывной:"), CallInput));
+
+    countryFlag = new QLabel;
+    countryFlag->setFixedSize(30, 22);
+    countryFlag->setScaledContents(true);
+    countryFlag->setAlignment(Qt::AlignCenter);
+    countryFlag->setContentsMargins(0, 5, 0, 0);
+    countryFlag->setVisible(false);
+
+    countryName = new QLabel;
+    countryName->setVisible(false);
+    countryName->setStyleSheet(
+        "color: rgb(25, 135, 84);"
+        "font-size: 9pt;"
+        "font-weight: 500;"
+    );
+    countryName->setContentsMargins(0, 4, 0, 0);
+    flowLayout3->addWidget(makeWidgetPair(countryFlag, countryName));
+
     NameInput = new QLineEdit;
-    flowLayout3->addWidget(makeInputPair("Имя:", NameInput));
+    flowLayout3->addWidget(makeInputPair(tr("Имя:"), NameInput));
     QTHInput = new QLineEdit;
-    flowLayout3->addWidget(makeInputPair("QTH:", QTHInput));
+    flowLayout3->addWidget(makeInputPair(tr("QTH:"), QTHInput));
     GridSquareInput = new QLineEdit;
-    flowLayout3->addWidget(makeInputPair("Локатор:", GridSquareInput));
+    flowLayout3->addWidget(makeInputPair(tr("Локатор:"), GridSquareInput));
     CNTYInput = new QLineEdit;
     flowLayout3->addWidget(makeInputPair("RDA/CNTY:", CNTYInput));
 
     RstsInput = new QLineEdit;
-    flowLayout4->addWidget(makeInputPair("RST отпр.:", RstsInput));
+    flowLayout4->addWidget(makeInputPair(tr("RST отпр.:"), RstsInput));
     RstrInput = new QLineEdit;
-    flowLayout4->addWidget(makeInputPair("RST прин.:", RstrInput));
+    flowLayout4->addWidget(makeInputPair(tr("RST прин.:"), RstrInput));
     CommentInput = new QLineEdit;
-    flowLayout4->addWidget(makeInputPair("Комментарий:", CommentInput));
+    flowLayout4->addWidget(makeInputPair(tr("Комментарий:"), CommentInput));
 
     QSOSUserIcon = new QLabel;
     QSOSUserIcon->setVisible(false);
-    QSOSUserLabel = new QLabel("Не пользователь QSO.SU");
+    QSOSUserLabel = new QLabel(tr("Не пользователь QSO.SU"));
     QSOSUserLabel->setVisible(false);
     flowLayout5->addWidget(makeWidgetPair(QSOSUserIcon, QSOSUserLabel));
 
     UserSRRIcon = new QLabel;
     UserSRRIcon->setVisible(false);
-    UserSRRLabel = new QLabel("Член СРР");
+    UserSRRLabel = new QLabel(tr("Член СРР"));
     UserSRRLabel->setVisible(false);
     flowLayout5->addWidget(makeWidgetPair(UserSRRIcon, UserSRRLabel));
-
 
     connect(ui.closeBtn, &QPushButton::clicked, this, &QSOPanel::toggleDock);
     connect(CallInput, SIGNAL(textEdited(const QString&)), this, SLOT(CallsignToUppercase(const QString&)));
@@ -244,7 +269,6 @@ QSOPanel::QSOPanel(QMainWindow *mainWindow, Settings *settings, QWidget *parent)
     updateGeometry();
     parentWidget()->updateGeometry();
 
-
     QTimer::singleShot(0, this, [this]{
         dock();
     });
@@ -300,6 +324,30 @@ void QSOPanel::resizeEvent(QResizeEvent *event)
     if (flowLayout5) flowLayout5->setSpacing(spacing);
 
     QWidget::resizeEvent(event);
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void QSOPanel::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        ui.retranslateUi(this);
+
+        // Статические элементы
+        ui.closeBtn->setText(m_docked ? tr("][") : tr("[ ]"));
+        ShowCurrentTime->setText(tr("Реальное время"));
+        QSOSUserLabel->setText(tr("Не пользователь QSO.SU"));
+        UserSRRLabel->setText(tr("Член СРР"));
+
+        // Динамические элементы
+        for (auto *w : flowLayoutWidgets) {
+            if (auto lbl = qobject_cast<QLabel*>(w)) {
+                if (dynamicLabelsText.contains(lbl)) {
+                    // Если переводчик удалён, tr вернёт исходный текст (русский)
+                    lbl->setText(tr(dynamicLabelsText[lbl].toUtf8()));
+                }
+            }
+        }
+    }
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -473,11 +521,12 @@ void QSOPanel::detach()
     if (!m_docked) return;
 
     setParent(nullptr);
-    setWindowFlags(Qt::Window |
-                   Qt::WindowTitleHint |
-                   Qt::WindowSystemMenuHint |
-                   //Qt::WindowMinMaxButtonsHint |
-                   Qt::WindowCloseButtonHint);
+    setWindowFlags(Qt::Window
+                 | Qt::CustomizeWindowHint
+                 | Qt::WindowTitleHint
+                 | Qt::WindowSystemMenuHint
+                 | Qt::WindowMinimizeButtonHint
+                 | Qt::WindowCloseButtonHint);
     setAttribute(Qt::WA_DeleteOnClose, false);
     ui.closeBtn->setText("[ ]");
 
@@ -607,6 +656,8 @@ QWidget* QSOPanel::makeInputPair(const QString &labelText, QWidget *inputWidget)
 
     QLabel *label = new QLabel(labelText);
     layout->addWidget(label, 0);          // QLabel не растягивается
+    flowLayoutWidgets.append(label);
+    dynamicLabelsText[label] = labelText;
     layout->addWidget(inputWidget, 1);    // input растягивается горизонтально
     layout->addStretch(0);                // свободное место после input
 
@@ -642,6 +693,8 @@ QWidget* QSOPanel::makeLabelWidgetPair(const QString &labelText, QWidget *Widget
 
     QLabel *label = new QLabel(labelText);
     layout->addWidget(label, 0);      // QLabel не растягивается
+    flowLayoutWidgets.append(label);
+    dynamicLabelsText[label] = labelText;
     layout->addWidget(Widget1, 1);    // Widget1 не растягивается
     layout->addWidget(Widget2, 0);    // Widget2 растягивается горизонтально
     layout->addStretch(0);            // свободное место после input
@@ -776,8 +829,9 @@ QString QSOPanel::getComment()
 bool QSOPanel::setFrequence(long freq)
 {
     if (!FreqInput) return false;
-    if(freq > 0 && freq < 250000000) {
-        FreqInput->setText(QString::number(freq, 'f', 6));
+    if(freq > 0 && freq < 250000000000) {
+        double mhz = freq / 1e6;
+        FreqInput->setText(QString::number(mhz, 'f', 6));
         return true;
     }
     return false;
@@ -1007,6 +1061,8 @@ void QSOPanel::clearQSO()
     GridSquareInput->clear();
     CNTYInput->clear();
     CommentInput->clear();
+    RstrInput->clear();
+    RstsInput->clear();
     QSOSUserIcon->setVisible(false);
     QSOSUserLabel->setVisible(false);
     UserSRRIcon->setVisible(false);
@@ -1149,6 +1205,7 @@ void QSOPanel::on_StationCallsignCurrentIndexChanged(int index)
 
 void QSOPanel::on_BandComboCurrentIndexChanged(int index)
 {
+    CAT->setBand(index);
     emit bandIndexChanged(index);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1161,18 +1218,22 @@ void QSOPanel::on_OperatorCallsignCurrentIndexChanged(int index)
 
 void QSOPanel::on_BandComboCurrentTextChanged(const QString &arg1)
 {
-    emit bandTextChanged(arg1);
+     emit bandTextChanged(arg1);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void QSOPanel::on_ModeComboCurrentTextChanged(const QString &arg1)
-{
+{    
+    CAT->setMode(ModeCombo->findText(arg1));
     emit modeTextChanged(arg1);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void QSOPanel::on_FreqInputTextChanged(const QString &arg1)
 {
+    double freqCat = static_cast<long>(FreqInput->text().toDouble() * 1000000);
+
+    CAT->setFreq(freqCat);
     emit freqTextChanged(arg1);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1246,8 +1307,6 @@ void QSOPanel::setStationOperatorCurrentIndex(int idx)
     operatorCallsign->setCurrentIndex(idx);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-<<<<<<< Updated upstream
-=======
 
 int QSOPanel::getBandCurrentIndex()
 {
@@ -1313,4 +1372,3 @@ void QSOPanel::setCountryVisible(bool visible)
 
 
 
->>>>>>> Stashed changes

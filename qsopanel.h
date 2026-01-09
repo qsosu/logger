@@ -25,7 +25,7 @@ class QSOPanel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QSOPanel(QMainWindow *mainWindow, Settings *settings, QWidget *parent = nullptr);
+    explicit QSOPanel(QMainWindow *mainWindow, Settings *settings, cat_Interface *cat, QWidget *parent = nullptr);
     void dock();
     void forceDock();
     void detach();
@@ -38,6 +38,8 @@ public:
     QString getName();
     QString getFrequence();
     QString getBand();
+    int getBandCurrentIndex();
+    int getModeTextIndex();
     QString getMode();
     QDate getDate();
     QTime getTime();
@@ -49,11 +51,8 @@ public:
     QString getComment();
 
     bool setCallsign(const QString &call);
-<<<<<<< Updated upstream
-=======
     void setFlag(const QString &countryCode);
     void setCountry(const QString &country);
->>>>>>> Stashed changes
     bool setName(const QString &name);
     bool setQTH(const QString &qth);
     bool setRSTR(const QString &rstr);
@@ -95,6 +94,8 @@ public:
     void SaveCallsignState();
     QComboBox *stationCallsign;
     QComboBox *operatorCallsign;
+    cat_Interface *CAT;
+
     void setStationCallsignCurrentIndex(int idx);
     void setStationOperatorCurrentIndex(int idx);
 
@@ -106,6 +107,7 @@ protected:
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     void showEvent(QShowEvent *event) override;
+    void changeEvent(QEvent *event) override;
 
 signals:
     void saveQSO();
@@ -180,6 +182,8 @@ private:
     QCheckBox *ShowCurrentTime;
 
     QLineEdit *CallInput;
+    QLabel *countryFlag;
+    QLabel *countryName;
     QLineEdit *NameInput;
     QLineEdit *QTHInput;
     QLineEdit *RstsInput;
@@ -206,6 +210,8 @@ private:
     QRect m_resizeStartGeo;
     QRubberBand *m_rubberBand; // Индикатор дока
     Ui::qsopanel ui; // UI из Designer
+    QList<QWidget*> flowLayoutWidgets; // все динамические виджеты в FlowLayout
+    QMap<QLabel*, QString> dynamicLabelsText;
 };
 
 #endif // QSOPANEL_H

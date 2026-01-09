@@ -72,6 +72,7 @@ public:
     QString lastRST_RCVD;
     bool darkTheime;
     bool useCallbook;
+    bool useLocalCallbook;
     bool showMap;
     double Latitude;
     double Longitude;
@@ -87,11 +88,8 @@ private:
     APILogRadio *logradio;
     cat_Interface *CAT;
     QTranslator qtLanguageTranslator;
-<<<<<<< Updated upstream
-=======
     QStringList qmFiles;        // Список файлов переводов
     QStringList languageNames;  // Список названий языков
->>>>>>> Stashed changes
 
     void openPath(QString path);
     void createDefaultFile();
@@ -99,11 +97,7 @@ private:
     QString EncryptToken(QString data);
     QString DecryptToken(QString data);
     QString genSalt(QString data);
-<<<<<<< Updated upstream
-    Coordinates locatorToCoordinates(const QString& locator);
-=======
     void loadTranslations();
->>>>>>> Stashed changes
 
 protected:
     void changeEvent(QEvent *event) override;
@@ -118,7 +112,6 @@ private slots:
     void on_CallbookCheckBox_toggled(bool checked);
     void on_qrzruEnable_toggled(bool checked);
     void on_languageComboBox_currentIndexChanged(int index);
-    void on_locationBtn_clicked();
 
 signals:
     void SettingsChanged();

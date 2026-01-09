@@ -9,6 +9,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QComboBox>
+#include <QLabel>
 #include <QWidget>
 #include <QDebug>
 #include "httpapi.h"
@@ -23,6 +24,8 @@ struct ChatTab {
     QPushButton *sendButton;
     QComboBox *callCombo;
     QList<Message> messages; // для сортировки
+    QLabel *timerLabel;
+    QTimer *countdownTimer;
 };
 
 namespace Ui {
@@ -50,6 +53,8 @@ private slots:
 
 protected:
     void showEvent(QShowEvent *event) override;
+    void changeEvent(QEvent *event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
     Ui::ChatController *ui;

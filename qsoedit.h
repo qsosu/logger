@@ -6,8 +6,10 @@
 #include "ham_definitions.h"
 #include "settings.h"
 #include "httpapi.h"
+#include "waitspinner.h"
 #include <QtWidgets>
 #include <QTimer>
+
 
 namespace Ui {
 class Qsoedit;
@@ -40,7 +42,7 @@ private slots:
     void on_cancelButton_clicked();
     void loadImage(QPixmap pix);
     void onResizeFinished();
-    void setUserData();
+    void setUserData(bool found);
     void updateQSOData(QString hash);
     void errorUpdateQSOData(QString error);
     //void onQSOConfirmed();
@@ -60,6 +62,7 @@ private:
     QGraphicsScene *scene;
     QGraphicsTextItem *textItem;
     QStringList userData;
+    WaitSpinner *spinner;
 
     bool load_flag;
     QTimer *resizeTimer; // Таймер для отслеживания окончания изменения размера

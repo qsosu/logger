@@ -1,6 +1,14 @@
+/**********************************************************************************************************
+Description :  ReportContinent dialog class for displaying and printing a summary of QSO counts per continent.
+Version     :  1.0.0
+Date        :  20.08.2025
+Author      :  R9JAU
+Comments    :  - Supports printing with headers, footers, and pagination.
+               - Automatically adjusts column widths based on content.
+**********************************************************************************************************/
+
 #include "reportcontinent.h"
 #include "ui_reportcontinent.h"
-
 #include <QSqlError>
 #include <QPrinterInfo>
 #include <QDebug>
@@ -18,19 +26,19 @@ ReportContinent::ReportContinent(QSqlDatabase db, QWidget *parent) :
 
     QStandardItemModel *model = new QStandardItemModel(this);
     model->setColumnCount(2);
-    model->setHorizontalHeaderLabels({"Континент", "Код континента", "Количество QSO"});
+    model->setHorizontalHeaderLabels({tr("Континент"), tr("Код континента"), tr("Количество QSO")});
 
     // Словарь: код континента -> наименование на русском
     QMap<QString, QString> continentNames =
     {
-        {"AF", "Африка"},
-        {"AN", "Антарктида"},
-        {"AS", "Азия"},
-        {"EU", "Европа"},
-        {"NA", "Северная Америка"},
-        {"OC", "Океания"},
-        {"SA", "Южная Америка"},
-        {"",  "Не определено"}
+        {"AF", tr("Африка")},
+        {"AN", tr("Антарктида")},
+        {"AS", tr("Азия")},
+        {"EU", tr("Европа")},
+        {"NA", tr("Северная Америка")},
+        {"OC", tr("Океания")},
+        {"SA", tr("Южная Америка")},
+        {"",  tr("Не определено")}
     };
 
     db.commit();
@@ -42,7 +50,7 @@ ReportContinent::ReportContinent(QSqlDatabase db, QWidget *parent) :
         while (query.next()) {
             QString code = query.value(0).toString();
             int count = query.value(1).toInt();
-            QString name = continentNames.value(code, "Неизвестно");
+            QString name = continentNames.value(code, tr("Неизвестно"));
 
             model->setItem(row, 0, new QStandardItem(name));
             model->setItem(row, 1, new QStandardItem(code));
@@ -148,7 +156,7 @@ void ReportContinent::printTableAdvanced(QTableView *tableView, QWidget *parent)
         titleFont.setBold(true);
         painter.setFont(titleFont);
 
-        QString title = "Отчет по отработанным континентам";
+        QString title = tr("Отчет по отработанным континентам");
         painter.drawText(pageRect.left() + leftMargin + 100, pageRect.top() + 130, title);
         painter.setFont(font);
 
@@ -194,7 +202,7 @@ void ReportContinent::printTableAdvanced(QTableView *tableView, QWidget *parent)
             y += rowHeight;
         }
 
-        QString footer = QString("Страница %1    Дата: %2")
+        QString footer = QString(tr("Страница %1    Дата: %2"))
                 .arg(page)
                 .arg(QDate::currentDate().toString("dd.MM.yyyy"));
 
