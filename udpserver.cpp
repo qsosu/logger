@@ -25,7 +25,7 @@ bool UdpServer::start(uint16_t port)
 {
     this->port = port;
     qDebug() << "[UDP] Starting server on port" << port;
-    stop(); // гарантированно чистый старт
+    //stop(); // гарантированно чистый старт
 
     socket = new QUdpSocket(this);
     clientSocket = new QUdpSocket(this);
@@ -44,15 +44,26 @@ bool UdpServer::start(uint16_t port)
 
 void UdpServer::stop()
 {
-    if (socket) {
-        disconnect(socket, nullptr, this, nullptr);
-        socket->close();
+    // Остановка серверного сокета
+    if (socket)
+    {
+        if (socket->state() == QAbstractSocket::BoundState ||
+            socket->state() == QAbstractSocket::ConnectedState)
+        {
+            disconnect(socket, nullptr, this, nullptr);
+            socket->close();
+        }
         socket->deleteLater();
         socket = nullptr;
     }
 
-    if (clientSocket) {
-        clientSocket->close();
+    // Остановка клиентского сокета
+    if (clientSocket)
+    {
+        if (clientSocket->state() == QAbstractSocket::ConnectedState)
+        {
+            clientSocket->close();
+        }
         clientSocket->deleteLater();
         clientSocket = nullptr;
     }
@@ -205,7 +216,6 @@ bool UdpServer::determinePacketType(const QByteArray& packet)
     return true;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-
 
 
 

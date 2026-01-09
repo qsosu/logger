@@ -47,7 +47,7 @@
 #include "globe.h"
 
 
-#define VERSION "3.0"
+#define VERSION "3.0.1"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

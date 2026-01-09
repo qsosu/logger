@@ -154,7 +154,7 @@ void APILogRadio::SendQso(QVariantList data)
     // --- Отправка запроса ---
     QNetworkReply *reply = m_manager.post(request, jsonBA);
 
-    // --- Таймаут (5 секунд) ---
+    // --- Таймаут (10 секунд) ---
     QTimer *timer = new QTimer(reply);
     timer->setSingleShot(true);
     timer->start(10000); // 10 секунд

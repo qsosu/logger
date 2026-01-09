@@ -174,7 +174,6 @@ void UploadingLogs::UploadQSOs(int count)
     db.commit(); // Завершаем транзакцию
     qDebug() << "Uploaded: " << qso_count << " QSOs";
     emit db_updated();
-    QMessageBox::information(this, tr("Загрузка лога с QSO.SU"), tr("Загружено QSO: ") + QString::number(qso_count));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -300,6 +299,7 @@ void UploadingLogs::on_UploadButton_clicked()
     }
     db.commit();
     emit db_updated();
+    QMessageBox::information(this, tr("Загрузка лога с QSO.SU"), tr("Загружено QSO: ") + QString::number(qso_count));
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

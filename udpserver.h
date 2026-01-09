@@ -38,7 +38,6 @@ public:
     void setRetranslPort(uint16_t port);
     bool retransl;
     void parseAdifQSO(const QString &line);
-    void sendCommand(const QString &cmd);
 
     /* Message data header */
     quint32 magic;

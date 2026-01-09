@@ -720,8 +720,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (event->modifiers() & Qt::ALT && event->key() == Qt::Key_S)
     {
         //qDebug() << "Alt+S нажаты одновременно!";
-        udpServer->stop();
-        udpServer->start(settings->udpServerPort);
+
     }
     else
     {

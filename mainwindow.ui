@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>QSO Logger v3.0</string>
+   <string>QSO Logger v3.0.1</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
