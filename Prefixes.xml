@@ -1,0 +1,455 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Prefixes>
+			<PrefixEntry Prefix="1A" Continent="EU" Country="Sov. Mil. Order of Malta" CQZone="15" DXCC="246" ITUZone="28" Latitude="41.8859N" Longitude="12.4914E" PrefixList="1A.*" Country_code="" />
+			<PrefixEntry Prefix="1B/B" Continent="AF" Country="Blenheim Reef [deleted]" CQZone="39" DXCC="23" ITUZone="41" Latitude="5.2056S" Longitude="72.4667E" PrefixList="1B.*" Country_code="" />
+			<PrefixEntry Prefix="1B/G" Continent="AF" Country="Geyser Reef [deleted]" CQZone="39" DXCC="93" ITUZone="53" Latitude="12.2S" Longitude="46.2E" PrefixList="1B.*" Country_code="" />
+			<PrefixEntry Prefix="1M" Continent="OC" Country="Minerva Reef [deleted]" CQZone="32" DXCC="178" ITUZone="62" Latitude="23.6222S" Longitude="178.9167W" PrefixList="1M.*" Country_code="" />
+			<PrefixEntry Prefix="1S" Continent="AS" Country="Spratly Is." CQZone="26" DXCC="247" ITUZone="50" Latitude="9.6889N" Longitude="114.3778E" PrefixList="1S.*|9M0.*|B[M-QU-X]9S.*" Country_code="" />
+			<PrefixEntry Prefix="3A" Continent="EU" Country="Monaco" CQZone="14" DXCC="260" ITUZone="27" Latitude="43.6778N" Longitude="7.2167E" PrefixList="3A.*" Country_code="MC" />
+			<PrefixEntry Prefix="3B6" Continent="AF" Country="Agalega &amp; St. Brandon Is." CQZone="39" DXCC="4" ITUZone="53" Latitude="10.35S" Longitude="56.5278E" PrefixList="3B[67].*" Country_code="" />
+			<PrefixEntry Prefix="3B8" Continent="AF" Country="Mauritius" CQZone="39" DXCC="165" ITUZone="53" Latitude="20.2444S" Longitude="57.5556E" PrefixList="3B[0-58].*" Country_code="MU" />
+			<PrefixEntry Prefix="3B9" Continent="AF" Country="Rodrigues Is." CQZone="39" DXCC="207" ITUZone="53" Latitude="19.7056S" Longitude="63.4E" PrefixList="3B9.*" Country_code="MU" />
+			<PrefixEntry Prefix="3C" Continent="AF" Country="Equatorial Guinea" CQZone="36" DXCC="49" ITUZone="47" Latitude="1.4444N" Longitude="10.2444E" PrefixList="3C[1-9].*|3C\Z" Country_code="GQ" />
+			<PrefixEntry Prefix="3C0" Continent="AF" Country="Annobon Is." CQZone="36" DXCC="195" ITUZone="52" Latitude="1.45S" Longitude="5.6278E" PrefixList="3C0.*" Country_code="" />
+			<PrefixEntry Prefix="3D2" Continent="OC" Country="Fiji" CQZone="32" DXCC="176" ITUZone="56" Latitude="18.1222S" Longitude="179.7778E" PrefixList="3D\d{1,}[ABD-QS-Z].*|3D2\Z" Country_code="FJ" />
+			<PrefixEntry Prefix="3D2/C" Continent="OC" Country="Conway Reef" CQZone="32" DXCC="489" ITUZone="56" Latitude="21.7111S" Longitude="174.6167E" PrefixList="3D\d{1,}C.*|3D2/\Z" Country_code="" />
+			<PrefixEntry Prefix="3D2/R" Continent="OC" Country="Rotuma Is." CQZone="32" DXCC="460" ITUZone="56" Latitude="12.5056S" Longitude="177.05E" PrefixList="3D\d{1,}R.*|3D2/\Z" Country_code="" />
+			<PrefixEntry Prefix="3DA" Continent="AF" Country="Eswatini ex Swaziland" CQZone="38" DXCC="468" ITUZone="57" Latitude="26.6167S" Longitude="31.3778E" PrefixList="3D[A-M].*" Country_code="" />
+			<PrefixEntry Prefix="3V" Continent="AF" Country="Tunisia" CQZone="33" DXCC="474" ITUZone="37" Latitude="33.5222N" Longitude="9.0778E" PrefixList="3V.*|TS.*" Country_code="TN" />
+			<PrefixEntry Prefix="3W" Continent="AS" Country="Vietnam" CQZone="26" DXCC="293" ITUZone="49" Latitude="11.9167N" Longitude="107.65E" PrefixList="3W.*|XV.*" Country_code="VN" />
+			<PrefixEntry Prefix="3X" Continent="AF" Country="Guinea" CQZone="35" DXCC="107" ITUZone="46" Latitude="10.4278N" Longitude="10.7222W" PrefixList="3X.*" Country_code="GN" />
+			<PrefixEntry Prefix="3Y" Continent="AF" Country="Bouvet" CQZone="38" DXCC="24" ITUZone="67" Latitude="54.4222S" Longitude="3.4E" PrefixList="3Y.*" Country_code="" />
+			<PrefixEntry Prefix="3Y/P" Continent="AN" Country="Peter I Is." CQZone="12" DXCC="199" ITUZone="72" Latitude="68.8556S" Longitude="90.6W" PrefixList="3Y.*" Country_code="" />
+			<PrefixEntry Prefix="4J" Continent="AS" Country="Azerbaijan" CQZone="21" DXCC="18" ITUZone="29" Latitude="40.3444N" Longitude="47.3611E" PrefixList="4[JK].*|4J\Z" Country_code="AZ" />
+			<PrefixEntry Prefix="4L" Continent="AS" Country="Georgia" CQZone="21" DXCC="75" ITUZone="29" Latitude="41.9056N" Longitude="43.1056E" PrefixList="4L.*" Country_code="GE" />
+			<PrefixEntry Prefix="4L" Continent="AS" Country="Georgia" CQZone="21" DXCC="75" ITUZone="29" Latitude="41.9056N" Longitude="43.1056E" PrefixList="E[KMNORXYZ]6[FO].*|RF[0-9][FOQV].*|RK6F.*|UF[0-9].*|UK6[FOQV].*|4L\Z" Country_code="GE" />
+			<PrefixEntry Prefix="4O" Continent="EU" Country="Montenegro" CQZone="15" DXCC="514" ITUZone="28" Latitude="42.75N" Longitude="18.9167E" PrefixList="4O.*" Country_code="ME" />
+			<PrefixEntry Prefix="4O" Continent="EU" Country="Montenegro" CQZone="15" DXCC="514" ITUZone="28" Latitude="42.75N" Longitude="18.9167E" PrefixList="4[NO][36].*|Y[TUZ][36].*|YU60.*" Country_code="ME" />
+			<PrefixEntry Prefix="4S" Continent="AS" Country="Sri Lanka" CQZone="22" DXCC="315" ITUZone="41" Latitude="7.4278N" Longitude="80.6278E" PrefixList="4[P-S].*" Country_code="LK" />
+			<PrefixEntry Prefix="4U1I" Continent="EU" Country="ITU HQ" CQZone="14" DXCC="117" ITUZone="28" Latitude="46.2102N" Longitude="6.1523E" PrefixList="4U\d{1,}ITU.*|4U\d{1,}WRC.*|4U1I\Z" Country_code="" />
+			<PrefixEntry Prefix="4U1U" Continent="NA" Country="United Nations HQ" CQZone="5" DXCC="289" ITUZone="8" Latitude="40.2611N" Longitude="74W" PrefixList="4U\d{1,}UN|4U1U\Z" Country_code="" />
+			<PrefixEntry Prefix="4W" Continent="OC" Country="Timor - Leste" CQZone="28" DXCC="511" ITUZone="54" Latitude="8.8722S" Longitude="125.6944E" PrefixList="4W.*" Country_code="TL" />
+			<PrefixEntry Prefix="4W/D" Continent="AS" Country="Yemen Arab Rep. [deleted]" CQZone="21" DXCC="154" ITUZone="39" Latitude="14.9278N" Longitude="44.2222E" PrefixList="4W.*" Country_code="" />
+			<PrefixEntry Prefix="4X" Continent="AS" Country="Israel" CQZone="20" DXCC="336" ITUZone="39" Latitude="31.7056N" Longitude="34.7611E" PrefixList="4[XZ].*" Country_code="IL" />
+			<PrefixEntry Prefix="5A" Continent="AF" Country="Libya" CQZone="34" DXCC="436" ITUZone="38" Latitude="26.7167N" Longitude="17.5E" PrefixList="5A.*" Country_code="LY" />
+			<PrefixEntry Prefix="5B" Continent="AS" Country="Cyprus" CQZone="20" DXCC="215" ITUZone="39" Latitude="35N" Longitude="33E" PrefixList="1B.*|5B.*|C4.*|H2.*|P3.*" Country_code="CY" />
+			<PrefixEntry Prefix="5B" Continent="AS" Country="Cyprus" CQZone="20" DXCC="215" ITUZone="39" Latitude="35N" Longitude="33E" PrefixList="MD7.*" Country_code="CY" />
+			<PrefixEntry Prefix="5H" Continent="AF" Country="Tanzania" CQZone="37" DXCC="470" ITUZone="53" Latitude="6.6444S" Longitude="34.6333E" PrefixList="5[HI].*" Country_code="TZ" />
+			<PrefixEntry Prefix="5N" Continent="AF" Country="Nigeria" CQZone="35" DXCC="450" ITUZone="46" Latitude="9.1944N" Longitude="7.6833E" PrefixList="5[NO].*" Country_code="NG" />
+			<PrefixEntry Prefix="5R" Continent="AF" Country="Madagascar" CQZone="39" DXCC="438" ITUZone="53" Latitude="19.85S" Longitude="45.9556E" PrefixList="5[RS].*|6X.*" Country_code="MG" />
+			<PrefixEntry Prefix="5T" Continent="AF" Country="Mauritania" CQZone="35" DXCC="444" ITUZone="46" Latitude="20.3444N" Longitude="11.0611W" PrefixList="5T.*" Country_code="MR" />
+			<PrefixEntry Prefix="5U" Continent="AF" Country="Niger" CQZone="35" DXCC="187" ITUZone="46" Latitude="17.0056N" Longitude="8.0722E" PrefixList="5U.*" Country_code="NE" />
+			<PrefixEntry Prefix="5V" Continent="AF" Country="Togo" CQZone="35" DXCC="483" ITUZone="46" Latitude="8.2N" Longitude="0.8556E" PrefixList="5V.*" Country_code="TG" />
+			<PrefixEntry Prefix="5W" Continent="OC" Country="Samoa" CQZone="32" DXCC="190" ITUZone="62" Latitude="13.7778S" Longitude="172.0556W" PrefixList="5W.*" Country_code="WS" />
+			<PrefixEntry Prefix="5X" Continent="AF" Country="Uganda" CQZone="37" DXCC="286" ITUZone="48" Latitude="1.5389N" Longitude="32.1778E" PrefixList="5X.*" Country_code="UG" />
+			<PrefixEntry Prefix="5Y" Continent="AF" Country="Kenya" CQZone="37" DXCC="430" ITUZone="48" Latitude="0.2167N" Longitude="37.5111E" PrefixList="5[YZ].*" Country_code="KE" />
+			<PrefixEntry Prefix="5Y" Continent="AF" Country="Kenya" CQZone="37" DXCC="430" ITUZone="48" Latitude="0.2167N" Longitude="37.5111E" PrefixList="VQ4.*" Country_code="KE" />
+			<PrefixEntry Prefix="6V" Continent="AF" Country="Senegal" CQZone="35" DXCC="456" ITUZone="46" Latitude="14.2111N" Longitude="14.4222W" PrefixList="6[VW].*" Country_code="SN" />
+			<PrefixEntry Prefix="6Y" Continent="NA" Country="Jamaica" CQZone="8" DXCC="82" ITUZone="11" Latitude="18.15N" Longitude="77.4389W" PrefixList="6Y.*" Country_code="JM" />
+			<PrefixEntry Prefix="7J1" Continent="AS" Country="Okino Tori-shima [deleted]" CQZone="27" DXCC="194" ITUZone="45" Latitude="30.4500N" Longitude="140.3056E" PrefixList="7J1.*" Country_code="" />
+			<PrefixEntry Prefix="7O" Continent="AS" Country="Yemen" CQZone="21" DXCC="492" ITUZone="39" Latitude="15.3689N" Longitude="47.6367E" PrefixList="7O.*" Country_code="YE" />
+			<PrefixEntry Prefix="7P" Continent="AF" Country="Lesotho" CQZone="38" DXCC="432" ITUZone="57" Latitude="29.7111S" Longitude="27.8889E" PrefixList="7P.*" Country_code="LS" />
+			<PrefixEntry Prefix="7P" Continent="AF" Country="Lesotho" CQZone="38" DXCC="432" ITUZone="57" Latitude="29.7111S" Longitude="27.8889E" PrefixList="ZS8.*" Country_code="LS" />
+			<PrefixEntry Prefix="7Q" Continent="AF" Country="Malawi" CQZone="37" DXCC="440" ITUZone="53" Latitude="14S" Longitude="34E" PrefixList="7Q.*" Country_code="MW" />
+			<PrefixEntry Prefix="7X" Continent="AF" Country="Algeria" CQZone="33" DXCC="400" ITUZone="37" Latitude="27.7111N" Longitude="2.1722E" PrefixList="7[RT-Y].*" Country_code="DZ" />
+			<PrefixEntry Prefix="8P" Continent="NA" Country="Barbados" CQZone="8" DXCC="62" ITUZone="11" Latitude="13.1722N" Longitude="59.5278W" PrefixList="8P.*" Country_code="BB" />
+			<PrefixEntry Prefix="8Q" Continent="AS" Country="Maldives" CQZone="22" DXCC="159" ITUZone="41" Latitude="3.4767N" Longitude="72.8367E" PrefixList="8Q.*" Country_code="MV" />
+			<PrefixEntry Prefix="8R" Continent="SA" Country="Guyana" CQZone="9" DXCC="129" ITUZone="12" Latitude="4.5778N" Longitude="59.2278W" PrefixList="8R.*" Country_code="GY" />
+			<PrefixEntry Prefix="8Z4" Continent="AS" Country="Saudi Arabia/Iraq Neut. Zone  [deleted]" CQZone="21" DXCC="226" ITUZone="39" Latitude="29.4056N" Longitude="44.1444E" PrefixList="8Z4.*" Country_code="" />
+			<PrefixEntry Prefix="8Z5" Continent="AS" Country="Kuwait/Saudi Arabia Neut. Zone [deleted]" CQZone="21" DXCC="68" ITUZone="39" Latitude="29.7944N" Longitude="47.4444E" PrefixList="8Z5.*|9K3.*" Country_code="" />
+			<PrefixEntry Prefix="9A" Continent="EU" Country="Croatia" CQZone="15" DXCC="497" ITUZone="28" Latitude="45.5444N" Longitude="15.7778E" PrefixList="9A.*" Country_code="HR" />
+			<PrefixEntry Prefix="9A" Continent="EU" Country="Croatia" CQZone="15" DXCC="497" ITUZone="28" Latitude="45.5444N" Longitude="15.7778E" PrefixList="4[NO]2.*|Y[TUZ]2.*" Country_code="HR" />
+			<PrefixEntry Prefix="9G" Continent="AF" Country="Ghana" CQZone="35" DXCC="424" ITUZone="46" Latitude="8.1222N" Longitude="1.5611W" PrefixList="9G.*" Country_code="GH" />
+			<PrefixEntry Prefix="9H" Continent="EU" Country="Malta" CQZone="15" DXCC="257" ITUZone="28" Latitude="35.8833N" Longitude="14.4389E" PrefixList="9H.*" Country_code="MT" />
+			<PrefixEntry Prefix="9H" Continent="EU" Country="Malta" CQZone="15" DXCC="257" ITUZone="28" Latitude="35.8833N" Longitude="14.4389E" PrefixList="ZB1.*" Country_code="MT" />
+			<PrefixEntry Prefix="9J" Continent="AF" Country="Zambia" CQZone="36" DXCC="482" ITUZone="53" Latitude="15S" Longitude="28E" PrefixList="9[IJ].*" Country_code="ZM" />
+			<PrefixEntry Prefix="9J" Continent="AF" Country="Zambia" CQZone="36" DXCC="482" ITUZone="53" Latitude="15S" Longitude="28E" PrefixList="VQ2.*" Country_code="ZM" />
+			<PrefixEntry Prefix="9K" Continent="AS" Country="Kuwait" CQZone="21" DXCC="348" ITUZone="39" Latitude="29.1833N" Longitude="47.6222E" PrefixList="9K.*" Country_code="KW" />
+			<PrefixEntry Prefix="9L" Continent="AF" Country="Sierra Leone" CQZone="35" DXCC="458" ITUZone="46" Latitude="8.5222N" Longitude="11.7722W" PrefixList="9L.*" Country_code="SL" />
+			<PrefixEntry Prefix="9M2" Continent="AS" Country="West Malaysia" CQZone="28" DXCC="299" ITUZone="54" Latitude="3.5333N" Longitude="102.1778E" PrefixList="9[MW][1-5].*|9M6[12]M[A-DJKMNPTRYW]\Z|9W0.*" Country_code="MY" />
+			<PrefixEntry Prefix="9M2" Continent="AS" Country="West Malaysia" CQZone="28" DXCC="299" ITUZone="54" Latitude="3.5333N" Longitude="102.1778E" PrefixList="9V.*" Country_code="MY" />
+			<PrefixEntry Prefix="9M6" Continent="OC" Country="East Malaysia" CQZone="28" DXCC="46" ITUZone="54" Latitude="3.1778N" Longitude="114.1E" PrefixList="9[MW][6-9].*" Country_code="MY" />
+			<PrefixEntry Prefix="9N" Continent="AS" Country="Nepal" CQZone="22" DXCC="369" ITUZone="42" Latitude="27.8556N" Longitude="84.2222E" PrefixList="9N.*" Country_code="NP" />
+			<PrefixEntry Prefix="9Q" Continent="AF" Country="Dem. Rep. of Congo" CQZone="36" DXCC="414" ITUZone="52" Latitude="3.3278S" Longitude="22.6667E" PrefixList="9[O-T].*" Country_code="" />
+			<PrefixEntry Prefix="9S4" Continent="EU" Country="Saar [deleted]" CQZone="14" DXCC="210" ITUZone="28" Latitude="49.3333N" Longitude="7.15E" PrefixList="9K3.*|9S4.*" Country_code="" />
+			<PrefixEntry Prefix="9U" Continent="AF" Country="Burundi" CQZone="36" DXCC="404" ITUZone="52" Latitude="3.4722S" Longitude="29.8E" PrefixList="9U.*" Country_code="BI" />
+			<PrefixEntry Prefix="9U5" Continent="AF" Country="Ruanda-Urundi [deleted]" CQZone="36" DXCC="208" ITUZone="52" Latitude="2.7611S" Longitude="29.6778E" PrefixList="9U5.*" Country_code="" />
+			<PrefixEntry Prefix="9V" Continent="AS" Country="Singapore" CQZone="28" DXCC="381" ITUZone="54" Latitude="1.3389N" Longitude="103.8167E" PrefixList="9V.*|S6.*" Country_code="SG" />
+			<PrefixEntry Prefix="9V" Continent="AS" Country="Singapore" CQZone="28" DXCC="381" ITUZone="54" Latitude="1.3617N" Longitude="103.8467E" PrefixList="9V.*|S6.*" Country_code="SG" />
+			<PrefixEntry Prefix="9X" Continent="AF" Country="Rwanda" CQZone="36" DXCC="454" ITUZone="52" Latitude="2.0611S" Longitude="29.8222E" PrefixList="9X.*" Country_code="RW" />
+			<PrefixEntry Prefix="9Y" Continent="SA" Country="Trinidad &amp; Tobago" CQZone="9" DXCC="90" ITUZone="11" Latitude="10.4167N" Longitude="61.3W" PrefixList="9[YZ].*" Country_code="" />
+			<PrefixEntry Prefix="A1" Continent="AF" Country="Abu Ail Is. [deleted]" CQZone="21" DXCC="2" ITUZone="39" Latitude="13.9944N" Longitude="42.75E" PrefixList="A1.*" Country_code="" />
+			<PrefixEntry Prefix="A2" Continent="AF" Country="Botswana" CQZone="38" DXCC="402" ITUZone="57" Latitude="22.1889S" Longitude="23.5444E" PrefixList="8O.*|A2.*" Country_code="BW" />
+			<PrefixEntry Prefix="A3" Continent="OC" Country="Tonga" CQZone="32" DXCC="160" ITUZone="62" Latitude="19.9611S" Longitude="174.8556W" PrefixList="A3.*" Country_code="TO" />
+			<PrefixEntry Prefix="A4" Continent="AS" Country="Oman" CQZone="21" DXCC="370" ITUZone="39" Latitude="20.2111N" Longitude="55.9778E" PrefixList="A4.*" Country_code="OM" />
+			<PrefixEntry Prefix="A5" Continent="AS" Country="Bhutan" CQZone="22" DXCC="306" ITUZone="41" Latitude="27.3667N" Longitude="90.3111E" PrefixList="A5.*" Country_code="BT" />
+			<PrefixEntry Prefix="A6" Continent="AS" Country="United Arab Emirates" CQZone="21" DXCC="391" ITUZone="39" Latitude="23.4333N" Longitude="54.1E" PrefixList="A6.*" Country_code="AE" />
+			<PrefixEntry Prefix="A7" Continent="AS" Country="Qatar" CQZone="21" DXCC="376" ITUZone="39" Latitude="25.2944N" Longitude="51.0389E" PrefixList="A7.*" Country_code="QA" />
+			<PrefixEntry Prefix="A9" Continent="AS" Country="Bahrain" CQZone="21" DXCC="304" ITUZone="39" Latitude="26.0333N" Longitude="50.5444E" PrefixList="A9.*" Country_code="BH" />
+			<PrefixEntry Prefix="AC3" Continent="AS" Country="Sikkim [deleted]" CQZone="22" DXCC="231" ITUZone="41" Latitude="27.3333N" Longitude="88.6611E" PrefixList="AC3.*|J2/A.*" Country_code="" />
+			<PrefixEntry Prefix="AC4" Continent="AS" Country="Tibet [deleted]" CQZone="23" DXCC="268" ITUZone="41" Latitude="32.4611N" Longitude="83.2833E" PrefixList="AC4.*" Country_code="" />
+			<PrefixEntry Prefix="AP" Continent="AS" Country="Pakistan" CQZone="21" DXCC="372" ITUZone="41" Latitude="29.15N" Longitude="68.4944E" PrefixList="[6A][P-S].*" Country_code="PK" />
+			<PrefixEntry Prefix="BS7" Continent="AS" Country="Scarborough Reef" CQZone="27" DXCC="506" ITUZone="50" Latitude="15.1111N" Longitude="117.7444E" PrefixList="BS.*" Country_code="" />
+			<PrefixEntry Prefix="BV" Continent="AS" Country="Taiwan" CQZone="24" DXCC="386" ITUZone="44" Latitude="23.7444N" Longitude="120.7833E" PrefixList="B[M-QU-X][0-8]\d{0,}.*|B[M-QU-X]\d{1,}[A-OQ-Z].*|B[M-QU-X]\d{1,}\Z|B[UW].*|BV\Z" Country_code="TW" />
+			<PrefixEntry Prefix="BV" Continent="AS" Country="Taiwan" CQZone="24" DXCC="386" ITUZone="44" Latitude="23.7444N" Longitude="120.7833E" PrefixList="B[M-QU-X]9P.*|BV\Z" Country_code="TW" />
+			<PrefixEntry Prefix="BV9P" Continent="AS" Country="Pratas Is." CQZone="24" DXCC="505" ITUZone="44" Latitude="20.7167N" Longitude="116.7056E" PrefixList="B[M-QU-X]9P.*" Country_code="" />
+			<PrefixEntry Prefix="BY" Continent="AS" Country="China" CQZone="24" DXCC="318" ITUZone="43" Latitude="32.8778N" Longitude="102.6444E" PrefixList="3[H-U].*|B[0-9].*|B[A-LRTYZ].*|XS.*" Country_code="CN" />
+			<PrefixEntry Prefix="C2" Continent="OC" Country="Nauru" CQZone="31" DXCC="157" ITUZone="65" Latitude="0.5222S" Longitude="166.9278E" PrefixList="C2.*" Country_code="NR" />
+			<PrefixEntry Prefix="C3" Continent="EU" Country="Andorra" CQZone="14" DXCC="203" ITUZone="27" Latitude="42.5389N" Longitude="1.5722E" PrefixList="C3.*" Country_code="AD" />
+			<PrefixEntry Prefix="C5" Continent="AF" Country="The Gambia" CQZone="35" DXCC="422" ITUZone="46" Latitude="13.3833N" Longitude="16.0833W" PrefixList="C5.*" Country_code="" />
+			<PrefixEntry Prefix="C6" Continent="NA" Country="Bahamas" CQZone="8" DXCC="60" ITUZone="11" Latitude="24.0389N" Longitude="75.9833W" PrefixList="C6.*" Country_code="BS" />
+			<PrefixEntry Prefix="C9" Continent="AF" Country="Mozambique" CQZone="37" DXCC="181" ITUZone="53" Latitude="18.7611S" Longitude="34.4111E" PrefixList="C[89].*" Country_code="MZ" />
+			<PrefixEntry Prefix="C9" Continent="AF" Country="Mozambique" CQZone="37" DXCC="181" ITUZone="53" Latitude="18.7611S" Longitude="34.4111E" PrefixList="C[QR]7.*|XX7.*" Country_code="MZ" />
+			<PrefixEntry Prefix="C9/M" Continent="AS" Country="Manchuria [deleted]" CQZone="24" DXCC="164" ITUZone="33" Latitude="32N" Longitude="90E" PrefixList="C9.*" Country_code="" />
+			<PrefixEntry Prefix="CE" Continent="SA" Country="Chile" CQZone="12" DXCC="112" ITUZone="14" Latitude="33S" Longitude="71W" PrefixList="3G[1-8].*|C[A-E][1-8].*|X[QR][1-8].*|CE\Z" Country_code="CL" />
+			<PrefixEntry Prefix="CE0X" Continent="SA" Country="San Felix &amp; San Ambrosio" CQZone="12" DXCC="217" ITUZone="14" Latitude="26.2611S" Longitude="80.0833W" PrefixList="3G0X.*|C[A-E]0X.*|X[QR]0X.*" Country_code="" />
+			<PrefixEntry Prefix="CE0Y" Continent="SA" Country="Easter Is." CQZone="12" DXCC="47" ITUZone="63" Latitude="27.1222S" Longitude="109.35W" PrefixList="3G0[AEFY].*|C[A-E]0[AEFY].*|X[QR]0[AEFY].*" Country_code="" />
+			<PrefixEntry Prefix="CE0Z" Continent="SA" Country="Juan Fernandez Is." CQZone="12" DXCC="125" ITUZone="14" Latitude="33.6278S" Longitude="78.8778W" PrefixList="3G0[IZ].*|C[A-E]0[IZ].*|X[QR]0[IZ].*" Country_code="" />
+			<PrefixEntry Prefix="CE9" Continent="AN" Country="Antarctica" CQZone="13" DXCC="13" ITUZone="67" Latitude="90S" Longitude="139.266W" PrefixList="3G9.*|A[YZ][0-9]Z.*|AX0.*|C[A-E]9.*|KC4AA[A-F]|KC4US[A-Z]|L[UW][0-9]Z[A-Z]\Z|RI1AN[CPRZW]|V[H-NZ]0[A-GI-LN-Z].*|X[QR]9.*|Z[R-U]7.*" Country_code="AQ" />
+			<PrefixEntry Prefix="CN" Continent="AF" Country="Morocco" CQZone="33" DXCC="446" ITUZone="37" Latitude="31.1944N" Longitude="7.7833W" PrefixList="5[C-G].*|CN.*" Country_code="MA" />
+			<PrefixEntry Prefix="CN2" Continent="AF" Country="Tangier [deleted]" CQZone="33" DXCC="264" ITUZone="37" Latitude="34.7778N" Longitude="5.4056W" PrefixList="CN2.*|EK.*" Country_code="MA" />
+			<PrefixEntry Prefix="CO" Continent="NA" Country="Cuba" CQZone="8" DXCC="70" ITUZone="11" Latitude="21.8278N" Longitude="79.0556W" PrefixList="C[LMO].*|T4.*" Country_code="CU" />
+			<PrefixEntry Prefix="CP" Continent="SA" Country="Bolivia" CQZone="10" DXCC="104" ITUZone="12" Latitude="17.4611S" Longitude="64.6444W" PrefixList="CP.*" Country_code="BO" />
+			<PrefixEntry Prefix="CR8/D" Continent="AS" Country="Damao,Diu [deleted]" CQZone="22" DXCC="42" ITUZone="41" Latitude="20.4389N" Longitude="72.8222E" PrefixList="CR8.*" Country_code="" />
+			<PrefixEntry Prefix="CR8/G" Continent="AS" Country="Goa [deleted]" CQZone="22" DXCC="101" ITUZone="41" Latitude="15.4667N" Longitude="73.8778E" PrefixList="CR8.*" Country_code="" />
+			<PrefixEntry Prefix="CR8/T" Continent="OC" Country="Portuguese Timor [deleted]" CQZone="28" DXCC="200" ITUZone="54" Latitude="9.2611S" Longitude="124.8889E" PrefixList="CR10.*|CR8.*" Country_code="" />
+			<PrefixEntry Prefix="CT" Continent="EU" Country="Portugal" CQZone="14" DXCC="272" ITUZone="37" Latitude="39.6556N" Longitude="8.3W" PrefixList="C[QR][128].*|CS[48].*|CT[124578].*|CT\Z|CT8\Z.*" Country_code="PT" />
+			<PrefixEntry Prefix="CT" Continent="EU" Country="Portugal" CQZone="14" DXCC="272" ITUZone="37" Latitude="39.6556N" Longitude="8.3W" PrefixList="C[QR][04-7].*|CS[0125-7].*|CT[014-7].*|CT\Z|XX[0-8].*" Country_code="PT" />
+			<PrefixEntry Prefix="CT" Continent="EU" Country="Portugal" CQZone="14" DXCC="272" ITUZone="37" Latitude="39.6556N" Longitude="8.3W" PrefixList="CT\Z|CT2.*" Country_code="PT" />
+			<PrefixEntry Prefix="CT3" Continent="AF" Country="Madeira Is." CQZone="33" DXCC="256" ITUZone="36" Latitude="32.75N" Longitude="16.9889W" PrefixList="C[QST][39].*|CR3.*" Country_code="PT" />
+			<PrefixEntry Prefix="CT3" Continent="AF" Country="Madeira Is." CQZone="33" DXCC="256" ITUZone="36" Latitude="32.75N" Longitude="16.9889W" PrefixList="CR9.*" Country_code="PT" />
+			<PrefixEntry Prefix="CT3" Continent="AF" Country="Madeira Is." CQZone="33" DXCC="256" ITUZone="36" Latitude="32.75N" Longitude="16.9889W" PrefixList="CQ2.*" Country_code="PT" />
+			<PrefixEntry Prefix="CU" Continent="EU" Country="Azores" CQZone="14" DXCC="149" ITUZone="36" Latitude="38.7444N" Longitude="27.6389W" PrefixList="CQ[18].*|CR[128].*|CS[48].*|CT8.*" Country_code="PT" />
+			<PrefixEntry Prefix="CU" Continent="EU" Country="Azores" CQZone="14" DXCC="149" ITUZone="36" Latitude="38.7444N" Longitude="27.6389W" PrefixList="CU.*" Country_code="PT" />
+			<PrefixEntry Prefix="CX" Continent="SA" Country="Uruguay" CQZone="13" DXCC="144" ITUZone="14" Latitude="32.8167S" Longitude="56.1667W" PrefixList="C[V-X].*" Country_code="UY" />
+			<PrefixEntry Prefix="CY0" Continent="NA" Country="Sable Is." CQZone="5" DXCC="211" ITUZone="9" Latitude="43.9278N" Longitude="59.9111W" PrefixList="CY0.*" Country_code="" />
+			<PrefixEntry Prefix="CY9" Continent="NA" Country="St. Paul Is." CQZone="5" DXCC="252" ITUZone="9" Latitude="47.2111N" Longitude="60.1611W" PrefixList="CY9.*" Country_code="" />
+			<PrefixEntry Prefix="D2" Continent="AF" Country="Angola" CQZone="36" DXCC="401" ITUZone="52" Latitude="12.9389S" Longitude="17.0111E" PrefixList="D[23].*" Country_code="AO" />
+			<PrefixEntry Prefix="D2" Continent="AF" Country="Angola" CQZone="36" DXCC="401" ITUZone="52" Latitude="12.9389S" Longitude="17.0111E" PrefixList="C[QR]6.*|XX6.*" Country_code="AO" />
+			<PrefixEntry Prefix="D4" Continent="AF" Country="Cape Verde" CQZone="35" DXCC="409" ITUZone="46" Latitude="15.8611N" Longitude="24.1889W" PrefixList="D4.*" Country_code="" />
+			<PrefixEntry Prefix="D4" Continent="AF" Country="Cape Verde" CQZone="35" DXCC="409" ITUZone="46" Latitude="15.8611N" Longitude="24.1889W" PrefixList="CR4.*" Country_code="" />
+			<PrefixEntry Prefix="D6" Continent="AF" Country="Comoros" CQZone="39" DXCC="411" ITUZone="53" Latitude="11.7278S" Longitude="43.2111E" PrefixList="D6.*" Country_code="KM" />
+			<PrefixEntry Prefix="DL" Continent="EU" Country="Germany" CQZone="14" DXCC="230" ITUZone="28" Latitude="50.7667N" Longitude="9.7667E" PrefixList="D[A-LNOQR].*|DP[1-9].*" Country_code="DE" />
+			<PrefixEntry Prefix="DL" Continent="EU" Country="Germany" CQZone="14" DXCC="230" ITUZone="28" Latitude="50.7667N" Longitude="9.7667E" PrefixList="DM.*|Y[2-9].*" Country_code="DE" />
+			<PrefixEntry Prefix="DL/D" Continent="EU" Country="Germany  [deleted]" CQZone="14" DXCC="81" ITUZone="28" Latitude="50.7667N" Longitude="8.2778E" PrefixList="9S4.*|DL/\Z|DL\Z" Country_code="" />
+			<PrefixEntry Prefix="DL/D" Continent="EU" Country="Germany  [deleted]" CQZone="14" DXCC="81" ITUZone="28" Latitude="50.7667N" Longitude="8.2778E" PrefixList="D[A-R].*|Y[2-9].*" Country_code="" />
+			<PrefixEntry Prefix="DM" Continent="EU" Country="German Dem. Rep. [deleted]" CQZone="14" DXCC="229" ITUZone="28" Latitude="51.5333N" Longitude="12.2833E" PrefixList="D[MT].*|Y[2-9].*" Country_code="" />
+			<PrefixEntry Prefix="DU" Continent="OC" Country="Philippines" CQZone="27" DXCC="375" ITUZone="50" Latitude="11.5778N" Longitude="123.2333E" PrefixList="4[D-I].*|D[U-Z].*" Country_code="PH" />
+			<PrefixEntry Prefix="E3" Continent="AF" Country="Eritrea" CQZone="37" DXCC="51" ITUZone="48" Latitude="15N" Longitude="39E" PrefixList="E3.*" Country_code="ER" />
+			<PrefixEntry Prefix="E3" Continent="AF" Country="Eritrea" CQZone="37" DXCC="51" ITUZone="48" Latitude="15N" Longitude="39E" PrefixList="E3.*|MI3.*" Country_code="ER" />
+			<PrefixEntry Prefix="E3" Continent="AF" Country="Eritrea" CQZone="37" DXCC="51" ITUZone="48" Latitude="15N" Longitude="39E" PrefixList="MD3.*|E3\Z" Country_code="ER" />
+			<PrefixEntry Prefix="E4" Continent="AS" Country="Palestine" CQZone="20" DXCC="510" ITUZone="39" Latitude="31.3944N" Longitude="34.3556E" PrefixList="E4.*|E4[0-9].*" Country_code="PS" />
+			<PrefixEntry Prefix="E5" Continent="OC" Country="S. Cook Is." CQZone="32" DXCC="234" ITUZone="62" Latitude="21.2278S" Longitude="159.7889W" PrefixList="E5.*|ZK1.*" Country_code="" />
+			<PrefixEntry Prefix="E5/N" Continent="OC" Country="N. Cook Is." CQZone="32" DXCC="191" ITUZone="62" Latitude="10.0444S" Longitude="161.0889W" PrefixList="E51QMA" Country_code="" />
+			<PrefixEntry Prefix="E6" Continent="OC" Country="Niue" CQZone="32" DXCC="188" ITUZone="62" Latitude="19.0556S" Longitude="169.8556W" PrefixList="E6.*|ZK2.*" Country_code="NU" />
+			<PrefixEntry Prefix="E7" Continent="EU" Country="Bosnia-Herzegovina" CQZone="15" DXCC="501" ITUZone="28" Latitude="44.0167N" Longitude="17.4333E" PrefixList="E7.*|T9.*" Country_code="BA" />
+			<PrefixEntry Prefix="EA" Continent="EU" Country="Spain" CQZone="14" DXCC="281" ITUZone="37" Latitude="40N" Longitude="4W" PrefixList="A[M-O][0-57].*|A[M-O]0[1-57].*|E[A-H][0-57].*|EA\Z" Country_code="ES" />
+			<PrefixEntry Prefix="EA6" Continent="EU" Country="Balearic Is." CQZone="14" DXCC="21" ITUZone="37" Latitude="39.5889N" Longitude="2.6611E" PrefixList="A[M-O]6.*|E[A-H]6.*|EA6" Country_code="ES" />
+			<PrefixEntry Prefix="EA8" Continent="AF" Country="Canary Is." CQZone="33" DXCC="29" ITUZone="36" Latitude="28.4722N" Longitude="16.2611W" PrefixList="A[M-O]08.*|A[M-O]8.*|E[A-H]8.*" Country_code="ES" />
+			<PrefixEntry Prefix="EA9" Continent="AF" Country="Ceuta &amp; Melilla" CQZone="33" DXCC="32" ITUZone="37" Latitude="35.8833N" Longitude="5.3389W" PrefixList="A[M-O]09.*|A[M-O]9.*|E[A-H]9.*" Country_code="ES" />
+			<PrefixEntry Prefix="EA9/I" Continent="AF" Country="Ifni [deleted]" CQZone="33" DXCC="113" ITUZone="37" Latitude="28.8778N" Longitude="10.7111W" PrefixList="EA9.*" Country_code="" />
+			<PrefixEntry Prefix="EI" Continent="EU" Country="Ireland" CQZone="14" DXCC="245" ITUZone="27" Latitude="53.1111N" Longitude="8.1611W" PrefixList="E[IJ].*" Country_code="IE" />
+			<PrefixEntry Prefix="EK" Continent="AS" Country="Armenia" CQZone="21" DXCC="14" ITUZone="29" Latitude="40N" Longitude="45E" PrefixList="EK.*" Country_code="AM" />
+			<PrefixEntry Prefix="EK" Continent="AS" Country="Armenia" CQZone="21" DXCC="14" ITUZone="29" Latitude="40N" Longitude="45E" PrefixList="4J4G|E[KM-ORX-Z]6G.*|R6G.*|RG.*|RK6G.*|U6G.*|UG.*|UK6G.*" Country_code="AM" />
+			<PrefixEntry Prefix="EL" Continent="AF" Country="Liberia" CQZone="35" DXCC="434" ITUZone="46" Latitude="6.3167N" Longitude="9.3722W" PrefixList="5[LM].*|6Z.*|A8.*|D5.*|EL.*" Country_code="LR" />
+			<PrefixEntry Prefix="EP" Continent="AS" Country="Iran" CQZone="21" DXCC="330" ITUZone="40" Latitude="32.0722N" Longitude="54.5556E" PrefixList="9[B-D].*|E[PQ].*" Country_code="IR" />
+			<PrefixEntry Prefix="ER" Continent="EU" Country="Moldova" CQZone="16" DXCC="179" ITUZone="29" Latitude="47.2222N" Longitude="28.4167E" PrefixList="ER[0-9].*" Country_code="MD" />
+			<PrefixEntry Prefix="ER" Continent="EU" Country="Moldova" CQZone="16" DXCC="179" ITUZone="29" Latitude="47.2222N" Longitude="28.4167E" PrefixList="E[KMNORUXYZ]5O.*|ER\Z|ER1A.*|R5O.*|RK5O.*|U5O.*|UK5O.*|UO.*" Country_code="MD" />
+			<PrefixEntry Prefix="ES" Continent="EU" Country="Estonia" CQZone="15" DXCC="52" ITUZone="29" Latitude="58.6389N" Longitude="25.7667E" PrefixList="ES.*" Country_code="EE" />
+			<PrefixEntry Prefix="ES" Continent="EU" Country="Estonia" CQZone="15" DXCC="52" ITUZone="29" Latitude="58.6389N" Longitude="25.7667E" PrefixList="ES\Z|R[KU]2[OQRZ].*|RR.*|UK2.*" Country_code="EE" />
+			<PrefixEntry Prefix="ET" Continent="AF" Country="Ethiopia" CQZone="37" DXCC="53" ITUZone="48" Latitude="9N" Longitude="39E" PrefixList="9[EF].*|ET.*" Country_code="ET" />
+			<PrefixEntry Prefix="EW" Continent="EU" Country="Belarus" CQZone="16" DXCC="27" ITUZone="29" Latitude="53.5389N" Longitude="28.1056E" PrefixList="E[U-W].*" Country_code="BY" />
+			<PrefixEntry Prefix="EX" Continent="AS" Country="Kyrgyzstan" CQZone="17" DXCC="135" ITUZone="30" Latitude="41.4667N" Longitude="74.1889E" PrefixList="EX.*" Country_code="KG" />
+			<PrefixEntry Prefix="EX" Continent="AS" Country="Kyrgyzstan" CQZone="17" DXCC="135" ITUZone="30" Latitude="41.4667N" Longitude="74.1889E" PrefixList="E[KMNORXYZ]8M.*|EX\Z|R[MK]8M.*|R8M.*|U[MK]8M.*|U8M.*|UK8N.*|UM.*" Country_code="KG" />
+			<PrefixEntry Prefix="EY" Continent="AS" Country="Tajikistan" CQZone="17" DXCC="262" ITUZone="30" Latitude="38.8N" Longitude="70.8333E" PrefixList="EY.*" Country_code="TJ" />
+			<PrefixEntry Prefix="EY" Continent="AS" Country="Tajikistan" CQZone="17" DXCC="262" ITUZone="30" Latitude="38.8N" Longitude="70.8333E" PrefixList="E[KMNORXYZ]8J.*|R[JK]8J.*|U[JK]8J.*|UJ.*|UJ8J.*|UK8R.*|EY\Z" Country_code="TJ" />
+			<PrefixEntry Prefix="EZ" Continent="AS" Country="Turkmenistan" CQZone="17" DXCC="280" ITUZone="30" Latitude="39.1722N" Longitude="59E" PrefixList="EZ.*" Country_code="TM" />
+			<PrefixEntry Prefix="EZ" Continent="AS" Country="Turkmenistan" CQZone="17" DXCC="280" ITUZone="30" Latitude="39.1722N" Longitude="59E" PrefixList="E[KMNORXYZ]8H.*|R8H.*|RH.*|RK8H.*|U8H.*|UH.*|UK8H.*|EZ\Z" Country_code="TM" />
+			<PrefixEntry Prefix="F" Continent="EU" Country="France" CQZone="14" DXCC="227" ITUZone="27" Latitude="46.6778N" Longitude="2.3611E" PrefixList="4U[0-9]SCO|F[A-FILNQUVXZ].*|F[0-9].*|F\Z|H[WXY].*|T[HMPQVW].*" Country_code="FR" />
+			<PrefixEntry Prefix="F" Continent="EU" Country="France" CQZone="14" DXCC="227" ITUZone="27" Latitude="46.6778N" Longitude="2.3611E" PrefixList="TK.*|F\Z" Country_code="FR" />
+			<PrefixEntry Prefix="FF" Continent="AF" Country="French West Africa [deleted]" CQZone="35" DXCC="59" ITUZone="46" Latitude="14.6111N" Longitude="15.1667W" PrefixList="FF.*" Country_code="" />
+			<PrefixEntry Prefix="FG" Continent="NA" Country="Guadeloupe" CQZone="8" DXCC="79" ITUZone="11" Latitude="16.2778N" Longitude="61.5333W" PrefixList="FG.*|TO8FTDM\Z" Country_code="GP" />
+			<PrefixEntry Prefix="FH" Continent="AF" Country="Mayotte" CQZone="39" DXCC="169" ITUZone="53" Latitude="12.8222S" Longitude="45.1556E" PrefixList="FH.*" Country_code="YT" />
+			<PrefixEntry Prefix="FH/D" Continent="AF" Country="Comoros [deleted]" CQZone="39" DXCC="39" ITUZone="53" Latitude="11.7278S" Longitude="43.2111E" PrefixList="FB8.*|FH.*" Country_code="" />
+			<PrefixEntry Prefix="FI8" Continent="AS" Country="French Indo-China [deleted]" CQZone="26" DXCC="58" ITUZone="49" Latitude="11.2167N" Longitude="107.1222E" PrefixList="FI8.*" Country_code="" />
+			<PrefixEntry Prefix="FJ" Continent="NA" Country="St. Barthelemy" CQZone="8" DXCC="516" ITUZone="11" Latitude="17.9056N" Longitude="62.8278W" PrefixList="FJ.*" Country_code="" />
+			<PrefixEntry Prefix="FK" Continent="OC" Country="New Caledonia" CQZone="32" DXCC="162" ITUZone="56" Latitude="21.3833S" Longitude="165.4889E" PrefixList="FK.*|TX8.*" Country_code="NC" />
+			<PrefixEntry Prefix="FK/C" Continent="OC" Country="Chesterfield Is." CQZone="30" DXCC="512" ITUZone="56" Latitude="19.5222S" Longitude="158.1889E" PrefixList="FK[0-9]/C.*" Country_code="" />
+			<PrefixEntry Prefix="FM" Continent="NA" Country="Martinique" CQZone="8" DXCC="84" ITUZone="11" Latitude="14.6556N" Longitude="61.0111W" PrefixList="FM.*" Country_code="MQ" />
+			<PrefixEntry Prefix="FN8" Continent="AS" Country="French India [deleted]" CQZone="22" DXCC="67" ITUZone="41" Latitude="11.9389N" Longitude="79.8278E" PrefixList="FN8.*" Country_code="" />
+			<PrefixEntry Prefix="FO" Continent="OC" Country="French Polynesia" CQZone="32" DXCC="175" ITUZone="63" Latitude="17.5222S" Longitude="149.5778W" PrefixList="FO.*" Country_code="PF" />
+			<PrefixEntry Prefix="FO/A" Continent="OC" Country="Austral Is." CQZone="32" DXCC="508" ITUZone="63" Latitude="22.2722S" Longitude="151.1778W" PrefixList="FO0/A.*" Country_code="" />
+			<PrefixEntry Prefix="FO/C" Continent="NA" Country="Clipperton Is." CQZone="7" DXCC="36" ITUZone="10" Latitude="10.2778N" Longitude="109.2167W" PrefixList="FO/C.*" Country_code="FR" />
+			<PrefixEntry Prefix="FO/M" Continent="OC" Country="Marquesas Is." CQZone="31" DXCC="509" ITUZone="63" Latitude="9.0389S" Longitude="139.8W" PrefixList="FO0/M.*" Country_code="" />
+			<PrefixEntry Prefix="FP" Continent="NA" Country="St. Pierre &amp; Miquelon" CQZone="5" DXCC="277" ITUZone="9" Latitude="46.9389N" Longitude="56.3389W" PrefixList="FP.*" Country_code="" />
+			<PrefixEntry Prefix="FQ8" Continent="AF" Country="Fr. Equatorial Africa [deleted]" CQZone="36" DXCC="57" ITUZone="57" Latitude="5.0333N" Longitude="18.0556E" PrefixList="FQ8.*" Country_code="" />
+			<PrefixEntry Prefix="FR" Continent="AF" Country="Reunion Is." CQZone="39" DXCC="453" ITUZone="53" Latitude="21.1665S" Longitude="55.5688E" PrefixList="FR.*" Country_code="RE" />
+			<PrefixEntry Prefix="FR/G" Continent="AF" Country="Glorioso Is." CQZone="39" DXCC="99" ITUZone="53" Latitude="11.5611S" Longitude="47.2889E" PrefixList="FT[0-9]G.*|TO4G.*" Country_code="FR" />
+			<PrefixEntry Prefix="FR/J" Continent="AF" Country="Juan de Nova, Europa" CQZone="39" DXCC="124" ITUZone="53" Latitude="19.8722S" Longitude="41.4944E" PrefixList="FT[0-9]E.*|FT[0-9]J.*" Country_code="" />
+			<PrefixEntry Prefix="FR/T" Continent="AF" Country="Tromelin Is." CQZone="39" DXCC="276" ITUZone="53" Latitude="15.8889S" Longitude="54.5222E" PrefixList="FR/T.*|FT[0-9]T.*" Country_code="" />
+			<PrefixEntry Prefix="FS" Continent="NA" Country="Saint Martin" CQZone="8" DXCC="213" ITUZone="11" Latitude="18.1N" Longitude="63.05W" PrefixList="FS.*" Country_code="" />
+			<PrefixEntry Prefix="FS" Continent="NA" Country="Saint Martin" CQZone="8" DXCC="213" ITUZone="11" Latitude="18.1N" Longitude="63.05W" PrefixList="FJ.*" Country_code="" />
+			<PrefixEntry Prefix="FT8W" Continent="AF" Country="Crozet Is." CQZone="39" DXCC="41" ITUZone="68" Latitude="46.4S" Longitude="51.7778E" PrefixList="FT[0-9]W.*" Country_code="" />
+			<PrefixEntry Prefix="FT8X" Continent="AF" Country="Kerguelen Is." CQZone="39" DXCC="131" ITUZone="68" Latitude="49.3389S" Longitude="69.4167E" PrefixList="FT[0-9]X.*" Country_code="" />
+			<PrefixEntry Prefix="FT8Z" Continent="AF" Country="Amsterdam &amp; St. Paul Is." CQZone="39" DXCC="10" ITUZone="68" Latitude="37.8667S" Longitude="77.5222E" PrefixList="FT[0-9]Z.*" Country_code="" />
+			<PrefixEntry Prefix="FW" Continent="OC" Country="Wallis &amp; Futuna Is." CQZone="32" DXCC="298" ITUZone="62" Latitude="13.2833S" Longitude="176.1611W" PrefixList="FW.*" Country_code="" />
+			<PrefixEntry Prefix="FY" Continent="SA" Country="French Guiana" CQZone="9" DXCC="63" ITUZone="12" Latitude="3.8167N" Longitude="53.4056W" PrefixList="FY.*" Country_code="GF" />
+			<PrefixEntry Prefix="G" Continent="EU" Country="England" CQZone="14" DXCC="223" ITUZone="27" Latitude="52.7778N" Longitude="1.5556W" PrefixList="2[BEGORQV].*|2SZ|G\Z|VQ[0-468].*|VS[0-578].*|Z[EHIJNOQ].*|ZD[0-6].*|[GM][0-9].*|[GM][BGKRXQOV].*" Country_code="GB" />
+			<PrefixEntry Prefix="GD" Continent="EU" Country="Isle of Man" CQZone="14" DXCC="114" ITUZone="27" Latitude="54.2056N" Longitude="4.5444W" PrefixList="[2GM][DT].*" Country_code="IM" />
+			<PrefixEntry Prefix="GI" Continent="EU" Country="Northern Ireland" CQZone="14" DXCC="265" ITUZone="27" Latitude="54.6556N" Longitude="6.7111W" PrefixList="[2GM][IN].*" Country_code="GB" />
+			<PrefixEntry Prefix="GJ" Continent="EU" Country="Jersey" CQZone="14" DXCC="122" ITUZone="27" Latitude="49.2N" Longitude="2.1111W" PrefixList="[2GM][JH].*" Country_code="JE" />
+			<PrefixEntry Prefix="GM" Continent="EU" Country="Scotland" CQZone="14" DXCC="279" ITUZone="27" Latitude="56.6889N" Longitude="4.2556W" PrefixList="[2GM][AMSZ].*" Country_code="GB" />
+			<PrefixEntry Prefix="GU" Continent="EU" Country="Guernsey" CQZone="14" DXCC="106" ITUZone="27" Latitude="49.4722N" Longitude="2.5611W" PrefixList="[2GM][PU].*" Country_code="GG" />
+			<PrefixEntry Prefix="GW" Continent="EU" Country="Wales" CQZone="14" DXCC="294" ITUZone="27" Latitude="52.1111N" Longitude="3.7222W" PrefixList="2[CWXY].*|[GM][CW].*" Country_code="GB" />
+			<PrefixEntry Prefix="H4" Continent="OC" Country="Solomon Is." CQZone="28" DXCC="185" ITUZone="51" Latitude="8.3333S" Longitude="158.4167E" PrefixList="H4[1-9].*|H4\Z" Country_code="" />
+			<PrefixEntry Prefix="H40" Continent="OC" Country="Temotu Province" CQZone="32" DXCC="507" ITUZone="51" Latitude="10.7111S" Longitude="166E" PrefixList="H40.*" Country_code="" />
+			<PrefixEntry Prefix="HA" Continent="EU" Country="Hungary" CQZone="15" DXCC="239" ITUZone="28" Latitude="47.1667N" Longitude="19.1167E" PrefixList="H[AG].*" Country_code="HU" />
+			<PrefixEntry Prefix="HB" Continent="EU" Country="Switzerland" CQZone="14" DXCC="287" ITUZone="28" Latitude="46.8N" Longitude="8.1556E" PrefixList="H[BE][1-9].*|HB\Z" Country_code="CH" />
+			<PrefixEntry Prefix="HB0" Continent="EU" Country="Liechtenstein" CQZone="14" DXCC="251" ITUZone="28" Latitude="47.1333N" Longitude="9.5444E" PrefixList="H[BE]0.*" Country_code="LI" />
+			<PrefixEntry Prefix="HC" Continent="SA" Country="Ecuador" CQZone="10" DXCC="120" ITUZone="12" Latitude="1.6056S" Longitude="78.6W" PrefixList="H[CD][0-79].*|HC\Z" Country_code="EC" />
+			<PrefixEntry Prefix="HC8" Continent="SA" Country="Galapagos Is." CQZone="10" DXCC="71" ITUZone="12" Latitude="0.7611S" Longitude="90.6222W" PrefixList="H[CD]8.*" Country_code="" />
+			<PrefixEntry Prefix="HH" Continent="NA" Country="Haiti" CQZone="8" DXCC="78" ITUZone="11" Latitude="18.9389N" Longitude="72.4722W" PrefixList="4V.*|HH.*" Country_code="HT" />
+			<PrefixEntry Prefix="HI" Continent="NA" Country="Dominican Rep." CQZone="8" DXCC="72" ITUZone="11" Latitude="18.9222N" Longitude="70.6611W" PrefixList="HI.*" Country_code="DO" />
+			<PrefixEntry Prefix="HK" Continent="SA" Country="Colombia" CQZone="9" DXCC="116" ITUZone="12" Latitude="3.3111N" Longitude="73.3556W" PrefixList="[5H][JK][1-9].*|HK\Z" Country_code="CO" />
+			<PrefixEntry Prefix="HK0/A" Continent="NA" Country="San Andres &amp; Providencia" CQZone="7" DXCC="216" ITUZone="11" Latitude="12.5389N" Longitude="81.7W" PrefixList="[5H][JK]0[A-LN-Z].*" Country_code="" />
+			<PrefixEntry Prefix="HK0/B" Continent="NA" Country="Bajo Nuevo [deleted]" CQZone="8" DXCC="19" ITUZone="11" Latitude="16.5N" Longitude="78.5W" PrefixList="HK0.*" Country_code="" />
+			<PrefixEntry Prefix="HK0/M" Continent="SA" Country="Malpelo Is." CQZone="9" DXCC="161" ITUZone="12" Latitude="3.9889N" Longitude="81.5833W" PrefixList="[5H][JK]0M.*" Country_code="" />
+			<PrefixEntry Prefix="HK0/S" Continent="NA" Country="Serrana Bank &amp; Roncador Cay [deleted]" CQZone="8" DXCC="228" ITUZone="11" Latitude="16N" Longitude="79.3W" PrefixList="HK0.*|KP3.*|KS4.*" Country_code="US" />
+			<PrefixEntry Prefix="HL" Continent="AS" Country="South Korea" CQZone="25" DXCC="137" ITUZone="44" Latitude="36.6N" Longitude="127.8E" PrefixList="6[K-N].*|D[789].*|D[ST].*|H[LM].*" Country_code="KR" />
+			<PrefixEntry Prefix="HP" Continent="NA" Country="Panama" CQZone="7" DXCC="88" ITUZone="11" Latitude="9N" Longitude="80W" PrefixList="3[EF].*|H[389OP].*" Country_code="PA" />
+			<PrefixEntry Prefix="HR" Continent="NA" Country="Honduras" CQZone="7" DXCC="80" ITUZone="11" Latitude="14.6556N" Longitude="86.8833W" PrefixList="H[QR].*" Country_code="HN" />
+			<PrefixEntry Prefix="HS" Continent="AS" Country="Thailand" CQZone="26" DXCC="387" ITUZone="49" Latitude="15.4167N" Longitude="100.8056E" PrefixList="E2.*|HS.*" Country_code="TH" />
+			<PrefixEntry Prefix="HV" Continent="EU" Country="Vatican" CQZone="15" DXCC="295" ITUZone="28" Latitude="41.9111N" Longitude="12.4611E" PrefixList="HV.*" Country_code="" />
+			<PrefixEntry Prefix="HZ" Continent="AS" Country="Saudi Arabia" CQZone="21" DXCC="378" ITUZone="39" Latitude="22.6167N" Longitude="41.0278E" PrefixList="[78H]Z.*" Country_code="SA" />
+			<PrefixEntry Prefix="I" Continent="EU" Country="Italy" CQZone="15" DXCC="248" ITUZone="28" Latitude="41.7278N" Longitude="13.5667E" PrefixList="4U73B\Z|4U75B\Z|4U9A\Z|I[0-9].*|I[B-LN-RT-VXZ].*|I[WY][1-9].*|I\Z|IA[1-9].*|IW0[A-T].*" Country_code="IT" />
+			<PrefixEntry Prefix="I1" Continent="EU" Country="Trieste [deleted]" CQZone="15" DXCC="271" ITUZone="28" Latitude="45.6611N" Longitude="13.7333E" PrefixList="I1.*" Country_code="" />
+			<PrefixEntry Prefix="I5" Continent="AF" Country="Italian Somaliland [deleted]" CQZone="38" DXCC="115" ITUZone="47" Latitude="3.6167N" Longitude="45.1889E" PrefixList="I5.*" Country_code="" />
+			<PrefixEntry Prefix="IS" Continent="EU" Country="Sardinia" CQZone="15" DXCC="225" ITUZone="28" Latitude="40.0278N" Longitude="8.9722E" PrefixList="IM.*|IS.*|IW0[U-Z].*|IY0.*" Country_code="IT" />
+			<PrefixEntry Prefix="J2" Continent="AF" Country="Djibouti" CQZone="37" DXCC="382" ITUZone="48" Latitude="11.8N" Longitude="42.5444E" PrefixList="J2.*" Country_code="DJ" />
+			<PrefixEntry Prefix="J3" Continent="NA" Country="Grenada" CQZone="8" DXCC="77" ITUZone="11" Latitude="12.1N" Longitude="61.6833W" PrefixList="J3.*" Country_code="GD" />
+			<PrefixEntry Prefix="J5" Continent="AF" Country="Guinea-Bissau" CQZone="35" DXCC="109" ITUZone="46" Latitude="12.0278N" Longitude="14.9722W" PrefixList="J5.*" Country_code="GW" />
+			<PrefixEntry Prefix="J6" Continent="NA" Country="St. Lucia" CQZone="8" DXCC="97" ITUZone="11" Latitude="13.8944N" Longitude="60.9722W" PrefixList="J6.*" Country_code="" />
+			<PrefixEntry Prefix="J7" Continent="NA" Country="Dominica" CQZone="8" DXCC="95" ITUZone="11" Latitude="15.4056N" Longitude="61.35W" PrefixList="J7.*" Country_code="DM" />
+			<PrefixEntry Prefix="J8" Continent="NA" Country="St. Vincent" CQZone="8" DXCC="98" ITUZone="11" Latitude="13.25N" Longitude="61.1889W" PrefixList="J8.*" Country_code="" />
+			<PrefixEntry Prefix="JA" Continent="AS" Country="Japan" CQZone="25" DXCC="339" ITUZone="45" Latitude="35.5889N" Longitude="136.6889E" PrefixList="J[A-CE-S].*|JD[02-9].*|OKA50\Z|[78][J-N].*" Country_code="JP" />
+			<PrefixEntry Prefix="JD/M" Continent="OC" Country="Minami Torishima" CQZone="27" DXCC="177" ITUZone="90" Latitude="24.2944N" Longitude="153.9556E" PrefixList="7J1.*|JD/\Z|JD\Z|JD1M.*" Country_code="" />
+			<PrefixEntry Prefix="JD/O" Continent="AS" Country="Ogasawara" CQZone="27" DXCC="192" ITUZone="45" Latitude="27.1722N" Longitude="142.1167E" PrefixList="7J1.*|JD1[ABOY].*" Country_code="" />
+			<PrefixEntry Prefix="JT" Continent="AS" Country="Mongolia" CQZone="23" DXCC="363" ITUZone="32" Latitude="46.6667N" Longitude="103.1278E" PrefixList="J[T-V].*" Country_code="MN" />
+			<PrefixEntry Prefix="JW" Continent="EU" Country="Svalbard" CQZone="40" DXCC="259" ITUZone="18" Latitude="78.7111N" Longitude="18.1222E" PrefixList="JW.*" Country_code="SJ" />
+			<PrefixEntry Prefix="JX" Continent="EU" Country="Jan Mayen" CQZone="40" DXCC="118" ITUZone="18" Latitude="71.0444N" Longitude="8.4W" PrefixList="JX.*" Country_code="" />
+			<PrefixEntry Prefix="JY" Continent="AS" Country="Jordan" CQZone="20" DXCC="342" ITUZone="39" Latitude="31.2167N" Longitude="36.2667E" PrefixList="JY.*" Country_code="JO" />
+			<PrefixEntry Prefix="JZ0" Continent="OC" Country="Netherlands N. Guinea [deleted]" CQZone="28" DXCC="184" ITUZone="51" Latitude="9.4S" Longitude="147.1E" PrefixList="7J1.*|JZ0.*" Country_code="" />
+			<PrefixEntry Prefix="K" Continent="NA" Country="United States" CQZone="5" DXCC="291" ITUZone="6" Latitude="39N" Longitude="97.5278W" PrefixList="A[A-GIJK].*|K[CG][0-35-9].*|KC4[A-Z].*|KC4AA[G-Z].*|KC4U[A-RT-Z].*|KG4[A-Z][A-Z][A-Z]\Z|KG4[A-Z]\Z|[KNW]P[06-9].*|[KWN][0-9].*|[KWN][ABDEFIJKMNOQ-Z].*|[NW][CG].*" Country_code="US" />
+			<PrefixEntry Prefix="KG4" Continent="NA" Country="Guantanamo Bay" CQZone="8" DXCC="105" ITUZone="11" Latitude="19.9222N" Longitude="75.1389W" PrefixList="KG4[A-Z][A-Z]\Z" Country_code="" />
+			<PrefixEntry Prefix="KH0" Continent="OC" Country="Mariana Is." CQZone="27" DXCC="166" ITUZone="64" Latitude="18.7722N" Longitude="145.6611E" PrefixList="KG6SL\Z|[KANW]H0.*" Country_code="US" />
+			<PrefixEntry Prefix="KH1" Continent="OC" Country="Baker &amp; Howland Is." CQZone="31" DXCC="20" ITUZone="61" Latitude="0.2167N" Longitude="176.4611W" PrefixList="[KANW]H1.*" Country_code="US" />
+			<PrefixEntry Prefix="KH2" Continent="OC" Country="Guam" CQZone="27" DXCC="103" ITUZone="64" Latitude="13.4667N" Longitude="144.7833E" PrefixList="[AKNW]H2.*" Country_code="GU" />
+			<PrefixEntry Prefix="KH3" Continent="OC" Country="Johnston Is." CQZone="31" DXCC="123" ITUZone="61" Latitude="16.7278N" Longitude="169.5333W" PrefixList="[KANW]H3.*" Country_code="" />
+			<PrefixEntry Prefix="KH4" Continent="OC" Country="Midway Is." CQZone="31" DXCC="174" ITUZone="61" Latitude="28.1889N" Longitude="177.3667W" PrefixList="[KANW]H4.*" Country_code="" />
+			<PrefixEntry Prefix="KH5" Continent="OC" Country="Palmyra &amp; Jarvis Is." CQZone="31" DXCC="197" ITUZone="61" Latitude="0.4111S" Longitude="160.0722W" PrefixList="KH5\Z|[KANW]H5[A-Z].*" Country_code="" />
+			<PrefixEntry Prefix="KH5K" Continent="OC" Country="Kingman Reef [Deleted]" CQZone="31" DXCC="134" ITUZone="61" Latitude="6.3833N" Longitude="162.4W" PrefixList="[KANW]H5K.*" Country_code="" />
+			<PrefixEntry Prefix="KH6" Continent="OC" Country="Hawaii" CQZone="31" DXCC="110" ITUZone="61" Latitude="21.3278N" Longitude="157.8389W" PrefixList="[AKNW]H[67]\Z.*|[KANW]H6.*|[KANW]H7[A-JL-Z].*" Country_code="US" />
+			<PrefixEntry Prefix="KH7K" Continent="OC" Country="Kure Is." CQZone="31" DXCC="138" ITUZone="61" Latitude="28.4N" Longitude="178.3111W" PrefixList="[KANW]H7K.*" Country_code="" />
+			<PrefixEntry Prefix="KH8" Continent="OC" Country="American Samoa" CQZone="32" DXCC="9" ITUZone="62" Latitude="14.1222S" Longitude="169.7W" PrefixList="KH8\Z|[KANW]H8[A-RT-Z].*" Country_code="AS" />
+			<PrefixEntry Prefix="KH8S" Continent="OC" Country="Swains Is." CQZone="32" DXCC="515" ITUZone="62" Latitude="11.0556S" Longitude="171.0778W" PrefixList="[KANW]H8S.*" Country_code="" />
+			<PrefixEntry Prefix="KH9" Continent="OC" Country="Wake Is." CQZone="31" DXCC="297" ITUZone="65" Latitude="19.3N" Longitude="166.6444E" PrefixList="[AKNW]H9.*" Country_code="" />
+			<PrefixEntry Prefix="KL" Continent="NA" Country="Alaska" CQZone="1" DXCC="6" ITUZone="1" Latitude="64.0778N" Longitude="153.3556W" PrefixList="[KANW]L[0-9].*" Country_code="US" />
+			<PrefixEntry Prefix="KP1" Continent="NA" Country="Navassa Is." CQZone="8" DXCC="182" ITUZone="11" Latitude="18.4111N" Longitude="75.0222W" PrefixList="[KNW]P1.*" Country_code="" />
+			<PrefixEntry Prefix="KP2" Continent="NA" Country="Virgin Is." CQZone="8" DXCC="285" ITUZone="11" Latitude="17.7111N" Longitude="64.8222W" PrefixList="[KNW]P2.*" Country_code="VI" />
+			<PrefixEntry Prefix="KP4" Continent="NA" Country="Puerto Rico" CQZone="8" DXCC="202" ITUZone="11" Latitude="18.1722N" Longitude="66.5889W" PrefixList="[KNW]P[34].*" Country_code="PR" />
+			<PrefixEntry Prefix="KP5" Continent="NA" Country="Desecheo Is." CQZone="8" DXCC="43" ITUZone="11" Latitude="18.3889N" Longitude="67.4889W" PrefixList="[KNW]P5.*" Country_code="" />
+			<PrefixEntry Prefix="KR6" Continent="AS" Country="Okinawa (Ryukyu Is. [deleted]" CQZone="25" DXCC="193" ITUZone="45" Latitude="26.4944N" Longitude="127.9167E" PrefixList="KA6.*|KR[68].*" Country_code="" />
+			<PrefixEntry Prefix="KS4" Continent="NA" Country="Swan Is. [deleted]" CQZone="7" DXCC="261" ITUZone="11" Latitude="17.3778N" Longitude="83.9333W" PrefixList="JR6.*|K[DS]4.*|KA6.*|KR8.*" Country_code="" />
+			<PrefixEntry Prefix="KZ5" Continent="NA" Country="Canal Zone [deleted]" CQZone="7" DXCC="28" ITUZone="11" Latitude="9.2389N" Longitude="79.5167W" PrefixList="K5.*|KZ5.*" Country_code="" />
+			<PrefixEntry Prefix="LA" Continent="EU" Country="Norway" CQZone="14" DXCC="266" ITUZone="18" Latitude="67.4556N" Longitude="15.35E" PrefixList="L[A-N].*" Country_code="NO" />
+			<PrefixEntry Prefix="LU" Continent="SA" Country="Argentina" CQZone="13" DXCC="100" ITUZone="14" Latitude="35.5389S" Longitude="65.6833W" PrefixList="A[YZ][0-9][A-Y].*|L[2-9]\d{0,}.*|L[O-W][0-9][A-Y].*|L1.*|LU\Z" Country_code="AR" />
+			<PrefixEntry Prefix="LX" Continent="EU" Country="Luxembourg" CQZone="14" DXCC="254" ITUZone="27" Latitude="49.75N" Longitude="6.05E" PrefixList="LX.*" Country_code="LU" />
+			<PrefixEntry Prefix="LY" Continent="EU" Country="Lithuania" CQZone="15" DXCC="146" ITUZone="29" Latitude="55.1944N" Longitude="23.85E" PrefixList="LY.*" Country_code="LT" />
+			<PrefixEntry Prefix="LY" Continent="EU" Country="Lithuania" CQZone="15" DXCC="146" ITUZone="29" Latitude="55.1944N" Longitude="23.85E" PrefixList="EZ2Q.*|LY\Z|R2P.*|RP.*|UP.*" Country_code="LT" />
+			<PrefixEntry Prefix="LZ" Continent="EU" Country="Bulgaria" CQZone="20" DXCC="212" ITUZone="28" Latitude="42.5944N" Longitude="25.2222E" PrefixList="LZ.*" Country_code="BG" />
+			<PrefixEntry Prefix="OA" Continent="SA" Country="Peru" CQZone="10" DXCC="136" ITUZone="12" Latitude="9.7944S" Longitude="75.4667W" PrefixList="4T.*|O[A-C].*" Country_code="PE" />
+			<PrefixEntry Prefix="OD" Continent="AS" Country="Lebanon" CQZone="20" DXCC="354" ITUZone="39" Latitude="34N" Longitude="36E" PrefixList="OD.*" Country_code="LB" />
+			<PrefixEntry Prefix="OE" Continent="EU" Country="Austria" CQZone="15" DXCC="206" ITUZone="28" Latitude="47.4167N" Longitude="14.0833E" PrefixList="4U500M\Z|4U75A\Z|OE.*" Country_code="AT" />
+			<PrefixEntry Prefix="OH" Continent="EU" Country="Finland" CQZone="15" DXCC="224" ITUZone="18" Latitude="64.6278N" Longitude="26.6444E" PrefixList="O[F-J][1-9].*|OH\Z" Country_code="FI" />
+			<PrefixEntry Prefix="OH0" Continent="EU" Country="Aland Is." CQZone="15" DXCC="5" ITUZone="18" Latitude="60.1944N" Longitude="19.9E" PrefixList="O[FGI]0.*|OH0.*|OH0[A-LN-Z].*" Country_code="AX" />
+			<PrefixEntry Prefix="OJ0" Continent="EU" Country="Market Reef" CQZone="15" DXCC="167" ITUZone="18" Latitude="60.3333N" Longitude="18.9944E" PrefixList="OH0M.*|OJ0.*" Country_code="SE" />
+			<PrefixEntry Prefix="OK" Continent="EU" Country="Czech Republic" CQZone="15" DXCC="503" ITUZone="28" Latitude="49.6611N" Longitude="15.2778E" PrefixList="O[KL].*" Country_code="CZ" />
+			<PrefixEntry Prefix="OK/D" Continent="EU" Country="Czechoslovakia [deleted]" CQZone="15" DXCC="218" ITUZone="28" Latitude="49.1833N" Longitude="17.1556E" PrefixList="O[K-M].*" Country_code="CZ" />
+			<PrefixEntry Prefix="OM" Continent="EU" Country="Slovak Republic" CQZone="15" DXCC="504" ITUZone="28" Latitude="48.7556N" Longitude="19.5E" PrefixList="OM.*" Country_code="SK" />
+			<PrefixEntry Prefix="ON" Continent="EU" Country="Belgium" CQZone="14" DXCC="209" ITUZone="27" Latitude="50.5N" Longitude="4.4611E" PrefixList="O[N-T].*" Country_code="BE" />
+			<PrefixEntry Prefix="OX" Continent="NA" Country="Greenland" CQZone="40" DXCC="237" ITUZone="5" Latitude="71.7667N" Longitude="46.0278W" PrefixList="OX.*|XP.*" Country_code="GL" />
+			<PrefixEntry Prefix="OY" Continent="EU" Country="Faroe Is." CQZone="14" DXCC="222" ITUZone="18" Latitude="62.0222N" Longitude="6.7722W" PrefixList="O[WY].*" Country_code="FO" />
+			<PrefixEntry Prefix="OZ" Continent="EU" Country="Denmark" CQZone="14" DXCC="221" ITUZone="18" Latitude="56.0111N" Longitude="9.15E" PrefixList="5[PQ].*|O[UVZ].*" Country_code="DK" />
+			<PrefixEntry Prefix="P2" Continent="OC" Country="Papua New Guinea" CQZone="28" DXCC="163" ITUZone="51" Latitude="6.4389S" Longitude="143.0611E" PrefixList="P2.*" Country_code="PG" />
+			<PrefixEntry Prefix="P4" Continent="SA" Country="Aruba" CQZone="9" DXCC="91" ITUZone="11" Latitude="12.5167N" Longitude="69.9889W" PrefixList="P4.*" Country_code="AW" />
+			<PrefixEntry Prefix="P5" Continent="AS" Country="North Korea" CQZone="25" DXCC="344" ITUZone="44" Latitude="39.7333N" Longitude="126.6722E" PrefixList="P[5-9].*" Country_code="" />
+			<PrefixEntry Prefix="PA" Continent="EU" Country="Netherlands" CQZone="14" DXCC="263" ITUZone="27" Latitude="52N" Longitude="5E" PrefixList="P[A-I].*" Country_code="NL" />
+			<PrefixEntry Prefix="PJ2" Continent="SA" Country="Curacao Is." CQZone="9" DXCC="517" ITUZone="11" Latitude="12.2N" Longitude="68W" PrefixList="PJ2.*" Country_code="CW" />
+			<PrefixEntry Prefix="PJ2/4" Continent="SA" Country="Bonaire, Curacao [deleted]" CQZone="9" DXCC="85" ITUZone="11" Latitude="12.2N" Longitude="69W" PrefixList="PJ[1-49].*" Country_code="" />
+			<PrefixEntry Prefix="PJ4" Continent="SA" Country="Bonaire Is." CQZone="9" DXCC="520" ITUZone="11" Latitude="12.2N" Longitude="69W" PrefixList="PJ4.*" Country_code="" />
+			<PrefixEntry Prefix="PJ5" Continent="NA" Country="St. Maarten [deleted]" CQZone="8" DXCC="255" ITUZone="11" Latitude="18.05N" Longitude="63.05W" PrefixList="PJ[5-8].*" Country_code="" />
+			<PrefixEntry Prefix="PJ6" Continent="NA" Country="St. Eustatius &amp; Saba Is." CQZone="8" DXCC="519" ITUZone="11" Latitude="17.05N" Longitude="63.04W" PrefixList="PJ[5-6].*" Country_code="" />
+			<PrefixEntry Prefix="PJ7" Continent="NA" Country="St. Maarten" CQZone="8" DXCC="518" ITUZone="11" Latitude="18.05N" Longitude="63.06W" PrefixList="PJ[078].*" Country_code="" />
+			<PrefixEntry Prefix="PK1" Continent="OC" Country="Java [deleted]" CQZone="28" DXCC="119" ITUZone="54" Latitude="7.4222S" Longitude="111.6444E" PrefixList="PK[1-3].*|VK9.*" Country_code="" />
+			<PrefixEntry Prefix="PK4" Continent="OC" Country="Sumatra [deleted]" CQZone="28" DXCC="258" ITUZone="54" Latitude="0.4N" Longitude="100.2E" PrefixList="PK[2-4].*" Country_code="" />
+			<PrefixEntry Prefix="PK5" Continent="OC" Country="Netherlands Borneo [deleted]" CQZone="28" DXCC="183" ITUZone="54" Latitude="0.4N" Longitude="115E" PrefixList="PK5.*" Country_code="" />
+			<PrefixEntry Prefix="PK6" Continent="OC" Country="Celebe &amp; Molucca Is. [deleted]" CQZone="28" DXCC="30" ITUZone="54" Latitude="1.2444S" Longitude="125.0889E" PrefixList="PK6.*" Country_code="" />
+			<PrefixEntry Prefix="PY" Continent="SA" Country="Brazil" CQZone="11" DXCC="108" ITUZone="12" Latitude="11.5333S" Longitude="54.0056W" PrefixList="P[P-Y][1-9].*|P[P-Y]0[A-EG-LNOQU-Y].*|P[P-Y]0Z[A-EG-LNOQU-Z].*|PY\Z|Z[V-Z][1-9].*|Z[V-Z]0[A-EG-LNOQU-Y].*|Z[V-Z]0Z[A-EG-LNOQU-Z].*" Country_code="BR" />
+			<PrefixEntry Prefix="PY0F" Continent="SA" Country="Fernando de Noronha" CQZone="11" DXCC="56" ITUZone="13" Latitude="3.8611S" Longitude="32.4167W" PrefixList="P[P-Y]0[FR].*|P[P-Y]0Z[FR][A-Z]|Z[V-Z]0[FR].*|Z[V-Z]0Z[FR][A-Z]" Country_code="" />
+			<PrefixEntry Prefix="PY0S" Continent="SA" Country="St. Peter &amp; St. Paul Rocks" CQZone="11" DXCC="253" ITUZone="13" Latitude="0.9722N" Longitude="29.3611W" PrefixList="P[P-Y]0[PS].*|P[P-Y]0Z[PS][A-Z]|Z[V-Z]0[PS].*|Z[V-Z]0Z[PS][A-Z]" Country_code="" />
+			<PrefixEntry Prefix="PY0T" Continent="SA" Country="Trindade &amp; Martin Vaz Is." CQZone="11" DXCC="273" ITUZone="15" Latitude="20.5222S" Longitude="30.3167W" PrefixList="P[P-Y]0T\Z|P[P-Y]0Z[TM]\Z|Z[V-Z]0T\Z|Z[V-Z]0Z[TM]\Z" Country_code="" />
+			<PrefixEntry Prefix="PZ" Continent="SA" Country="Suriname" CQZone="9" DXCC="140" ITUZone="12" Latitude="3.9444N" Longitude="56.2056W" PrefixList="PZ.*" Country_code="SR" />
+			<PrefixEntry Prefix="R1FJ" Continent="EU" Country="Franz Josef Land" CQZone="40" DXCC="61" ITUZone="75" Latitude="80.4111N" Longitude="53.1056E" PrefixList="R1FJ.*|RI1F\Z|RI1FJ.*" Country_code="" />
+			<PrefixEntry Prefix="R1FJ" Continent="EU" Country="Franz Josef Land" CQZone="40" DXCC="61" ITUZone="75" Latitude="80.4111N" Longitude="53.1056E" PrefixList="4K2.*" Country_code="" />
+			<PrefixEntry Prefix="R1MV" Continent="EU" Country="Malyj Vysotskij Is. [Deleted]" CQZone="16" DXCC="151" ITUZone="29" Latitude="60.6389N" Longitude="28.5111E" PrefixList="R1MV.*|RI1MV.*" Country_code="" />
+			<PrefixEntry Prefix="S0" Continent="AF" Country="Western Sahara" CQZone="33" DXCC="302" ITUZone="46" Latitude="24.9278N" Longitude="14.4778W" PrefixList="S0.*" Country_code="EH" />
+			<PrefixEntry Prefix="S2" Continent="AS" Country="Bangladesh" CQZone="22" DXCC="305" ITUZone="41" Latitude="24N" Longitude="90E" PrefixList="S[23].*" Country_code="BD" />
+			<PrefixEntry Prefix="S5" Continent="EU" Country="Slovenia" CQZone="15" DXCC="499" ITUZone="28" Latitude="46.0222N" Longitude="14.6E" PrefixList="S5.*" Country_code="SI" />
+			<PrefixEntry Prefix="S7" Continent="AF" Country="Seychelles" CQZone="39" DXCC="379" ITUZone="53" Latitude="4.65S" Longitude="55.4611E" PrefixList="S7.*" Country_code="SC" />
+			<PrefixEntry Prefix="S9" Continent="AF" Country="Sao Tome &amp; Principe" CQZone="36" DXCC="219" ITUZone="47" Latitude="0.2N" Longitude="6.6E" PrefixList="S9.*" Country_code="" />
+			<PrefixEntry Prefix="S9" Continent="AF" Country="Sao Tome &amp; Principe" CQZone="36" DXCC="219" ITUZone="47" Latitude="0.2N" Longitude="6.6E" PrefixList="CR5.*" Country_code="" />
+			<PrefixEntry Prefix="SM" Continent="EU" Country="Sweden" CQZone="14" DXCC="284" ITUZone="18" Latitude="63.6278N" Longitude="15.95E" PrefixList="S[A-M].*|[78]S.*" Country_code="SE" />
+			<PrefixEntry Prefix="SP" Continent="EU" Country="Poland" CQZone="15" DXCC="269" ITUZone="28" Latitude="52.3722N" Longitude="18.6944E" PrefixList="3Z.*|HF.*|S[N-R].*" Country_code="PL" />
+			<PrefixEntry Prefix="ST" Continent="AF" Country="Sudan" CQZone="34" DXCC="466" ITUZone="48" Latitude="14.8611N" Longitude="29.3944E" PrefixList="6[TU].*|SS[0-9][N-Z].*|ST[1-9].*|ST\Z" Country_code="SD" />
+			<PrefixEntry Prefix="ST" Continent="AF" Country="Sudan" CQZone="34" DXCC="466" ITUZone="48" Latitude="14.8611N" Longitude="29.3944E" PrefixList="ST0.*" Country_code="SD" />
+			<PrefixEntry Prefix="ST0" Continent="AF" Country="Southern Sudan [deleted]" CQZone="34" DXCC="244" ITUZone="48" Latitude="4.5278N" Longitude="31.2500E" PrefixList="ST0.*|6[TU]0.*|SS0[N-Z].*" Country_code="" />
+			<PrefixEntry Prefix="SU" Continent="AF" Country="Egypt" CQZone="34" DXCC="478" ITUZone="38" Latitude="25.3833N" Longitude="28.3222E" PrefixList="6[AB].*|SS.*|SU.*" Country_code="EG" />
+			<PrefixEntry Prefix="SV" Continent="EU" Country="Greece" CQZone="20" DXCC="236" ITUZone="28" Latitude="39.4944N" Longitude="21.5889E" PrefixList="J4[0-46-8].*|S[V-Z][0-46-8].*|SV\Z" Country_code="GR" />
+			<PrefixEntry Prefix="SV/A" Continent="EU" Country="Mount Athos" CQZone="20" DXCC="180" ITUZone="28" Latitude="40.1611N" Longitude="24.3278E" Country_code="" />
+			<PrefixEntry Prefix="SV5" Continent="EU" Country="Dodecanese" CQZone="20" DXCC="45" ITUZone="28" Latitude="36.1722N" Longitude="27.9444E" PrefixList="J45.*|S[V-Z]5.*|SV5" Country_code="GR" />
+			<PrefixEntry Prefix="SV9" Continent="EU" Country="Crete" CQZone="20" DXCC="40" ITUZone="28" Latitude="35.0667N" Longitude="24.7611E" PrefixList="J49.*|S[V-Z]9.*|SV9" Country_code="GR" />
+			<PrefixEntry Prefix="T2" Continent="OC" Country="Tuvalu" CQZone="31" DXCC="282" ITUZone="65" Latitude="6.5389S" Longitude="177.25E" PrefixList="T2.*" Country_code="TV" />
+			<PrefixEntry Prefix="T30" Continent="OC" Country="W. Kiribati" CQZone="31" DXCC="301" ITUZone="65" Latitude="0.2556S" Longitude="174.1278E" PrefixList="T30.*" Country_code="KI" />
+			<PrefixEntry Prefix="T31" Continent="OC" Country="C. Kiribati" CQZone="31" DXCC="31" ITUZone="62" Latitude="5.3333S" Longitude="175.0556W" PrefixList="T31.*" Country_code="" />
+			<PrefixEntry Prefix="T32" Continent="OC" Country="E. Kiribati" CQZone="31" DXCC="48" ITUZone="61" Latitude="1.85N" Longitude="157.7111W" PrefixList="T32.*" Country_code="KI" />
+			<PrefixEntry Prefix="T33" Continent="OC" Country="Banaba Is. (Ocean Is.)" CQZone="31" DXCC="490" ITUZone="65" Latitude="0.8667S" Longitude="169.5944E" PrefixList="T33.*" Country_code="" />
+			<PrefixEntry Prefix="T5" Continent="AF" Country="Somalia" CQZone="37" DXCC="232" ITUZone="48" Latitude="4.5333N" Longitude="46E" PrefixList="6O.*|T5.*" Country_code="SO" />
+			<PrefixEntry Prefix="T7" Continent="EU" Country="San Marino" CQZone="15" DXCC="278" ITUZone="28" Latitude="43.9278N" Longitude="12.4667E" PrefixList="T7.*" Country_code="SM" />
+			<PrefixEntry Prefix="T8" Continent="OC" Country="Palau" CQZone="27" DXCC="22" ITUZone="64" Latitude="7.1667N" Longitude="134.2667E" PrefixList="T8.*" Country_code="PW" />
+			<PrefixEntry Prefix="T8" Continent="OC" Country="Palau" CQZone="27" DXCC="22" ITUZone="64" Latitude="7.1667N" Longitude="134.2667E" PrefixList="KC6.*" Country_code="PW" />
+			<PrefixEntry Prefix="TA" Continent="AS" Country="Turkey" CQZone="20" DXCC="390" ITUZone="39" Latitude="38.85N" Longitude="34.6333E" PrefixList="T[A-C].*|YM.*" Country_code="TR" />
+			<PrefixEntry Prefix="TF" Continent="EU" Country="Iceland" CQZone="40" DXCC="242" ITUZone="17" Latitude="64.7111N" Longitude="18.5333W" PrefixList="TF.*" Country_code="IS" />
+			<PrefixEntry Prefix="TG" Continent="NA" Country="Guatemala" CQZone="7" DXCC="76" ITUZone="11" Latitude="15.5889N" Longitude="90.4056W" PrefixList="T[DG].*" Country_code="GT" />
+			<PrefixEntry Prefix="TI" Continent="NA" Country="Costa Rica" CQZone="7" DXCC="308" ITUZone="11" Latitude="10N" Longitude="84W" PrefixList="T[EI][0-8].*|TI\Z" Country_code="CR" />
+			<PrefixEntry Prefix="TI9" Continent="NA" Country="Cocos Is." CQZone="7" DXCC="37" ITUZone="12" Latitude="5.5389N" Longitude="87.0611W" PrefixList="T[EI]9.*" Country_code="" />
+			<PrefixEntry Prefix="TJ" Continent="AF" Country="Cameroon" CQZone="36" DXCC="406" ITUZone="47" Latitude="5.05N" Longitude="11.6722E" PrefixList="TJ.*" Country_code="CM" />
+			<PrefixEntry Prefix="TK" Continent="EU" Country="Corsica" CQZone="15" DXCC="214" ITUZone="28" Latitude="42.1222N" Longitude="9.0556E" PrefixList="TK.*" Country_code="" />
+			<PrefixEntry Prefix="TL" Continent="AF" Country="Central Africa" CQZone="36" DXCC="408" ITUZone="47" Latitude="6.2889N" Longitude="19.1444E" PrefixList="TL.*" Country_code="" />
+			<PrefixEntry Prefix="TN" Continent="AF" Country="Congo" CQZone="36" DXCC="412" ITUZone="52" Latitude="1.2944S" Longitude="15.0889E" PrefixList="TN.*" Country_code="CG" />
+			<PrefixEntry Prefix="TR" Continent="AF" Country="Gabon" CQZone="36" DXCC="420" ITUZone="52" Latitude="0.39S" Longitude="11.25E" PrefixList="TR.*" Country_code="GA" />
+			<PrefixEntry Prefix="TT" Continent="AF" Country="Chad" CQZone="36" DXCC="410" ITUZone="47" Latitude="14.6056N" Longitude="17.7611E" PrefixList="TT.*" Country_code="TD" />
+			<PrefixEntry Prefix="TU" Continent="AF" Country="Cote d'Ivoire" CQZone="35" DXCC="428" ITUZone="46" Latitude="7.3222N" Longitude="6.1722W" PrefixList="TU.*" Country_code="" />
+			<PrefixEntry Prefix="TY" Continent="AF" Country="Benin" CQZone="35" DXCC="416" ITUZone="46" Latitude="9N" Longitude="1.9611E" PrefixList="TY.*" Country_code="BJ" />
+			<PrefixEntry Prefix="TZ" Continent="AF" Country="Mali" CQZone="35" DXCC="442" ITUZone="46" Latitude="16.3444N" Longitude="4.5667W" PrefixList="TZ.*" Country_code="ML" />
+			<PrefixEntry Prefix="UA1" Continent="EU" Country="Russia (European)" CQZone="16" DXCC="54" ITUZone="29" Latitude="56N" Longitude="37E" PrefixList="R[13-7].*|D[0-1].*|R[A-HJ-Z][13-7].*|R[B-Z]2[A-EG-IL-Z].*|R[B-Z]2\d{1,}[A-EG-IL-Z].*|RA\Z.*|RAEM.*|RI1.[^N]|RI1.[^N][^CFPORZ]|U[13467].*|U[A-EGHI]6.*|U[A-I][13457].*|UE2\d{0,}.*|[RU]2[A-EG-IL-Z].*|[RU]2\d{1,}[A-EG-IL-Z].*" Country_code="RU" />
+			<PrefixEntry Prefix="UA1" Continent="EU" Country="Russia (European)" CQZone="16" DXCC="54" ITUZone="19" Latitude="56N" Longitude="37E" PrefixList="4K[30].*|E[KMNORUVWXYZ][1346].*|R[1346].*|R[AEKNSUVWXZ][1346].*|RAEM|U[1346].*|U[AKNVWZ][1346].*" Country_code="RU" />
+			<PrefixEntry Prefix="UA1" Continent="EU" Country="Russia (European)" CQZone="16" DXCC="54" ITUZone="29" Latitude="56N" Longitude="37E" PrefixList="R[A-Z][89][FGX].*|U[A-I][89][FGX].*|[RU][89][FGX].*" Country_code="RU" />
+			<PrefixEntry Prefix="UA2" Continent="EU" Country="Russia (Kaliningrad)" CQZone="15" DXCC="126" ITUZone="29" Latitude="54.65N" Longitude="21.1944E" PrefixList="EZ2F.*|R[AKNSVWXZ]2[CDF].*|R250A|R2F.*|U[AKNSVWXZ]2[CDF].*|U2F.*|UA2.*" Country_code="RU" />
+			<PrefixEntry Prefix="UA2" Continent="EU" Country="Russia (Kaliningrad)" CQZone="15" DXCC="126" ITUZone="29" Latitude="54.65N" Longitude="21.1944E" PrefixList="R[A-Z]2[FK].*|R[A-Z]2\d{1,}[FK].*|U[A-DF-I]2[A-Z].*|U[A-DF-I]2[FK].*|U[A-DF-I]2\d{1,}[FK].*|[RU]2\d{1,}[FK].*" Country_code="RU" />
+			<PrefixEntry Prefix="UA9" Continent="AS" Country="Russia (Asiatic)" CQZone="17" DXCC="15" ITUZone="20" Latitude="61.1N" Longitude="80.2611E" PrefixList="R[890].*|R[A-Z][890][^FGX].*|U[A-I][890][^FGX].*|[RU][89][^FGX].*|[RU][AKNSVUWXZ][890].*" Country_code="RU" />
+			<PrefixEntry Prefix="UA9" Continent="AS" Country="Russia (Asiatic)" CQZone="17" DXCC="15" ITUZone="20" Latitude="61.1N" Longitude="80.2611E" PrefixList="4K4.*|4L[90].*|E[KMNORUXYZ][890].*|R[AKNSVUWXZ][890].*|U[ANSVWXZ][890].*|[RU][890].*" Country_code="RU" />
+			<PrefixEntry Prefix="UA9" Continent="AS" Country="Russia (Asiatic)" CQZone="17" DXCC="15" ITUZone="20" Latitude="61.1N" Longitude="80.2611E" PrefixList="UA8[TV].*" Country_code="RU" />
+			<PrefixEntry Prefix="UK" Continent="AS" Country="Uzbekistan" CQZone="17" DXCC="292" ITUZone="30" Latitude="40.7N" Longitude="63.7444E" PrefixList="U[J-M].*" Country_code="UZ" />
+			<PrefixEntry Prefix="UK" Continent="AS" Country="Uzbekistan" CQZone="17" DXCC="292" ITUZone="30" Latitude="40.7N" Longitude="63.7444E" PrefixList="E[KMNORXYZ]8I.*|R8I.*|RK8I.*|U8I.*|UK\Z|UK8I.*|[RU]I.*" Country_code="UZ" />
+			<PrefixEntry Prefix="UN" Continent="AS" Country="Kazakhstan" CQZone="17" DXCC="130" ITUZone="29" Latitude="48.2556N" Longitude="66.5333E" PrefixList="U[N-Q].*" Country_code="KZ" />
+			<PrefixEntry Prefix="UN" Continent="AS" Country="Kazakhstan" CQZone="17" DXCC="130" ITUZone="29" Latitude="48.2556N" Longitude="66.5333E" PrefixList="E[KMNORXYZ]7.*|RX7C.*|[RU]K7[A-Z].*|UN\Z|[RU]7.*|[RU]L.*" Country_code="KZ" />
+			<PrefixEntry Prefix="UN1" Continent="EU" Country="Karelo-Finnish Rep. [deleted]" CQZone="15" DXCC="128" ITUZone="18" Latitude="63.3889N" Longitude="32.8444E" PrefixList="UN1.*" Country_code="" />
+			<PrefixEntry Prefix="UR" Continent="EU" Country="Ukraine" CQZone="16" DXCC="288" ITUZone="29" Latitude="50N" Longitude="30E" PrefixList="E[M-O].*|U[R-Z].*|U5.*" Country_code="UA" />
+			<PrefixEntry Prefix="UR" Continent="EU" Country="Ukraine" CQZone="16" DXCC="288" ITUZone="29" Latitude="50N" Longitude="30E" PrefixList="E[KMNORX-Z]5.*|R[BTY].*|R[KZ]5.*|R5.*|U[BRSTUXY].*|U5.*|UK5.*" Country_code="UA" />
+			<PrefixEntry Prefix="V2" Continent="NA" Country="Antigua &amp; Barbuda" CQZone="8" DXCC="94" ITUZone="11" Latitude="17.3222N" Longitude="61.8111W" PrefixList="V2.*" Country_code="" />
+			<PrefixEntry Prefix="V3" Continent="NA" Country="Belize" CQZone="7" DXCC="66" ITUZone="11" Latitude="17.0222N" Longitude="88.8944W" PrefixList="V3.*" Country_code="BZ" />
+			<PrefixEntry Prefix="V4" Continent="NA" Country="St. Kitts &amp; Nevis" CQZone="8" DXCC="249" ITUZone="11" Latitude="17.3N" Longitude="62.7389W" PrefixList="V4.*|VP2K.*" Country_code="" />
+			<PrefixEntry Prefix="V5" Continent="AF" Country="Namibia" CQZone="38" DXCC="464" ITUZone="57" Latitude="22S" Longitude="17E" PrefixList="V5.*" Country_code="NA" />
+			<PrefixEntry Prefix="V6" Continent="OC" Country="Micronesia" CQZone="27" DXCC="173" ITUZone="65" Latitude="7.4222N" Longitude="150.35E" PrefixList="V6.*" Country_code="" />
+			<PrefixEntry Prefix="V7" Continent="OC" Country="Marshall Is." CQZone="31" DXCC="168" ITUZone="65" Latitude="7N" Longitude="171E" PrefixList="V7.*" Country_code="MH" />
+			<PrefixEntry Prefix="V8" Continent="OC" Country="Brunei" CQZone="28" DXCC="345" ITUZone="54" Latitude="4.5889N" Longitude="114.6111E" PrefixList="V8.*" Country_code="" />
+			<PrefixEntry Prefix="VE" Continent="NA" Country="Canada" CQZone="5" DXCC="1" ITUZone="4" Latitude="57.2444N" Longitude="103.6778W" PrefixList="C[F-KZ].*|CY[1-8].*|V[A-GXY].*|VO[02-9].*|X[J-O].*" Country_code="CA" />
+			<PrefixEntry Prefix="VK" Continent="OC" Country="Australia" CQZone="30" DXCC="150" ITUZone="55" Latitude="25.1111S" Longitude="132.7889E" PrefixList="AX[1-8].*|V[H-NZ][1-8].*|VK\Z" Country_code="AU" />
+			<PrefixEntry Prefix="VK0H" Continent="AF" Country="Heard Is." CQZone="39" DXCC="111" ITUZone="68" Latitude="53.1167S" Longitude="73.5056E" PrefixList="AX0H.*|V[H-NZ]0H.*" Country_code="" />
+			<PrefixEntry Prefix="VK0M" Continent="OC" Country="Macquarie Is." CQZone="30" DXCC="153" ITUZone="60" Latitude="54.6278S" Longitude="158.8778E" PrefixList="AX0M.*|V[H-NZ]0M.*" Country_code="" />
+			<PrefixEntry Prefix="VK9/P" Continent="OC" Country="Papua Territory [deleted]" CQZone="28" DXCC="198" ITUZone="51" Latitude="6.4389S" Longitude="143.0611E" PrefixList="P2.*|VK9.*" Country_code="" />
+			<PrefixEntry Prefix="VK9/T" Continent="OC" Country="Terr. New Guinea [deleted]" CQZone="28" DXCC="267" ITUZone="51" Latitude="6.4389S" Longitude="143.0611E" PrefixList="P2.*|VK9.*" Country_code="" />
+			<PrefixEntry Prefix="VK9C" Continent="OC" Country="Cocos-Keeling Is." CQZone="29" DXCC="38" ITUZone="54" Latitude="12.1778S" Longitude="96.8667E" PrefixList="AX9[CY][A-Z]|AX9FC[A-Z]|V[H-NZ]9[CY][A-Z]|V[H-NZ]9FC[A-Z]|VK9C.*|VK9EC|VK9Y.*" Country_code="" />
+			<PrefixEntry Prefix="VK9L" Continent="OC" Country="Lord Howe Is." CQZone="30" DXCC="147" ITUZone="60" Latitude="31.5611S" Longitude="159.0611E" PrefixList="AX9L[A-Z]|AX9FL[A-Z]|V[H-NZ]9L[A-Z]|V[H-NZ]9FL[A-Z]|VK9L.*" Country_code="" />
+			<PrefixEntry Prefix="VK9M" Continent="OC" Country="Mellish Reef" CQZone="30" DXCC="171" ITUZone="56" Latitude="17.4S" Longitude="155.85E" PrefixList="AX9M[A-Z]|AX9FM[A-Z]|V[H-NZ]9M[A-Z]|V[H-NZ]9FM[A-Z]|VK9M.*" Country_code="" />
+			<PrefixEntry Prefix="VK9N" Continent="OC" Country="Norfolk Is." CQZone="32" DXCC="189" ITUZone="60" Latitude="29.0444S" Longitude="167.9556E" PrefixList="AX9N[A-Z]|AX9FN[A-Z]|V[H-NZ]9N[A-Z]|V[H-NZ]9FN[A-Z]|VK9N.*" Country_code="" />
+			<PrefixEntry Prefix="VK9W" Continent="OC" Country="Willis Is." CQZone="30" DXCC="303" ITUZone="55" Latitude="16.4889S" Longitude="149.1389E" PrefixList="AX9W[A-Z]|AX9FW[A-Z]|V[H-NZ]9W[A-Z]|V[H-NZ]9FW[A-Z]|VK9W.*" Country_code="" />
+			<PrefixEntry Prefix="VK9X" Continent="OC" Country="Christmas Is." CQZone="29" DXCC="35" ITUZone="54" Latitude="10.5S" Longitude="105.65E" PrefixList="AX9X.*|V[H-NZ]9X.*|VK9EX" Country_code="" />
+			<PrefixEntry Prefix="VO" Continent="NA" Country="New Foundland, Labrador [deleted]" CQZone="5" DXCC="186" ITUZone="9" Latitude="52.3556N" Longitude="58.4278W" PrefixList="VO.*" Country_code="CA" />
+			<PrefixEntry Prefix="VP2E" Continent="NA" Country="Anguilla" CQZone="8" DXCC="12" ITUZone="11" Latitude="18.2222N" Longitude="63.0722W" PrefixList="VP2[0-9]E.*|VP2E.*" Country_code="AI" />
+			<PrefixEntry Prefix="VP2M" Continent="NA" Country="Montserrat" CQZone="8" DXCC="96" ITUZone="11" Latitude="16.7222N" Longitude="62.2056W" PrefixList="VP2M.*" Country_code="MS" />
+			<PrefixEntry Prefix="VP2V" Continent="NA" Country="British Virgin Is." CQZone="8" DXCC="65" ITUZone="11" Latitude="18.4611N" Longitude="64.5278W" PrefixList="VP2V.*" Country_code="VG" />
+			<PrefixEntry Prefix="VP5" Continent="NA" Country="Turks &amp; Caicos Is." CQZone="8" DXCC="89" ITUZone="11" Latitude="21.5111N" Longitude="72.6778W" PrefixList="V[PQ]5.*" Country_code="" />
+			<PrefixEntry Prefix="VP6" Continent="OC" Country="Pitcairn Is." CQZone="32" DXCC="172" ITUZone="63" Latitude="25.0722S" Longitude="130.1111W" PrefixList="V[PR]6[^D].*" Country_code="" />
+			<PrefixEntry Prefix="VP6/D" Continent="OC" Country="Ducie Is." CQZone="32" DXCC="513" ITUZone="63" Latitude="24.6556S" Longitude="124.7889W" PrefixList="VP6[D].*" Country_code="" />
+			<PrefixEntry Prefix="VP8" Continent="SA" Country="Falkland Is." CQZone="13" DXCC="141" ITUZone="16" Latitude="51.8S" Longitude="59.3278W" PrefixList="VP8.*" Country_code="" />
+			<PrefixEntry Prefix="VP8/G" Continent="SA" Country="South Georgia Is." CQZone="13" DXCC="235" ITUZone="73" Latitude="54.17S" Longitude="36.3W" PrefixList="VP8.*" Country_code="" />
+			<PrefixEntry Prefix="VP8/H" Continent="SA" Country="South Shetland Is." CQZone="13" DXCC="241" ITUZone="73" Latitude="62.3778S" Longitude="59.5778W" PrefixList="CE9.*|CX0.*|EA0.*|LU[0-9]Z.*|LZ0.*|OA0.*|RI1AN[FOU]|RI50ANO\Z" Country_code="" />
+			<PrefixEntry Prefix="VP8/O" Continent="SA" Country="South Orkney Is." CQZone="13" DXCC="238" ITUZone="73" Latitude="60.65S" Longitude="45.2611W" PrefixList="VP8.*" Country_code="" />
+			<PrefixEntry Prefix="VP8/S" Continent="SA" Country="South Sandwich Is." CQZone="13" DXCC="240" ITUZone="73" Latitude="57.9667S" Longitude="26.5278W" PrefixList="VP8.*" Country_code="" />
+			<PrefixEntry Prefix="VP9" Continent="NA" Country="Bermuda" CQZone="5" DXCC="64" ITUZone="11" Latitude="32.3278N" Longitude="64.7444W" PrefixList="VP9.*" Country_code="BM" />
+			<PrefixEntry Prefix="VQ1" Continent="AF" Country="Zanzibar [deleted]" CQZone="37" DXCC="307" ITUZone="53" Latitude="6.1556S" Longitude="39.3333E" PrefixList="5H1.*|VQ1.*" Country_code="" />
+			<PrefixEntry Prefix="VQ6" Continent="AF" Country="British Somaliland [deleted]" CQZone="37" DXCC="26" ITUZone="48" Latitude="4.15N" Longitude="45.9556E" PrefixList="VQ6.*" Country_code="" />
+			<PrefixEntry Prefix="VQ9" Continent="AF" Country="Chagos Is." CQZone="39" DXCC="33" ITUZone="41" Latitude="6.3556S" Longitude="72E" PrefixList="VQ9.*" Country_code="" />
+			<PrefixEntry Prefix="VQ9/A" Continent="AF" Country="Aldabra [deleted]" CQZone="39" DXCC="8" ITUZone="53" Latitude="9.4056S" Longitude="46.3611E" PrefixList="VQ9.*" Country_code="" />
+			<PrefixEntry Prefix="VQ9/D" Continent="AF" Country="Desroches [deleted]" CQZone="39" DXCC="44" ITUZone="53" Latitude="5.4S" Longitude="53.4E" PrefixList="VQ9.*" Country_code="" />
+			<PrefixEntry Prefix="VQ9/F" Continent="AF" Country="Farquhar [deleted]" CQZone="39" DXCC="55" ITUZone="53" Latitude="10.1778S" Longitude="51.1778E" PrefixList="VQ9.*" Country_code="" />
+			<PrefixEntry Prefix="VR" Continent="AS" Country="Hong Kong" CQZone="24" DXCC="321" ITUZone="44" Latitude="22.3833N" Longitude="114.1111E" PrefixList="VR[0-57-9].*|VS[69].*|VR\Z" Country_code="HK" />
+			<PrefixEntry Prefix="VS2" Continent="AS" Country="Malaya [deleted]" CQZone="28" DXCC="155" ITUZone="54" Latitude="4N" Longitude="102E" PrefixList="9M2.*|VS2.*" Country_code="" />
+			<PrefixEntry Prefix="VS4" Continent="OC" Country="Sarawak [deleted]" CQZone="28" DXCC="220" ITUZone="54" Latitude="2.1167N" Longitude="112.3778E" PrefixList="VS4.*" Country_code="" />
+			<PrefixEntry Prefix="VS9A" Continent="AS" Country="People's Dem. Rep. of Yemen [deleted]" CQZone="21" DXCC="243" ITUZone="39" Latitude="16.4N" Longitude="49.0889E" PrefixList="VS9[APS].*" Country_code="" />
+			<PrefixEntry Prefix="VS9H" Continent="AS" Country="Kura Muria Is. [deleted]" CQZone="21" DXCC="139" ITUZone="39" Latitude="17.5222N" Longitude="56.0278E" PrefixList="VS9H.*" Country_code="" />
+			<PrefixEntry Prefix="VS9K" Continent="AS" Country="Kamaran Is. [deleted]" CQZone="21" DXCC="127" ITUZone="39" Latitude="15.45N" Longitude="42.6222E" PrefixList="VS9K.*" Country_code="" />
+			<PrefixEntry Prefix="VU" Continent="AS" Country="India" CQZone="22" DXCC="324" ITUZone="41" Latitude="20.7889N" Longitude="77.0556E" PrefixList="8[XY].*|V[TVW].*|VU[239].*|VU\Z|VU18FIFA\Z|[A8][T-W].*" Country_code="IN" />
+			<PrefixEntry Prefix="VU4" Continent="AS" Country="Andaman &amp; Nicobar Is." CQZone="26" DXCC="11" ITUZone="49" Latitude="11.6611N" Longitude="92.6722E" PrefixList="VU4.*" Country_code="" />
+			<PrefixEntry Prefix="VU7" Continent="AS" Country="Lakshadweep Is." CQZone="22" DXCC="142" ITUZone="41" Latitude="10.5722N" Longitude="72.6389E" PrefixList="VU7.*" Country_code="" />
+			<PrefixEntry Prefix="XE" Continent="NA" Country="Mexico" CQZone="6" DXCC="50" ITUZone="10" Latitude="21.5111N" Longitude="102.3833W" PrefixList="4[A-C][0-35-9].*|6[D-J][0-35-9].*|X[A-I][0-35-9].*|XE\Z" Country_code="MX" />
+			<PrefixEntry Prefix="XF4" Continent="NA" Country="Revillagigedo" CQZone="6" DXCC="204" ITUZone="10" Latitude="18.5333N" Longitude="112.8778W" PrefixList="4[A-C]4.*|6[D-J]4.*|X[A-I]4.*" Country_code="" />
+			<PrefixEntry Prefix="XT" Continent="AF" Country="Burkina Faso" CQZone="35" DXCC="480" ITUZone="46" Latitude="12N" Longitude="2W" PrefixList="XT.*" Country_code="BF" />
+			<PrefixEntry Prefix="XU" Continent="AS" Country="Cambodia" CQZone="26" DXCC="312" ITUZone="49" Latitude="12.4611N" Longitude="104.7722E" PrefixList="XU.*" Country_code="KH" />
+			<PrefixEntry Prefix="XW" Continent="AS" Country="Laos" CQZone="26" DXCC="143" ITUZone="49" Latitude="18.5944N" Longitude="102.8333E" PrefixList="XW.*" Country_code="LA" />
+			<PrefixEntry Prefix="XX9" Continent="AS" Country="Macau" CQZone="24" DXCC="152" ITUZone="44" Latitude="22.2222N" Longitude="113.4278E" PrefixList="XX9.*" Country_code="" />
+			<PrefixEntry Prefix="XX9" Continent="AS" Country="Macau" CQZone="24" DXCC="152" ITUZone="44" Latitude="22.2222N" Longitude="113.4278E" PrefixList="CR9.*" Country_code="" />
+			<PrefixEntry Prefix="XY" Continent="AS" Country="Myanmar" CQZone="26" DXCC="309" ITUZone="49" Latitude="21.3889N" Longitude="95.7667E" PrefixList="X[YZ].*" Country_code="MM" />
+			<PrefixEntry Prefix="YA" Continent="AS" Country="Afghanistan" CQZone="21" DXCC="3" ITUZone="40" Latitude="33.7667N" Longitude="65.7111E" PrefixList="T6.*|YA.*" Country_code="AF" />
+			<PrefixEntry Prefix="YB" Continent="OC" Country="Indonesia" CQZone="28" DXCC="327" ITUZone="54" Latitude="6.1847S" Longitude="106.824E" PrefixList="JZ.*|P[K-O].*|Y[B-H].*|[78][A-I].*" Country_code="ID" />
+			<PrefixEntry Prefix="YI" Continent="AS" Country="Iraq" CQZone="21" DXCC="333" ITUZone="39" Latitude="32.9111N" Longitude="43.2778E" PrefixList="HN.*|YI.*" Country_code="IQ" />
+			<PrefixEntry Prefix="YJ" Continent="OC" Country="Vanuatu" CQZone="32" DXCC="158" ITUZone="56" Latitude="15.5278S" Longitude="166.9611E" PrefixList="YJ.*" Country_code="VU" />
+			<PrefixEntry Prefix="YK" Continent="AS" Country="Syria" CQZone="20" DXCC="384" ITUZone="39" Latitude="34.8222N" Longitude="38.0167E" PrefixList="6C.*|YK.*" Country_code="" />
+			<PrefixEntry Prefix="YL" Continent="EU" Country="Latvia" CQZone="15" DXCC="145" ITUZone="29" Latitude="56.9222N" Longitude="24.8778E" PrefixList="YL.*|YL[0-9][A-Z][A-Z]/R.*" Country_code="LV" />
+			<PrefixEntry Prefix="YL" Continent="EU" Country="Latvia" CQZone="15" DXCC="145" ITUZone="29" Latitude="56.9222N" Longitude="24.8778E" PrefixList="RQ.*|UK2G.*|UQ.*|YL\Z" Country_code="LV" />
+			<PrefixEntry Prefix="YN" Continent="NA" Country="Nicaragua" CQZone="7" DXCC="86" ITUZone="11" Latitude="12.7889N" Longitude="85.2944W" PrefixList="H[67T].*|YN.*" Country_code="NI" />
+			<PrefixEntry Prefix="YO" Continent="EU" Country="Romania" CQZone="20" DXCC="275" ITUZone="28" Latitude="45.8556N" Longitude="24.9444E" PrefixList="Y[O-R].*" Country_code="RO" />
+			<PrefixEntry Prefix="YS" Continent="NA" Country="El Salvador" CQZone="7" DXCC="74" ITUZone="11" Latitude="13.7111N" Longitude="88.9W" PrefixList="HU.*|YS.*" Country_code="SV" />
+			<PrefixEntry Prefix="YU" Continent="EU" Country="Serbia" CQZone="15" DXCC="296" ITUZone="28" Latitude="43.5833N" Longitude="20.2722E" PrefixList="4N[1-57-90].*|Y[TUZ][1-57-90].*|YU\Z" Country_code="RS" />
+			<PrefixEntry Prefix="YU" Continent="EU" Country="Serbia" CQZone="15" DXCC="296" ITUZone="28" Latitude="43.5833N" Longitude="20.2722E" PrefixList="Y[TUZ]6.*|YU\Z" Country_code="RS" />
+			<PrefixEntry Prefix="YU" Continent="EU" Country="Yugoslavia" CQZone="15" DXCC="296" ITUZone="28" Latitude="43.5833N" Longitude="20.2722E" PrefixList="4[NO].*|Y[TUZ].*" Country_code="RS" />
+			<PrefixEntry Prefix="YV" Continent="SA" Country="Venezuela" CQZone="9" DXCC="148" ITUZone="12" Latitude="6.6444N" Longitude="66.1333W" PrefixList="4M[1-9].*|Y[V-Y][1-9].*|YV\Z" Country_code="VE" />
+			<PrefixEntry Prefix="YV0" Continent="NA" Country="Aves Is." CQZone="8" DXCC="17" ITUZone="11" Latitude="15.4N" Longitude="63.6333W" PrefixList="4M0.*|Y[V-Y]0.*" Country_code="" />
+			<PrefixEntry Prefix="Z2" Continent="AF" Country="Zimbabwe" CQZone="38" DXCC="452" ITUZone="53" Latitude="19.2833S" Longitude="29.6278E" PrefixList="Z2.*" Country_code="ZW" />
+			<PrefixEntry Prefix="Z3" Continent="EU" Country="North Macedonia" CQZone="15" DXCC="502" ITUZone="28" Latitude="41.5278N" Longitude="21.4444E" PrefixList="Z3.*" Country_code="MK" />
+			<PrefixEntry Prefix="Z6" Continent="EU" Country="Republic of Kosovo" CQZone="15" DXCC="522" ITUZone="28" Latitude="42.5854N" Longitude="20.9399E" PrefixList="Z6.*" Country_code="XK" />
+			<PrefixEntry Prefix="Z8" Continent="AF" Country="Southern Sudan" CQZone="34" DXCC="521" ITUZone="48" Latitude="4.5278N" Longitude="31.25E" PrefixList="ST0.*|Z8.*" Country_code="" />
+			<PrefixEntry Prefix="ZA" Continent="EU" Country="Albania" CQZone="15" DXCC="7" ITUZone="28" Latitude="40.9722N" Longitude="19.8889E" PrefixList="ZA.*" Country_code="AL" />
+			<PrefixEntry Prefix="ZB" Continent="EU" Country="Gibraltar" CQZone="14" DXCC="233" ITUZone="37" Latitude="36.1167N" Longitude="5.3389W" PrefixList="Z[BG].*" Country_code="GI" />
+			<PrefixEntry Prefix="ZC4" Continent="AS" Country="UK Sov. Base Areas on Cyprus" CQZone="20" DXCC="283" ITUZone="39" Latitude="35N" Longitude="33.7278E" PrefixList="ZC.*" Country_code="" />
+			<PrefixEntry Prefix="ZC5" Continent="OC" Country="British North Borneo [deleted]" CQZone="28" DXCC="25" ITUZone="54" Latitude="2.5389N" Longitude="113.7667E" PrefixList="ZC5.*" Country_code="" />
+			<PrefixEntry Prefix="ZC6" Continent="AS" Country="Palestine [deleted]" CQZone="20" DXCC="196" ITUZone="39" Latitude="32N" Longitude="35.1E" PrefixList="4X1.*|ZC6.*" Country_code="" />
+			<PrefixEntry Prefix="ZD4" Continent="AF" Country="Gold Coast, Togoland [deleted]" CQZone="35" DXCC="102" ITUZone="46" Latitude="7.5556N" Longitude="1.5611W" PrefixList="ZD4.*" Country_code="" />
+			<PrefixEntry Prefix="ZD7" Continent="AF" Country="St. Helena" CQZone="36" DXCC="250" ITUZone="66" Latitude="15.9667S" Longitude="5.7222W" PrefixList="ZD7.*" Country_code="" />
+			<PrefixEntry Prefix="ZD8" Continent="AF" Country="Ascension Is." CQZone="36" DXCC="205" ITUZone="66" Latitude="7.9389S" Longitude="14.35W" PrefixList="ZD8.*" Country_code="" />
+			<PrefixEntry Prefix="ZD9" Continent="AF" Country="Tristan da Cunha." CQZone="38" DXCC="274" ITUZone="66" Latitude="38.6833S" Longitude="11.4278W" PrefixList="ZD9.*" Country_code="" />
+			<PrefixEntry Prefix="ZF" Continent="NA" Country="Cayman Is." CQZone="8" DXCC="69" ITUZone="11" Latitude="19.5444N" Longitude="80.55W" PrefixList="ZF.*" Country_code="" />
+			<PrefixEntry Prefix="ZK3" Continent="OC" Country="Tokelau Is." CQZone="31" DXCC="270" ITUZone="62" Latitude="9.1222S" Longitude="171.8W" PrefixList="ZK3.*" Country_code="" />
+			<PrefixEntry Prefix="ZL" Continent="OC" Country="New Zealand" CQZone="32" DXCC="170" ITUZone="60" Latitude="42.3278S" Longitude="172.2278E" PrefixList="Z[LM][0-6].*|ZK[014-9].*|ZL\Z" Country_code="NZ" />
+			<PrefixEntry Prefix="ZL7" Continent="OC" Country="Chatham Is." CQZone="32" DXCC="34" ITUZone="60" Latitude="44.0222S" Longitude="176.5111W" PrefixList="Z[LM]7.*|Z[LM]7.*" Country_code="" />
+			<PrefixEntry Prefix="ZL8" Continent="OC" Country="Kermadec Is." CQZone="32" DXCC="133" ITUZone="60" Latitude="29.2611S" Longitude="177.9056W" PrefixList="Z[LM]8.*" Country_code="" />
+			<PrefixEntry Prefix="ZL9" Continent="OC" Country="New Zealand Sub-Antarctic Is." CQZone="32" DXCC="16" ITUZone="60" Latitude="51.6111S" Longitude="167.5833E" PrefixList="Z[LM]9.*" Country_code="" />
+			<PrefixEntry Prefix="ZP" Continent="SA" Country="Paraguay" CQZone="11" DXCC="132" ITUZone="14" Latitude="24.5222S" Longitude="57.1833W" PrefixList="ZP.*" Country_code="PY" />
+			<PrefixEntry Prefix="ZS" Continent="AF" Country="South Africa" CQZone="38" DXCC="462" ITUZone="57" Latitude="31.5111S" Longitude="19.7111E" PrefixList="H5.*|S[48].*|V9.*|Z[R-U][2-67].*|ZS\Z" Country_code="ZA" />
+			<PrefixEntry Prefix="ZS" Continent="AF" Country="South Africa" CQZone="38" DXCC="462" ITUZone="57" Latitude="31.5111S" Longitude="19.7111E" PrefixList="Z[R-U][019].*" Country_code="ZA" />
+			<PrefixEntry Prefix="ZS" Continent="AF" Country="South Africa" CQZone="38" DXCC="462" ITUZone="57" Latitude="31.5111S" Longitude="19.7111E" PrefixList="ZS9.*" Country_code="ZA" />
+			<PrefixEntry Prefix="ZS0" Continent="AF" Country="Penguin Is. [deleted]" CQZone="38" DXCC="493" ITUZone="57" Latitude="26.6111S" Longitude="15.1556E" PrefixList="ZS[01].*" Country_code="" />
+			<PrefixEntry Prefix="ZS8" Continent="AF" Country="Prince Edward &amp; Marion Is." CQZone="38" DXCC="201" ITUZone="57" Latitude="46.9S" Longitude="37.7389E" PrefixList="Z[R-U]8.*" Country_code="" />
+			<PrefixEntry Prefix="ZS9" Continent="AF" Country="Walvis Bay [deleted]" CQZone="38" DXCC="488" ITUZone="57" Latitude="22.9611S" Longitude="14.5556E" PrefixList="ZS9.*" Country_code="" />
+	</Prefixes>

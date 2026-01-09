@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hamdefs>
+<bands>
+<band band_value="2190M" band_freq="0.137" id="0" band_name="2190M"/>
+<band band_value="630M" band_freq="0.472" id="1" band_name="630M"/>
+<band band_value="160M" band_freq="1.8" id="2" band_name="160M"/>
+<band band_value="80M" band_freq="3.5" id="3" band_name="80M"/>
+<band band_value="60M" band_freq="5.0" id="4" band_name="60M"/>
+<band band_value="40M" band_freq="7.0" id="5" band_name="40M"/>
+<band band_value="30M" band_freq="10.1" id="6" band_name="30M"/>
+<band band_value="20M" band_freq="14.0" id="7" band_name="20M"/>
+<band band_value="17M" band_freq="18.068" id="8" band_name="17M"/>
+<band band_value="15M" band_freq="21.0" id="9" band_name="15M"/>
+<band band_value="12M" band_freq="24.89" id="10" band_name="12M"/>
+<band band_value="10M" band_freq="28.0" id="11" band_name="10M"/>
+<band band_value="6M" band_freq="50.0" id="12" band_name="6M"/>
+<band band_value="4M" band_freq="70.0" id="13" band_name="4M"/>
+<band band_value="2M" band_freq="144.0" id="14" band_name="2M"/>
+<band band_value="1.25M" band_freq="220.0" id="15" band_name="1.25M"/>
+<band band_value="70CM" band_freq="432.0" id="16" band_name="70CM"/>
+<band band_value="33CM" band_freq="900.0" id="17" band_name="33CM"/>
+<band band_value="23CM" band_freq="1296.0" id="18" band_name="23CM"/>
+<band band_value="21CM" band_freq="1400.0" id="19" band_name="21CM"/>
+<band band_value="13CM" band_freq="2300.0" id="20" band_name="13CM"/>
+<band band_value="9CM" band_freq="3300.0" id="21" band_name="9CM"/>
+<band band_value="6CM" band_freq="5700.0" id="22" band_name="6CM"/>
+<band band_value="3CM" band_freq="10000.0" id="23" band_name="3CM"/>
+<band band_value="1.25CM" band_freq="24000.0" id="24" band_name="1.25CM"/>
+</bands>
+<modes>
+<mode id="0" report="59" mode_value="LSB" mode_name="SSB (LSB)"/>
+<mode id="1" report="59" mode_value="USB" mode_name="SSB (USB)"/>
+<mode id="2" report="599" mode_value="CW" mode_name="CW"/>
+<mode id="3" report="-10" mode_value="FT8" mode_name="FT8"/>
+<mode id="4" report="-10" mode_value="FT4" mode_name="FT4"/>
+<mode id="5" report="59" mode_value="FM" mode_name="FM"/>
+<mode id="6" report="59" mode_value="AM" mode_name="AM"/>
+<mode id="7" report="599" mode_value="AMTORFEC" mode_name="AMTORFEC"/>
+<mode id="8" report="599" mode_value="ARDOP" mode_name="ARDOP"/>
+<mode id="9" report="599" mode_value="ASCI" mode_name="ASCI"/>
+<mode id="10" report="599" mode_value="ATV" mode_name="ATV"/>
+<mode id="11" report="59" mode_value="C4FM" mode_name="C4FM"/>
+<mode id="12" report="599" mode_value="CHIP128" mode_name="CHIP128"/>
+<mode id="13" report="599" mode_value="CHIP64" mode_name="CHIP64"/>
+<mode id="14" report="599" mode_value="CLO" mode_name="CLO"/>
+<mode id="15" report="599" mode_value="CONTESTI" mode_name="CONTESTI"/>
+<mode id="16" report="59" mode_value="DMR" mode_name="DMR"/>
+<mode id="17" report="599" mode_value="DOM-M" mode_name="DOM-M"/>
+<mode id="18" report="599" mode_value="DOM11" mode_name="DOM11"/>
+<mode id="19" report="599" mode_value="DOM16" mode_name="DOM16"/>
+<mode id="20" report="599" mode_value="DOM22" mode_name="DOM22"/>
+<mode id="21" report="599" mode_value="DOM4" mode_name="DOM4"/>
+<mode id="22" report="599" mode_value="DOM44" mode_name="DOM44"/>
+<mode id="23" report="599" mode_value="DOM5" mode_name="DOM5"/>
+<mode id="24" report="599" mode_value="DOM8" mode_name="DOM8"/>
+<mode id="25" report="599" mode_value="DOM88" mode_name="DOM88"/>
+<mode id="26" report="599" mode_value="DOMINOEX" mode_name="DOMINOEX"/>
+<mode id="27" report="599" mode_value="DOMINOF" mode_name="DOMINOF"/>
+<mode id="28" report="59" mode_value="DSTAR" mode_name="DSTAR"/>
+<mode id="29" report="599" mode_value="FAX" mode_name="FAX"/>
+<mode id="30" report="599" mode_value="FMHELL" mode_name="FMHELL"/>
+<mode id="31" report="599" mode_value="FREEDV" mode_name="FREEDV"/>
+<mode id="32" report="599" mode_value="FSK31" mode_name="FSK31"/>
+<mode id="33" report="599" mode_value="FSK441" mode_name="FSK441"/>
+<mode id="34" report="599" mode_value="FSKHELL" mode_name="FSKHELL"/>
+<mode id="35" report="599" mode_value="FSQCALL" mode_name="FSQCALL"/>
+<mode id="36" report="599" mode_value="FST4" mode_name="FST4"/>
+<mode id="37" report="599" mode_value="FST4W" mode_name="FST4W"/>
+<mode id="38" report="599" mode_value="GTOR" mode_name="GTOR"/>
+<mode id="39" report="599" mode_value="HELL80" mode_name="HELL80"/>
+<mode id="40" report="599" mode_value="HELLX5" mode_name="HELLX5"/>
+<mode id="41" report="599" mode_value="HELLX9" mode_name="HELLX9"/>
+<mode id="42" report="599" mode_value="HFSK" mode_name="HFSK"/>
+<mode id="43" report="599" mode_value="ISCAT-A" mode_name="ISCAT-A"/>
+<mode id="44" report="599" mode_value="ISCAT-B" mode_name="ISCAT-B"/>
+<mode id="45" report="-10" mode_value="JS8" mode_name="JS8"/>
+<mode id="46" report="-10" mode_value="JT44" mode_name="JT44"/>
+<mode id="47" report="-10" mode_value="JT4A" mode_name="JT4A"/>
+<mode id="48" report="-10" mode_value="JT4B" mode_name="JT4B"/>
+<mode id="49" report="-10" mode_value="JT4C" mode_name="JT4C"/>
+<mode id="50" report="-10" mode_value="JT4D" mode_name="JT4D"/>
+<mode id="51" report="-10" mode_value="JT4E" mode_name="JT4E"/>
+<mode id="52" report="-10" mode_value="JT4F" mode_name="JT4F"/>
+<mode id="53" report="-10" mode_value="JT4G" mode_name="JT4G"/>
+<mode id="54" report="-10" mode_value="JT65A" mode_name="JT65A"/>
+<mode id="55" report="-10" mode_value="JT65B" mode_name="JT65B"/>
+<mode id="56" report="-10" mode_value="JT65B2" mode_name="JT65B2"/>
+<mode id="57" report="-10" mode_value="JT65C" mode_name="JT65C"/>
+<mode id="58" report="-10" mode_value="JT65C2" mode_name="JT65C2"/>
+<mode id="59" report="-10" mode_value="JT6M" mode_name="JT6M"/>
+<mode id="60" report="-10" mode_value="JT9-1" mode_name="JT9-1"/>
+<mode id="61" report="-10" mode_value="JT9-10" mode_name="JT9-10"/>
+<mode id="62" report="-10" mode_value="JT9-2" mode_name="JT9-2"/>
+<mode id="63" report="-10" mode_value="JT9-30" mode_name="JT9-30"/>
+<mode id="64" report="-10" mode_value="JT9-5" mode_name="JT9-5"/>
+<mode id="65" report="-10" mode_value="JT9A" mode_name="JT9A"/>
+<mode id="66" report="-10" mode_value="JT9B" mode_name="JT9B"/>
+<mode id="67" report="-10" mode_value="JT9C" mode_name="JT9C"/>
+<mode id="68" report="-10" mode_value="JT9D" mode_name="JT9D"/>
+<mode id="69" report="-10" mode_value="JT9E" mode_name="JT9E"/>
+<mode id="70" report="-10" mode_value="JT9E FAST" mode_name="JT9E FAST"/>
+<mode id="71" report="-10" mode_value="JT9F" mode_name="JT9F"/>
+<mode id="72" report="-10" mode_value="JT9F FAST" mode_name="JT9F FAST"/>
+<mode id="73" report="-10" mode_value="JT9G" mode_name="JT9G"/>
+<mode id="74" report="-10" mode_value="JT9G FAST" mode_name="JT9G FAST"/>
+<mode id="75" report="-10" mode_value="JT9H" mode_name="JT9H"/>
+<mode id="76" report="-10" mode_value="JT9H FAST" mode_name="JT9H FAST"/>
+<mode id="77" report="-10" mode_value="JTMS" mode_name="JTMS"/>
+<mode id="78" report="599" mode_value="M17" mode_name="M17"/>
+<mode id="79" report="599" mode_value="MFSK11" mode_name="MFSK11"/>
+<mode id="80" report="599" mode_value="MFSK128" mode_name="MFSK128"/>
+<mode id="81" report="599" mode_value="MFSK128L" mode_name="MFSK128L"/>
+<mode id="82" report="599" mode_value="MFSK16" mode_name="MFSK16"/>
+<mode id="83" report="599" mode_value="MFSK22" mode_name="MFSK22"/>
+<mode id="84" report="599" mode_value="MFSK31" mode_name="MFSK31"/>
+<mode id="85" report="599" mode_value="MFSK32" mode_name="MFSK32"/>
+<mode id="86" report="599" mode_value="MFSK4" mode_name="MFSK4"/>
+<mode id="87" report="599" mode_value="MFSK64" mode_name="MFSK64"/>
+<mode id="88" report="599" mode_value="MFSK64L" mode_name="MFSK64L"/>
+<mode id="89" report="599" mode_value="MFSK8" mode_name="MFSK8"/>
+<mode id="90" report="599" mode_value="MSK144" mode_name="MSK144"/>
+<mode id="91" report="599" mode_value="MT63" mode_name="MT63"/>
+<mode id="92" report="599" mode_value="NAVTEX" mode_name="NAVTEX"/>
+<mode id="93" report="599" mode_value="OLIVIA 16/1000" mode_name="OLIVIA 16/1000"/>
+<mode id="94" report="599" mode_value="OLIVIA 16/500" mode_name="OLIVIA 16/500"/>
+<mode id="95" report="599" mode_value="OLIVIA 32/1000" mode_name="OLIVIA 32/1000"/>
+<mode id="96" report="599" mode_value="OLIVIA 4/125" mode_name="OLIVIA 4/125"/>
+<mode id="97" report="599" mode_value="OLIVIA 4/250" mode_name="OLIVIA 4/250"/>
+<mode id="98" report="599" mode_value="OLIVIA 8/250" mode_name="OLIVIA 8/250"/>
+<mode id="99" report="599" mode_value="OLIVIA 8/500" mode_name="OLIVIA 8/500"/>
+<mode id="100" report="599" mode_value="OPERA-BEACON" mode_name="OPERA-BEACON"/>
+<mode id="101" report="599" mode_value="OPERA-QSO" mode_name="OPERA-QSO"/>
+<mode id="102" report="599" mode_value="PAC2" mode_name="PAC2"/>
+<mode id="103" report="599" mode_value="PAC3" mode_name="PAC3"/>
+<mode id="104" report="599" mode_value="PAC4" mode_name="PAC4"/>
+<mode id="105" report="599" mode_value="PAX2" mode_name="PAX2"/>
+<mode id="106" report="599" mode_value="PKT" mode_name="PKT"/>
+<mode id="107" report="599" mode_value="PSK10" mode_name="PSK10"/>
+<mode id="108" report="599" mode_value="PSK1000" mode_name="PSK1000"/>
+<mode id="109" report="599" mode_value="PSK1000C2" mode_name="PSK1000C2"/>
+<mode id="110" report="599" mode_value="PSK1000R" mode_name="PSK1000R"/>
+<mode id="111" report="599" mode_value="PSK1000RC2" mode_name="PSK1000RC2"/>
+<mode id="112" report="599" mode_value="PSK125" mode_name="PSK125"/>
+<mode id="113" report="599" mode_value="PSK125C12" mode_name="PSK125C12"/>
+<mode id="114" report="599" mode_value="PSK125R" mode_name="PSK125R"/>
+<mode id="115" report="599" mode_value="PSK125RC10" mode_name="PSK125RC10"/>
+<mode id="116" report="599" mode_value="PSK125RC12" mode_name="PSK125RC12"/>
+<mode id="117" report="599" mode_value="PSK125RC16" mode_name="PSK125RC16"/>
+<mode id="118" report="599" mode_value="PSK125RC4" mode_name="PSK125RC4"/>
+<mode id="119" report="599" mode_value="PSK125RC5" mode_name="PSK125RC5"/>
+<mode id="120" report="599" mode_value="PSK250" mode_name="PSK250"/>
+<mode id="121" report="599" mode_value="PSK250C6" mode_name="PSK250C6"/>
+<mode id="122" report="599" mode_value="PSK250R" mode_name="PSK250R"/>
+<mode id="123" report="599" mode_value="PSK250RC2" mode_name="PSK250RC2"/>
+<mode id="124" report="599" mode_value="PSK250RC3" mode_name="PSK250RC3"/>
+<mode id="125" report="599" mode_value="PSK250RC5" mode_name="PSK250RC5"/>
+<mode id="126" report="599" mode_value="PSK250RC6" mode_name="PSK250RC6"/>
+<mode id="127" report="599" mode_value="PSK250RC7" mode_name="PSK250RC7"/>
+<mode id="128" report="599" mode_value="PSK2K" mode_name="PSK2K"/>
+<mode id="129" report="599" mode_value="PSK31" mode_name="PSK31"/>
+<mode id="130" report="599" mode_value="PSK500" mode_name="PSK500"/>
+<mode id="131" report="599" mode_value="PSK500C2" mode_name="PSK500C2"/>
+<mode id="132" report="599" mode_value="PSK500C4" mode_name="PSK500C4"/>
+<mode id="133" report="599" mode_value="PSK500R" mode_name="PSK500R"/>
+<mode id="134" report="599" mode_value="PSK500RC2" mode_name="PSK500RC2"/>
+<mode id="135" report="599" mode_value="PSK500RC3" mode_name="PSK500RC3"/>
+<mode id="136" report="599" mode_value="PSK500RC4" mode_name="PSK500RC4"/>
+<mode id="137" report="599" mode_value="PSK63" mode_name="PSK63"/>
+<mode id="138" report="599" mode_value="PSK63F" mode_name="PSK63F"/>
+<mode id="139" report="599" mode_value="PSK63RC10" mode_name="PSK63RC10"/>
+<mode id="140" report="599" mode_value="PSK63RC20" mode_name="PSK63RC20"/>
+<mode id="141" report="599" mode_value="PSK63RC32" mode_name="PSK63RC32"/>
+<mode id="142" report="599" mode_value="PSK63RC4" mode_name="PSK63RC4"/>
+<mode id="143" report="599" mode_value="PSK63RC5" mode_name="PSK63RC5"/>
+<mode id="144" report="599" mode_value="PSK800C2" mode_name="PSK800C2"/>
+<mode id="145" report="599" mode_value="PSK800RC2" mode_name="PSK800RC2"/>
+<mode id="146" report="599" mode_value="PSKAM10" mode_name="PSKAM10"/>
+<mode id="147" report="599" mode_value="PSKAM31" mode_name="PSKAM31"/>
+<mode id="148" report="599" mode_value="PSKAM50" mode_name="PSKAM50"/>
+<mode id="149" report="599" mode_value="PSKFEC31" mode_name="PSKFEC31"/>
+<mode id="150" report="599" mode_value="PSKHELL" mode_name="PSKHELL"/>
+<mode id="151" report="599" mode_value="Q15" mode_name="Q15"/>
+<mode id="152" report="599" mode_value="Q65" mode_name="Q65"/>
+<mode id="153" report="599" mode_value="QPSK125" mode_name="QPSK125"/>
+<mode id="154" report="599" mode_value="QPSK250" mode_name="QPSK250"/>
+<mode id="155" report="599" mode_value="QPSK31" mode_name="QPSK31"/>
+<mode id="156" report="599" mode_value="QPSK500" mode_name="QPSK500"/>
+<mode id="157" report="599" mode_value="QPSK63" mode_name="QPSK63"/>
+<mode id="158" report="599" mode_value="QRA64A" mode_name="QRA64A"/>
+<mode id="159" report="599" mode_value="QRA64B" mode_name="QRA64B"/>
+<mode id="160" report="599" mode_value="QRA64C" mode_name="QRA64C"/>
+<mode id="161" report="599" mode_value="QRA64D" mode_name="QRA64D"/>
+<mode id="162" report="599" mode_value="QRA64E" mode_name="QRA64E"/>
+<mode id="163" report="-10" mode_value="ROS-EME" mode_name="ROS-EME"/>
+<mode id="164" report="-10" mode_value="ROS-HF" mode_name="ROS-HF"/>
+<mode id="165" report="-10" mode_value="ROS-MF" mode_name="ROS-MF"/>
+<mode id="166" report="599" mode_value="RTTYM" mode_name="RTTYM"/>
+<mode id="167" report="-10" mode_value="SIM31" mode_name="SIM31"/>
+<mode id="168" report="59" mode_value="SITORB" mode_name="SITORB"/>
+<mode id="169" report="599" mode_value="SLOWHELL" mode_name="SLOWHELL"/>
+<mode id="170" report="599" mode_value="SSTV" mode_name="SSTV"/>
+<mode id="171" report="-10" mode_value="T10" mode_name="T10"/>
+<mode id="172" report="599" mode_value="THOR-M" mode_name="THOR-M"/>
+<mode id="173" report="599" mode_value="THOR100" mode_name="THOR100"/>
+<mode id="174" report="599" mode_value="THOR11" mode_name="THOR11"/>
+<mode id="175" report="599" mode_value="THOR16" mode_name="THOR16"/>
+<mode id="176" report="599" mode_value="THOR22" mode_name="THOR22"/>
+<mode id="177" report="599" mode_value="THOR25X4" mode_name="THOR25X4"/>
+<mode id="178" report="599" mode_value="THOR4" mode_name="THOR4"/>
+<mode id="179" report="599" mode_value="THOR5" mode_name="THOR5"/>
+<mode id="180" report="599" mode_value="THOR50X1" mode_name="THOR50X1"/>
+<mode id="181" report="599" mode_value="THOR50X2" mode_name="THOR50X2"/>
+<mode id="182" report="599" mode_value="THOR8" mode_name="THOR8"/>
+<mode id="183" report="599" mode_value="THRBX" mode_name="THRBX"/>
+<mode id="184" report="599" mode_value="THRBX1" mode_name="THRBX1"/>
+<mode id="185" report="599" mode_value="THRBX2" mode_name="THRBX2"/>
+<mode id="186" report="599" mode_value="THRBX4" mode_name="THRBX4"/>
+<mode id="187" report="599" mode_value="THROB1" mode_name="THROB1"/>
+<mode id="188" report="599" mode_value="THROB2" mode_name="THROB2"/>
+<mode id="189" report="599" mode_value="THROB4" mode_name="THROB4"/>
+<mode id="190" report="599" mode_value="V4" mode_name="V4"/>
+<mode id="191" report="599" mode_value="VARA FM 1200" mode_name="VARA FM 1200"/>
+<mode id="192" report="599" mode_value="VARA FM 9600" mode_name="VARA FM 9600"/>
+<mode id="193" report="599" mode_value="VARA HF" mode_name="VARA HF"/>
+<mode id="194" report="599" mode_value="VARA SATELLITE" mode_name="VARA SATELLITE"/>
+<mode id="195" report="599" mode_value="VOI" mode_name="VOI"/>
+<mode id="196" report="599" mode_value="WINMOR" mode_name="WINMOR"/>
+<mode id="197" report="599" mode_value="WSPR" mode_name="WSPR"/>
+<mode id="198" report="599" mode_value="8PSK1000" mode_name="8PSK1000"/>
+<mode id="199" report="599" mode_value="8PSK1000F" mode_name="8PSK1000F"/>
+<mode id="200" report="599" mode_value="8PSK1200F" mode_name="8PSK1200F"/>
+<mode id="201" report="599" mode_value="8PSK125" mode_name="8PSK125"/>
+<mode id="202" report="599" mode_value="8PSK125F" mode_name="8PSK125F"/>
+<mode id="203" report="599" mode_value="8PSK125FL" mode_name="8PSK125FL"/>
+<mode id="204" report="599" mode_value="8PSK250" mode_name="8PSK250"/>
+<mode id="205" report="599" mode_value="8PSK250F" mode_name="8PSK250F"/>
+<mode id="206" report="599" mode_value="8PSK250FL" mode_name="8PSK250FL"/>
+<mode id="207" report="599" mode_value="8PSK500" mode_name="8PSK500"/>
+<mode id="208" report="599" mode_value="8PSK500F" mode_name="8PSK500F"/>
+</modes>
+</hamdefs>

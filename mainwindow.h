@@ -15,24 +15,43 @@
 #include <QFontDatabase>
 
 #include "settings.h"
+#include "qsopanel.h"
 #include "callsigns.h"
 #include "udpserver.h"
 #include "flrig.h"
 #include "httpapi.h"
 #include "helpers.h"
 #include "qrzrucallbook.h"
-#include "adif.h"
+#include "exportadif.h"
+#include "importadif.h"
 #include "about.h"
 #include "apilogradio.h"
 #include "delegations.h"
 #include "qsoedit.h"
 #include "cat_interface.h"
+#include "confirmqso.h"
+#include "uploadinglogs.h"
+#include "geolocation.h"
+#include "updatelogprefix.h"
+#include "reports/reportcountry.h"
+#include "reports/reportcontinent.h"
+#include "reports/reportsunchart.h"
+#include "reports/reportbands.h"
+#include "reports/reportmodes.h"
+#include "telnetclient.h"
+#include "spotviewer.h"
+#include "ham_definitions.h"
+#include "chatcontroller.h"
 
-#define VERSION "2.1.3"
+
+#define VERSION "3.0"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+
+
 
 class MainWindow : public QMainWindow
 {
@@ -41,22 +60,6 @@ class MainWindow : public QMainWindow
 public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
-
-  struct bandData {
-      int band_id;
-      QString band_name;
-      QString band_value;
-      QString band_freq;
-  };
-  QList<bandData> bandList;
-
-  struct modeData {
-      int mode_id;
-      QString mode_name;
-      QString mode_value;
-      QString mode_report;
-  };
-  QList<modeData> modeList;
 
   typedef struct baseData {
     int callsign_id;
@@ -69,9 +72,18 @@ public:
   } baseData_t;
   baseData_t userData;
 
+  QList<bandData> bandList;
+  QList<modeData> modeList;
+
+  QList<PrefixEntry> entries;
+  QList<PrefixEntry> loadPrefixDatabase();
+  PrefixEntry* findPrefixEntry(const QList<PrefixEntry>& entries, const QString& callsign);
+
 private:
   Ui::MainWindow *ui;
+  QSOPanel *qsoPanel;
   Settings *settings;
+  QTranslator qtLanguageTranslator;
   Qsoedit *qsoedit;
   Callsigns *callsigns;
   UdpServer *udpServer;
@@ -79,17 +91,39 @@ private:
   HttpApi *api;
   APILogRadio *logradio;
   cat_Interface *CAT;
+  ConfirmQSO *confirmQSO;
+  UploadingLogs *uploadLogs;
+  Geolocation *osm;
+  ChatController *chats;
+  bool COMPortAvailable;
+  QMap<QString, PrefixEntry> prefixMap;
 
   QString database_file;
   QSqlDatabase db;
   ColorSqlTableModel *RecordsModel;
-  QTimer *EverySecondTimer;
+  ColorSqlTableModel *PrevRecordsModel;
   QrzruCallbook *qrz;
-  QTimer *CallTypeTimer;
   QTimer *QsoSuPingTimer;
-  Adif *adif;
+  QTimer *MagStormTimer;
+  ExportADIF *exp_adif;
+  ImportADIF *imp_adif;
+<<<<<<< Updated upstream
+=======
+  LocalCallbook *localCallbook;
+  QString lastDxCall;
+>>>>>>> Stashed changes
   About *about;
   long freqCat;
+  UpdateLogPrefix *update_prefix;
+  ReportCountry *reportCountry;
+  ReportContinent *reportContinent;
+  ReportSunChart *reportSunChart;
+  ReportBands *reportBands;
+  ReportModes *reportModes;
+  TelnetClient *tclient;
+  SpotViewer *spotViewer;
+  bool hasNewMessages = false;
+  bool hasNewNews = false;
 
   QLabel *qsosuLbl;
   QLabel *qsosuLabel;
@@ -99,71 +133,98 @@ private:
   QLabel *flrigLabel;
   QLabel *catLabel;
   QLabel *catLbl;
+  QLabel *countQSO;
+  QLabel *magStormLabel;
+  QPushButton *bellBtn;
+  QPushButton *notificationBtn;
 
   void InitDatabase(QString dbFile);
+  void ReinitSettings();
   bool CheckDatabase();
   bool ConnectDatabase();
   void CreateDatabase();
   void getCallsigns();
   void InitRecordsTable();
+  void InitPreviosQSOModel();
   void ScrollRecordsToBottom();
   void ScrollRecordsToTop();
   void FindCallData();
-  void ClearCallbookFields();
   void RemoveQSOs(QModelIndexList indexes);
   void SetRecordsFilter(int log_id);
   void SyncQSOs(QModelIndexList indexes);
   void SaveFormData();
   void SaveCallsignState();
-  void darkTheime();
+  void lightTheme();
+  void darkTheme();
   void RemoveDeferredQSOs();
   void insertDataToDeferredQSOs(int idx, QString hash);
   void EditQSO(QModelIndex index);
-  void readXmlfile();
+  bool LoadHamDefsSync();
+  bool readXmlfile();
   double BandToDefaultFreq(QString band);
   QString getBandValue(int index);
   QString getModeValue(QString mode);
   QString getRepotValueFromMode(QString mode);
   int getSynchroStatus(int id);
   void PingQsoSu();
+  void ShowQSOInMap();
+  void showPreviosQSO(QString call);
+  void setLanguage();
+  void loadCallList();
+  void setTableRow();
+  QModelIndex findIndexById(QSqlTableModel *model, int id, int targetColumn = 0);
+  void MagStormUpdate();
+  void saveHeaderState(QTableView *tableView);
+  void restoreHeaderState(QTableView *tableView);
 
 protected:
   void keyPressEvent(QKeyEvent *event) override;
+  void closeEvent(QCloseEvent *event) override;
+  void changeEvent(QEvent *event) override;
+  void resizeEvent(QResizeEvent *event) override;
 
 private slots:
-  void CallsignToUppercase(const QString &arg);
   void RefreshRecords();
   void SaveQso();
-  void ClearQso();
-  void UpdateFormDateTime();
   void fillDefaultFreq();
   void customMenuRequested(QPoint pos);
+  void prevMenuRequested(QPoint pos);
   void onQSOSUSynced(int dbid, QString hash);
   void onLogRadioSynced(int dbid);
-  void LoadHamDefs();
-  void setModesList();
-  void setBandsList();
-  void HamDefsUploaded();
-  void HamDefsError();
   void setFreq(long freq);
   void setBand(int band);
   void setMode(int mode);
   void setUserData();
-  void onQSOConfirmed();
   void onSettingsChanged();
   void onCallsignsUpdated();
   void onStationCallsignChanged();
   void onOperatorChanged();
+  void onModeChanged(QString mode);
   void onUdpLogged();
   void onUdpLoggedADIF();
-  void on_bandCombo_currentTextChanged(const QString &arg1);
-  void on_modeCombo_currentTextChanged(const QString &arg1);
-  void on_freqInput_textChanged(const QString &arg1);
-  void on_freqInput_editingFinished();
-  void on_rstrInput_editingFinished();
-  void on_rstsInput_editingFinished();
+  void UpdateMeasurement(QJsonArray data);
+  void showBellIcon();
+  void showNotificationIcon();
+  void openNewsWindow();
+  void setSpotQSO(QString call, QString band, double freq, QString mode);
   void doubleClickedQSO(QModelIndex idx);
-  void on_gridsquareInput_textEdited(const QString &arg1);
-  void on_cntyInput_textEdited(const QString &arg1);
+  void doubleClickedPrevQSO(QModelIndex idx);
+  void on_actionConfirmQSOs_triggered();
+  void on_actionShowMap_triggered();
+  void on_tableView_clicked(const QModelIndex &index);
+  void on_actionPreviosQSO_triggered(bool checked);
+  void on_actionUploadQSOs_triggered();
+  void on_actionUpdatePrefix_triggered();
+  void on_actionCheckCountry_triggered();
+  void on_actionReportCountry_triggered();
+  void on_actionReportContinent_triggered();
+  void on_actionReportSun_triggered();
+  void on_actionReportBands_triggered();
+  void on_actionReportModes_triggered();
+  void on_actionShowSpots_triggered();
+  void on_actionImportADIF_triggered();
+  void on_actionExportADIF_triggered();
+  void on_actionChats_triggered();
+  void on_actionShowLogLocation_triggered();
 };
 #endif // MAINWINDOW_H

@@ -1,5 +1,6 @@
 #include "callsigns.h"
 #include "ui_callsigns.h"
+#include <QSqlError>
 
 
 Callsigns::Callsigns(QSqlDatabase db, HttpApi *api, QWidget *parent) :
@@ -9,9 +10,8 @@ Callsigns::Callsigns(QSqlDatabase db, HttpApi *api, QWidget *parent) :
   api(api)
 {
   ui->setupUi(this);
-  setWindowTitle("Управление позывными");
+  setWindowTitle(tr("Управление позывными"));
   this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
-  ui->saveButton->setEnabled(false);
 
   connect(ui->addButton, SIGNAL(clicked()), this, SLOT(onAddPressed()));
   connect(ui->removeButton, SIGNAL(clicked()), this, SLOT(onRemovePressed()));
@@ -22,11 +22,13 @@ Callsigns::Callsigns(QSqlDatabase db, HttpApi *api, QWidget *parent) :
   init();
   updateTable();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 Callsigns::~Callsigns()
 {
   delete ui;
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void Callsigns::init() {
 
@@ -39,6 +41,7 @@ void Callsigns::init() {
   CallsignsModel->setHeaderData(7, Qt::Horizontal, tr("RDA"));
   CallsignsModel->setHeaderData(8, Qt::Horizontal, tr("ITU зона"));
   CallsignsModel->setHeaderData(9, Qt::Horizontal, tr("CQ зона"));
+  CallsignsModel->setHeaderData(10, Qt::Horizontal, tr("Статус"));
 
   ui->callTable->setModel(CallsignsModel);
   ui->callTable->setColumnHidden(0, true);
@@ -54,17 +57,22 @@ void Callsigns::init() {
   ui->callTable->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
   ui->callTable->verticalHeader()->setDefaultSectionSize(20);
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Callsigns::updateTable() {
+void Callsigns::updateTable()
+{
   CallsignsModel->select();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Callsigns::onAddPressed() {
+void Callsigns::onAddPressed()
+{
 
     add_cs = new Addcallsign(this);
     connect(add_cs, SIGNAL(addCallsign()), this, SLOT(addCallsigng()));
     add_cs->exec();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void Callsigns::addCallsigng()
 {
@@ -82,26 +90,27 @@ void Callsigns::addCallsigng()
     CallsignsModel->setData(CallsignsModel->index(rowCount, 7), add_cs->add_rda);
     CallsignsModel->setData(CallsignsModel->index(rowCount, 8), add_cs->add_ituz);
     CallsignsModel->setData(CallsignsModel->index(rowCount, 9), add_cs->add_cqz);
+    CallsignsModel->setData(CallsignsModel->index(rowCount, 10), add_cs->status);
 
-    ui->addButton->setEnabled(false);
-    ui->saveButton->setEnabled(true);
     QVariantList data;
     data << add_cs->add_Callsign << add_cs->add_CallsignType << add_cs->add_location << add_cs->add_rda << add_cs->add_ituz << add_cs->add_cqz << add_cs->add_validity_start << add_cs->add_validity_stop;
     api->addCallsign(data);
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Callsigns::onRemovePressed() {
+void Callsigns::onRemovePressed()
+{
   QModelIndexList indexList = ui->callTable->selectionModel()->selectedIndexes();
   if (!indexList.isEmpty()) {
       int rowIndex = indexList.first().row();
       QMessageBox::StandardButton reply;
-      reply = QMessageBox::question(this, "Подтверждение действия", QString("Вы уверены что хотите удалить позывной \"%1\"?").arg(CallsignsModel->index(rowIndex, 3).data().toString()), QMessageBox::Yes|QMessageBox::No);
+      reply = QMessageBox::question(this, tr("Подтверждение действия"), QString(tr("Вы уверены что хотите удалить позывной \"%1\"?")).arg(CallsignsModel->index(rowIndex, 3).data().toString()), QMessageBox::Yes|QMessageBox::No);
       if (reply == QMessageBox::Yes) {
           QSqlQuery query;
           if (query.exec(QString("DELETE FROM records WHERE callsign_id='%1'").arg(CallsignsModel->index(rowIndex, 1).data().toInt()))) {
               CallsignsModel->removeRow(rowIndex);
           } else {
-              QMessageBox::critical(0, "Ошибка", "Не получилось удалить позывной. Ошибка базы данных!", QMessageBox::Ok);
+              QMessageBox::critical(0, tr("Ошибка"), tr("Не получилось удалить позывной. Ошибка базы данных!"), QMessageBox::Ok);
               return;
           }
           updateTable();
@@ -110,45 +119,49 @@ void Callsigns::onRemovePressed() {
           return;
       }
   } else {
-      QMessageBox::critical(0, "Ошибка", "Не выбран позывной для удаления.", QMessageBox::Ok);
+      QMessageBox::critical(0, tr("Ошибка"), tr("Не выбран позывной для удаления."), QMessageBox::Ok);
       return;
   }
 
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Callsigns::onSavePressed() {
+void Callsigns::onSavePressed()
+{
   int newRowIndex = CallsignsModel->rowCount(QModelIndex()) - 1;
 
   QString name = CallsignsModel->index(newRowIndex, 3).data().toString();
   QString gridsquare = CallsignsModel->index(newRowIndex, 6).data().toString();
 
   if (name.length() < 3) {
-    QMessageBox::critical(0, "Ошибка", "Позывной сигнал не может быть меньше 3 символов", QMessageBox::Ok);
+    QMessageBox::critical(0, tr("Ошибка"), tr("Позывной сигнал не может быть меньше 3 символов"), QMessageBox::Ok);
     return;
   }
   if (gridsquare.length() < 4) {
-    QMessageBox::critical(0, "Ошибка", "QTH локатор не может быть меньше 4 символов", QMessageBox::Ok);
+    QMessageBox::critical(0, tr("Ошибка"), tr("QTH локатор не может быть меньше 4 символов"), QMessageBox::Ok);
     return;
   }
 
   if (CallsignsModel->submitAll()) {
     updateTable();
-    ui->addButton->setEnabled(true);
-    ui->saveButton->setEnabled(false);
-
     emit updated();
   } else {
-    QMessageBox::critical(0, "Ошибка", "Ошибка базы данных!", QMessageBox::Ok);
+    QMessageBox::critical(0, tr("Ошибка"), tr("Ошибка базы данных!"), QMessageBox::Ok);
+    qDebug() << "Ошибка при добавлении позывного:" << CallsignsModel->lastError().text();
     return;
   }
 
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Callsigns::requestQsosu() {
+void Callsigns::requestQsosu()
+{
   api->getCallsign();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Callsigns::onCallsignsUpdated() {
+void Callsigns::onCallsignsUpdated()
+{
   for(QVariantMap &call : api->callsigns) {
     QString name = call["name"].toString();
     int qsosu_id = call["id"].toInt();
@@ -169,12 +182,6 @@ void Callsigns::onCallsignsUpdated() {
     if (query.at() + 1 == 1) {
       int dbid = query.value(0).toInt();
 
-//      if (QMessageBox::question(this,
-//                                "Обновление позывного",
-//                                QString("Обновить данные для позывного %1?").arg(name),
-//                                QMessageBox::Yes|QMessageBox::No
-//                                ) == QMessageBox::No) continue;
-
       QSqlQuery update;
       update.prepare("UPDATE callsigns SET qsosu_id=:qsosu_id, type=:type, validity_start=:validity_start, validity_stop=:validity_stop, gridsquare=:gridsquare, gridsquare=:gridsquare, cnty=:cnty, ituz=:ituz, cqz=:cqz WHERE id=:id");
       update.bindValue(":qsosu_id", qsosu_id);
@@ -190,14 +197,8 @@ void Callsigns::onCallsignsUpdated() {
       update.exec();
       if (!update.exec()) qDebug() << "Error while updateing callsing in DB";
     } else {
-//        if (QMessageBox::question(this,
-//                                  "Добавление позывного",
-//                                  QString("Позывной %1 отсутствует в системе. Добавить?").arg(name),
-//                                  QMessageBox::Yes|QMessageBox::No
-//                                  ) == QMessageBox::No) continue;
-
       QSqlQuery insert;
-      insert.prepare("INSERT INTO callsigns (id, qsosu_id, type, name, validity_start, validity_stop, gridsquare, cnty, ituz, cqz) VALUES (NULL, :qsosu_id, :type, :name, :validity_start, :validity_stop, :gridsquare, :cnty, :ituz, :cqz)");
+      insert.prepare("INSERT INTO callsigns (id, qsosu_id, type, name, validity_start, validity_stop, gridsquare, cnty, ituz, cqz, status) VALUES (NULL, :qsosu_id, :type, :name, :validity_start, :validity_stop, :gridsquare, :cnty, :ituz, :cqz, :status)");
       insert.bindValue(":qsosu_id", qsosu_id);
       insert.bindValue(":type", type);
       insert.bindValue(":name", name);
@@ -207,14 +208,13 @@ void Callsigns::onCallsignsUpdated() {
       insert.bindValue(":cnty", rda);
       insert.bindValue(":ituz", ituz);
       insert.bindValue(":cqz", cqz);
+      insert.bindValue(":status", 0);
       if (!insert.exec()) qDebug() << "Error while inserting new callsing in DB";
     }
-
     query.clear();
     updateTable();
   }
-
-  QMessageBox::information(0, "Обновление данных", "Позывные обновлены с сервиса QSO.SU", QMessageBox::Ok);
+  QMessageBox::information(0, tr("Обновление данных"), tr("Позывные обновлены с сервиса QSO.SU"), QMessageBox::Ok);
   emit updated();
 }
 
@@ -225,10 +225,10 @@ void Callsigns::on_checkCallsignBtn_clicked()
     QModelIndexList indexList = ui->callTable->selectionModel()->selectedIndexes();
     if (!indexList.isEmpty()) {
         int rowIndex = indexList.first().row();
-        QString callsign = CallsignsModel->index(rowIndex, 3).data().toString();
-        api->checkStatusCallsign(callsign);
+        CallSign = CallsignsModel->index(rowIndex, 3).data().toString();
+        api->checkStatusCallsign(CallSign);
     } else {
-        QMessageBox::critical(0, "Ошибка", "Не выбран позывной для проверки.", QMessageBox::Ok);
+        QMessageBox::critical(0, tr("Ошибка"), tr("Не выбран позывной для проверки."), QMessageBox::Ok);
         return;
     }
 }
@@ -237,22 +237,44 @@ void Callsigns::on_checkCallsignBtn_clicked()
 void Callsigns::callStatus(int status)
 {
     if(status == 0) {
-        QMessageBox::information(0, "Проверка статуса позывного.", "Позывной на проверке!", QMessageBox::Ok);
+        QMessageBox::information(0, tr("Проверка статуса позывного."), tr("Позывной на проверке!"), QMessageBox::Ok);
+        updateStatus("На проверке");
+        updateTable();
         return;
     }
     if(status == 1) {
-        QMessageBox::information(0, "Проверка статуса позывного.", "Позывной добавлен!", QMessageBox::Ok);
+        QMessageBox::information(0, tr("Проверка статуса позывного."), tr("Позывной добавлен!"), QMessageBox::Ok);
+        updateStatus("Добавлен");
+        updateTable();
         return;
     }
     if(status == 2) {
-        QMessageBox::information(0, "Проверка статуса позывного.", "Позывной отклонен!", QMessageBox::Ok);
+        QMessageBox::information(0, tr("Проверка статуса позывного."), tr("Позывной отклонен!"), QMessageBox::Ok);
+        updateStatus("Отклонен");
+        updateTable();
         return;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 
+void Callsigns::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
-
+void Callsigns::updateStatus(QString status)
+{
+    QSqlQuery update;
+    update.prepare("UPDATE callsigns SET status=:status WHERE name=:name");
+    update.bindValue(":name", CallSign);
+    update.bindValue(":status", status);
+    update.exec();
+    if (!update.exec()) qDebug() << "Error while updateing callsing in DB";
+}
+//---------------------------------------------------------------------------------------------------------------------
 
 

@@ -7,7 +7,13 @@
 #include <QDate>
 #include <QTime>
 #include <QSqlTableModel>
+#include <QSortFilterProxyModel>
+#include <QFile>
 #include <QDebug>
+
+
+
+
 
 class FormatCallsign : public QStyledItemDelegate {
 public:
@@ -74,6 +80,7 @@ class ColorSqlTableModel : public QSqlTableModel
     Q_OBJECT
 public:
     int services = 0;
+    mutable QHash<QString, QIcon> flagCache;
 
     ColorSqlTableModel(QObject * parent = 0, QSqlDatabase db = QSqlDatabase())
         : QSqlTableModel(parent,db) {;}
@@ -81,17 +88,17 @@ public:
     {
         if(role==Qt::BackgroundRole)
         {
-            if(QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 0)
+            if(QSqlTableModel::data(this->index(index.row(), 25)).toInt() == 0)
             {
                 return QColor(239,81,81);
             }
 
-            if((services == 2)&&((QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 1)||(QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 2)))
+            if((services == 2)&&((QSqlTableModel::data(this->index(index.row(), 25)).toInt() == 1)||(QSqlTableModel::data(this->index(index.row(), 25)).toInt() == 2)))
             {
                 return QColor(239,153,81);
             }
 
-            if((services == 1)&&((QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 1)||(QSqlTableModel::data(this->index(index.row(), 26)).toInt() == 2)))
+            if((services == 1)&&((QSqlTableModel::data(this->index(index.row(), 25)).toInt() == 1)||(QSqlTableModel::data(this->index(index.row(), 25)).toInt() == 2)))
             {
                 return QSqlTableModel::data(index);
             }
@@ -102,7 +109,7 @@ public:
             }
         }
 
-        if(role==Qt::DecorationRole && index.column() == 22)
+        if(role==Qt::DecorationRole && index.column() == 21)
         {
             if (QSqlQueryModel::data(index, Qt::DisplayRole).toInt() == 1){
                 return QIcon(":resources/images/yes.png");
@@ -110,7 +117,83 @@ public:
                 return QIcon(":resources/images/no.png");
             }
         }
-        return QSqlTableModel::data(index,role);
+
+        if (role == Qt::DecorationRole && index.column() == 28)
+        {
+            QString countryCode = QSqlTableModel::data(index, Qt::DisplayRole).toString().toUpper();
+            if (countryCode.isEmpty())
+                return QVariant();
+
+            // Проверим наличие в кэше
+            if (flagCache.contains(countryCode))
+                return flagCache[countryCode];
+
+            // Загружаем флаг, если существует
+            QString iconPath = QString(":resources/flags/%1.png").arg(countryCode);
+            if (QFile::exists(iconPath)) {
+                QPixmap pix(iconPath);
+                QPixmap scaled = pix.scaled(30, 30, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                flagCache.insert(countryCode, scaled);
+                return scaled;
+            } else {
+                // Можно кешировать и пустой результат, чтобы не проверять снова
+                flagCache.insert(countryCode, QPixmap());
+                return QVariant();
+            }
+        }
+        //Подавляем текст (DisplayRole) — возвращаем пустую строку
+//        if (role == Qt::DisplayRole && index.column() == 28)
+//        {
+//           return QString();
+//        }
+       return QSqlTableModel::data(index,role);
+    }
+ };
+
+class MySortFilterProxyModel : public QSortFilterProxyModel {
+    Q_OBJECT
+public:
+    explicit MySortFilterProxyModel(QObject *parent = nullptr) : QSortFilterProxyModel(parent),
+        primaryColumn(0), secondaryColumn(1),
+        ascendingPrimary(true), ascendingSecondary(true) {}
+
+    void setPrimaryColumn(int col) {
+        primaryColumn = col;
+        invalidate();
+    }
+
+    void setSecondaryColumn(int col) {
+        secondaryColumn = col;
+        invalidate();
+    }
+
+    void setPrimaryOrder(bool ascending) {
+        ascendingPrimary = ascending;
+        invalidate();
+    }
+
+    void setSecondaryOrder(bool ascending) {
+        ascendingSecondary = ascending;
+        invalidate();
+    }
+
+protected:
+    int primaryColumn;
+    int secondaryColumn;
+    bool ascendingPrimary;
+    bool ascendingSecondary;
+
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const override {
+        QVariant leftFirst = sourceModel()->data(sourceModel()->index(left.row(), primaryColumn));
+        QVariant rightFirst = sourceModel()->data(sourceModel()->index(right.row(), primaryColumn));
+
+        if (leftFirst != rightFirst) {
+            return (leftFirst < rightFirst) == ascendingPrimary;
+        } else {
+            QVariant leftSecond = sourceModel()->data(sourceModel()->index(left.row(), secondaryColumn));
+            QVariant rightSecond = sourceModel()->data(sourceModel()->index(right.row(), secondaryColumn));
+            return (leftSecond < rightSecond) == ascendingSecondary;
+        }
     }
 };
 

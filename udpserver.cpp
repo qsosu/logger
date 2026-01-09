@@ -1,5 +1,4 @@
 #include <QRegularExpression>
-
 #include "udpserver.h"
 
 
@@ -31,6 +30,24 @@ bool UdpServer::start(uint16_t port) {
     }
     connect(socket, &QUdpSocket::readyRead, this, &UdpServer::onReadyRead);
     return true;
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void UdpServer::stop()
+{
+    if (socket) {
+        disconnect(socket, nullptr, this, nullptr);
+        socket->close();
+        socket->deleteLater();
+        socket = nullptr;
+    }
+
+    if (clientSocket) {
+        clientSocket->close();
+        clientSocket->deleteLater();
+        clientSocket = nullptr;
+    }
+    port = 0;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -73,6 +90,25 @@ void UdpServer::process(QByteArray data)
     case Heartbeat:
         in >> id >> max_schema_number >> version >> revision;
         emit heartbeat();
+        break;
+
+    case Status:
+        in >> id;
+        in >> tx_frequency_hz;
+        in >> mode;
+        in >> dx_call;
+        in >> dx_report;
+        in >> tx_mode;
+        in >> tx_enabled;
+        in >> transmitting;
+        in >> rx_tx_period;
+        in >> tx_df;
+        in >> my_call;
+        in >> my_grid;
+        in >> dx_grid;
+        in >> tx_df_auto;
+        in >> flags;
+        emit status();
         break;
 
     case QSOLogged:

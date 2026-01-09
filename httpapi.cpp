@@ -16,16 +16,43 @@ HttpApi::HttpApi(QSqlDatabase db, QString accessToken, QObject *parent)
   XDeviceName = QSysInfo::machineHostName();
   XVersionLogger = VERSION;
 }
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::setAccessToken(QString token)
+{
+    this->accessToken = token;
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::configureProxy(int type, QString proxyHost, int proxyPort, QString user, QString password)
+{
+    QNetworkProxy::ProxyType pType;
+
+    switch(type) {
+        case 0: pType = QNetworkProxy::HttpProxy;
+        break;
+        case 1: pType = QNetworkProxy::Socks5Proxy;
+        break;
+        case 2: pType = QNetworkProxy::Socks5Proxy;
+        break;
+    }
+    QNetworkProxy proxy(pType, proxyHost, proxyPort);
+
+    proxy.setUser(user);
+    proxy.setPassword(password);
+    m_manager.setProxy(proxy);
+}
 
 //--------------------------------------------------------------------------------------------------------------------
 
 void HttpApi::SendQso(QVariantList data) {
     if (accessToken.length() == 0) {
+        emit emptyToken();
         return;
     }
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/sendLog")));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
@@ -48,11 +75,10 @@ void HttpApi::SendQso(QVariantList data) {
     body["qth"] = data.value(11).toString();
     body["cnty"] = data.value(12).toString();
     body["gridsquare"] = data.value(13).toString();
-    body["my_cnty"] = data.value(14).toString();       //Add bugFix
-    body["my_gridsquare"] = data.value(15).toString(); //Add bugFix
+    body["my_gridsquare"] = data.value(14).toString(); //Add bugFix
+    body["my_cnty"] = data.value(15).toString();       //Add bugFix
 
     QJsonDocument doc(body);
-
     QByteArray jsonBA = doc.toJson();
     qDebug().noquote() << "Sending QSO data to QSO.SU." << jsonBA;
 
@@ -63,16 +89,17 @@ void HttpApi::SendQso(QVariantList data) {
         QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
         QJsonObject response = jsonDocument["response"].toObject();
         QJsonValue hash = response["hash"].toString();
+
         qDebug() << "QSO.SU Network reply finished. Code:" << status_code.toInt() << " Loaded hash: " << hash.toString();
-        //qDebug() << "Body:" << data;
 
         switch(status_code.toInt()) {
             case 201:
                 emit synced(dbid, hash.toString());
                 break;
-            case 409:
-            default:
+            default: {
                 emit syncerror(dbid, hash.toString());
+                qDebug() << "Responce: " << data;
+            }
         }
        reply->deleteLater();
     });
@@ -82,11 +109,12 @@ void HttpApi::SendQso(QVariantList data) {
 void HttpApi::getCallsign()
 {
   if (accessToken.length() == 0) {
+      qDebug() << "getCallsign";
       emit emptyToken();
       return;
   }
   QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getCallsign")));
-  request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+  request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
   request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
   request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
   request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
@@ -104,16 +132,13 @@ void HttpApi::getCallsign()
         qDebug() << "ERROR:" << errorObject["name"].toString() << errorObject["message"].toString();
         return;
       }
-
       QJsonObject response = jsonDocument["response"].toObject();
       QJsonArray callsignsArray = response["station_callsign"].toArray();
 
       callsigns.clear();
-
       foreach (const QJsonValue &c, callsignsArray) {
         callsigns.append(c.toObject().toVariantMap());
       }
-
       emit callsignsUpdated();
     } else {
       emit error(reply->error());
@@ -126,12 +151,13 @@ void HttpApi::getCallsign()
 void HttpApi::addCallsign(QVariantList data)
 {
     if (accessToken.length() == 0) {
+        qDebug() << "addCallsign";
         emit emptyToken();
         return;
     }
 
     QNetworkRequest request(QUrl("https://api.qso.su/method/v1/addCallsign"));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
@@ -156,17 +182,37 @@ void HttpApi::addCallsign(QVariantList data)
     qDebug().noquote() << "Sending Callsign for validate to service." << jsonBA;
 
     QNetworkReply *reply = m_manager.post(request, jsonBA);
-    connect(reply, &QNetworkReply::finished, this, [=]() {
-    QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    qDebug() << "Network reply finished. Code:" << status_code.toInt();
-    reply->deleteLater();
-   });
+
+    connect(reply, &QNetworkReply::finished, this, [=]()
+    {
+        QByteArray repdata = reply->readAll();
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(repdata);
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+        QJsonObject rootObj = jsonDocument.object();
+
+        if (jsonDocument.object().contains("error") && rootObj["error"].isObject()) {
+            if (rootObj.contains("error") && rootObj["error"].isObject()) {
+                QJsonObject errorObj = rootObj["error"].toObject();
+
+                // Получаем список ключей
+                QStringList keys = errorObj.keys();
+                qDebug() << "ERROR Code:" << status_code.toInt() << errorObj;
+            }
+        }
+
+        if (reply->error() == QNetworkReply::NoError) {
+            qDebug() << "Callsign added. Code:" << status_code.toInt();
+        }
+        reply->deleteLater();
+    });
 }
 //--------------------------------------------------------------------------------------------------------------------
 
 void HttpApi::checkStatusCallsign(QString callsign)
 {
     if (accessToken.length() == 0) {
+        qDebug() << "checkStatusCallsign";
         emit emptyToken();
         return;
     }
@@ -176,7 +222,7 @@ void HttpApi::checkStatusCallsign(QString callsign)
     QJsonDocument doc(body);
 
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/checkStatusCallsign"));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
@@ -193,7 +239,6 @@ void HttpApi::checkStatusCallsign(QString callsign)
     buff->setParent(reply);
     qDebug().noquote() << "Sending QSO data to QSO.SU." << jsonBA;
     connect(reply, &QNetworkReply::finished, this, [=]() {
-
         if (reply->error() == QNetworkReply::NoError)
         {
             QByteArray data = reply->readAll();
@@ -217,12 +262,13 @@ void HttpApi::checkStatusCallsign(QString callsign)
 void HttpApi::getListSubmodeDropDown()
 {
     if (accessToken.length() == 0) {
-        //emit emptyToken();
+        qDebug() << "getListSubmodeDropDown";
+        emit emptyToken();
         return;
     }
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getListSubmodeDropDown")));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
@@ -252,12 +298,13 @@ void HttpApi::getListSubmodeDropDown()
 void HttpApi::getListBand()
 {
     if (accessToken.length() == 0) {
-        //emit emptyToken();
+        qDebug() << "getListBand";
+        emit emptyToken();
         return;
     }
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getListBand")));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
@@ -291,12 +338,12 @@ void HttpApi::loadHamDefs()
     connect(reply, &QNetworkReply::finished, this, [=]() {
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray data = reply->readAll();
-            qDebug() << "Succesful uploaded HamDefs.xml size:" << data.size() << "bytes";
+            qDebug() << "Файл HamDefs.xml успешно загружен, размер:" << data.size() << "байт";
             XMLdata.append(data);
             emit HamDefsUploaded();
         } else {
             //emit error(reply->error());
-            qDebug() << "Error upload HamDefs.xml...";
+            qDebug() << "Ошибка загрузки файла HamDefs.xml.";
             emit HamDefsError();
         }
         reply->deleteLater();
@@ -309,12 +356,13 @@ void HttpApi::deleteByHashLog(QString hash)
 {
     if(hash == "") return;
     if (accessToken.length() == 0) {
-        //emit emptyToken();
+        qDebug() << "deleteByHashLog";
+        emit emptyToken();
         return;
     }
 
     QNetworkRequest request(QUrl("https://api.qso.su/method/v1/deleteByHashLog"));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
@@ -355,16 +403,13 @@ void HttpApi::deleteByHashLog(QString hash)
 void HttpApi::getGeocodeByLocator(QString Locator)
 {
     if (accessToken.length() == 0) {
-        //emit emptyToken();
+        qDebug() << "getGeocodeByLocator";
+        emit emptyToken();
         return;
     }
 
-    QJsonObject body;
-    body["locator"] = Locator;
-    QJsonDocument doc(body);
-
-    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getGeocodeByLocator"));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getGeocodeByLocator?locator="+Locator));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
@@ -372,46 +417,50 @@ void HttpApi::getGeocodeByLocator(QString Locator)
     request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
 
-    QByteArray postDataByteArray = doc.toJson();
-    QBuffer *buff = new QBuffer;
-    buff->setData(postDataByteArray);
-    buff->open(QIODevice::ReadOnly);
-
-    QNetworkReply *reply = m_manager.sendCustomRequest(request, "GET", buff);
-    buff->setParent(reply);
+    QNetworkReply *reply = m_manager.get(request);
 
     connect(reply, &QNetworkReply::finished, this, [=]() {
-        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        qDebug() << "Status code: " << status_code.toInt();
 
-        QByteArray data = reply->readAll();
-        QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
 
-        if (jsonDocument.object().contains("error")) {
-          QJsonObject errorObject = jsonDocument["error"].toObject();
-          qDebug() << "ERROR:" << errorObject["name"].toString() << errorObject["message"].toString();
-          return;
+            //qDebug() << "Geolocation Data: " << data;
+            if (jsonDocument.object().contains("error")) {
+                QJsonObject errorObject = jsonDocument["error"].toObject();
+                qDebug() << "ERROR:" << errorObject["name"].toString() << errorObject["message"].toString();
+                emit LocRecceived();
+                return;
+            }
+            QJsonObject response = jsonDocument["response"].toObject();
+            QJsonObject center = response["center"].toObject();
+            userData.lat = center["lat"].toDouble();
+            userData.lng = center["lng"].toDouble();
+            emit LocRecceived();
+        } else {
+            qDebug() << "getGeocodeByLocator error: " << reply->errorString();
+            emit LocRecceived();
         }
         reply->deleteLater();
     });
 }
-
 //--------------------------------------------------------------------------------------------------------------------
 
-void HttpApi::getConfirmedLogs()
+void HttpApi::getConfirmedLogs(QString date, int callsign_id)
 {
     if (accessToken.length() == 0) {
-        //emit emptyToken();
+        qDebug() << "getConfirmedLogs";
+        emit emptyToken();
         return;
     }
 
     QJsonObject body;
-    body["date"] = "2025-01-01";
-    body["id_station_callsign"] = 102;
+    body["date"] = date;
+    body["id_station_callsign"] = callsign_id;
     QJsonDocument doc(body);
 
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getConfirmedLogs"));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
@@ -442,15 +491,13 @@ void HttpApi::getConfirmedLogs()
             QJsonValue count = response["count"].toInt();
             QJsonArray cnfrQSOArray = response["logs"].toArray();
             cnfrQSOs.clear();
-            //qDebug() << "ConfirmedLogsCount: " << count.toInt();
 
             foreach (const QJsonValue &c, cnfrQSOArray) {
                 cnfrQSOs.append(c.toObject().toVariantMap());
-                //qDebug() << "Confirmed: " << c.toObject().toVariantMap() << "\n";
             }
-            emit confirmQSOs();
+            emit confirmQSOs(count.toInt());
         } else {
-            emit error(reply->error());
+            qDebug() << "Error getConfirmedLogs: " << reply->errorString();
         }
         reply->deleteLater();
     });
@@ -460,12 +507,13 @@ void HttpApi::getConfirmedLogs()
 void HttpApi::getUser()
 {
     if (accessToken.length() == 0) {
-        //emit emptyToken();
+        qDebug() << "getUser";
+        emit emptyToken();
         return;
     }
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/getUser")));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
@@ -489,7 +537,8 @@ void HttpApi::getUser()
             userDataList << QString::number(id) << lang << QString::number(last_activity) << QString::number(premium) << QString::number(premium_time) << QString::number(registered);
             emit getUserInfo(userDataList);
         } else {
-            emit error(reply->error());
+           qDebug() << "Error getUser: " << reply->errorString();
+           emit error(reply->error());
         }
         reply->deleteLater();
     });
@@ -499,7 +548,8 @@ void HttpApi::getUser()
 void HttpApi::getCallbook(QString callsign)
 {
     if (accessToken.length() == 0) {
-        //emit emptyToken();
+        qDebug() << "getCallbook";
+        emit emptyToken();
         return;
     }
 
@@ -508,7 +558,7 @@ void HttpApi::getCallbook(QString callsign)
     QJsonDocument doc(body);
 
     QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v1/getCallBook"));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
@@ -525,9 +575,18 @@ void HttpApi::getCallbook(QString callsign)
     buff->setParent(reply);
 
     connect(reply, &QNetworkReply::finished, this, [=]() {
+
+        if (reply->error() != QNetworkReply::NoError) {
+            QVariant error_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            QByteArray dt = reply->readAll();
+            QJsonDocument json = QJsonDocument::fromJson(dt);
+            qDebug().noquote() << "Error in getCallbook: Code " << error_code.toInt() << " JSON_BODY " << json;
+        }
+
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray data = reply->readAll();
             QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+
             qDebug().noquote() << jsonDocument;
             QJsonObject response = jsonDocument["response"].toObject();
             QString callsign = response["callsign"].toString();
@@ -544,14 +603,21 @@ void HttpApi::getCallbook(QString callsign)
             int ituz = response["ituz"].toInt();
             int cqz = response["cqz"].toInt();
             QJsonArray files = response["files"].toArray();
+            QJsonObject geoObj = response.value("gridsquare_geo").toObject();
+            QJsonObject centerObj = geoObj.value("center").toObject();
+            double centerLat = centerObj.value("latitude").toDouble();
+            double centerLon = centerObj.value("longitude").toDouble();
 
             QString photo = "";
             if(files.count() > 0) photo = files.first().toString();
             else photo = "";
             callsignInfo.clear();
-            callsignInfo << name << qth << gridsquare << cnty << QString::number(user) << QString::number(srr) << prefix << prefix_dxcc << countryName << countryCode << QString::number(ituz) << QString::number(cqz) << photo;
+            callsignInfo << name << qth << gridsquare << cnty << QString::number(user) << QString::number(srr) << prefix << prefix_dxcc << countryName << countryCode;
+            callsignInfo << QString::number(ituz) << QString::number(cqz) << photo << QString::number(centerLat) << QString::number(centerLon);
             emit userDataUpdated();
-         }
+        } else {
+            qDebug() << "Error getCallbook: " << reply->errorString();
+        }
         reply->deleteLater();
     });
 }
@@ -559,11 +625,10 @@ void HttpApi::getCallbook(QString callsign)
 
 void HttpApi::getPing()
 {
-    QNetworkRequest request((QUrl("https://qso.su/ru")));
+    QNetworkRequest request((QUrl("https://qso.su")));
 
     QNetworkReply *reply = m_manager.get(request);
     connect(reply, &QNetworkReply::finished, this, [=]() {
-
         if (reply->error() == QNetworkReply::NoError) {
             serviceAvailable = true;
         } else {
@@ -578,12 +643,13 @@ void HttpApi::getPing()
 void HttpApi::updateByHashLog(QVariantList data)
 {
     if (accessToken.length() == 0) {
-        //emit emptyToken();
+        qDebug() << "updateByHashLog";
+        emit emptyToken();
         return;
     }
 
     QNetworkRequest request((QUrl("https://api.qso.su/method/v1/updateByHashLog")));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
     request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
@@ -615,33 +681,334 @@ void HttpApi::updateByHashLog(QVariantList data)
 
     QNetworkReply *reply = m_manager.put(request, jsonBA);
     connect(reply, &QNetworkReply::finished, this, [=]() {
-        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
-        QByteArray data = reply->readAll();
-        QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
-
-        qDebug().noquote() << jsonDocument;
-
-        switch(status_code.toInt())
-        {
-        case 200: {
-            QString new_hash = jsonDocument["response"].toString();
-            emit QSODataUpdated(new_hash);
-            qDebug() << "QSO updated. Code:" << status_code.toInt();
-            qDebug() << "New HASH code:" << new_hash;
-            break;
+        if (reply->error() != QNetworkReply::NoError) {
+            QVariant error_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            QByteArray dt = reply->readAll();
+            QJsonDocument json = QJsonDocument::fromJson(dt);
+            qDebug().noquote() << "Error: Code " << error_code.toInt() << " JSON_BODY " << json;
         }
-        default: {
-            if (jsonDocument.object().contains("error")) {
-                QJsonObject errorObject = jsonDocument["error"].toObject();
-                qDebug() << "ERROR:" << errorObject["hash"].toArray() << errorObject["message"].toString();
-                emit errorQSODataUpdated("Не удалось обновить QSO.");
+
+        if (reply->error() == QNetworkReply::NoError) {
+            QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+
+            qDebug().noquote() << jsonDocument;
+
+            switch(status_code.toInt())
+            {
+            case 200: {
+                QString new_hash = jsonDocument["response"].toString();
+                emit QSODataUpdated(new_hash);
+                qDebug() << "QSO updated. Code:" << status_code.toInt();
+                qDebug() << "New HASH code:" << new_hash;
+                break;
             }
-            break;
-        }
+            default: {
+                if (jsonDocument.object().contains("error")) {
+                    QJsonObject errorObject = jsonDocument["error"].toObject();
+                    qDebug() << "ERROR:" << errorObject["hash"].toArray() << errorObject["message"].toString();
+                    emit errorQSODataUpdated(errorObject["message"].toString());
+                }
+                break;
+            }
+            }
+            reply->deleteLater();
+        } else qDebug() << "Error updateByHashLog: " << reply->errorString();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::getLogs(int operator_id, int station_id, int page, int count)
+{    
+    if (accessToken.length() == 0) {
+        qDebug() << "getLogs";
+        emit emptyToken();
+        return;
+    }
+
+    qDebug() << "Request: page=" + QString::number(page) + " count=" + QString::number(count);
+
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v2/getLogs?operator_id="+QString::number(operator_id)+"&station_id="+QString::number(station_id)+"&page="+QString::number(page)+"&count="+QString::number(count)));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QNetworkReply *reply = m_manager.get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            static int cnt;
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+
+            QJsonObject rootObj = jsonDocument.object();
+            QJsonObject responseObj = rootObj.value("response").toObject();
+
+            int totalCount = responseObj.value("total_count").toInt();
+            int countLogs = responseObj.value("count_logs").toInt();
+
+            //qDebug() << "Общее количество QSO:" << totalCount;
+            //qDebug() << "Количество QSO:" << countLogs;
+
+            uploadLogs.clear();
+            QJsonArray logsArray = responseObj.value("logs").toArray();
+            for (const QJsonValue& logValue : logsArray)
+            {
+                cnt++;
+                uploadLogs.append(logValue.toObject().toVariantMap());
+            }
+            emit uploadQSOs(totalCount);
+        } else {
+            qDebug() << "Error Upload Logs From QSO.SU: " << reply->errorString();
+            QByteArray dt = reply->readAll();
+            qDebug() << "Error body: " << dt;
         }
         reply->deleteLater();
     });
 }
 //--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::getMagneticStormInfo(QString date)
+{
+    if (accessToken.length() == 0) {
+        qDebug() << "getMagneticStormInfo";
+        emit emptyToken();
+        return;
+    }
+
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v2/getMagneticStorm?date="+date));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QNetworkReply *reply = m_manager.get(request);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+            QJsonObject rootObj = jsonDocument.object();
+            QJsonObject responseObj = rootObj.value("response").toObject();
+            QJsonArray indicesArray = responseObj.value("indices").toArray();
+            emit MagStormUpdated(indicesArray);
+        } else {
+            emit error(reply->error());
+            qDebug() << "Error Upload Magnetic Storm Info: " << reply->errorString() << "data: " << reply->readAll();
+        }
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::getListSpotServers()
+{
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v2/getListSpotServers"));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QNetworkReply *reply = m_manager.get(request);
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
+            QJsonObject root = jsonDocument.object();
+            QJsonObject response = root.value("response").toObject();
+            QJsonArray servers = response.value("servers").toArray();
+
+            QList<ServerInfo> serverList;
+
+            for (const QJsonValue &serverVal : servers) {
+                QJsonObject server = serverVal.toObject();
+                ServerInfo info;
+                info.host = server.value("host").toString();
+                info.port = server.value("port").toInt();
+                info.client = server.value("client").toInt();
+                serverList.append(info);
+            }
+            emit spotServersReceived(serverList);
+        } else {
+            emit error(reply->error());
+            qDebug() << "Error Upload ListSpotServers: " << reply->errorString() << "data: " << reply->readAll();
+        }
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::getChats()
+{
+    if (accessToken.length() == 0) {
+        qDebug() << "getChats";
+        emit emptyToken();
+        return;
+    }
+
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v2/getChats"));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QNetworkReply *reply = m_manager.get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        QList<Chat> chats;
+        chats.clear();
+        QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+        if (doc.isObject()) {
+            QJsonArray chatArray = doc["response"].toObject()["chats"].toArray();
+            for (const QJsonValue &val : chatArray) {
+                QJsonObject c = val.toObject();
+                Chat chat;
+                chat.id = c["id"].toInt();
+                chat.name = c["name"].toString();
+                chat.isTemporary = c["is_temporary"].toBool();
+                chat.expiresAt = c["expires_at"].toString();
+                chats.append(chat);
+            }
+        }
+        emit chatsLoaded(chats);
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::getChatMessages(int chatId)
+{
+    if (accessToken.length() == 0) {
+        qDebug() << "getChatHistory";
+        emit emptyToken();
+        return;
+    }
+
+    QNetworkRequest request = QNetworkRequest(QUrl("https://api.qso.su/method/v2/getChatHistory?id="+QString::number(chatId)));
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    QNetworkReply *reply = m_manager.get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        Chat chat;
+        QList<Message> messages;
+
+        QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+        if (doc.isObject()) {
+            QJsonObject obj = doc["response"].toObject();
+            // Чаты
+            QJsonObject chatObj = obj["chat"].toObject();
+            chat.id = chatObj["id"].toInt();
+            chat.name = chatObj["name"].toString();
+            chat.isTemporary = chatObj["is_temporary"].toBool();
+            chat.expiresAt = chatObj["expires_at"].toString();
+
+            // Сообщения
+            QJsonArray msgArray = obj["messages"].toArray();
+            for (const QJsonValue &val : msgArray) {
+                QJsonObject m = val.toObject();
+                Message msg;
+                msg.id = m["id"].toInt();
+                msg.chatId = m["id_chat"].toInt();
+                msg.sender = m["sender"].toString();
+                msg.text = m["text"].toString();
+                msg.textColor = m["text_color"].toString();
+                msg.backgroundColor = m["background_color"].toString();
+                msg.sentAt = m["sent_at"].toString();
+                messages.append(msg);
+            }
+        }
+        emit chatWithMessagesLoaded(chat, messages);
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+void HttpApi::sendMessage(int id_chat, int id_callsign, QString message)
+{
+    if (accessToken.isEmpty()) {
+        qDebug() << "sendMessage";
+        emit emptyToken();
+        return;
+    }
+
+    QUrl url("https://api.qso.su/method/v2/sendMessage");
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QSO.SU Agent v3.0");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setRawHeader(QByteArrayLiteral("x-operating-system"), QString(XOperatingSystem).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-device-name"), QString(XDeviceName).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("x-version-logger"), QString(XVersionLogger).toUtf8());
+    request.setRawHeader(QByteArrayLiteral("Authorization"), QString("Bearer " + accessToken).toUtf8());
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+
+    // Формируем тело запроса
+    QUrlQuery params;
+    params.addQueryItem("id_chat", QString::number(id_chat));
+    params.addQueryItem("id_callsign", QString::number(id_callsign));
+    params.addQueryItem("message", message);
+
+    QByteArray postData = params.query(QUrl::FullyEncoded).toUtf8();
+    QNetworkReply *reply = m_manager.post(request, postData);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply, id_chat]() {
+        if (reply->error() != QNetworkReply::NoError) {
+            emit errorOccurred("Ошибка отправки: " + reply->errorString());
+            qDebug() << "Ошибка отправки: " + reply->errorString();
+            reply->deleteLater();
+            return;
+        }
+
+        QJsonParseError parseError;
+        QJsonDocument doc = QJsonDocument::fromJson(reply->readAll(), &parseError);
+        if (parseError.error != QJsonParseError::NoError) {
+            emit errorOccurred("Ошибка парсинга ответа на отправку: " + parseError.errorString());
+            qDebug() << "Ошибка парсинга ответа на отправку: " + parseError.errorString();
+            reply->deleteLater();
+            return;
+        }
+
+        if (!doc.isObject()) {
+            emit errorOccurred("Некорректный ответ от API при отправке");
+            qDebug() << "Некорректный ответ от API при отправке";
+            reply->deleteLater();
+            return;
+        }
+
+        QJsonObject msgObj = doc["response"].toObject()["message"].toObject();
+        Message msg;
+        msg.id = msgObj["id"].toInt();
+        msg.chatId = msgObj["id_chat"].toInt();
+        msg.sender = msgObj["sender"].toString();
+        msg.text = msgObj["text"].toString();
+        msg.textColor = msgObj["text_color"].toString();
+        msg.backgroundColor = msgObj["background_color"].toString();
+        msg.sentAt = msgObj["sent_at"].toString();
+
+        emit messageSent(id_chat, msg);
+        reply->deleteLater();
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------
+
 

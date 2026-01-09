@@ -12,11 +12,13 @@ Addcallsign::Addcallsign(QWidget *parent)
     ui->addITU->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-8][0-9]|90)$"), this));
     ui->addCQ->setValidator(new QRegularExpressionValidator(QRegularExpression("^(?:[1-9]|[1-3][0-9]|40)$"), this));
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 Addcallsign::~Addcallsign()
 {
     delete ui;
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void Addcallsign::on_addCallsignEdit_textEdited(const QString &arg1)
 {
@@ -24,18 +26,21 @@ void Addcallsign::on_addCallsignEdit_textEdited(const QString &arg1)
     ui->addCallsignEdit->setText(callsign);
     ui->addCallsignEdit->setStyleSheet("font-weight: bold");
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void Addcallsign::on_addRDA_textEdited(const QString &arg1)
 {
     QString rda = arg1.toUpper();
     ui->addRDA->setText(rda);
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void Addcallsign::on_addLOC_textEdited(const QString &arg1)
 {
     QString location = arg1.toUpper();
     ui->addLOC->setText(location);
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void Addcallsign::on_addCallsignType_currentIndexChanged(int index)
 {
@@ -58,21 +63,35 @@ void Addcallsign::on_OkCallsignBtn_clicked()
     add_rda = ui->addRDA->text();
     add_ituz = ui->addITU->text().toInt();
     add_cqz = ui->addCQ->text().toInt();
+    status = "Не добавлен";
 
     if (add_Callsign.length() < 3) {
-        QMessageBox::critical(0, "Ошибка!", "Позывной сигнал не может быть меньше 3 символов.", QMessageBox::Ok);
+        QMessageBox::critical(0, tr("Ошибка!"), tr("Позывной сигнал не может быть меньше 3 символов."), QMessageBox::Ok);
         return;
     }
     if (add_location.length() < 4) {
-        QMessageBox::critical(0, "Ошибка!", "QTH локатор не может быть меньше 4 символов.", QMessageBox::Ok);
+        QMessageBox::critical(0, tr("Ошибка!"), tr("QTH локатор не может быть меньше 4 символов."), QMessageBox::Ok);
+        return;
+    }
+    if (add_rda.length() < 4) {
+        QMessageBox::critical(0, tr("Ошибка!"), tr("RDA не может быть меньше 4 символов."), QMessageBox::Ok);
+        return;
+    }
+    if (add_ituz < 1) {
+        QMessageBox::critical(0, tr("Ошибка!"), tr("ITUZ не может быть меньше 1 символа."), QMessageBox::Ok);
+        return;
+    }
+    if (add_cqz < 1) {
+        QMessageBox::critical(0, tr("Ошибка!"), tr("CQZ не может быть меньше 1 символа."), QMessageBox::Ok);
         return;
     }
     emit addCallsign();
     close();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
 void Addcallsign::on_CnlCallsignBtn_clicked()
 {
     close();
 }
-
+//--------------------------------------------------------------------------------------------------------------------

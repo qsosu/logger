@@ -15,8 +15,10 @@ Flrig::Flrig(QHostAddress host, uint16_t port, uint16_t updateInterval, QObject 
   updateTimer->setInterval(updateInterval);
   connect(updateTimer, &QTimer::timeout, this, &Flrig::requestRpcData);
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Flrig::start() {
+void Flrig::start()
+{
   QString rpc_url = QString("http://%1:%2/RPC2").arg(host.toString(), QString::number(port));
   rpc = new MaiaXmlRpcClient(QUrl(rpc_url), this);
 
@@ -28,38 +30,55 @@ void Flrig::start() {
   requestRpcData();
   updateTimer->start();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Flrig::stop() {
+void Flrig::stop()
+{
   updateTimer->stop();
   rpc = Q_NULLPTR;
   rpc_connected = false;
   emit disconnected();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-QString Flrig::getVersion() {
+QString Flrig::getVersion()
+{
   return flrigVersion;
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-unsigned int Flrig::getFrequencyHz() {
+unsigned int Flrig::getFrequencyHz()
+{
   return frequencyHz;
 }
-QString Flrig::getMode() {
+//--------------------------------------------------------------------------------------------------------------------
+
+QString Flrig::getMode()
+{
   return mode;
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-int Flrig::getErrorCode() {
+int Flrig::getErrorCode()
+{
   return errorCode;
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-QString Flrig::getErrorString() {
+QString Flrig::getErrorString()
+{
   return errorString;
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-bool Flrig::getConnState() {
+bool Flrig::getConnState()
+{
   return rpc_connected;
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Flrig::requestRpcData() {
+void Flrig::requestRpcData()
+{
   QVariantList args;
   rpc->call("rig.get_vfo", args,
               this, SLOT(rpcResponseFreq(QVariant &)),
@@ -71,24 +90,30 @@ void Flrig::requestRpcData() {
 
   emit updated();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Flrig::rpcResponseInfo(QVariant &arg) {
+void Flrig::rpcResponseInfo(QVariant &arg)
+{
   if (!rpc_connected) {
     rpc_connected = true;
     emit connected();
   }
   flrigVersion = arg.toString();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Flrig::rpcResponseFreq(QVariant &arg) {
+void Flrig::rpcResponseFreq(QVariant &arg)
+{
   if (!rpc_connected) {
     rpc_connected = true;
     emit connected();
   }
   frequencyHz = arg.toInt();
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Flrig::rpcResponseMode(QVariant &arg) {
+void Flrig::rpcResponseMode(QVariant &arg)
+{
   if (!rpc_connected) {
     rpc_connected = true;
     emit connected();
@@ -99,8 +124,10 @@ void Flrig::rpcResponseMode(QVariant &arg) {
   if (mode == "FSK-R") mode = "FSK";
   if (mode == "FM-R") mode = "FM";
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Flrig::rpcFault(int error, const QString &message) {
+void Flrig::rpcFault(int error, const QString &message)
+{
   errorCode = error;
   errorString = message;
   emit rpcError();
@@ -110,8 +137,10 @@ void Flrig::rpcFault(int error, const QString &message) {
     emit disconnected();
   }
 }
+//--------------------------------------------------------------------------------------------------------------------
 
-void Flrig::rpcDefaultResponse(QVariant &arg) {
+void Flrig::rpcDefaultResponse(QVariant &arg)
+{
   Q_UNUSED(arg);
 }
-
+//--------------------------------------------------------------------------------------------------------------------

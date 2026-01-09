@@ -23,6 +23,7 @@ public:
     QString add_rda;
     int add_ituz;
     int add_cqz;
+    QString status;
 
 private slots:
     void on_addCallsignEdit_textEdited(const QString &arg1);

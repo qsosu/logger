@@ -6,6 +6,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QPixmap>
+#include <QJsonDocument>
 
 class QrzruCallbook : public QObject
 {

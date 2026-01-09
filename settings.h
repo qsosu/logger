@@ -9,7 +9,13 @@
 #include "apilogradio.h"
 #include "httpapi.h"
 #include "cat_interface.h"
+#include "geolocation.h"
 
+
+//Макросы для управления битами данных
+#define biton(x,y) (x|=1<<y)
+#define bitoff(x,y) (x&=~(1<<y))
+#define testbit(x,y) (x&(1<<y))
 
 
 namespace Ui {
@@ -31,6 +37,12 @@ public:
     uint16_t udpServerPort;
     bool udpClientEnable;
     uint16_t udpClientPort;
+    bool proxyEnable;
+    QString proxyUserName;
+    QString proxyUserPassword;
+    uint16_t proxyType;
+    uint16_t proxyHTTPSPort;
+    QHostAddress proxyHost;
     QHostAddress flrigHost;
     uint16_t flrigPort;
     unsigned int flrigPeriod;
@@ -39,6 +51,7 @@ public:
     QString QrzruLogin, QrzruPassword;
     QString LogradioLogin, LogradioPassword;
     unsigned int fontSize;
+    QString language;
     bool catEnable;
     QString trxType;
     int catInterval;
@@ -59,7 +72,13 @@ public:
     QString lastRST_RCVD;
     bool darkTheime;
     bool useCallbook;
+    bool showMap;
+    double Latitude;
+    double Longitude;
+    unsigned int table_row_state;
     void saveForm();
+    void read();
+    void display();
 
 private:
     Ui::Settings *ui;
@@ -67,14 +86,27 @@ private:
     QSettings *qs;
     APILogRadio *logradio;
     cat_Interface *CAT;
+    QTranslator qtLanguageTranslator;
+<<<<<<< Updated upstream
+=======
+    QStringList qmFiles;        // Список файлов переводов
+    QStringList languageNames;  // Список названий языков
+>>>>>>> Stashed changes
 
     void openPath(QString path);
-    void read();
     void createDefaultFile();
-    void display();
+    uint saveTableState();
     QString EncryptToken(QString data);
     QString DecryptToken(QString data);
     QString genSalt(QString data);
+<<<<<<< Updated upstream
+    Coordinates locatorToCoordinates(const QString& locator);
+=======
+    void loadTranslations();
+>>>>>>> Stashed changes
+
+protected:
+    void changeEvent(QEvent *event) override;
 
 private slots:
     void save();
@@ -85,6 +117,8 @@ private slots:
     void getUserInfo(QStringList data);
     void on_CallbookCheckBox_toggled(bool checked);
     void on_qrzruEnable_toggled(bool checked);
+    void on_languageComboBox_currentIndexChanged(int index);
+    void on_locationBtn_clicked();
 
 signals:
     void SettingsChanged();
