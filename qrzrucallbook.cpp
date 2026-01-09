@@ -29,6 +29,8 @@ QStringList QrzruCallbook::Get(QString call) {
     }
 
     QByteArray data = Request(QString("https://api.qrz.ru/callsign?id=%1&callsign=%2").arg(session_id, ncall));
+    qDebug().noquote() << data;
+
     QString name = getTagValue(data, "name");
     QString city = getTagValue(data, "city");
     QString qthloc = getTagValue(data, "qthloc");
